@@ -62,25 +62,21 @@ class Frogsystem2 {
 
         // Set default include path
         set_include_path(FS2ROOT);
+        
+        // init global data object
+        global $FD;
+        $FD = new GlobalData();
+        try {
+            // TODO: Pre-Startup Hook
+            $FD->startup();
+        } catch (Exception $e) {
+            // DB Connection failed
+            $this->fail($e);
+        }
  
         return $this;
     }
-    
-    public function header($content, $replace = false, $http_response_code = null) {
-        header($content, $replace, $http_response_code);
-        return $this;
-    }
-    
-    
-    private function libloader($classname) {
-        $class = explode("\\", $classname);
-        $filepath = FS2ROOT.'/libs/class_'.end($class).'.php';
-        if (file_exists($filepath)) {
-            include_once($filepath);
-        } else {
-            return false;
-        }
-    }
+
     
     public function initSession() {
         // Start Session
@@ -102,33 +98,8 @@ class Frogsystem2 {
         global $FD, $APP;
         $this->initSession();
 
-
         //Anti-Spam Encryption-Code
         $spam = 'wKAztWWB2Z'; 
-
-        // TODO: Pre-Import Hook
-        require_once(FS2CONFIG . '/db.cfg.php');
-        
-        // TODO: Pre-Connection Hook
-        global $sql;
-
-        try {
-
-            // Connect to DB-Server
-            $sql = new sql($dbc['host'], $dbc['data'], $dbc['user'], $dbc['pass'], $dbc['pref']);
-
-            // Frogsystem Global Data Array
-            $FD = new GlobalData($sql);
-
-            // Unset unused vars
-            unset($spam, $dbc);
-            
-        // DB Connection failed ////
-        } catch (Exception $e) {
-            $this->fail($e);
-            return;
-        }
-
 
 
         // Constructor Calls
@@ -207,6 +178,24 @@ class Frogsystem2 {
         // Display No-Connection-Page
         echo $template;
         $this->__destruct();
+        exit;
+    }
+    
+    
+    public function header($content, $replace = false, $http_response_code = null) {
+        header($content, $replace, $http_response_code);
+        return $this;
+    }
+    
+    
+    private function libloader($classname) {
+        $class = explode("\\", $classname);
+        $filepath = FS2ROOT.'/libs/class_'.end($class).'.php';
+        if (file_exists($filepath)) {
+            include_once($filepath);
+        } else {
+            return false;
+        }
     }
     
     private function detectUserLanguage($default = 'de_DE') {

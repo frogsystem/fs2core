@@ -428,15 +428,15 @@ if (
         $data['user_id'] = $user_id;
 
         // Save News
-        $newsid = $sql->save('news', $data, 'news_id');
+        $newsid = $FD->db()->save('news', $data, 'news_id');
 
         // delete all related links
-        $sql->conn()->exec('DELETE FROM '.$FD->config('pref')."news_links WHERE `news_id` = '".$newsid."'");
+        $FD->db()->conn()->exec('DELETE FROM '.$FD->config('pref')."news_links WHERE `news_id` = '".$newsid."'");
 
         // Insert Links into database
         if (!is_array($_POST['link_name']))
             $_POST['link_name'] = array();
-        $stmt = $sql->conn()->prepare('INSERT INTO '.$FD->config('pref').'news_links SET news_id = '.$newsid.', link_name = ?, link_url = ?, link_target = ?');
+        $stmt = $FD->db()->conn()->prepare('INSERT INTO '.$FD->config('pref').'news_links SET news_id = '.$newsid.', link_name = ?, link_url = ?, link_target = ?');
         foreach ($_POST['link_name'] as $id => $val) {
             if (!empty($_POST['link_name'][$id]) && !empty($_POST['link_url'][$id]) && !in_array($_POST['link_url'][$id], array('http://', 'https://'))) {
 
@@ -490,20 +490,20 @@ elseif (
             $_POST['news_id'] = array_map('intval', $_POST['news_id']);
 
             //delete news
-            $num = $sql->conn()->exec('DELETE FROM '.$FD->config('pref').'news WHERE `news_id` IN ('.implode(',',$_POST['news_id']).')');
+            $num = $FD->db()->conn()->exec('DELETE FROM '.$FD->config('pref').'news WHERE `news_id` IN ('.implode(',',$_POST['news_id']).')');
 
             // Delete from Search Index
             require_once ( FS2SOURCE . '/includes/searchfunctions.php' );
             delete_search_index_for_one($_POST['news_id'], 'news');
 
             // delete all links
-            $sql->conn()->exec('DELETE FROM '.$FD->config('pref').'news_links WHERE `news_id` IN ('.implode(',',$_POST['news_id']).')');
+            $FD->db()->conn()->exec('DELETE FROM '.$FD->config('pref').'news_links WHERE `news_id` IN ('.implode(',',$_POST['news_id']).')');
             // delete all comments
-            $comment_rows = $sql->conn()->exec('DELETE FROM '.$FD->config('pref').'comments WHERE `content_id` IN ('.implode(',',$_POST['news_id']).") AND content_type='news'");
+            $comment_rows = $FD->db()->conn()->exec('DELETE FROM '.$FD->config('pref').'comments WHERE `content_id` IN ('.implode(',',$_POST['news_id']).") AND content_type='news'");
 
             // update counter
             try {
-                $sql->conn()->exec('UPDATE `'.$FD->config('pref').'counter` SET `news` = `news` - '.$num.', `comments` - '.$comment_rows.'  WHERE `id` = 1');
+                $FD->db()->conn()->exec('UPDATE `'.$FD->config('pref').'counter` SET `news` = `news` - '.$num.', `comments` - '.$comment_rows.'  WHERE `id` = 1');
             } catch (Exception $e) {}
 
 
@@ -672,7 +672,7 @@ if ( isset($_POST['news_id']) && isset($_POST['news_action']) )
 
         // Get data from DB
         } else {
-            $data = $sql->conn()->query(
+            $data = $FD->db()->conn()->query(
                        'SELECT  news_id, cat_id, user_id, news_date, news_title, news_text, news_active, news_comments_allowed, news_search_update
                         FROM '.$FD->config('pref').'news
                         WHERE news_id='.intval($_POST['news_id']).' LIMIT 1');
@@ -680,7 +680,7 @@ if ( isset($_POST['news_id']) && isset($_POST['news_action']) )
             putintopost($data);
 
             // Get User name
-            $_POST['user_name'] = $sql->conn()->query('SELECT user_name FROM '.$FD->config('pref').'user WHERE user_id='.intval($_POST['user_id']).' LIMIT 1');
+            $_POST['user_name'] = $FD->db()->conn()->query('SELECT user_name FROM '.$FD->config('pref').'user WHERE user_id='.intval($_POST['user_id']).' LIMIT 1');
             $_POST['user_name'] = $_POST['user_name']->fetchColumn();
 
             $_POST['d'] = date('d', $_POST['news_date']);
@@ -692,7 +692,7 @@ if ( isset($_POST['news_id']) && isset($_POST['news_action']) )
             $_POST['new_link_url'] = 'http://';
 
             //grab links from database
-            $links = $sql->conn()->query('SELECT link_name, link_url, link_target FROM '.$FD->config('pref').'news_links
+            $links = $FD->db()->conn()->query('SELECT link_name, link_url, link_target FROM '.$FD->config('pref').'news_links
                          WHERE `news_id` = '.intval($_POST['news_id']).' ORDER BY `link_id`');
             $links = $links->fetchAll(PDO::FETCH_ASSOC);
             $i = 0;
@@ -713,7 +713,7 @@ if ( isset($_POST['news_id']) && isset($_POST['news_action']) )
 
         // cat options
         initstr($cat_options);
-        $cats = $sql->conn()->query('SELECT cat_id, cat_name FROM '.$FD->config('pref').'news_cat');
+        $cats = $FD->db()->conn()->query('SELECT cat_id, cat_name FROM '.$FD->config('pref').'news_cat');
         $cats = $cats->fetchAll(PDO::FETCH_ASSOC);
         foreach ($cats as $cat) {
             settype ($cat['cat_id'], 'integer');
@@ -841,7 +841,7 @@ if ($FILE_SHOW_START)
 
     //cat filter options
     initstr($cat_filter_options);
-    $cats = $sql->conn()->query('SELECT cat_id, cat_name FROM '.$FD->config('pref').'news_cat');
+    $catsFD->db()sql->conn()->query('SELECT cat_id, cat_name FROM '.$FD->config('pref').'news_cat');
     $cats = $cats->fetchAll(PDO::FETCH_ASSOC);
     foreach ($cats as $cat) {
         $cat = array_map('killhtml', $cat);
@@ -904,14 +904,14 @@ if ($FILE_SHOW_START)
             {
               $where = '';
             }
-            $news_data = $sql->conn()->query(
+            $news_data = $FD->db()->conn()->query(
                                'SELECT news_id AS id, CONCAT(1) AS rank
                                 FROM '.$FD->config('pref').'news
                                 '.$where.'
                                 ORDER BY `'.$_REQUEST['order'].'` '.$_REQUEST['sort'].', `news_id` '.$_REQUEST['sort'].'
                                 LIMIT '.($_REQUEST['page']-1)*$config_arr['acp_per_page'].",".$config_arr['acp_per_page']);
             $news_data = $news_data->fetchAll(PDO::FETCH_ASSOC);
-            $total_entries = $sql->conn()->query('SELECT COUNT(*) FROM '.$FD->config('pref').'news '.$where);
+            $total_entries = $FD->db()->conn()->query('SELECT COUNT(*) FROM '.$FD->config('pref').'news '.$where);
             $total_entries = $total_entries->fetchColumn();
         }
 
@@ -937,19 +937,19 @@ if ($FILE_SHOW_START)
             switch ($config_arr['acp_view']) {
                 // full (with text preview)
                 case 1:
-                    $news = $sql->conn()->query('SELECT news_id, cat_id, user_id, news_title, news_date, news_text
+                    $news = $FD->db()->conn()->query('SELECT news_id, cat_id, user_id, news_title, news_date, news_text
                                 FROM '.$FD->config('pref').'news WHERE news_id = '.intval($found['id']).' LIMIT 1');
                     $news = $news->fetch(PDO::FETCH_ASSOC);
                     break;
                 // extended (but no text preview)
                 case 2:
-                    $news = $sql->conn()->query('SELECT news_id, cat_id, user_id, news_title, news_date
+                    $news = $FD->db()->conn()->query('SELECT news_id, cat_id, user_id, news_title, news_date
                                 FROM '.$FD->config('pref').'news WHERE news_id = '.intval($found['id']).' LIMIT 1');
                     $news = $news->fetch(PDO::FETCH_ASSOC);
                     break;
                 //simple
                 default:
-                    $news = $sql->conn()->query('SELECT news_id, news_title, news_date
+                    $news = $FD->db()->conn()->query('SELECT news_id, news_title, news_date
                                 FROM '.$FD->config('pref').'news WHERE news_id = '.intval($found['id']).' LIMIT 1');
                     $news = $news->fetch(PDO::FETCH_ASSOC);
                     break;
@@ -964,14 +964,14 @@ if ($FILE_SHOW_START)
             // extended or full
             if (in_array($config_arr['acp_view'], array(1, 2))) {
                 //get additional data
-                $user = $sql->conn()->query('SELECT user_name FROM '.$FD->config('pref').'user WHERE user_id='.intval($news['user_id']).' LIMIT 1');
+                $user = $FD->db()->conn()->query('SELECT user_name FROM '.$FD->config('pref').'user WHERE user_id='.intval($news['user_id']).' LIMIT 1');
                 $user = $user->fetchColumn();
-                $cat = $sql->conn()->query('SELECT cat_name FROM '.$FD->config('pref').'news_cat WHERE cat_id='.intval($news['cat_id']).' LIMIT 1');
+                $cat = $FD->db()->conn()->query('SELECT cat_name FROM '.$FD->config('pref').'news_cat WHERE cat_id='.intval($news['cat_id']).' LIMIT 1');
                 $cat = $cat->fetchColumn();
-                $num_comments = $sql->conn()->query('SELECT COUNT(comment_id) FROM '.$FD->config('pref').'comments
+                $num_comments = $FD->db()->conn()->query('SELECT COUNT(comment_id) FROM '.$FD->config('pref').'comments
                                     WHERE `content_id` = '.intval($news['news_id'])." AND `content_type` = 'news'");
                 $num_comments = $num_comments->fetchColumn();
-                $num_links = $sql->conn()->query('SELECT COUNT(link_id) FROM '.$FD->config('pref').'news_links
+                $num_links = $FD->db()->conn()->query('SELECT COUNT(link_id) FROM '.$FD->config('pref').'news_links
                                     WHERE `news_id` = '.intval($news['news_id']));
                 $num_links = $num_links->fetchColumn();
 

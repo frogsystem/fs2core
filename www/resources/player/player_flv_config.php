@@ -96,7 +96,5 @@ iconplaycolor='.$config_arr['cfg_iconplaycolor'].'
 iconplaybgcolor='.$config_arr['cfg_iconplaybgcolor'].'
 iconplaybgalpha='.$config_arr['cfg_iconplaybgalpha'].'
 showtitleandstartimage='.$config_arr['cfg_showtitleandstartimage'].'';
-
-    unset($sql);
 }
 ?>

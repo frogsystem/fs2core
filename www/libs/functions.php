@@ -1,5 +1,4 @@
 <?php
-        global $FD;
     // list of function files
     $list = array(
         'functions.php',

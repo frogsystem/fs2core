@@ -15,7 +15,7 @@ if (   ( isset($_POST['signup']) && $_POST['signup'] != '' )
     settype ( $_POST['html'], 'integer' );
 
     // SQL-Queries
-    $stmt = $sql->conn()->prepare ( '
+    $stmt = $FD->db()->conn()->prepare ( '
                 UPDATE `'.$FD->config('pref')."email`
                 SET
                     `signup` = ?,
@@ -49,7 +49,7 @@ if ( TRUE )
 
     // Load Data from DB into Post
     } else {
-        $index = $sql->conn()->query ( '
+        $index = $FD->db()->conn()->query ( '
                         SELECT *
                         FROM '.$FD->config('pref')."email
                         WHERE `id` = '1'" );

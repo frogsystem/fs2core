@@ -2,7 +2,7 @@
 
 function get_player ( $MULTI, $WIDTH = true, $HEIGHT = true, $MODIFIER = false ) {
 
-    global $FD, $sql;
+    global $FD;
     $FD->loadConfig('video_player');
 
     $template_own = '

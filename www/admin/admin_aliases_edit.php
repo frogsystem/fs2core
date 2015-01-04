@@ -17,7 +17,7 @@ if (
     settype ( $_POST['alias_id'], 'integer' );
 
     // SQL-Queries
-    $stmt = $sql->conn()->prepare ( '
+    $stmt = $FD->db()->conn()->prepare ( '
                 UPDATE `'.$FD->config('pref')."aliases`
                 SET
                     `alias_go` = ?,
@@ -51,7 +51,7 @@ elseif (
         $_POST['alias_id'] = array_map ( 'intval', explode ( ',', $_POST['alias_id'] ) );
 
         // SQL-Delete-Query
-        $sql->conn()->exec ('
+        $FD->db()->conn()->exec ('
                         DELETE
                         FROM `'.$FD->config('pref').'aliases`
                         WHERE `alias_id` IN ('.implode ( ',', $_POST['alias_id'] ).')');
@@ -93,7 +93,7 @@ if ( isset ( $_POST['alias_id'] ) && isset($_POST['alias_action']) )
 
         // Get Data from DB
         } else {
-            $index = $sql->conn()->query ( '
+            $index = $FD->db()->conn()->query ( '
                                     SELECT *
                                     FROM `'.$FD->config('pref')."aliases`
                                     WHERE `alias_id` = '".$_POST['alias_id']."'
@@ -188,7 +188,7 @@ if ( isset ( $_POST['alias_id'] ) && isset($_POST['alias_action']) )
         ';
 
         // get aliases from db
-        $index = $sql->conn()->query ( '
+        $index = $FD->db()->conn()->query ( '
                                 SELECT *
                                 FROM `'.$FD->config('pref').'aliases`
                                 WHERE `alias_id` IN ('.implode ( ',', $_POST['alias_id'] ).')
@@ -240,7 +240,7 @@ if ( !isset ( $_POST['alias_id'] ) )
     ';
 
     // get Aliases from db
-    $index = $sql->conn()->query ( '
+    $index = $FD->db()->conn()->query ( '
                     SELECT COUNT(*)
                     FROM `'.$FD->config('pref').'aliases`');
 
@@ -258,7 +258,7 @@ if ( !isset ( $_POST['alias_id'] ) )
         ';
 
         // display Aliases
-        $index = $sql->conn()->query ( '
+        $index = $FD->db()->conn()->query ( '
                         SELECT *
                         FROM `'.$FD->config('pref').'aliases`
                         ORDER BY `alias_go` ASC, `alias_forward_to` ASC');

@@ -26,7 +26,7 @@ if (
     settype ( $_POST['applet_include'], 'integer' );
 
     // SQL-Queries
-    $sql->conn()->exec ( '
+    $FD->db()->conn()->exec ( '
                     UPDATE `'.$FD->config('pref')."applets`
                     SET
                         `applet_active` = '".$_POST['applet_active']."',

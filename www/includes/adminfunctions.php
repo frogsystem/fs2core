@@ -760,11 +760,11 @@ function get_topmenu ($ACTIVE_MENU)
 /////////////////////////////////////////////////////////
 function check_topmenu_permissions ($MENU_ID)
 {
-    global $sql;
+    global $FD;
 
-    $page_arr = $sql->conn()->prepare(
+    $page_arr = $FD->db()->conn()->prepare(
                     'SELECT P.page_id AS page_id
-                     FROM '.$sql->getPrefix().'admin_cp P, '.$sql->getPrefix().'admin_groups G
+                     FROM '.$FD->db()->getPrefix().'admin_cp P, '.$FD->db()->getPrefix().'admin_groups G
                      WHERE G.`menu_id` = ? AND P.`group_id` = G.`group_id` AND P.`page_int_sub_perm` = 0
                      ORDER BY P.`page_id`');
     $page_arr->execute(array($MENU_ID));
@@ -784,11 +784,11 @@ function check_topmenu_permissions ($MENU_ID)
 //////////////////////////////////
 function get_leftmenu ($ACTIVE_MENU, $GO)
 {
-    global $sql;
+    global $FD;
 
     // get data from db
-    $group_arr = $sql->conn()->prepare(
-                       'SELECT group_id FROM '.$sql->getPrefix()."admin_groups
+    $group_arr = $FD->db()->conn()->prepare(
+                       'SELECT group_id FROM '.$FD->db()->getPrefix()."admin_groups
                         WHERE `menu_id` = ? AND `group_id` NOT IN ('0', '-1')
                         ORDER BY `group_pos`");
     $group_arr->execute(array($ACTIVE_MENU));
@@ -972,7 +972,6 @@ function admin_login($username, $password, $iscookie)
 
 function fillsession ($uid) {
     global $FD;
-    global $sql;
 
     $USER_ARR = $FD->sql()->conn()->query(
                      'SELECT user_id, user_name, user_is_staff, user_group, user_is_admin

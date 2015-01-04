@@ -316,7 +316,7 @@ function default_display_page ( $entries, $pagenav_arr, $FORM )
 
 function action_edit_get_data ( $ARTICLE_ID )
 {
-    global $FD, $sql;
+    global $FD;
 
     //Load Article
     $index = $FD->sql()->conn()->query ( 'SELECT * FROM '.$FD->config('pref')."articles WHERE article_id = '".$ARTICLE_ID."' LIMIT 0, 1" );

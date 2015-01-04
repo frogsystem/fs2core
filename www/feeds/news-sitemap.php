@@ -35,7 +35,7 @@ class NewsSitemap extends NewsFeed {
        global $FD;
 
         // Include functions & libs
-        require_once(FS2_ROOT_PATH . 'includes/fscode.php');
+        require_once(FS2SOURCE . '/includes/fscode.php');
 
         // Load virtualhost
         if (is_empty($virtualhost = $FD->cfg('virtualhost'))) {

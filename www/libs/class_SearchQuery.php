@@ -35,8 +35,8 @@ class SearchQuery
         require_once(FS2SOURCE . '/libs/class_SearchTree.php');
 
         // assign global vars
-        global $sql;
-        $this->sql = $sql;
+        global $FD;
+        $this->sql = $FD->db();
 
         // set local vars
         if (!empty($operators))

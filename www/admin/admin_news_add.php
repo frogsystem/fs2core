@@ -82,7 +82,7 @@ if (
         $data['user_id'] = intval($user_id);
 
         // Save News
-        $newsid = $sql->save('news', $data, 'news_id');
+        $newsid = $FD->db()->save('news', $data, 'news_id');
 
         // Update Search Index (or not)
         if ( $FD->config('cronjobs', 'search_index_update') === 1 ) {

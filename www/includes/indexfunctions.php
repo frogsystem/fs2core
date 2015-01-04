@@ -661,13 +661,13 @@ function load_an_applet($file, $output, $args)
 //////////////////////////
 function tpl_func_snippets($original, $main_argument, $other_arguments)
 {
-    global $SNP, $sql;
+    global $SNP, $FD;
 
     // Load Navigation on demand
     if (!isset($SNP[$main_argument])) {
         // Get Snippet and write into Array
-        $data = $sql->conn()->prepare(
-                    'SELECT snippet_tag, snippet_text FROM '.$sql->getPrefix().'snippets
+        $data = $FD->db()->conn()->prepare(
+                    'SELECT snippet_tag, snippet_text FROM '.$FD->db()->getPrefix().'snippets
                      WHERE `snippet_tag` = ? AND `snippet_active` = 1 LIMIT 1');
         $data->execute(array($original));
         $data = $data->fetch(PDO::FETCH_ASSOC);
@@ -924,10 +924,6 @@ function get_seo () {
     foreach ($_GET as $k => $v)
         $_SERVER['QUERY_STRING'] .= urlencode($k) . '=' . urlencode($v) . '&';
     $_SERVER['REQUEST_URI'] = '/index.php?' . $_SERVER['QUERY_STRING'];
-
-    // Falls noetig, Verhalten von register_globals nachahmen
-    if (in_array(ini_get('register_globals') == 'on', array('0', 'on', 'true')))
-        extract($_REQUEST);
 
     // Hotlinkingschutz vom FS2 zufrieden stellen
     if (isset($_SERVER['HTTP_REFERER']))

@@ -14,7 +14,7 @@ if ( isset ( $_POST['sended'] ) )
     settype ( $_POST['ann_para'], 'integer' );
 
     // SQL-Queries
-    $stmt = $sql->conn()->prepare ( '
+    $stmt = $FD->db()->conn()->prepare ( '
                     UPDATE `'.$FD->config('pref')."announcement`
                     SET
                         `announcement_text` = ?,
@@ -45,7 +45,7 @@ if ( TRUE )
 
     // Load Data from DB into Post
     } else {
-        $index = $sql->conn()->query ( '
+        $index = $FD->db()->conn()->query ( '
                                 SELECT *
                                 FROM `'.$FD->config('pref')."announcement`
                                 WHERE `id` = '1'");

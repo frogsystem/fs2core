@@ -12,7 +12,6 @@ class fileaccess
 {
     // constructor
     public function  __construct() {
-         global $FD;  //What is that line doing here?
     }
 
     // getFileData
