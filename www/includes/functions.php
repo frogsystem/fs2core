@@ -1,7 +1,4 @@
 <?php
-require_once(FS2_ROOT_PATH . 'includes/newfunctions.php');
-
-
 ////////////////////
 //// IPs Online ///
 ////////////////////

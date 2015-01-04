@@ -484,6 +484,10 @@ function array_real_merge ($arr1, $arr2, $intersect, $symdiff) {
 //// debug print_r ////
 ///////////////////////
 function print_d ($text, $return = false) {
+    if (!FS2_DEBUG) {
+        return '';
+    }
+    
     if ($return) {
         $string = '<pre>';
         $string .= print_r($text, true);
@@ -495,6 +499,5 @@ function print_d ($text, $return = false) {
         echo '</pre>';
     }
 }
-
 
 ?>

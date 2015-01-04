@@ -66,7 +66,7 @@ class GlobalData {
     public function loadConfigsByHook($hook, $reload = false) {
 
         // include ConfigData
-        require_once(FS2_ROOT_PATH . 'libs/class_ConfigData.php');
+        require_once(FS2SOURCE . '/libs/class_ConfigData.php');
 
         // Load configs from DB
         $data = $this->sql->conn()->prepare(
@@ -85,8 +85,8 @@ class GlobalData {
     private function createConfigObject($name, $data, $json) {
         // Load corresponding class and get config array
         $class_name = "Config".ucfirst(strtolower($name));
-        require_once(FS2_ROOT_PATH.'libs/class_ConfigData.php');
-        @include_once(FS2_ROOT_PATH.'classes/config/'.$class_name.'.php');
+        require_once(FS2SOURCE.'/libs/class_ConfigData.php');
+        @include_once(FS2SOURCE.'/classes/config/'.$class_name.'.php');
         if (!class_exists($class_name, false))
             $class_name = 'ConfigData';
         return new $class_name($data, $json);
