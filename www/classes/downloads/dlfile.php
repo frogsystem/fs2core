@@ -35,9 +35,9 @@ if ($dl_arr !== false)
 
     $dl_arr['dl_bild'] = image_url( 'images/downloads/', $dl_arr['dl_id'] );
     if ( image_exists ( 'images/downloads/', $dl_arr['dl_id'] ) ) {
-        $dl_arr['viewer_link'] = 'imageviewer.php?file=images/downloads/'. basename ( $dl_arr['dl_bild'] ).'&single';
+        $dl_arr['viewer_link'] = url('viewer', array('file' => 'images/downloads/'.basename($dl_arr['dl_bild']), 'single' => 1));
     } else {
-        $dl_arr['viewer_link'] = 'imageviewer.php?file=styles/'.$FD->config('style').'/icons/image_error.gif&single';
+        $dl_arr['viewer_link'] = url('viewer', array('file' => 'styles/'.$FD->config('style').'/icons/image_error.gif', 'single' => 1));
     }
 
     if ( $screen_config_arr['show_type'] == 1 ) {

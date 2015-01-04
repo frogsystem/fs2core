@@ -1,31 +1,4 @@
 <?php
-/* FS2 PHP Init */
-set_include_path('.');
-define('FS2_ROOT_PATH', './', true);
-require_once(FS2_ROOT_PATH . 'includes/phpinit.php');
-phpinit();
-/* End of FS2 PHP Init */
-
-// Inlcude DB Connection File or exit()
-require_once(FS2_ROOT_PATH . 'login.inc.php');
-
-//Include Functions-Files
-require_once(FS2_ROOT_PATH . 'classes/exceptions.php');
-require_once(FS2_ROOT_PATH . 'includes/cookielogin.php');
-require_once(FS2_ROOT_PATH . 'includes/imagefunctions.php');
-require_once(FS2_ROOT_PATH . 'includes/indexfunctions.php');
-
-
-// Constructor Calls
-// TODO: "Constructor Hook"
-userlogin();
-setTimezone($FD->cfg('timezone'));
-run_cronjobs();
-if (isset($_COOKIE['style']) && !isset($_GET['style'])) {
-  $_GET['style'] = $_COOKIE['style'];
-}
-set_style();
-
     // Security Functions
     $_GET['id'] = ( isset ( $_GET['screenid'] ) ) ? $_GET['screenid'] : $_GET['id'];
     settype( $_GET['id'], 'integer' );
@@ -96,7 +69,7 @@ set_style();
             if ( $row !== false ) {
                 $next_id = $row['screen_id'];
 
-                $data_array['next_url'] = 'imageviewer.php?id='.$next_id;
+                $data_array['next_url'] = url('viewer', array('id' => $next_id));
                 $data_array['next_link'] = '<a href="'.$data_array['next_url'].'" target="_self">'.$FD->text('frontend', 'popupviewer_next_text').'</a>';
                 $data_array['next_image_link'] = '<a href="'.$data_array['next_url'].'" target="_self"><img src="styles/'.$FD->config('style').'/icons/next.gif" alt="'.$FD->text('frontend', 'popupviewer_next_text').'" title="'.$FD->text('frontend', 'popupviewer_next_text').'"></a>';
             }
@@ -113,7 +86,7 @@ set_style();
             if ( $row !== false ) {
                 $prev_id = $row['screen_id'];
 
-                $data_array['prev_url'] = 'imageviewer.php?id='.$prev_id;
+                $data_array['prev_url'] = url('viewer', array('id' => $prev_id));
                 $data_array['prev_link'] = '<a href="'.$data_array['prev_url'].'" target="_self">'.$FD->text('frontend', 'popupviewer_prev_text').'</a>';
                 $data_array['prev_image_link'] = '<a href="'.$data_array['prev_url'].'" target="_self"><img src="styles/'.$FD->config('style').'/icons/previous.gif" alt="'.$FD->text('frontend', 'popupviewer_prev_text').'" title="'.$FD->text('frontend', 'popupviewer_prev_text').'"></a>';
             }
@@ -165,8 +138,5 @@ set_style();
 
     // Display Page
     echo get_maintemplate($template_popupviewer);
-
-// Shutdown System
-// TODO: "Shutdown Hook"
-unset($FD);
+    exit;
 ?>

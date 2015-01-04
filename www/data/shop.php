@@ -20,7 +20,10 @@ while ( $shop_arr = $index->fetch( PDO::FETCH_ASSOC ) ) {
     settype ( $shop_arr['artikel_id'], 'integer' );
     $shop_arr['artikel_text'] = fscode ( $shop_arr['artikel_text'], 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 );
 
-    $shop_arr['viewer_url'] = 'imageviewer.php?file=images/shop/'. basename ( image_url ( 'images/shop/', $shop_arr['artikel_id'] ) ).'&single';
+    $shop_arr['viewer_url'] = url('viewer', array(
+        'file' => 'images/shop/'.basename(image_url('images/shop/', $shop_arr['artikel_id'])), 
+        'single' => 1
+    ));
     if ( $screen_config_arr['show_type'] == 1 ) {
         $shop_arr['viewer_url'] = "javascript:popUp('".$shop_arr['viewer_url']."','popupviewer','".$screen_config_arr['show_size_x']."','".$screen_config_arr['show_size_y']."');";
     }

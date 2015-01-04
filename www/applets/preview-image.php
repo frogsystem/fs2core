@@ -27,12 +27,11 @@ if ( $config_arr['active'] == 1 ) {
     }
 
     if ( $data != FALSE ) {
-
+        $link_args = array('id' => $data['id']);
         if ( $data['type'] == 1 ) {
-            $link = 'imageviewer.php?id='.$data['id'].'&single';
-        } else {
-            $link = 'imageviewer.php?id='.$data['id'];
+            $link_args['single'] = 1;
         }
+        $link = url('viewer', $link_args);
 
         if ( $config_arr['show_type'] == 1 ) {
             $half_x = floor ( $config_arr['show_size_x'] / 2 );
