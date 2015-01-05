@@ -7,8 +7,8 @@
 if (!empty($_POST['catname']))
 {
     settype($_POST['subcatof'], 'integer');
-    $stmt = $FD->db()->conn()->prepare(
-                'INSERT INTO '.$FD->env('DB_PREFIX')."dl_cat (subcat_id, cat_name)
+    $stmt = $FD->sql()->conn()->prepare(
+                'INSERT INTO '.$FD->config('pref')."dl_cat (subcat_id, cat_name)
                  VALUES ('".$_POST['subcatof']."', ?)");
     $stmt->execute(array($_POST['catname']));
     systext('Kategorie wurde hinzugef&uuml;gt');

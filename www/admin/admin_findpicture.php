@@ -11,7 +11,7 @@ echo '
                 <td class="center">
                     <select class="select" name="cat" onchange="$(\'#img_search\').submit();">';
 
-$index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX').'screen_cat WHERE cat_type = 1' );
+$index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'screen_cat WHERE cat_type = 1' );
 while($cat_arr = $index->fetch(PDO::FETCH_ASSOC)) {
     echo '
                         <option value="'.$cat_arr['cat_id'].'"'. ($_POST['cat']==$cat_arr['cat_id']?'selected':'') .'>'. $cat_arr['cat_name'] .'</option>';
@@ -27,7 +27,7 @@ echo '
 // display images
 if (isset($_POST['cat']))
 {
-    $index = $FD->db()->conn()->prepare('SELECT COUNT(*) FROM '.$FD->env('DB_PREFIX').'screen WHERE cat_id = ?');
+    $index = $FD->sql()->conn()->prepare('SELECT COUNT(*) FROM '.$FD->config('pref').'screen WHERE cat_id = ?');
     $index->execute(array($_POST['cat']));
     $num_rows = $index->fetchColumn();
 
@@ -49,7 +49,7 @@ if (isset($_POST['cat']))
         $newLineStart = true;
         $lines = "";
 
-        $index = $FD->db()->conn()->prepare('SELECT * FROM '.$FD->env('DB_PREFIX').'screen WHERE cat_id = ? ORDER BY screen_id DESC');
+        $index = $FD->sql()->conn()->prepare('SELECT * FROM '.$FD->config('pref').'screen WHERE cat_id = ? ORDER BY screen_id DESC');
         $index->execute(array($_POST['cat']));
         while ($screen_arr = $index->fetch())
         {

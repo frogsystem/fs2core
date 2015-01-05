@@ -17,12 +17,12 @@ if (!empty($_POST['screen_id'])
 
     if ($startdate < $enddate)
     {
-       $update = 'UPDATE '.$FD->env('DB_PREFIX')."screen_random
+       $update = 'UPDATE '.$FD->config('pref')."screen_random
                   SET screen_id = '$_POST[screen_id]',
                       start = '$startdate',
                       end = '$enddate'
                   WHERE random_id = '$_POST[random_id]'";
-        $FD->db()->conn()->exec($update);
+        $FD->sql()->conn()->exec($update);
 
         systext('Das zeitgesteuerte Zufallsbild wurde ge&auml;ndert!');
     }
@@ -51,7 +51,7 @@ elseif (isset($_POST['random_action']) && $_POST['random_action'] == 'delete'
 
     if ($_POST['delete_random'])   // Delete Randompic
     {
-        $FD->db()->conn()->exec('DELETE FROM '.$FD->env('DB_PREFIX')."screen_random WHERE random_id = '$_POST[random_id]'");
+        $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref')."screen_random WHERE random_id = '$_POST[random_id]'");
         systext($FD->text('page', 'note_deleted'));
     }
     else
@@ -76,7 +76,7 @@ elseif (isset($_POST['random_action']) && $_POST['random_action'] == 'edit'
 {
     settype($_POST['random_id'], 'integer');
 
-    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX')."screen_random WHERE random_id = $_POST[random_id]");
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."screen_random WHERE random_id = $_POST[random_id]");
     $random_arr = $index->fetch(PDO::FETCH_ASSOC);
 
     //Zeitdaten
@@ -205,13 +205,13 @@ elseif (isset($_POST['random_action']) && $_POST['random_action'] == 'delete'
 {
     settype($_POST['random_id'], 'integer');
 
-    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX')."screen_random WHERE random_id = $_POST[random_id]");
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."screen_random WHERE random_id = $_POST[random_id]");
     $random_arr = $index->fetch(PDO::FETCH_ASSOC);
 
     $random_arr['start'] = date('d.m.Y H:i ', $random_arr['start']) . 'Uhr';
     $random_arr['end'] = date('d.m.Y H:i ', $random_arr['end']) . 'Uhr';
 
-    $index = $FD->db()->conn()->query('SELECT screen_name FROM '.$FD->env('DB_PREFIX')."screen WHERE screen_id = $random_arr[screen_id]");
+    $index = $FD->sql()->conn()->query('SELECT screen_name FROM '.$FD->config('pref')."screen WHERE screen_id = $random_arr[screen_id]");
     $random_arr['title'] = $index->fetchColumn();
 
     if ($random_arr['title'] != '') {
@@ -288,7 +288,7 @@ if (!isset($_POST['random_id']))
                                 </td>
                             </tr>
     ';
-    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX').'screen_random a, '.$FD->env('DB_PREFIX').'screen b WHERE a.screen_id = b.screen_id ORDER BY a.end DESC');
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'screen_random a, '.$FD->config('pref').'screen b WHERE a.screen_id = b.screen_id ORDER BY a.end DESC');
     while ($random_arr = $index->fetch(PDO::FETCH_ASSOC))
     {
         $random_arr['start'] = date('d.m.Y H:i', $random_arr['start']);

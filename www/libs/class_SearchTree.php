@@ -32,7 +32,7 @@ class SearchOperator extends SearchTree
     // constructor
     public function  __construct ($operation, $left, $right) {
         // get searchfunctions if not loaded
-        require_once(FS2SOURCE . '/includes/searchfunctions.php');
+        require_once(FS2_ROOT_PATH . 'includes/searchfunctions.php');
 
         $this->left = $left;
         $this->right = $right;

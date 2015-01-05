@@ -2,7 +2,7 @@
 
 function get_player ( $MULTI, $WIDTH = true, $HEIGHT = true, $MODIFIER = false ) {
 
-    global $FD;
+    global $FD, $sql;
     $FD->loadConfig('video_player');
 
     $template_own = '
@@ -35,16 +35,16 @@ function get_player ( $MULTI, $WIDTH = true, $HEIGHT = true, $MODIFIER = false )
 
     if ( is_numeric ( $MULTI ) ) {
         settype ( $MULTI, 'integer' );
-        $index = $FD->db()->conn()->query ( '
+        $index = $FD->sql()->conn()->query ( '
                         SELECT COUNT(*) AS num_rows
-                        FROM '.$FD->env('DB_PREFIX')."player
+                        FROM '.$FD->config('pref')."player
                         WHERE video_id = '".$MULTI."'
                         LIMIT 0,1" );
         $num_rows = $index->fetchColumn();
         if ( $num_rows == 1 ) {
-            $index = $FD->db()->conn()->query ( '
+            $index = $FD->sql()->conn()->query ( '
                         SELECT *
-                        FROM '.$FD->env('DB_PREFIX')."player
+                        FROM '.$FD->config('pref')."player
                         WHERE video_id = '".$MULTI."'
                         LIMIT 0,1" );
             $video_arr = $index->fetch( PDO::FETCH_ASSOC );

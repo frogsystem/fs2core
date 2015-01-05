@@ -21,9 +21,9 @@ if ((isset($_POST['title']) AND $_POST['title'] != '')
     settype($_POST['cat'], 'integer');
     settype($_POST['lang'], 'integer');
 
-    $stmt = $FD->db()->conn()->prepare(
+    $stmt = $FD->sql()->conn()->prepare(
                 'INSERT INTO
-                 '.$FD->env('DB_PREFIX')."press (press_title,
+                 '.$FD->config('pref')."press (press_title,
                            press_url,
                            press_date,
                            press_intro,
@@ -175,8 +175,8 @@ if(true)
                                 <td class="config" valign="top">
                                     <select name="game" size="1" class="text">';
 
-    $index = $FD->db()->conn()->query(
-                 'SELECT * FROM '.$FD->env('DB_PREFIX')."press_admin
+    $index = $FD->sql()->conn()->query(
+                 'SELECT * FROM '.$FD->config('pref')."press_admin
                   WHERE type = '1' ORDER BY title");
     while ($game_arr = $index->fetch(PDO::FETCH_ASSOC))
     {
@@ -196,7 +196,7 @@ if(true)
                                 <td class="config" valign="top">
                                     <select name="cat" size="1" class="text">';
 
-    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX')."press_admin
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."press_admin
                                         WHERE type = '2' ORDER BY title" );
     while ($cat_arr = $index->fetch(PDO::FETCH_ASSOC))
     {
@@ -216,7 +216,7 @@ if(true)
                                 <td class="config" valign="top">
                                     <select name="lang" size="1" class="text">';
 
-    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX')."press_admin
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."press_admin
                                         WHERE type = '3' ORDER BY title");
     while ($lang_arr = $index->fetch(PDO::FETCH_ASSOC))
     {

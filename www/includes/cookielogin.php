@@ -3,7 +3,7 @@ function user_login ( $username, $password, $iscookie )
 {
     global $FD;
 
-    $index = $FD->db()->conn()->prepare('SELECT * FROM '.$FD->env('DB_PREFIX')."user WHERE user_name = ?");
+    $index = $FD->sql()->conn()->prepare('SELECT * FROM '.$FD->config('pref')."user WHERE user_name = ?");
     $index->execute(array($username));
     $row = $index->fetch(PDO::FETCH_ASSOC);
     if ($row === false) {
@@ -46,7 +46,7 @@ function set_cookie ( $username, $password )
 {
     global $FD;
 
-    $index = $FD->db()->conn()->prepare('SELECT * FROM '.$FD->env('DB_PREFIX').'user WHERE user_name = ?');
+    $index = $FD->sql()->conn()->prepare('SELECT * FROM '.$FD->config('pref').'user WHERE user_name = ?');
     $index->execute(array($username));
     $row = $index->fetch(PDO::FETCH_ASSOC);
     if ($row === false)

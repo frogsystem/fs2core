@@ -42,8 +42,8 @@ if (
 
     // style tag
     try {
-        $data['style_tag'] = $FD->db()->conn()->query(
-                                 'SELECT style_tag FROM '.$FD->env('DB_PREFIX').'styles
+        $data['style_tag'] = $FD->sql()->conn()->query(
+                                 'SELECT style_tag FROM '.$FD->config('pref').'styles
                                   WHERE `style_id` = '.intval($_POST['style_id']).' AND `style_id` != 0 AND `style_allow_use` = 1
                                   LIMIT 1');
         $data['style_tag'] = $data['style_tag']->fetchColumn();
@@ -118,8 +118,8 @@ if ( TRUE )
     );
 
     // styles
-    $styles = $FD->db()->conn()->query(
-                  'SELECT style_id, style_tag FROM '.$FD->env('DB_PREFIX').'styles
+    $styles = $FD->sql()->conn()->query(
+                  'SELECT style_id, style_tag FROM '.$FD->config('pref').'styles
                   WHERE `style_id` != 0 AND `style_allow_use` = 1
                   ORDER BY `style_tag`');
     $styles = $styles->fetchAll(PDO::FETCH_ASSOC);
@@ -138,9 +138,9 @@ if ( TRUE )
 
     // languages
     initstr($lang_options);
-    $lang_dirs = scandir_filter(FS2LANG);
+    $lang_dirs = scandir_filter(FS2_ROOT_PATH.'lang');
     foreach($lang_dirs as $lang_dir) {
-        if (is_dir(FS2LANG.'/'.$lang_dir) && is_language_text($lang_dir)) {
+        if (is_dir(FS2_ROOT_PATH.'lang/'.$lang_dir) && is_language_text($lang_dir)) {
             $lang_options .=
             '<option value="'.$lang_dir.'" '
             .getselected($lang_dir, $_POST['language_text'])

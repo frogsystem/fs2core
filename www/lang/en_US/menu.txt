@@ -312,8 +312,6 @@ page_title_tpl_player:          Edit „Flash-Player“
 page_link_tpl_player:           Flash-Player
 page_title_tpl_topdownloads:    Edit „Top Downloads“
 page_link_tpl_topdownloads:     Top Downloads
-page_title_tpl_styleselect:     Edit „Style Selection“
-page_link_tpl_styleselect:      Style Selection
 
 # Applets
 page_title_applets_add:         add

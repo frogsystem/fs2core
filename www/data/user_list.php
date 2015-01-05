@@ -38,7 +38,7 @@ $FD->loadConfig('users');
 $config_arr = $FD->configObject('users')->getConfigArray();
 
 // Get Number of Users
-$index = $FD->db()->conn()->query ( 'SELECT COUNT(`user_id`) AS num_users FROM `'.$FD->env('DB_PREFIX').'user`' );
+$index = $FD->sql()->conn()->query ( 'SELECT COUNT(`user_id`) AS num_users FROM `'.$FD->config('pref').'user`' );
 $row = $index->fetch(PDO::FETCH_ASSOC);
 $config_arr['number_of_users'] = $row['num_users'];
 if ( $config_arr['user_per_page'] == -1 ) {
@@ -63,7 +63,7 @@ $template_page_nav = get_page_nav ( $_GET['page'], $config_arr['number_of_pages'
 ////////////////////////
 //// Load User Data ////
 ////////////////////////
-$pref = $FD->env('DB_PREFIX');
+$pref = $FD->config('pref');
 $query = 'SELECT `user_id`, `user_name`, `user_is_staff`, `user_is_admin`, `user_group`, `user_mail`, `user_show_mail`, `user_reg_date`,
 
   (SELECT COUNT(`news_id`) FROM `'.$pref.'news`
@@ -123,7 +123,7 @@ $limit = ' LIMIT '.intval($config_arr['prev_page']*$config_arr['user_per_page'])
 /*finally get the data... still may take several seconds for large user base
   and unfavourable sort criterion, but it should take less memory and execute
   faster than the previous code*/
-$index = $FD->db()->conn()->query ( $query.$limit );
+$index = $FD->sql()->conn()->query ( $query.$limit );
 
 ///////////////////////////
 //// Display User List ////

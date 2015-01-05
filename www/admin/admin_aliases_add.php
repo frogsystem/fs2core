@@ -13,7 +13,7 @@ if (
     settype ( $_POST['alias_active'], 'integer' );
 
     // SQL-Queries
-    $stmt = $FD->db()->conn()->prepare ( ' INSERT INTO `'.$FD->env('DB_PREFIX')."aliases` (
+    $stmt = $sql->conn()->prepare ( ' INSERT INTO `'.$FD->config('pref')."aliases` (
                             `alias_go`,
                             `alias_forward_to`,
                             `alias_active`

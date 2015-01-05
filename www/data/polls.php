@@ -28,7 +28,7 @@ if ( isset ($_GET['pollid']) && !isset($_GET['id']) ) {
 
 if ( isset($_GET['id']) ) {
     settype ( $_GET['id'], 'integer' );
-    $index = $FD->db()->conn()->query ( 'SELECT * FROM `'.$FD->env('DB_PREFIX').'poll` WHERE `poll_id` = '.$_GET['id'] );
+    $index = $FD->sql()->conn()->query ( 'SELECT * FROM `'.$FD->config('pref').'poll` WHERE `poll_id` = '.$_GET['id'] );
     $poll_arr = $index->fetch(PDO::FETCH_ASSOC);
 
     if ($poll_arr!==false)
@@ -37,15 +37,15 @@ if ( isset($_GET['id']) ) {
         $poll_arr['poll_end'] = date_loc ( $FD->config('date') , $poll_arr['poll_end']);
         $poll_arr['poll_type'] = ( $poll_arr['poll_type'] == 1 ) ? $FD->text("frontend", "multiple_choise") : $FD->text("frontend", "single_choice");
         // all votes
-        $index = $FD->db()->conn()->query ( "
+        $index = $FD->sql()->conn()->query ( "
                         SELECT SUM(`answer_count`) AS 'all_votes'
-                        FROM `".$FD->env('DB_PREFIX').'poll_answers`
+                        FROM `".$FD->config('pref').'poll_answers`
                         WHERE `poll_id` = '.$poll_arr['poll_id'] );
         $poll_arr['all_votes'] = $index->fetchColumn();
 
         //Prozentzahlen errechnen und template generieren
         $antworten = '';
-        $index = $FD->db()->conn()->query ( 'SELECT * FROM `'.$FD->env('DB_PREFIX').'poll_answers` WHERE `poll_id` = '.$_GET['id'] );
+        $index = $FD->sql()->conn()->query ( 'SELECT * FROM `'.$FD->config('pref').'poll_answers` WHERE `poll_id` = '.$_GET['id'] );
         while($answer_arr = $index->fetch(PDO::FETCH_ASSOC))
         {
             if ($poll_arr['all_votes'] != 0) {
@@ -103,31 +103,31 @@ else {
 
     switch ( $_GET['sort'] ) {
         case 'question': {
-            $index = $FD->db()->conn()->query ( 'SELECT * FROM `'.$FD->env('DB_PREFIX').'poll` ORDER BY `poll_quest` '.$_GET['order'] );
+            $index = $FD->sql()->conn()->query ( 'SELECT * FROM `'.$FD->config('pref').'poll` ORDER BY `poll_quest` '.$_GET['order'] );
             break;
         }
         case 'all_votes': {
-            $index = $FD->db()->conn()->query ( "
+            $index = $FD->sql()->conn()->query ( "
                             SELECT *, SUM(`A.answer_count`) AS 'all_votes'
-                            FROM `".$FD->env('DB_PREFIX').'poll` P, `'.$FD->env('DB_PREFIX').'poll_answers` A
+                            FROM `".$FD->config('pref').'poll` P, `'.$FD->config('pref').'poll_answers` A
                             WHERE P.`poll_id` = A.`poll_id`
                             ORDER BY `all_votes` '.$_GET['order'].', P.`poll_quest` ASC' );
             break;
         }
         case 'participants': {
-            $index = $FD->db()->conn()->query ( 'SELECT * FROM `'.$FD->env('DB_PREFIX').'poll` ORDER BY `poll_participants` '.$_GET['order'].', `poll_quest` ASC' );
+            $index = $FD->sql()->conn()->query ( 'SELECT * FROM `'.$FD->config('pref').'poll` ORDER BY `poll_participants` '.$_GET['order'].', `poll_quest` ASC' );
             break;
         }
         case 'type': {
-            $index = $FD->db()->conn()->query ( 'SELECT * FROM `'.$FD->env('DB_PREFIX').'poll` ORDER BY `poll_type` '.$_GET['order'].', `poll_quest` ASC' );
+            $index = $FD->sql()->conn()->query ( 'SELECT * FROM `'.$FD->config('pref').'poll` ORDER BY `poll_type` '.$_GET['order'].', `poll_quest` ASC' );
             break;
         }
         case 'start_date': {
-            $index = $FD->db()->conn()->query ( 'SELECT * FROM `'.$FD->env('DB_PREFIX').'poll` ORDER BY `poll_start` '.$_GET['order'].', `poll_quest` ASC' );
+            $index = $FD->sql()->conn()->query ( 'SELECT * FROM `'.$FD->config('pref').'poll` ORDER BY `poll_start` '.$_GET['order'].', `poll_quest` ASC' );
             break;
         }
         case 'end_date': {
-            $index = $FD->db()->conn()->query ( 'SELECT * FROM `'.$FD->env('DB_PREFIX').'poll` ORDER BY `poll_end` '.$_GET['order'].', `poll_quest` ASC' );
+            $index = $FD->sql()->conn()->query ( 'SELECT * FROM `'.$FD->config('pref').'poll` ORDER BY `poll_end` '.$_GET['order'].', `poll_quest` ASC' );
             break;
         }
     }
@@ -140,9 +140,9 @@ else {
         $poll_arr['poll_type'] = ( $poll_arr['poll_type'] == 1 ) ? $FD->text("frontend", "multiple_choise") : $FD->text("frontend", "single_choice");
 
         // all votes
-        $index2 = $FD->db()->conn()->query ( "
+        $index2 = $FD->sql()->conn()->query ( "
                         SELECT SUM(`answer_count`) AS 'all_votes'
-                        FROM `".$FD->env('DB_PREFIX').'poll_answers`
+                        FROM `".$FD->config('pref').'poll_answers`
                         WHERE `poll_id` = '.$poll_arr['poll_id'] );
         $poll_arr['all_votes'] = $index2->fetchColumn();
 

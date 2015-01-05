@@ -8,15 +8,15 @@ if (isset($_FILES['artikelimg']) && isset($_POST['title']) && isset($_POST['url'
     && !empty($_POST['title']) && !empty($_POST['url']) && !empty($_POST['preis']))
 {
     settype($_POST['hot'], 'integer');
-    $stmt = $FD->db()->conn()->prepare(
-                'INSERT INTO '.$FD->env('DB_PREFIX')."shop (artikel_name, artikel_url, artikel_text, artikel_preis, artikel_hot)
+    $stmt = $FD->sql()->conn()->prepare(
+                'INSERT INTO '.$FD->config('pref')."shop (artikel_name, artikel_url, artikel_text, artikel_preis, artikel_hot)
                  VALUES (?,
                          ?,
                          ?,
                          ?,
                          '".$_POST['hot']."');");
     $stmt->execute(array($_POST['title'], $_POST['url'], $_POST['text'], $_POST['preis']));
-    $id = $FD->db()->conn()->lastInsertId();
+    $id = $FD->sql()->conn()->lastInsertId();
 
     $messages = array();
     if (!empty($_FILES['artikelimg']['name']))

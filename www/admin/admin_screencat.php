@@ -10,7 +10,7 @@ if (isset($_POST['cat_id']) && isset($_POST['cat_name']) && !emptystr($_POST['ca
     $_POST['cat_type'] = intval($_POST['cat_type']);
     $_POST['cat_visibility'] = intval($_POST['cat_visibility']);
 
-    $stmt = $FD->db()->conn()->prepare('UPDATE '.$FD->env('DB_PREFIX')."screen_cat
+    $stmt = $FD->sql()->conn()->prepare('UPDATE '.$FD->config('pref')."screen_cat
                  SET cat_name = ?,
                      cat_type = '$_POST[cat_type]',
                      cat_visibility = '$_POST[cat_visibility]'
@@ -29,10 +29,10 @@ elseif (isset($_POST['cat_id']) && isset($_POST['sended']) && $_POST['sended'] =
   $_POST['cat_id'] = intval($_POST['cat_id']);
   $_POST['cat_move_to'] = intval($_POST['cat_move_to']);
 
-  $FD->db()->conn()->exec('DELETE FROM '.$FD->env('DB_PREFIX')."screen_cat
+  $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref')."screen_cat
                WHERE cat_id = '$_POST[cat_id]'");
 
-  $FD->db()->conn()->exec('UPDATE '.$FD->env('DB_PREFIX')."screen
+  $FD->sql()->conn()->exec('UPDATE '.$FD->config('pref')."screen
                SET cat_id = '$_POST[cat_move_to]'
                WHERE cat_id = '$_POST[cat_id]'");
 
@@ -56,7 +56,7 @@ elseif (isset($_POST['cat_id']) AND isset($_POST['cat_action']))
 
   if ($_POST['cat_action'] == 'edit')
   {
-    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX')."screen_cat WHERE cat_id = '$_POST[cat_id]'");
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."screen_cat WHERE cat_id = '$_POST[cat_id]'");
     $admin_cat_arr = $index->fetch(PDO::FETCH_ASSOC);
 
     $admin_cat_arr['cat_name'] = killhtml($admin_cat_arr['cat_name']);
@@ -151,15 +151,15 @@ elseif (isset($_POST['cat_id']) AND isset($_POST['cat_action']))
 
   elseif ($_POST['cat_action'] == 'delete')
   {
-    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX')."screen_cat WHERE cat_id = '$_POST[cat_id]'");
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."screen_cat WHERE cat_id = '$_POST[cat_id]'");
     $admin_cat_arr = $index->fetch(PDO::FETCH_ASSOC);
 
-    $index = $FD->db()->conn()->query('SELECT COUNT(*) AS categ_count FROM '.$FD->env('DB_PREFIX')."screen_cat WHERE cat_id != '$admin_cat_arr[cat_id]' AND cat_type = '$admin_cat_arr[cat_type]'" );
+    $index = $FD->sql()->conn()->query('SELECT COUNT(*) AS categ_count FROM '.$FD->config('pref')."screen_cat WHERE cat_id != '$admin_cat_arr[cat_id]' AND cat_type = '$admin_cat_arr[cat_type]'" );
     $num_rows = $index->fetchColumn();
 
     if ($num_rows > 0)
     {
-    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX')."screen_cat WHERE cat_id != '$admin_cat_arr[cat_id]' AND cat_type = '$admin_cat_arr[cat_type]' ORDER BY cat_name" );
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."screen_cat WHERE cat_id != '$admin_cat_arr[cat_id]' AND cat_type = '$admin_cat_arr[cat_type]' ORDER BY cat_name" );
 
     $admin_cat_arr['cat_name'] = killhtml($admin_cat_arr['cat_name']);
 
@@ -244,15 +244,15 @@ else
                                 </td>
                             </tr>
     ';
-    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX').'screen_cat ORDER BY cat_date DESC');
+    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'screen_cat ORDER BY cat_date DESC');
     while ($cat_arr = $index->fetch(PDO::FETCH_ASSOC))
     {
         $cat_arr['cat_date'] = date('d.m.Y', $cat_arr['cat_date']);
 
         if ( $cat_arr['cat_type'] == 2 ) {
-            $number_index = $FD->db()->conn()->query('SELECT COUNT(wallpaper_id) AS number FROM '.$FD->env('DB_PREFIX')."wallpaper WHERE cat_id = $cat_arr[cat_id]");
+            $number_index = $FD->sql()->conn()->query('SELECT COUNT(wallpaper_id) AS number FROM '.$FD->config('pref')."wallpaper WHERE cat_id = $cat_arr[cat_id]");
         } else {
-            $number_index = $FD->db()->conn()->query('SELECT COUNT(screen_id) AS number FROM '.$FD->env('DB_PREFIX')."screen WHERE cat_id = $cat_arr[cat_id]");
+            $number_index = $FD->sql()->conn()->query('SELECT COUNT(screen_id) AS number FROM '.$FD->config('pref')."screen WHERE cat_id = $cat_arr[cat_id]");
         }
 
         $number_rows = $number_index->fetchColumn();

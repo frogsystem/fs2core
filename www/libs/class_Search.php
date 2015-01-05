@@ -42,12 +42,12 @@ class Search
     // constructor
     public function  __construct ($type, $query, $phonetic = false) {
         // get searchtree classe if not loaded
-        require_once(FS2SOURCE . '/libs/class_SearchQuery.php');
-        require_once(FS2SOURCE . '/includes/searchfunctions.php');
+        require_once(FS2_ROOT_PATH . 'libs/class_SearchQuery.php');
+        require_once(FS2_ROOT_PATH . 'includes/searchfunctions.php');
 
         // assign global vars
-        global $FD;
-        $this->sql = $FD->db();
+        global $sql, $FD;
+        $this->sql = $sql;
         $config_cols = array('search_num_previews', 'search_and', 'search_or', 'search_xor', 'search_not', 'search_wildcard', 'search_min_word_length', 'search_allow_phonetic', 'search_use_stopwords');
         $FD->loadConfig('search');
         $this->config = $FD->configObject('search')->getConfigArray();

@@ -312,8 +312,6 @@ page_title_tpl_player:          „Flash-Player“ bearbeiten
 page_link_tpl_player:           Flash-Player
 page_title_tpl_topdownloads:    „Top Downloads“ bearbeiten
 page_link_tpl_topdownloads:     Top Downloads
-page_title_tpl_styleselect:     „Styleauswahl“ bearbeiten
-page_link_tpl_styleselect:      Styleauswahl
 
 # Applets
 page_title_applets_add:         hinzufügen

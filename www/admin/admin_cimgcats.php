@@ -6,7 +6,7 @@ if(isset($_POST['add'])){
     $name = trim($_POST['name']);
     $desc = trim($_POST['description']);
     if(!empty($name)){
-        $stmt = $FD->db()->conn()->prepare('INSERT INTO `'.$FD->env('DB_PREFIX').'cimg_cats` (`name`, `description`) VALUES (?, ?)');
+        $stmt = $FD->sql()->conn()->prepare('INSERT INTO `'.$FD->config('pref').'cimg_cats` (`name`, `description`) VALUES (?, ?)');
         $stmt->execute(array($name, $desc));
         $_POST['name'] = '';
         $_POST['description'] = '';
@@ -17,7 +17,7 @@ if(isset($_POST['add'])){
 } elseif(isset($_POST['change']) && isset($_POST['cat_action']) && $_POST['cat_action'] == "save"){
     if(isset($_POST['cat'])){
         $count = 0;
-        $stmt = $FD->db()->conn()->prepare('UPDATE `'.$FD->env('DB_PREFIX').'cimg_cats` SET `name`=?, `description`=? WHERE `id`=?');
+        $stmt = $FD->sql()->conn()->prepare('UPDATE `'.$FD->config('pref').'cimg_cats` SET `name`=?, `description`=? WHERE `id`=?');
         foreach($_POST['cat'] as $cat){
             $name = trim($_POST['cat'.$cat]['name']);
             $desc = trim($_POST['cat'.$cat]['description']);
@@ -37,9 +37,9 @@ if(isset($_POST['add'])){
 } elseif(isset($_POST['change']) && isset($_POST['cat_action']) && $_POST['cat_action'] == "delete"){
     if(isset($_POST['cat'])){
         $count = 0;
-        $stmt = $FD->db()->conn()->prepare('UPDATE `'.$FD->env('DB_PREFIX')."cimg` SET `cat`=? WHERE `cat`=?");
+        $stmt = $FD->sql()->conn()->prepare('UPDATE `'.$FD->config('pref')."cimg` SET `cat`=? WHERE `cat`=?");
         foreach($_POST['cat'] as $cat){
-            $FD->db()->conn()->exec('DELETE FROM `'.$FD->env('DB_PREFIX').'cimg_cats` WHERE `id`='.intval($cat));
+            $FD->sql()->conn()->exec('DELETE FROM `'.$FD->config('pref').'cimg_cats` WHERE `id`='.intval($cat));
             $stmt->execute(array(trim($_POST['newcat']), intval($cat)));
             $count++;
         }
@@ -91,7 +91,7 @@ echo <<< FS2_STRING
         <tr><td class="space"></td></tr>
         <tr><td class="line" colspan="3">{$FD->text('admin', 'cats_edit')}</td></tr>
 FS2_STRING;
-$qry = $FD->db()->conn()->query('SELECT COUNT(*) FROM `'.$FD->env('DB_PREFIX').'cimg_cats`');
+$qry = $FD->sql()->conn()->query('SELECT COUNT(*) FROM `'.$FD->config('pref').'cimg_cats`');
 if($qry->fetchColumn() > 0){
     echo <<< FS2_STRING
         <tr class="config">
@@ -109,7 +109,7 @@ FS2_STRING;
 
     // entries
     $options = '<option value="0">Keine Kategorie</option>';
-    $qry = $FD->db()->conn()->query('SELECT * FROM `'.$FD->env('DB_PREFIX').'cimg_cats`');
+    $qry = $FD->sql()->conn()->query('SELECT * FROM `'.$FD->config('pref').'cimg_cats`');
     while(($row = $qry->fetch(PDO::FETCH_ASSOC)) !== false){
     $options .= '<option value="'.$row['id'].'" title="'.$row['description'].'">'.$row['name'].'</option>';
         echo <<< FS2_STRING

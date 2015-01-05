@@ -15,8 +15,8 @@ if (   ( isset($_POST['signup']) && $_POST['signup'] != '' )
     settype ( $_POST['html'], 'integer' );
 
     // SQL-Queries
-    $stmt = $FD->db()->conn()->prepare ( '
-                UPDATE `'.$FD->env('DB_PREFIX')."email`
+    $stmt = $sql->conn()->prepare ( '
+                UPDATE `'.$FD->config('pref')."email`
                 SET
                     `signup` = ?,
                     `change_password` = ?,
@@ -49,9 +49,9 @@ if ( TRUE )
 
     // Load Data from DB into Post
     } else {
-        $index = $FD->db()->conn()->query ( '
+        $index = $sql->conn()->query ( '
                         SELECT *
-                        FROM '.$FD->env('DB_PREFIX')."email
+                        FROM '.$FD->config('pref')."email
                         WHERE `id` = '1'" );
         $email_arr = $index->fetch(PDO::FETCH_ASSOC);
         putintopost ( $email_arr );

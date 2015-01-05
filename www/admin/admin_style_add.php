@@ -24,7 +24,7 @@ if (
 ".$_POST['style_copyright'];
 
     // New Style Path
-    $new_style_path = FS2STYLES . '/' . $_POST['style_folder'];
+    $new_style_path = FS2_ROOT_PATH . 'styles/' . $_POST['style_folder'];
 
     // Create Sytle Folder
     $ACCESS = new fileaccess();
@@ -33,9 +33,9 @@ if (
             && @$ACCESS->putFileData( $new_style_path . '/style.ini', $new_ini_data )
     ) {
         // SQL-Queries
-        $stmt = $FD->db()->conn()->prepare( '
+        $stmt = $FD->sql()->conn()->prepare( '
                 INSERT INTO
-                    `'.$FD->env('DB_PREFIX')."styles`
+                    `'.$FD->config('pref')."styles`
                     ( `style_tag`, `style_allow_use`, `style_allow_edit` )
                 VALUES
                     ( ?, '".$_POST['style_allow_use']."', '".$_POST['style_allow_edit']."' )" );
@@ -44,12 +44,12 @@ if (
         // Copy Style recursive
         if ( $_POST['style_create_as'] == 'copy' && $_POST['copy_style_id'] ) {
             // SQL-Queries
-            $index = $FD->db()->conn()->query ( '
+            $index = $FD->sql()->conn()->query ( '
                             SELECT `style_tag`
-                            FROM `'.$FD->env('DB_PREFIX').'styles`
+                            FROM `'.$FD->config('pref').'styles`
                             WHERE `style_id` = '.$_POST['copy_style_id'].'
                             LIMIT 0,1' );
-            $copy_style_path = FS2STYLES . '/' . $index->fetchColumn();
+            $copy_style_path = FS2_ROOT_PATH . 'styles/' . $index->fetchColumn();
             if (
                     $ACCESS->copyAny( $copy_style_path, $new_style_path, 0777, 0644 )
                     && $ACCESS->putFileData( $new_style_path . '/style.ini', $new_ini_data )
@@ -87,7 +87,7 @@ if (
 ////////////////////////
 
 // Check for file rights
-if ( !is_writable ( FS2STYLES ) ) {
+if ( !is_writable ( FS2_ROOT_PATH . 'styles/' ) ) {
     systext ( $FD->text("admin", "style_folder_not_writable").'<br>'.$FD->text("admin", "error_file_access"),
         $FD->text("admin", "error"), TRUE, $FD->text("admin", "icon_error") );
 } else {
@@ -147,9 +147,9 @@ if ( !is_writable ( FS2STYLES ) ) {
                                     <div align="right">
                                         <select class="input_width pointer middle" name="copy_style_id" size="1">';
 
-    $index = $FD->db()->conn()->query ( '
+    $index = $FD->sql()->conn()->query ( '
                     SELECT `style_id`, `style_tag`
-                    FROM `'.$FD->env('DB_PREFIX').'styles`
+                    FROM `'.$FD->config('pref').'styles`
                     ORDER BY `style_id`' );
     while ( $style_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
         settype ( $style_arr['style_id'], 'integer' );

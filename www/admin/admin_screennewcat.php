@@ -10,8 +10,8 @@ if (isset($_POST['cat_name']) && !emptystr($_POST['cat_name']))
     $_POST['cat_visibility'] = intval($_POST['cat_visibility']);
 
     $time = time();
-    $stmt = $FD->db()->conn()->prepare(
-                'INSERT INTO '.$FD->env('DB_PREFIX')."screen_cat (cat_name, cat_type, cat_visibility, cat_date)
+    $stmt = $FD->sql()->conn()->prepare(
+                'INSERT INTO '.$FD->config('pref')."screen_cat (cat_name, cat_type, cat_visibility, cat_date)
                  VALUES (?,
                          '".$_POST['cat_type']."',
                          '".$_POST['cat_visibility']."',

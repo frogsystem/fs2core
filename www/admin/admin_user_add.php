@@ -7,9 +7,9 @@
 function user_name_free ( $USERNAME ) {
     global $FD;
 
-    $stmt = $FD->db()->conn()->prepare('
+    $stmt = $FD->sql()->conn()->prepare('
                 SELECT COUNT(`user_id`)
-                FROM `'.$FD->env('DB_PREFIX')."user`
+                FROM `'.$FD->config('pref')."user`
                 WHERE `user_name` = ?");
     $stmt->execute(array($USERNAME));
     if ( $stmt->fetchColumn() > 0 ) {
@@ -74,8 +74,8 @@ if (
     $codedpwd = md5 ( $_POST['newpwd'].$user_salt );
 
     // SQL-Queries
-    $stmt = $FD->db()->conn()->prepare ( '
-                INSERT INTO `'.$FD->env('DB_PREFIX')."user`
+    $stmt = $FD->sql()->conn()->prepare ( '
+                INSERT INTO `'.$FD->config('pref')."user`
                     ( `user_name`, `user_password`, `user_salt`,
                     `user_mail`, `user_is_staff`, `user_group`, `user_is_admin`,
                     `user_reg_date`, `user_show_mail`, `user_homepage`,
@@ -105,11 +105,11 @@ if (
                     $_POST['user_wlm'],
                     $_POST['user_yim'],
                     $_POST['user_skype']));
-    $user_id = $FD->db()->conn()->lastInsertId();
+    $user_id = $FD->sql()->conn()->lastInsertId();
     $message = 'Benutzer wurde erfolgreich hinzugef&uuml;gt';
 
-    $FD->db()->conn()->exec ( '
-        UPDATE '.$FD->env('DB_PREFIX').'counter
+    $FD->sql()->conn()->exec ( '
+        UPDATE '.$FD->config('pref').'counter
         SET `user` = `user`+1' );
 
     // upload image
@@ -299,9 +299,9 @@ if ( TRUE )
                                         <option value="0"'.getselected ( $_POST['user_group'], 0 ).'>keine Gruppe</option>
     ';
 
-    $index = $FD->db()->conn()->query ('
+    $index = $FD->sql()->conn()->query ('
                     SELECT `user_group_id`, `user_group_name`
-                    FROM '.$FD->env('DB_PREFIX').'user_groups
+                    FROM '.$FD->config('pref').'user_groups
                     WHERE `user_group_id` > 1
                     ORDER BY `user_group_name`' );
 
@@ -310,9 +310,9 @@ if ( TRUE )
             '.$group_arr['user_group_name'].'</option>';
     }
 
-    $index = $FD->db()->conn()->query ('
+    $index = $FD->sql()->conn()->query ('
                     SELECT `user_group_id`, `user_group_name`
-                    FROM '.$FD->env('DB_PREFIX').'user_groups
+                    FROM '.$FD->config('pref').'user_groups
                     WHERE `user_group_id` = 1
                     ORDER BY `user_group_name`
                     LIMIT 0,1');

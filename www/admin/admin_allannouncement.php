@@ -14,8 +14,8 @@ if ( isset ( $_POST['sended'] ) )
     settype ( $_POST['ann_para'], 'integer' );
 
     // SQL-Queries
-    $stmt = $FD->db()->conn()->prepare ( '
-                    UPDATE `'.$FD->env('DB_PREFIX')."announcement`
+    $stmt = $sql->conn()->prepare ( '
+                    UPDATE `'.$FD->config('pref')."announcement`
                     SET
                         `announcement_text` = ?,
                         `show_announcement` = '".$_POST['show_announcement']."',
@@ -45,9 +45,9 @@ if ( TRUE )
 
     // Load Data from DB into Post
     } else {
-        $index = $FD->db()->conn()->query ( '
+        $index = $sql->conn()->query ( '
                                 SELECT *
-                                FROM `'.$FD->env('DB_PREFIX')."announcement`
+                                FROM `'.$FD->config('pref')."announcement`
                                 WHERE `id` = '1'");
         $config_arr = $index->fetch(PDO::FETCH_ASSOC);
         putintopost ( $config_arr );

@@ -17,7 +17,7 @@ class HashMapper
     // the constructor
     public function  __construct() {
         global $FD;
-        $this->sql = $FD->db();
+        $this->sql = $FD->sql();
     }
 
     // Hash laden
@@ -97,7 +97,7 @@ class HashMapper
         if (empty($time))
             $time = $FD->env('time');
 
-        $FD->db()->conn()->exec('DELETE FROM '.$FD->env('DB_PREFIX').'hashes
+        $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref').'hashes
                                   WHERE `deleteTime` < '.intval($time));
     }
 

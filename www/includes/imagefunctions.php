@@ -34,7 +34,7 @@ function image_exists ( $PATH, $NAME )
 {
     global $FD;
 
-    $CHECK_PATH = $FD->env('path') . $PATH;
+    $CHECK_PATH = $FD->config('path') . $PATH;
 
     if (
             file_exists ( $CHECK_PATH . $NAME . '.jpg' ) ||
@@ -95,7 +95,7 @@ function image_delete ( $PATH, $NAME )
 {
     global $FD;
 
-    $CHECK_PATH = $FD->env('path') . $PATH;
+    $CHECK_PATH = $FD->config('path') . $PATH;
 
     if ( file_exists ( $CHECK_PATH . $NAME . '.jpg' ) ) {
         $file = $CHECK_PATH . $NAME . '.jpg';
@@ -127,7 +127,7 @@ function image_rename ( $PATH, $NAME, $NEWNAME )
     if ( image_exists ( $PATH, $NAME ) && !image_exists ( $PATH, $NEWNAME ) ) {
         $extension = pathinfo ( image_url ( $PATH, $NAME, FALSE, TRUE ) );
         $extension = $extension['extension'];
-        rename ( image_url ( $PATH, $NAME, FALSE, TRUE ), $FD->env('path') . $PATH . $NEWNAME . '.' . $extension );
+        rename ( image_url ( $PATH, $NAME, FALSE, TRUE ), $FD->config('path') . $PATH . $NEWNAME . '.' . $extension );
         return true;
     } else {
         return false;
@@ -221,7 +221,7 @@ function upload_img ( $IMAGE, $PATH, $NAME, $MAX_SIZE, $MAX_WIDTH, $MAX_HEIGHT, 
     }
 
     // Create Image
-    $full_path = $FD->env('path') . $PATH . $NAME . '.' . $type;
+    $full_path = $FD->config('path') . $PATH . $NAME . '.' . $type;
     move_uploaded_file ( $IMAGE['tmp_name'], $full_path );
     chmod ( $full_path, 0644 );
     clearstatcache();

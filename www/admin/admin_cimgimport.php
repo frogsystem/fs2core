@@ -3,8 +3,8 @@
 #TODO: file access
 
 # Define Upload Path
-define('UPLOAD_PATH', FS2UPLOAD.'/', true);
-define('CIMG_PATH', FS2MEDIA.'/content/', true);
+define('UPLOAD_PATH', FS2_ROOT_PATH.'upload/', true);
+define('CIMG_PATH', FS2_ROOT_PATH.'media/content/', true);
 
 if(isset($_POST['sended']) && isset($_POST['cat_action']) && $_POST['cat_action'] == "import"){
     if (!isset($_POST['thumb']))
@@ -14,7 +14,7 @@ if(isset($_POST['sended']) && isset($_POST['cat_action']) && $_POST['cat_action'
 		systext('Keine Schreibrechte auf das Verzeichnis '.CIMG_PATH.'.');
 	}elseif(count($_POST['image']) > 0){
         $count = 0;
-        $stmt = $FD->db()->conn()->prepare('INSERT INTO `'.$FD->env('DB_PREFIX').'cimg` (`name`, `type`, `hasthumb`, `cat`) VALUES (?, ?, ?, ?)');
+        $stmt = $FD->sql()->conn()->prepare('INSERT INTO `'.$FD->config('pref').'cimg` (`name`, `type`, `hasthumb`, `cat`) VALUES (?, ?, ?, ?)');
         foreach($_POST['image'] as $image){
             $thumb = (in_array($image, $_POST['thumb'])) ? 1 : 0;
             $name = substr($image, 0, strrpos($image, '.'));
@@ -73,7 +73,7 @@ if(isset($_POST['sended']) && isset($_POST['cat_action']) && $_POST['cat_action'
 }
 
 if(!isset($_POST['cat_action']) || !isset($_POST['sended'])){
-    $qry = $FD->db()->conn()->query('SELECT * FROM `'.$FD->env('DB_PREFIX').'cimg`');
+    $qry = $FD->sql()->conn()->query('SELECT * FROM `'.$FD->config('pref').'cimg`');
     $img = array();
     while(($row = $qry->fetch(PDO::FETCH_ASSOC)) !== false){
         $img[] = $row['name'];
@@ -129,7 +129,7 @@ echo '    </tr>';
                 <td colspan="2">
                     <div class="atleft" id="import_to">
                         Bilder in diese Kategorie importieren: <select name="cat"><option value="0">Keine Kategorie</option>';
-                            $qry = $FD->db()->conn()->query('SELECT * FROM `'.$FD->env('DB_PREFIX').'cimg_cats`');
+                            $qry = $FD->sql()->conn()->query('SELECT * FROM `'.$FD->config('pref').'cimg_cats`');
                             while(($cat = $qry->fetch(PDO::FETCH_ASSOC)) !== false){
                                 echo '<option value="'.$cat['id'].'" title="'.$cat['description'].'">'.$cat['name'].'</option>';
                             }

@@ -10,7 +10,7 @@ $FD->loadConfig('articles');
 if ($FD->cfg('goto') == 'articles') {
 
     // Load Article Data from DB
-    $article_arr = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX').'articles WHERE article_id = '.intval($_GET['id']));
+    $article_arr = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'articles WHERE article_id = '.intval($_GET['id']));
     $article_arr = $article_arr->fetch(PDO::FETCH_ASSOC);
 
     // Set canonical parameters
@@ -19,8 +19,8 @@ if ($FD->cfg('goto') == 'articles') {
 } else {
 
     // Load Article Data from DB
-    $article_arr = $FD->db()->conn()->query(
-                        'SELECT * FROM '.$FD->env('DB_PREFIX')."articles
+    $article_arr = $FD->sql()->conn()->query(
+                        'SELECT * FROM '.$FD->config('pref')."articles
                          WHERE `article_url` = '".$FD->cfg('goto')."'
                          ORDER BY `article_id` LIMIT 1");
     $article_arr = $article_arr->fetch(PDO::FETCH_ASSOC);
@@ -50,7 +50,7 @@ else {
     settype ( $article_arr['article_user'], 'integer' );
 
     // Get User & Create User Template
-    $user_arr = $FD->db()->conn()->query('SELECT user_id, user_name FROM '.$FD->env('DB_PREFIX').'user WHERE user_id ='.intval($article_arr['article_user']).' LIMIT 1');
+    $user_arr = $FD->sql()->conn()->query('SELECT user_id, user_name FROM '.$FD->config('pref').'user WHERE user_id ='.intval($article_arr['article_user']).' LIMIT 1');
     $user_arr = $user_arr->fetch(PDO::FETCH_ASSOC);
 
     // User exists

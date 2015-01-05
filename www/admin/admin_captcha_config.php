@@ -275,7 +275,7 @@ if ( TRUE )
                                         <option value="4" '.getselected ( 4, $_POST['captcha_font'] ).'>'.$FD->text('admin', 'captcha_config_text_style_default').' 4</option>
                                         <option value="5" '.getselected ( 5, $_POST['captcha_font'] ).'>'.$FD->text('admin', 'captcha_config_text_style_default').' 5</option>
     ';
-    $php_fonts = scandir_ext ( FS2MEDIA . '/php-fonts', 'gdf');
+    $php_fonts = scandir_ext ( FS2_ROOT_PATH . 'media/php-fonts', 'gdf');
     foreach ( $php_fonts as $php_font ) {
         echo '
                                         <option value="'.$php_font.'" '.getselected ( $php_font, $_POST['captcha_font'] ).'>'.$php_font.'</option>

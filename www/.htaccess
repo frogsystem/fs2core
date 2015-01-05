@@ -1,6 +1,6 @@
 # Eigene Fehlerseiten
-#ErrorDocument 403 http://localhost/fs2/www/403.html
-#ErrorDocument 404 http://localhost/fs2/www/404.html
+ErrorDocument 403 http://localhost/fs2/www/403.html
+ErrorDocument 404 http://localhost/fs2/www/404.html
 
 <IfModule mod_rewrite.c>
     # Aktiviere RewriteEngine

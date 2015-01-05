@@ -44,9 +44,9 @@ if (
              break;
     }
 
-    $stmt = $FD->db()->conn()->prepare('
+    $stmt = $FD->sql()->conn()->prepare('
                     UPDATE
-                        '.$FD->env('DB_PREFIX')."player
+                        '.$FD->config('pref')."player
                     SET
                         video_type = '".$_POST['video_type']."',
                         video_x = ?,
@@ -80,9 +80,9 @@ elseif (
         settype ( $_POST['video_id'], 'integer' );
 
         // SQL-Delete-Query
-        $FD->db()->conn()->exec ('
+        $FD->sql()->conn()->exec ('
                DELETE FROM
-                     '.$FD->env('DB_PREFIX')."player
+                     '.$FD->config('pref')."player
                WHERE
                      video_id = '".$_POST['video_id']."'
                LIMIT 1" );
@@ -116,9 +116,9 @@ if ( isset($_POST['video_id']) && isset($_POST['video_action']) )
 
         // Load Data from DB into Post
         } else {
-            $index = $FD->db()->conn()->query ( '
+            $index = $FD->sql()->conn()->query ( '
                             SELECT *
-                            FROM '.$FD->env('DB_PREFIX')."player
+                            FROM '.$FD->config('pref')."player
                             WHERE video_id = '".$_POST['video_id']."'" );
             $video_arr = $index->fetch(PDO::FETCH_ASSOC);
             putintopost ( $video_arr );
@@ -285,9 +285,9 @@ if ( isset($_POST['video_id']) && isset($_POST['video_action']) )
                                         <option value="0" '.getselected(0, $_POST['dl_id']).'>keine Verkn&uuml;pfung</option>
         ';
         // List downloads
-        $index = $FD->db()->conn()->query ( '
+        $index = $FD->sql()->conn()->query ( '
                             SELECT D.dl_id, D.dl_name, C.cat_name
-                            FROM '.$FD->env('DB_PREFIX').'dl D, '.$FD->env('DB_PREFIX').'dl_cat AS C
+                            FROM '.$FD->config('pref').'dl D, '.$FD->config('pref').'dl_cat AS C
                             WHERE D.cat_id = C.cat_id
                             ORDER BY D.dl_name ASC');
         while ( $dl_arr = $index->fetch(PDO::FETCH_ASSOC) )
@@ -316,9 +316,9 @@ if ( isset($_POST['video_id']) && isset($_POST['video_action']) )
     // Delete Video
     elseif ( $_POST['video_action'] == 'delete' )
     {
-        $index = $FD->db()->conn()->query ( '
+        $index = $FD->sql()->conn()->query ( '
                        SELECT *
-                       FROM '.$FD->env('DB_PREFIX')."player
+                       FROM '.$FD->config('pref')."player
                        WHERE video_id = '".$_POST['video_id']."'
                        LIMIT 0,1" );
         $video_arr = $index->fetch(PDO::FETCH_ASSOC);
@@ -395,10 +395,10 @@ else
     ';
 
     // Get Videos from DB
-    $index = $FD->db()->conn()->query ( 'SELECT COUNT(*) FROM '.$FD->env('DB_PREFIX').'player' );
+    $index = $FD->sql()->conn()->query ( 'SELECT COUNT(*) FROM '.$FD->config('pref').'player' );
 
     if ( $index->fetchColumn() > 0 ) {
-        $index = $FD->db()->conn()->query ( 'SELECT * FROM '.$FD->env('DB_PREFIX').'player ORDER BY video_title' );
+        $index = $FD->sql()->conn()->query ( 'SELECT * FROM '.$FD->config('pref').'player ORDER BY video_title' );
 
         // display table head
         echo '

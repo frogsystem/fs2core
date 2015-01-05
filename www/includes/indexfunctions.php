@@ -111,7 +111,7 @@ function search_index ()
 
     if ($FD->cfg('cronjobs', 'search_index_update') == 2) {
         // Include searchfunctions.php
-        require ( FS2SOURCE . '/includes/searchfunctions.php' );
+        require ( FS2_ROOT_PATH . 'includes/searchfunctions.php' );
         update_search_index('news');
         update_search_index('articles');
         update_search_index('dl');
@@ -183,7 +183,7 @@ function get_css ($PATH_PREFIX)
     global $FD;
 
     // Get List of CSS-Files
-    $search_path =  FS2STYLES . '/' . $FD->config('style');
+    $search_path =  FS2_ROOT_PATH . 'styles/' . $FD->config('style');
     $link_path =  $PATH_PREFIX . 'styles/' . $FD->config('style');
     $files = scandir_ext($search_path, 'css');
 
@@ -241,7 +241,7 @@ function get_js ($PATH_PREFIX)
     global $FD;
 
     // Get List of JS-Files
-    $search_path =  FS2STYLES . '/' . $FD->config('style');
+    $search_path =  FS2_ROOT_PATH . 'styles/' . $FD->config('style');
     $link_path =  $PATH_PREFIX . 'styles/' . $FD->config('style');
     $files = scandir_ext($search_path, 'js');
 
@@ -416,31 +416,31 @@ function get_content ($GOTO)
     initstr($template);
 
     // Script-File in /data/
-    if (file_exists(FS2SOURCE . '/data/'.$GOTO.'.php')) {
-        include(FS2SOURCE . '/data/'.$GOTO.'.php');
-    } elseif (file_exists (FS2SOURCE . '/data/'.$GOTO)) {
-        include(FS2SOURCE . '/data/'.$GOTO );
+    if (file_exists('data/'.$GOTO.'.php')) {
+        include(FS2_ROOT_PATH . 'data/'.$GOTO.'.php');
+    } elseif (file_exists ('data/'.$GOTO)) {
+        include(FS2_ROOT_PATH . 'data/'.$GOTO );
     } else {
 
     // Articles from DB
-    $stmt = $FD->db()->conn()->prepare(
-                  'SELECT COUNT(article_id) FROM '.$FD->env('DB_PREFIX').'articles
+    $stmt = $FD->sql()->conn()->prepare(
+                  'SELECT COUNT(article_id) FROM '.$FD->config('pref').'articles
                    WHERE `article_url` = ? LIMIT 0,1');
     $stmt->execute(array($GOTO));
     $num = $stmt->fetchColumn();
     if ($num >= 1) {
 
         // Forward Aliases
-        $alias = $FD->db()->conn()->query(
-                      'SELECT alias_forward_to FROM '.$FD->env('DB_PREFIX')."aliases
+        $alias = $FD->sql()->conn()->query(
+                      'SELECT alias_forward_to FROM '.$FD->config('pref')."aliases
                        WHERE `alias_active` = 1 AND `alias_go` = 'articles.php'");
         $alias = $alias->fetch(PDO::FETCH_ASSOC);
         if (!empty($alias)) {
             $FD->setConfig('env', 'goto', $alias['alias_forward_to']);
-            include(FS2SOURCE . '/data/' . $alias['alias_forward_to']);
+            include(FS2_ROOT_PATH . 'data/' . $alias['alias_forward_to']);
         } else {
             $FD->setConfig('env', 'goto', 'articles');
-            include(FS2SOURCE . '/data/articles.php');
+            include(FS2_ROOT_PATH . 'data/articles.php');
         }
 
         // File-Download
@@ -450,7 +450,7 @@ function get_content ($GOTO)
         } else {
             $FD->setConfig('goto', '404');
             $FD->setConfig('env', 'goto', '404');
-            include(FS2SOURCE . '/data/404.php');
+            include(FS2_ROOT_PATH . 'data/404.php');
         }
     }
 
@@ -501,18 +501,20 @@ function tpl_functions ($TEMPLATE, $COUNT, $filter=array(), $loopend_escape = tr
         $snippet_functions = array_filter_keys($snippet_functions, $filter);
     }
 
+
     // Set Pattern and Replacment Code
-    // Replace Functions with computed values
+    $PATTERN = $REPLACEMENT = array();
     if (!empty($functions)) {
-        $PATTERN = '/\$('.implode('|', array_keys($functions)).')\((?|(?:"(.*?)")|(.*?))(?|\[(?|(?:"(.*?)")|(.*?))\]|()){0,1}\)/';
-        $REPLACEMENT = create_function('$data', 'return call_tpl_function('.var_export($functions, true).', '.var_export($COUNT, true).', array($data[1], $data[0], $data[2], $data[3]), '.var_export($loopend_escape, true).');');
-        $TEMPLATE = preg_replace_callback($PATTERN, $REPLACEMENT, $TEMPLATE);
+        array_push($PATTERN, '/\$('.implode('|', array_keys($functions)).')\((?|(?:"(.*?)")|(.*?))(?:\[(?|(?:"(.*?)")|(.*?))\]){0,1}\)/e');
+        array_push($REPLACEMENT, 'call_tpl_function($functions, $COUNT, array(\'$1\', \'$0\', \'$2\', \'$3\'), $loopend_escape);');
     }
     if (!empty($snippet_functions)) {
-        $PATTERN = '/\[%(.*?)%\]/';
-        $REPLACEMENT = create_function('$data', 'return call_tpl_function('.var_export($snippet_functions, true).', '.var_export($COUNT, true).', array("SNP", $data[0], $data[1], ""), '.var_export($loopend_escape, true).');');
-        $TEMPLATE = preg_replace_callback($PATTERN, $REPLACEMENT, $TEMPLATE);
+        array_push($PATTERN, '/\[%(.*?)%\]/e');
+        array_push($REPLACEMENT, 'call_tpl_function($snippet_functions, $COUNT, array("SNP", "$0", "$1", ""), $loopend_escape);');
     }
+
+    // Replace Functions with computed values
+    $TEMPLATE = preg_replace($PATTERN, $REPLACEMENT, $TEMPLATE);
 
     return $TEMPLATE;
 }
@@ -595,9 +597,9 @@ function load_applets()
     global $FD;
 
     // Load Applets from DB
-    $applet_data = $FD->db()->conn()->query(
+    $applet_data = $FD->sql()->conn()->query(
                        'SELECT applet_include, applet_file, applet_output
-                        FROM '.$FD->env('DB_PREFIX').'applets
+                        FROM '.$FD->config('pref').'applets
                         WHERE `applet_active` = 1');
     $applet_data = $applet_data->fetchAll(PDO::FETCH_ASSOC);
 
@@ -637,7 +639,7 @@ function load_an_applet($file, $output, $args)
 
     // include applet & load template
     try {
-        include(FS2APPLETS.'/'.$file);
+        include(FS2_ROOT_PATH.'applets/'.$file);
     } catch (Exception $e) {}
 
     //end & clean output buffering
@@ -661,13 +663,13 @@ function load_an_applet($file, $output, $args)
 //////////////////////////
 function tpl_func_snippets($original, $main_argument, $other_arguments)
 {
-    global $SNP, $FD;
+    global $SNP, $sql;
 
     // Load Navigation on demand
     if (!isset($SNP[$main_argument])) {
         // Get Snippet and write into Array
-        $data = $FD->db()->conn()->prepare(
-                    'SELECT snippet_tag, snippet_text FROM '.$FD->db()->getPrefix().'snippets
+        $data = $sql->conn()->prepare(
+                    'SELECT snippet_tag, snippet_text FROM '.$sql->getPrefix().'snippets
                      WHERE `snippet_tag` = ? AND `snippet_active` = 1 LIMIT 1');
         $data->execute(array($original));
         $data = $data->fetch(PDO::FETCH_ASSOC);
@@ -724,9 +726,9 @@ function tpl_func_navigations($original, $main_argument, $other_arguments)
     // Load Navigation on demand
     if (!isset($NAV[$main_argument])) {
         // Write navigation into Array
-        $STYLE_PATH = '/'.$FD->config('style').'/';
+        $STYLE_PATH = 'styles/'.$FD->config('style').'/';
         $ACCESS = new fileaccess();
-        $template = $ACCESS->getFileData(FS2STYLES.$STYLE_PATH.$main_argument);
+        $template = $ACCESS->getFileData(FS2_ROOT_PATH.$STYLE_PATH.$main_argument);
 
         // File not found?
         if ($template === false) {
@@ -925,6 +927,10 @@ function get_seo () {
         $_SERVER['QUERY_STRING'] .= urlencode($k) . '=' . urlencode($v) . '&';
     $_SERVER['REQUEST_URI'] = '/index.php?' . $_SERVER['QUERY_STRING'];
 
+    // Falls noetig, Verhalten von register_globals nachahmen
+    if (in_array(ini_get('register_globals') == 'on', array('0', 'on', 'true')))
+        extract($_REQUEST);
+
     // Hotlinkingschutz vom FS2 zufrieden stellen
     if (isset($_SERVER['HTTP_REFERER']))
       if (preg_match('/\/dlfile--.*\.html$/', $_SERVER['HTTP_REFERER']))
@@ -968,8 +974,8 @@ function forward_aliases ( $GOTO )
 {
     global $FD;
 
-    $aliases = $FD->db()->conn()->prepare(
-                     'SELECT alias_go, alias_forward_to FROM '.$FD->env('DB_PREFIX').'aliases
+    $aliases = $FD->sql()->conn()->prepare(
+                     'SELECT alias_go, alias_forward_to FROM '.$FD->config('pref').'aliases
                       WHERE `alias_active` = 1 AND `alias_go` = ?');
     $aliases->execute(array($GOTO));
     $aliases = $aliases->fetchAll(PDO::FETCH_ASSOC);
@@ -1004,12 +1010,12 @@ function visit_day_exists ( $YEAR, $MONTH, $DAY )
     global $FD;
 
     // check if visit-day exists
-    $daycounter = $FD->db()->conn()->query ('SELECT * FROM '.$FD->env('DB_PREFIX').'counter_stat
+    $daycounter = $FD->sql()->conn()->query ('SELECT * FROM '.$FD->config('pref').'counter_stat
                                 WHERE s_year = '.$YEAR.' AND s_month = '.$MONTH.' AND s_day = '.$DAY);
 
     if ( $daycounter->fetch(PDO::FETCH_ASSOC) === false )
     {
-        $FD->db()->conn()->exec('INSERT INTO '.$FD->env('DB_PREFIX')."counter_stat (s_year, s_month, s_day, s_visits, s_hits) VALUES ('".$YEAR."', '".$MONTH."', '".$DAY."', '0', '0')" );
+        $FD->sql()->conn()->exec('INSERT INTO '.$FD->config('pref')."counter_stat (s_year, s_month, s_day, s_visits, s_hits) VALUES ('".$YEAR."', '".$MONTH."', '".$DAY."', '0', '0')" );
     }
 }
 
@@ -1027,8 +1033,8 @@ function count_hit ( $GOTO )
 
     if ( $GOTO != '404' && $GOTO != '403' ) {
         // count page_hits
-        $FD->db()->conn()->exec ( 'UPDATE '.$FD->env('DB_PREFIX').'counter SET hits = hits + 1' );
-        $FD->db()->conn()->exec ( 'UPDATE '.$FD->env('DB_PREFIX').'counter_stat
+        $FD->sql()->conn()->exec ( 'UPDATE '.$FD->config('pref').'counter SET hits = hits + 1' );
+        $FD->sql()->conn()->exec ( 'UPDATE '.$FD->config('pref').'counter_stat
                                     SET s_hits = s_hits + 1
                                     WHERE s_year = '.$hit_year.' AND s_month = '.$hit_month.' AND s_day = '.$hit_day );
     }
@@ -1046,8 +1052,8 @@ function count_visit ()
     $visit_month = date( 'm' );
     $visit_day = date ( 'd' );
 
-    $FD->db()->conn()->exec('UPDATE '.$FD->env('DB_PREFIX').'counter SET visits = visits + 1');
-    $FD->db()->conn()->exec('UPDATE '.$FD->env('DB_PREFIX').'counter_stat
+    $FD->sql()->conn()->exec('UPDATE '.$FD->config('pref').'counter SET visits = visits + 1');
+    $FD->sql()->conn()->exec('UPDATE '.$FD->config('pref').'counter_stat
                               SET s_visits = s_visits + 1
                               WHERE s_year = '.$visit_year.' AND s_month = '.$visit_month.' AND s_day = '.$visit_day);
 }
@@ -1071,13 +1077,13 @@ function save_visitors ()
     }
 
     // Exisiting user for ip?
-    $user = $FD->db()->conn()->prepare('SELECT * FROM '.$FD->env('DB_PREFIX').'useronline WHERE `ip` = ? LIMIT 1');
+    $user = $FD->sql()->conn()->prepare('SELECT * FROM '.$FD->config('pref').'useronline WHERE `ip` = ? LIMIT 1');
     $user->execute(array($_SERVER['REMOTE_ADDR']));
     $user = $user->fetch(PDO::FETCH_ASSOC);
 
     // no user => create new
     if (empty($user)) {
-        $stmt = $FD->db()->conn()->prepare('INSERT INTO '.$FD->env('DB_PREFIX').'useronline SET `ip` = ?, user_id='.$user_id.', date='.(int) $FD->env('time'));
+        $stmt = $FD->sql()->conn()->prepare('INSERT INTO '.$FD->config('pref').'useronline SET `ip` = ?, user_id='.$user_id.', date='.(int) $FD->env('time'));
         $stmt->execute(array($_SERVER['REMOTE_ADDR']));
 
         // and count the visit
@@ -1086,13 +1092,13 @@ function save_visitors ()
 
     // new user_id (and update time)
     else if ($user['user_id'] != $user_id) {
-        $stmt = $FD->db()->conn()->prepare('UPDATE '.$FD->env('DB_PREFIX').'useronline SET user_id = '.$user_id.', date = '.(int) $FD->env('time').' WHERE ip = ? LIMIT 1');
+        $stmt = $FD->sql()->conn()->prepare('UPDATE '.$FD->config('pref').'useronline SET user_id = '.$user_id.', date = '.(int) $FD->env('time').' WHERE ip = ? LIMIT 1');
         $stmt->execute(array($_SERVER['REMOTE_ADDR']));
     }
 
     // we know the user => just update time
     else {
-        $stmt = $FD->db()->conn()->prepare('UPDATE '.$FD->env('DB_PREFIX').'useronline SET date = '.(int) $FD->env('time').' WHERE ip = ? LIMIT 1');
+        $stmt = $FD->sql()->conn()->prepare('UPDATE '.$FD->config('pref').'useronline SET date = '.(int) $FD->env('time').' WHERE ip = ? LIMIT 1');
         $stmt->execute(array($_SERVER['REMOTE_ADDR']));
     }
 }
@@ -1105,7 +1111,7 @@ function clean_iplist()
     global $FD;
 
     $time = strtotime('today');
-    $FD->db()->conn()->exec('DELETE FROM '.$FD->env('DB_PREFIX')."useronline WHERE `date` < '".$time."'");
+    $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref')."useronline WHERE `date` < '".$time."'");
 }
 
 
@@ -1121,17 +1127,17 @@ function save_referer ()
 		$time = time(); // timestamp
 		// save referer
 		$referer = preg_replace ( "=(.*?)\=([0-9a-z]{32})(.*?)=i", "\\1=\\3", $_SERVER['HTTP_REFERER'] );
-		$index = $FD->db()->conn()->prepare ( 'SELECT * FROM '.$FD->env('DB_PREFIX').'counter_ref WHERE ref_url = ?' );
+		$index = $FD->sql()->conn()->prepare ( 'SELECT * FROM '.$FD->config('pref').'counter_ref WHERE ref_url = ?' );
 		$index->execute(array($referer));
 
 		if ( $index->fetch(PDO::FETCH_ASSOC) === false ) {
 			if ( substr_count ( $referer, 'http://' ) >= 1 && substr_count ( $referer, $FD->config('virtualhost') ) < 1 ) {
-				$stmt = $FD->db()->conn()->prepare ( 'INSERT INTO '.$FD->env('DB_PREFIX')."counter_ref (ref_url, ref_count, ref_first, ref_last) VALUES (?, '1', '".$time."', '".$time."')" );
+				$stmt = $FD->sql()->conn()->prepare ( 'INSERT INTO '.$FD->config('pref')."counter_ref (ref_url, ref_count, ref_first, ref_last) VALUES (?, '1', '".$time."', '".$time."')" );
 				$stmt->execute(array($referer));
 			}
 		} else {
 			if ( substr_count ( $referer, 'http://' ) >= 1 && substr_count ( $referer, $FD->config('virtualhost') ) < 1 ) {
-				$stmt = $FD->db()->conn()->prepare ( 'UPDATE '.$FD->env('DB_PREFIX')."counter_ref SET ref_count = ref_count + 1, ref_last = '".$time."' WHERE ref_url = ? LIMIT 1" );
+				$stmt = $FD->sql()->conn()->prepare ( 'UPDATE '.$FD->config('pref')."counter_ref SET ref_count = ref_count + 1, ref_last = '".$time."' WHERE ref_url = ? LIMIT 1" );
 				$stmt->execute(array($referer));
 			}
 		}
@@ -1149,7 +1155,7 @@ function clean_timed_preview_images () {
     // do we want to remove old entries?
     if ($FD->config('preview_images', 'timed_deltime') != -1) {
         // remove old entries
-        $FD->db()->conn()->query('DELETE FROM '.$FD->env('DB_PREFIX')."screen_random WHERE `end` < '".($FD->env('time')-$FD->config('preview_images', 'timed_deltime'))."'");
+        $FD->sql()->conn()->query('DELETE FROM '.$FD->config('pref')."screen_random WHERE `end` < '".($FD->env('time')-$FD->config('preview_images', 'timed_deltime'))."'");
     }
 }
 
@@ -1171,9 +1177,9 @@ function set_style ()
     global $FD;
 
     if ( isset ( $_GET['style'] ) && $FD->cfg('allow_other_designs') == 1 ) {
-        $index = $FD->db()->conn()->prepare ( '
+        $index = $FD->sql()->conn()->prepare ( '
                         SELECT `style_id`, `style_tag`
-                        FROM `'.$FD->env('DB_PREFIX')."styles`
+                        FROM `'.$FD->config('pref')."styles`
                         WHERE `style_tag` = ?
                         AND `style_allow_use` = 1
                         LIMIT 0,1");
@@ -1186,9 +1192,9 @@ function set_style ()
         }
     } elseif ( isset ( $_GET['style_id'] ) && $FD->config('allow_other_designs') == 1 ) {
         settype ( $_GET['style_id'], 'integer' );
-        $index = $FD->db()->conn()->query ( '
+        $index = $FD->sql()->conn()->query ( '
                         SELECT `style_id`, `style_tag`
-                        FROM `'.$FD->env('DB_PREFIX')."styles`
+                        FROM `'.$FD->config('pref')."styles`
                         WHERE `style_id` = '".$_GET['style_id']."'
                         AND `style_allow_use` = 1
                         LIMIT 0,1" );

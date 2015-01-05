@@ -45,11 +45,11 @@ function templatepage_save ( $TEMPLATE_ARR, $TEMPLATE_FILE, $MANYFILES = FALSE )
 
     $file_data = null;
     $access = new fileaccess();
-    $directory_path = FS2STYLES . '/' . $_POST['style'] . '/';
+    $directory_path = FS2_ROOT_PATH . 'styles/' . $_POST['style'] . '/';
 
-    $stmt = $FD->db()->conn()->prepare ( '
+    $stmt = $FD->sql()->conn()->prepare ( '
                     SELECT COUNT(`style_id`) AS style_num
-                    FROM `'.$FD->env('DB_PREFIX').'styles`
+                    FROM `'.$FD->config('pref').'styles`
                     WHERE `style_tag` = ?
                     AND `style_allow_edit` = 1
                     LIMIT 0,1' );
@@ -146,18 +146,18 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
     }
 
     // Check Edit Allowed
-    $stmt = $FD->db()->conn()->prepare ( "
+    $stmt = $FD->sql()->conn()->prepare ( "
                     SELECT COUNT(`style_id`) AS 'number'
-                    FROM `".$FD->env('DB_PREFIX').'styles`
+                    FROM `".$FD->config('pref').'styles`
                     WHERE `style_tag` = ?
                     AND `style_allow_edit` = 1
                     LIMIT 0,1');
     $stmt->execute(array($_POST['style']));
     if ( $stmt->fetchColumn() != 1 ) {
         // Check Edit Allowed
-        $index = $FD->db()->conn()->query ( "
+        $index = $FD->sql()->conn()->query ( "
                         SELECT COUNT(`style_id`) AS 'number'
-                        FROM `".$FD->env('DB_PREFIX')."styles`
+                        FROM `".$FD->config('pref')."styles`
                         WHERE `style_allow_edit` = 1
                         LIMIT 0,1");
         if ( $index->fetchColumn() != 1 ) {
@@ -172,7 +172,7 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
     }
 
     // Set Style Path
-    $style_path = FS2STYLES . '/' . $_POST['style'];
+    $style_path = FS2_ROOT_PATH . 'styles/' . $_POST['style'];
 
     // Check if style exists
     if ( ! ( is_dir ( $style_path ) ) ) {
@@ -409,14 +409,14 @@ function get_templatepage_select ( $TYPE, $STYLE_PATH = '', $FILE_EXT = '', $SHO
                                             <select name="style" onChange="this.form.submit();" style="width:200px;">
             ';
 
-            $index = $FD->db()->conn()->query ( '
+            $index = $FD->sql()->conn()->query ( '
                             SELECT `style_tag`
-                            FROM `'.$FD->env('DB_PREFIX').'styles`
+                            FROM `'.$FD->config('pref').'styles`
                             WHERE `style_id` != 0
                             AND `style_allow_edit` = 1
                             ORDER BY `style_tag`' );
             while ( $style_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
-                if ( is_dir ( FS2STYLES . '/' . $style_arr['style_tag'] ) == TRUE ) {
+                if ( is_dir ( FS2_ROOT_PATH . 'styles/' . $style_arr['style_tag'] ) == TRUE ) {
                     $select_template .= '<option value="'.$style_arr['style_tag'].'" '.getselected ($style_arr['style_tag'], $_POST['style']).'>'.$style_arr['style_tag'];
                     $style_arr['style_tag'] == $FD->config('style') ? $select_template .= ' ('.$FD->text('admin', 'active').')' : $select_template .= '';
                     $select_template .= '</option>';
@@ -524,8 +524,8 @@ function get_dropdowns ( $EDITOR_NAME )
     $dropdowns['global_vars'] = create_dropdown ( $FD->text('admin', 'global_vars'), implode ( '', $global_vars_array ) );
 
     // Applets
-    $index = $FD->db()->conn()->query ( '
-                    SELECT `applet_file` FROM `'.$FD->env('DB_PREFIX').'applets` WHERE `applet_active` = 1 AND `applet_output` = 1' );
+    $index = $FD->sql()->conn()->query ( '
+                    SELECT `applet_file` FROM `'.$FD->config('pref').'applets` WHERE `applet_active` = 1 AND `applet_output` = 1' );
     while ( $app_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
         $app = $app_arr['applet_file'];
         $the_app = '$APP('.$app.'.php)';
@@ -534,8 +534,8 @@ function get_dropdowns ( $EDITOR_NAME )
     $dropdowns['applets'] = create_dropdown ( $FD->text('admin', 'applets'), implode ( '', $applets_array ) );
 
     // Snippets
-    $index = $FD->db()->conn()->query ( '
-                    SELECT `snippet_tag` FROM `'.$FD->env('DB_PREFIX').'snippets` WHERE `snippet_active` = 1' );
+    $index = $FD->sql()->conn()->query ( '
+                    SELECT `snippet_tag` FROM `'.$FD->config('pref').'snippets` WHERE `snippet_active` = 1' );
     while ( $snippets_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
         $the_snippet = $snippets_arr['snippet_tag'];
         $snippets_array[] = '<tr class="pointer tag_click_class" title="'.sprintf($FD->text('admin', 'format_insert'), $the_snippet).'" onClick="insert_editor_tag('.$EDITOR_NAME.',\''.$the_snippet.'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><b class="tag_click_class">'.$the_snippet.'</b></td><td><img class="tag_click_class" border="0" src="icons/pointer.gif" alt="->"></td></tr>';
@@ -543,7 +543,7 @@ function get_dropdowns ( $EDITOR_NAME )
     $dropdowns['snippets'] = create_dropdown ( $FD->text('admin', 'snippets'), implode ( '', $snippets_array ) );
 
     // Navigationen
-    $navs_arr = scandir_ext ( FS2STYLES . '/' . $_POST['style'], 'nav' );
+    $navs_arr = scandir_ext ( FS2_ROOT_PATH . 'styles/' . $_POST['style'], 'nav' );
     foreach ( $navs_arr as $nav ) {
         $the_nav = '$NAV('.$nav.')';
         $navs_array[] = '<tr class="pointer tag_click_class" title="'.sprintf($FD->text('admin', 'format_insert'), $the_nav).'" onClick="insert_editor_tag('.$EDITOR_NAME.',\''.$the_nav.'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><span class="tag_click_class">$NAV(<b>'.$nav.'</b>)</span></td><td><img class="tag_click_class" border="0" src="icons/pointer.gif" alt="->"></td></tr>';
@@ -604,7 +604,7 @@ function get_footer_line ( $EDITOR_NAME, $STYLE, $HIGHLIGHTER, $FILE, $MANYFILES
 /////////////////////////////
 function get_original_array ( $EDITOR_NAME, $FILE, $ROWS, $COLS )
 {
-    if ( file_exists ( FS2SOURCE . '/styles/default/' . $FILE ) ) {
+    if ( file_exists ( FS2_ROOT_PATH . 'styles/default/' . $FILE ) ) {
         $original['button'] = '
                                             <div class="html-editor-button html-editor-button-original" onClick="toggelOriginal(\''.$EDITOR_NAME.'\')" title="Original anzeigen">
                                                 <img src="img/null.gif" alt="Original anzeigen" border="0">

@@ -16,7 +16,7 @@ class MailManager
         global $FD;
 
         try {
-            $html = $FD->db()->conn()->query('SELECT html FROM '.$FD->env('DB_PREFIX').'email LIMIT 1');
+            $html = $FD->sql()->conn()->query('SELECT html FROM '.$FD->config('pref').'email LIMIT 1');
             $html = $html->fetchColumn();
             return (boolean) $html;
         } catch (Exception $e) {
@@ -29,8 +29,8 @@ class MailManager
         global $FD;
 
         try {
-            $data = $FD->db()->conn()->query(
-                          'SELECT use_admin_mail, email FROM '.$FD->env('DB_PREFIX').'email LIMIT 1');
+            $data = $FD->sql()->conn()->query(
+                          'SELECT use_admin_mail, email FROM '.$FD->config('pref').'email LIMIT 1');
             $data = $data->fetch(PDO::FETCH_ASSOC);
             if ($data['use_admin_mail'] == 1)
                 return $FD->cfg('admin_mail');
@@ -46,11 +46,11 @@ class MailManager
     public static function parseContent($content, $FSCODE = true, $TPL_FUNC = true)  {
         if ($TPL_FUNC) {
             global $FD;
-            require_once(FS2SOURCE.'/includes/indexfunctions.php');
+            require_once(FS2_ROOT_PATH.'includes/indexfunctions.php');
             $content = tpl_functions($content, $FD->cfg('system', 'var_loop'), array('DATE', 'VAR', 'URL', 'SNP'), true);
         }
         if ($FSCODE && self::getHtmlConfig()) {
-            require_once(FS2SOURCE.'/includes/fscode.php');
+            require_once(FS2_ROOT_PATH.'includes/fscode.php');
             $content = parse_all_fscodes($content, array('html'=>true));
         }
         

@@ -115,7 +115,7 @@
 
         // Read category from DB
         settype($_POST['news_cat_id'], 'integer');
-        $index = $FD->db()->conn()->query('SELECT `cat_name`, `cat_id` FROM `'.$FD->env('DB_PREFIX')."news_cat` WHERE `cat_id` = '".$_POST['news_cat_id']."'");
+        $index = $FD->sql()->conn()->query('SELECT `cat_name`, `cat_id` FROM `'.$FD->config('pref')."news_cat` WHERE `cat_id` = '".$_POST['news_cat_id']."'");
         $cat_arr = $index->fetch(PDO::FETCH_ASSOC);
         if (!empty($cat_arr)) {
 			$cat_arr['cat_name'] = killhtml($cat_arr['cat_name']);

@@ -13,7 +13,7 @@ $config_arr = $FD->configObject('screens')->getConfigArray();
 if (isset($_FILES['sizeimg_0']) AND isset($_POST['size']['0']) AND !emptystr($_POST['wallpaper_name']) AND isset($_POST['wpadd']) AND $_POST['wpadd'] == 1)
 {
 
-$index = $FD->db()->conn()->prepare('SELECT COUNT(*) AS wp_count FROM '.$FD->env('DB_PREFIX').'wallpaper WHERE wallpaper_name = ?');
+$index = $FD->sql()->conn()->prepare('SELECT COUNT(*) AS wp_count FROM '.$FD->config('pref').'wallpaper WHERE wallpaper_name = ?');
 $index->execute(array($_POST['wallpaper_name']));
 $row = $index->fetch(PDO::FETCH_ASSOC);
 if ($row['wp_count']==0) {
@@ -27,12 +27,12 @@ if ($row['wp_count']==0) {
     }
 
     $_POST['catid'] = intval($_POST['catid']);
-    $stmt = $FD->db()->conn()->prepare('INSERT INTO '.$FD->env('DB_PREFIX')."wallpaper (wallpaper_name, wallpaper_title, cat_id)
+    $stmt = $FD->sql()->conn()->prepare('INSERT INTO '.$FD->config('pref')."wallpaper (wallpaper_name, wallpaper_title, cat_id)
                  VALUES (?,
                          ?,
                          '".$_POST['catid']."')");
     $stmt->execute(array($_POST['wallpaper_name'], $_POST['wallpaper_title']));
-    $wp_id = $FD->db()->conn()->lastInsertId();
+    $wp_id = $FD->sql()->conn()->lastInsertId();
 
     $message = '';
 
@@ -48,7 +48,7 @@ if ($row['wp_count']==0) {
         switch ($upload)
         {
         case 0:
-          $stmt = $FD->db()->conn()->prepare('INSERT INTO '.$FD->env('DB_PREFIX')."wallpaper_sizes (wallpaper_id, size)
+          $stmt = $FD->sql()->conn()->prepare('INSERT INTO '.$FD->config('pref')."wallpaper_sizes (wallpaper_id, size)
                        VALUES ('".$wp_id."', ?)");
           $stmt->execute(array($_POST['size'][$j]));
           break;
@@ -130,7 +130,7 @@ echo'
                                 <td class="config" valign="top">
                                     <select name="catid">
 ';
-$index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX').'screen_cat WHERE cat_type = 2');
+$index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'screen_cat WHERE cat_type = 2');
 while ($cat_arr = $index->fetch(PDO::FETCH_ASSOC))
 {
     echo'

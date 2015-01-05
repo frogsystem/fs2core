@@ -13,13 +13,13 @@ class ConfigMain extends ConfigData {
 
     // startup
     protected function startup() {
-        global $FD;
+        global $sql, $spam, $path;
 
         // TODO: remove backwards compatibility, (soll in Zukunft nur in env)
-        $this->setConfig('pref',        $FD->env('DB_PREFIX'));
-        $this->setConfig('spam',        $FD->env('SPAM_KEY'));
-        $this->setConfig('data',        $FD->env('DB_NAME'));
-        $this->setConfig('path',        $FD->env('path'));
+        $this->setConfig('pref',        $sql->getPrefix());
+        $this->setConfig('spam',        $spam);
+        $this->setConfig('data',        $sql->getDatabaseName());
+        $this->setConfig('path',        $path);
 
         // rewrite to other protocol if allowd
         if ($this->get('other_protocol')) {
@@ -58,13 +58,5 @@ class ConfigMain extends ConfigData {
     private function getLanguage ($language_text) {
         return (is_language_text($language_text)) ? substr($language_text, 0, 2) : $language_text;
     }
-    
-    // get config entry
-    public function get($name) {
-        if (oneof($name, 'pref', 'spam', 'data', 'path')) {
-            trigger_error("Usage of config value main/{$name} is deprecated.", E_USER_DEPRECATED);
-        }
-        return $this->config[$name];
-    }   
 }
 ?>

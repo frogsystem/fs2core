@@ -1,38 +1,38 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
-$index = $FD->db()->conn()->query ( "
+$index = $FD->sql()->conn()->query ( "
                 SELECT COUNT(`alias_id`) AS 'num_aliases'
-                FROM `".$FD->env('DB_PREFIX').'aliases`' );
+                FROM `".$FD->config('pref').'aliases`' );
 $row = $index->fetch(PDO::FETCH_ASSOC);
 $num_aliases = $row['num_aliases'];
-$index = $FD->db()->conn()->query ( "
+$index = $FD->sql()->conn()->query ( "
                 SELECT COUNT(`alias_id`) AS 'num_aliases_active'
-                FROM `".$FD->env('DB_PREFIX').'aliases`
+                FROM `".$FD->config('pref').'aliases`
                 WHERE `alias_active` = 1' );
 $row = $index->fetch(PDO::FETCH_ASSOC);
 $num_aliases_active = $row['num_aliases_active'];
 
-$index = $FD->db()->conn()->query ( "
+$index = $FD->sql()->conn()->query ( "
                 SELECT COUNT(`applet_id`) AS 'num_applets'
-                FROM `".$FD->env('DB_PREFIX').'applets`' );
+                FROM `".$FD->config('pref').'applets`' );
 $row = $index->fetch(PDO::FETCH_ASSOC);
 $num_applets = $row['num_applets'];
-$index = $FD->db()->conn()->query ( "
+$index = $FD->sql()->conn()->query ( "
                 SELECT COUNT(`applet_id`) AS 'num_applets_active'
-                FROM `".$FD->env('DB_PREFIX').'applets`
+                FROM `".$FD->config('pref').'applets`
                 WHERE `applet_active` = 1' );
 $row = $index->fetch(PDO::FETCH_ASSOC);
 $num_applets_active = $row['num_applets_active'];
 
 
-$index = $FD->db()->conn()->query ( "
+$index = $FD->sql()->conn()->query ( "
                 SELECT COUNT(`snippet_id`) AS 'num_snippets'
-                FROM `".$FD->env('DB_PREFIX').'snippets`' );
+                FROM `".$FD->config('pref').'snippets`' );
 $row = $index->fetch(PDO::FETCH_ASSOC);
 $num_snippets = $row['num_snippets'];
-$index = $FD->db()->conn()->query ( "
+$index = $FD->sql()->conn()->query ( "
                 SELECT COUNT(`snippet_id`) AS 'num_snippets_active'
-                FROM `".$FD->env('DB_PREFIX').'snippets`
+                FROM `".$FD->config('pref').'snippets`
                 WHERE `snippet_active` = 1' );
 $row = $index->fetch(PDO::FETCH_ASSOC);
 $num_snippets_active = $row['num_snippets_active'];

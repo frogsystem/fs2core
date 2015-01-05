@@ -40,9 +40,9 @@ if (
              break;
     }
 
-    $stmt = $FD->db()->conn()->prepare(
+    $stmt = $FD->sql()->conn()->prepare(
                     'INSERT INTO
-                         '.$FD->env('DB_PREFIX')."player
+                         '.$FD->config('pref')."player
                          ( video_type, video_x, video_title, video_lenght, video_desc, dl_id )
                      VALUES (
                              '".$_POST['video_type']."',
@@ -212,9 +212,9 @@ if ( TRUE )
                                         <option value="0" '.getselected(0, $_POST['dl_id']).'>keine Verkn&uuml;pfung</option>
         ';
         // List DLs
-        $index = $FD->db()->conn()->query ( '
+        $index = $FD->sql()->conn()->query ( '
                         SELECT D.dl_id, D.dl_name, C.cat_name
-                        FROM '.$FD->env('DB_PREFIX').'dl D, '.$FD->env('DB_PREFIX').'dl_cat AS C
+                        FROM '.$FD->config('pref').'dl D, '.$FD->config('pref').'dl_cat AS C
                         WHERE D.cat_id = C.cat_id
                         ORDER BY D.dl_name ASC' );
         while ( $dl_arr = $index->fetch(PDO::FETCH_ASSOC) )

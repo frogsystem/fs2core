@@ -32,11 +32,11 @@ class SearchQuery
     // constructor
     public function  __construct ($operators = array(), $modifiers = array()) {
         // get searchtree classe if not loaded
-        require_once(FS2SOURCE . '/libs/class_SearchTree.php');
+        require_once(FS2_ROOT_PATH . 'libs/class_SearchTree.php');
 
         // assign global vars
-        global $FD;
-        $this->sql = $FD->db();
+        global $sql;
+        $this->sql = $sql;
 
         // set local vars
         if (!empty($operators))
@@ -72,7 +72,7 @@ class SearchQuery
     // tokenize querystring
     private function tokenize() {
         // get some search functions
-        require_once(FS2SOURCE . '/includes/searchfunctions.php');
+        require_once(FS2_ROOT_PATH . 'includes/searchfunctions.php');
 
         // reset tokens
         $this->tokens = array();

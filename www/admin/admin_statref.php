@@ -207,7 +207,7 @@ else
             break;
     }
 
-    $index = $FD->db()->conn()->query ( 'SELECT COUNT(*) FROM '.$FD->env('DB_PREFIX').'counter_ref '.$query.'' );
+    $index = $FD->sql()->conn()->query ( 'SELECT COUNT(*) FROM '.$FD->config('pref').'counter_ref '.$query.'' );
     $referrer_number = $index->fetchColumn();
     if ( $referrer_number <= 0 ) {
     	echo'
@@ -219,7 +219,7 @@ else
 		';
 	}
 
-    $index = $FD->db()->conn()->query ( 'SELECT * FROM '.$FD->env('DB_PREFIX').'counter_ref '.$query.'' );
+    $index = $FD->sql()->conn()->query ( 'SELECT * FROM '.$FD->config('pref').'counter_ref '.$query.'' );
 	while ( $referrer_arr = $index->fetch(PDO::FETCH_ASSOC) )
     {
         $dburlfull = $referrer_arr['ref_url'];
