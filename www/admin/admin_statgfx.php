@@ -45,7 +45,7 @@ imagefilledrectangle($image,20,45,480,285,$farbe_rot);
 // Hits curve
 $index = $FD->db()->conn()->query(
              'SELECT s_hits
-              FROM '.$FD->env('pref')."counter_stat
+              FROM '.$FD->env('DB_PREFIX')."counter_stat
               WHERE s_year  = $_GET[s_year] and
                     s_month = $_GET[s_month]
               ORDER BY s_hits DESC

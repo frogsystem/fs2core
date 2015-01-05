@@ -49,7 +49,7 @@ $go = $_REQUEST['go'];
 // get page-data from database
 $acp_arr = $FD->db()->conn()->prepare(
                'SELECT page_id, page_file, P.group_id AS group_id, menu_id
-                FROM '.$FD->env('pref').'admin_cp P, '.$FD->env('pref').'admin_groups G
+                FROM '.$FD->env('DB_PREFIX').'admin_cp P, '.$FD->env('DB_PREFIX').'admin_groups G
                 WHERE P.`group_id` = G.`group_id` AND P.`page_id` = ? AND P.`page_int_sub_perm` != 1');
 $acp_arr->execute(array($go));
 $acp_arr = $acp_arr->fetch(PDO::FETCH_ASSOC);
