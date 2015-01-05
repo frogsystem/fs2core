@@ -7,7 +7,7 @@ echo $adminpage->get('script');
 
 // load files
 
-$files = scandir_ext (FS2_ROOT_PATH . 'applets', 'php');
+$files = scandir_ext (FS2APPLETS, 'php');
 if (count($files) < 1) {
     // display error
     $adminpage->clearConds();

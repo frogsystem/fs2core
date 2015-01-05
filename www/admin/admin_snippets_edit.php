@@ -15,8 +15,8 @@ if (
     settype ( $_POST['snippet_active'], 'integer' );
 
     // SQL-Queries
-    $stmt = $FD->sql()->conn()->prepare('
-                UPDATE `'.$FD->config('pref')."snippets`
+    $stmt = $FD->db()->conn()->prepare('
+                UPDATE `'.$FD->env('DB_PREFIX')."snippets`
                 SET
                     `snippet_text` = ?,
                     `snippet_active` = '".$_POST['snippet_active']."'
@@ -48,9 +48,9 @@ elseif (
         $_POST['snippet_id'] = array_map ( 'intval', explode ( ',', $_POST['snippet_id'] ) );
 
         // SQL-Delete-Query
-        $FD->sql()->conn()->exec ('
+        $FD->db()->conn()->exec ('
             DELETE
-            FROM `'.$FD->config('pref').'snippets`
+            FROM `'.$FD->env('DB_PREFIX').'snippets`
             WHERE `snippet_id` IN ('.implode ( ',', $_POST['snippet_id'] ).')');
 
         systext ( $FD->text("admin", "snippets_deleted"),
@@ -87,9 +87,9 @@ if (  isset ( $_POST['snippet_id'] ) && is_array ( $_POST['snippet_id'] ) && $_P
 
         // Get Data from DB
         } else {
-            $index = $FD->sql()->conn()->query ( '
+            $index = $FD->db()->conn()->query ( '
                         SELECT *
-                        FROM `'.$FD->config('pref')."snippets`
+                        FROM `'.$FD->env('DB_PREFIX')."snippets`
                         WHERE `snippet_id` = '".$_POST['snippet_id']."'
                         LIMIT 0,1" );
             $data_arr = $index->fetch(PDO::FETCH_ASSOC);
@@ -185,17 +185,17 @@ if (  isset ( $_POST['snippet_id'] ) && is_array ( $_POST['snippet_id'] ) && $_P
         ';
 
         // get snippets from db
-        $index = $FD->sql()->conn()->query ( '
+        $index = $FD->db()->conn()->query ( '
                         SELECT COUNT(*)
-                        FROM `'.$FD->config('pref').'snippets`
+                        FROM `'.$FD->env('DB_PREFIX').'snippets`
                         WHERE `snippet_id` IN ('.implode ( ',', $_POST['snippet_id'] ).')' );
         // snippets found
         if ( $index->fetchColumn() > 0 ) {
 
             // display snippets
-            $index = $FD->sql()->conn()->query ( '
+            $index = $FD->db()->conn()->query ( '
                         SELECT *
-                        FROM `'.$FD->config('pref').'snippets`
+                        FROM `'.$FD->env('DB_PREFIX').'snippets`
                         WHERE `snippet_id` IN ('.implode ( ',', $_POST['snippet_id'] ).')
                         ORDER BY `snippet_tag`' );
             while ( $data_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
@@ -244,9 +244,9 @@ if ( !isset ( $_POST['snippet_id'] ) )
     ';
 
     // get snippets from db
-    $index = $FD->sql()->conn()->query ( '
+    $index = $FD->db()->conn()->query ( '
                 SELECT COUNT(*)
-                FROM `'.$FD->config('pref').'snippets`' );
+                FROM `'.$FD->env('DB_PREFIX').'snippets`' );
 
     // snippets found
     if ( $index->fetchColumn() > 0 ) {
@@ -261,9 +261,9 @@ if ( !isset ( $_POST['snippet_id'] ) )
         ';
 
         // display Snippets
-        $index = $FD->sql()->conn()->query ( '
+        $index = $FD->db()->conn()->query ( '
                 SELECT *
-                FROM `'.$FD->config('pref').'snippets`
+                FROM `'.$FD->env('DB_PREFIX').'snippets`
                 ORDER BY `snippet_tag`' );
         while ( $data_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
 

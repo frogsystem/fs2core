@@ -26,8 +26,8 @@ if (
     settype ( $_POST['applet_include'], 'integer' );
 
     // SQL-Queries
-    $sql->conn()->exec ( '
-                    UPDATE `'.$FD->config('pref')."applets`
+    $FD->db()->conn()->exec ( '
+                    UPDATE `'.$FD->env('DB_PREFIX')."applets`
                     SET
                         `applet_active` = '".$_POST['applet_active']."',
                         `applet_include` = '".$_POST['applet_include']."',
@@ -59,9 +59,9 @@ elseif (
         $_POST['applet_id'] = array_map ( 'intval', explode ( ',', $_POST['applet_id'] ) );
 
         // SQL-Delete-Query
-        $FD->sql()->conn()->exec ('
+        $FD->db()->conn()->exec ('
                         DELETE
-                        FROM '.$FD->config('pref').'applets
+                        FROM '.$FD->env('DB_PREFIX').'applets
                         WHERE `applet_id` IN ('.implode ( ',', $_POST['applet_id'] ).')' );
 
         systext ( $FD->text('admin', 'applets_deleted'),
@@ -98,9 +98,9 @@ if (  isset ( $_POST['applet_id'] ) && is_array ( $_POST['applet_id'] ) && $_POS
 
         // Get Data from DB
         } else {
-            $index = $FD->sql()->conn()->query ( '
+            $index = $FD->db()->conn()->query ( '
                                     SELECT *
-                                    FROM `'.$FD->config('pref')."applets`
+                                    FROM `'.$FD->env('DB_PREFIX')."applets`
                                     WHERE `applet_id` = '".$_POST['applet_id']."'
                                     LIMIT 0,1");
             $data_arr = $index->fetch(PDO::FETCH_ASSOC);
@@ -210,9 +210,9 @@ if (  isset ( $_POST['applet_id'] ) && is_array ( $_POST['applet_id'] ) && $_POS
         ';
 
         // get applets from db
-        $index = $FD->sql()->conn()->query ( '
+        $index = $FD->db()->conn()->query ( '
                                 SELECT *
-                                FROM '.$FD->config('pref').'applets
+                                FROM '.$FD->env('DB_PREFIX').'applets
                                 WHERE `applet_id` IN ('.implode ( ',', $_POST['applet_id'] ).')
                                 ORDER BY `applet_file`' );
         // applets found?
@@ -266,9 +266,9 @@ if ( !isset ( $_POST['applet_id'] ) )
     ';
 
     // get applets from db
-    $index = $FD->sql()->conn()->query ( '
+    $index = $FD->db()->conn()->query ( '
                     SELECT COUNT(*)
-                    FROM '.$FD->config('pref').'applets' );
+                    FROM '.$FD->env('DB_PREFIX').'applets' );
 
     // applets found
     if ( $index->fetchColumn() > 0 ) {
@@ -285,9 +285,9 @@ if ( !isset ( $_POST['applet_id'] ) )
         ';
 
         // display applets
-        $index = $FD->sql()->conn()->query ( '
+        $index = $FD->db()->conn()->query ( '
                         SELECT *
-                        FROM '.$FD->config('pref').'applets
+                        FROM '.$FD->env('DB_PREFIX').'applets
                         ORDER BY `applet_file`' );
         while ( $data_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
 

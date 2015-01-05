@@ -22,7 +22,7 @@ class lang
     // constructor
     public function  __construct ($local = false, $type = false) {
         global $FD;
-        require_once(FS2_ROOT_PATH.'includes/indexfunctions.php');
+        require_once(FS2SOURCE.'/includes/indexfunctions.php');
 
         if ($local == false)
             $this->local = $FD->cfg('language_text');
@@ -49,7 +49,7 @@ class lang
         $imports = array();
         preg_match_all('/#@([-a-z0-9\/_]+)\\n/is', $data, $imports, PREG_SET_ORDER);
         foreach ($imports as $import) {
-            $importPath = FS2_ROOT_PATH . 'lang/' . $this->local . '/' . $import[1] . '.txt';
+            $importPath = FS2LANG . '/' . $this->local . '/' . $import[1] . '.txt';
             $importData = @file_get_contents($importPath);
             
             // getting file content ok
@@ -70,7 +70,7 @@ class lang
         $this->phrases = array();
 
         // set file path
-        $langDataPath = FS2_ROOT_PATH . 'lang/' . $this->local . '/' . $this->type . '.txt';
+        $langDataPath = FS2LANG . '/' . $this->local . '/' . $this->type . '.txt';
 
         // include language data file
         if (file_exists($langDataPath)) {

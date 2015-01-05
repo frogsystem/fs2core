@@ -7,8 +7,8 @@
 if (isset($_POST['polledit']) && !isset($_POST['add_answers']) && isset($_POST['editpollid']) && isset($_POST['delpoll']) && $_POST['delpoll'] == 1)
 {
     // Delete poll
-    $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref')."poll WHERE poll_id = '".intval($_POST['editpollid'])."'");
-    $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref')."poll_answers WHERE poll_id = '".intval($_POST['editpollid'])."'");
+    $FD->db()->conn()->exec('DELETE FROM '.$FD->env('DB_PREFIX')."poll WHERE poll_id = '".intval($_POST['editpollid'])."'");
+    $FD->db()->conn()->exec('DELETE FROM '.$FD->env('DB_PREFIX')."poll_answers WHERE poll_id = '".intval($_POST['editpollid'])."'");
     systext('Die Umfrage wurde gel&ouml;scht');
 }
 elseif (isset($_POST['polledit']) && !isset($_POST['add_answers']) && isset($_POST['frage']) && !emptystr($_POST['ant'][0]) && !emptystr($_POST['ant'][1]))
@@ -27,8 +27,8 @@ elseif (isset($_POST['polledit']) && !isset($_POST['add_answers']) && isset($_PO
     settype($_POST['participants'], 'integer');
 
     // Update poll in DB
-    $stmt = $FD->sql()->conn()->prepare(
-              'UPDATE '.$FD->config('pref')."poll
+    $stmt = $FD->db()->conn()->prepare(
+              'UPDATE '.$FD->env('DB_PREFIX')."poll
                SET poll_quest = ?,
                    poll_start = '$adate',
                    poll_end   = '$edate',
@@ -42,7 +42,7 @@ elseif (isset($_POST['polledit']) && !isset($_POST['add_answers']) && isset($_PO
     {
         if (isset($_POST['dela'][$i]) || emptystr($_POST['ant'][$i]))
         {
-            $FD->sql()->conn()->query('DELETE FROM '.$FD->config('pref').'poll_answers WHERE answer_id = ' . $_POST['id'][$i] );
+            $FD->db()->conn()->query('DELETE FROM '.$FD->env('DB_PREFIX').'poll_answers WHERE answer_id = ' . $_POST['id'][$i] );
         }
         else
         {
@@ -54,8 +54,8 @@ elseif (isset($_POST['polledit']) && !isset($_POST['add_answers']) && isset($_PO
             if (!emptystr($_POST['ant'][$i])) {
                 if (!$_POST['id'][$i] && $_POST['ant'][$i])
                 {
-                    $stmt = $FD->sql()->conn()->prepare(
-                                'INSERT INTO '.$FD->config('pref')."poll_answers (poll_id, answer, answer_count)
+                    $stmt = $FD->db()->conn()->prepare(
+                                'INSERT INTO '.$FD->env('DB_PREFIX')."poll_answers (poll_id, answer, answer_count)
                                  VALUES (?,
                                          ?,
                                          ?)");
@@ -63,8 +63,8 @@ elseif (isset($_POST['polledit']) && !isset($_POST['add_answers']) && isset($_PO
                 }
                 else
                 {
-                    $stmt = $FD->sql()->conn()->prepare(
-                              'UPDATE '.$FD->config('pref').'poll_answers
+                    $stmt = $FD->db()->conn()->prepare(
+                              'UPDATE '.$FD->env('DB_PREFIX').'poll_answers
                                SET answer       = ?,
                                    answer_count = ?
                                WHERE answer_id = ?');
@@ -104,7 +104,7 @@ if (isset($_POST['pollid']))
     }
 
     settype($_POST['pollid'], 'integer');
-    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."poll WHERE poll_id = '$_POST[pollid]'");
+    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX')."poll WHERE poll_id = '$_POST[pollid]'");
     $row = $index->fetch(PDO::FETCH_ASSOC);
 
     if (!isset($_POST['frage']))
@@ -170,9 +170,9 @@ if (isset($_POST['pollid']))
         $_POST['participants'] = $row['poll_participants'];
     }
 
-    $index = $FD->sql()->conn()->query('SELECT COUNT(*) FROM '.$FD->config('pref')."poll_answers WHERE poll_id = '$_POST[pollid]'");
+    $index = $FD->db()->conn()->query('SELECT COUNT(*) FROM '.$FD->env('DB_PREFIX')."poll_answers WHERE poll_id = '$_POST[pollid]'");
     $rows = $index->fetchColumn();
-    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."poll_answers WHERE poll_id = '$_POST[pollid]' ORDER BY answer_id");
+    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX')."poll_answers WHERE poll_id = '$_POST[pollid]' ORDER BY answer_id");
     for($i=0; $i<$rows; $i++)
     {
         $row = $index->fetch(PDO::FETCH_ASSOC);
@@ -426,7 +426,7 @@ else
     ';
 
     // List polls
-    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'poll ORDER BY poll_start DESC');
+    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX').'poll ORDER BY poll_start DESC');
     while ($poll_arr = $index->fetch(PDO::FETCH_ASSOC))
     {
         $poll_arr['poll_start'] = date('d.m.Y' , $poll_arr['poll_start']) ;

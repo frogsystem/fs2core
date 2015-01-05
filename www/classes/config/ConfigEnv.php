@@ -2,7 +2,7 @@
 /**
  * @file     ConfigEnv.php
  * @folder   /classes/config/
- * @version  0.2
+ * @version  0.4
  * @author   Sweil
  *
  * this class provides the init of environment vars
@@ -13,8 +13,9 @@ class ConfigEnv extends ConfigData {
 
     // startup
     protected function startup() {
-        global $sql, $spam, $path;
-
+        // Load env config
+        $this->setConfigByFile('env');
+        
         // set env data
         $this->setConfig('date', time());
         $this->setConfig('time', $this->get('date'));
@@ -22,11 +23,22 @@ class ConfigEnv extends ConfigData {
         $this->setConfig('month', date('m', $this->get('date')));
         $this->setConfig('day', date('d', $this->get('date')));
         $this->setConfig('hour', date('H', $this->get('date')));
-        $this->setConfig('min', date('i', $this->get('date')));
-        $this->setConfig('pref', $sql->getPrefix());
-        $this->setConfig('spam', $spam);
-        $this->setConfig('data', $sql->getDatabaseName());
-        $this->setConfig('path', $path);
+        $this->setConfig('minute', date('i', $this->get('date')));
+        $this->setConfig('path', FS2CONTENT.'/');
+        
+        // DEPRECATED
+        $this->setConfig('min', $this->get('minute'));
+        $this->setConfig('pref', $this->get('DB_PREFIX'));
+        $this->setConfig('spam', $this->get('SPAM_KEY'));
+        $this->setConfig('data', $this->get('DB_NAME'));
     }
+    
+    // get config entry
+    public function get($name) {
+        if (oneof($name, 'pref', 'spam', 'data', 'min')) {
+            trigger_error("Usage of config value env/{$name} is deprecated.", E_USER_DEPRECATED);
+        }
+        return $this->config[$name];
+    } 
 }
 ?>

@@ -4,7 +4,7 @@
 ###################
 $feed_url = 'feeds/google-news.php';
 $news_settings = array (
-    'name' => 'The-Witcher.de',
+    'name' => 'Frogsystem',
     'language' => 'de',
     'days' => 2,
     'cat_filter' => array(),
@@ -13,22 +13,6 @@ $news_settings = array (
 ##################
 ## Settings End ##
 ##################
-
-
-/* FS2 PHP Init */
-set_include_path('.');
-define('FS2_ROOT_PATH', './../', true);
-require_once(FS2_ROOT_PATH . 'includes/phpinit.php');
-phpinit(false, 'Content-type: application/xml');
-/* End of FS2 PHP Init */
-
-
-// Inlcude DB Connection File or exit()
-require( FS2_ROOT_PATH . 'login.inc.php');
-
-//Include Functions-Files & Feed-Lib
-require_once(FS2_ROOT_PATH . 'libs/class_Feed.php');
-
 
 class NewsSitemap extends NewsFeed {
 
@@ -51,7 +35,7 @@ class NewsSitemap extends NewsFeed {
        global $FD;
 
         // Include functions & libs
-        require_once(FS2_ROOT_PATH . 'includes/fscode.php');
+        require_once(FS2SOURCE . '/includes/fscode.php');
 
         // Load virtualhost
         if (is_empty($virtualhost = $FD->cfg('virtualhost'))) {
@@ -65,10 +49,10 @@ class NewsSitemap extends NewsFeed {
         $FD->loadConfig('news');
 
         // Get News from DB
-        $news_arr = $FD->sql()->conn()->query(
+        $news_arr = $FD->db()->conn()->query(
                         'SELECT N.news_id, N.news_text, N.news_title, N.news_date, N.user_id, C.cat_name
-                         FROM '.$FD->config('pref').'news N
-                         LEFT JOIN '.$FD->config('pref').'news_cat C
+                         FROM '.$FD->env('DB_PREFIX').'news N
+                         LEFT JOIN '.$FD->env('DB_PREFIX').'news_cat C
                          ON N.cat_id = C.cat_id
                          WHERE N.`news_active` = 1
                          AND N.`news_date` <= '.$FD->env('time').'
@@ -119,8 +103,4 @@ class NewsSitemap extends NewsFeed {
 // create feed
 $sitemap = new NewsSitemap($FD->cfg('virtualhost').$feed_url, $news_settings);
 echo $sitemap;
-
-// Shutdown System
-unset($FD);
-
 ?>

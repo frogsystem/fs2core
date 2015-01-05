@@ -628,3 +628,21 @@ partner_navi_body_description:         Aussehen der Partnerliste im Menü.
 partner_navi_body_help_1:              Einzelne Ausgabe aller Partner.
 partner_navi_body_help_2:              Einzelne Ausgabe der Partner, die permanent angezeigt werden sollen.
 partner_navi_body_help_3:              Einzelne Ausgabe der Partner, die nicht permanent angezeigt werden sollen.
+
+
+style_select_body_title:               Styleauswahl Body
+style_select_body_desc:                Das Erscheinungsbild der Styleauswahl
+style_select_body_styles:              Liste aller ausw&auml;hlbaren Styles
+style_select_body_current:             Aktuelle Styleauswahl
+style_select_body_clear:               Option zum L&ouml;schen der Styleeinstellung
+style_select_body_cookie_hint:         Hinweis zur Cookienutzung
+style_select_entry_title:              Eintrag
+style_select_entry_desc:               Erscheinungsbild eines einzelnen Eintrags in der Liste
+style_select_entry_tag:                Style-Tag (z.B. lightfrog)
+style_select_entry_name:               Name des Styles
+style_select_entry_version:            Version des Styles
+style_select_entry_copy:               Copyrighthinweis des Styles
+style_select_entry_url:                URL zum Ausw&auml;hlen des Styles
+style_select_clear_title:              Styleauswahl zur&uuml;cksetzen
+style_select_clear_desc:               Erscheinungsbild der L&ouml;schm&ouml;glichkeit
+style_select_clear_url:                URL zum L&ouml;schen der Styleeinstellung

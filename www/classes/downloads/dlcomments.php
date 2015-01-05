@@ -40,7 +40,7 @@ $FD->setConfig('info', 'canonical', array('id'));
 $FD->loadConfig('news'); //TODO: introduce own configuration for download comments
 $config_arr = $FD->configObject('news')->getConfigArray();
 //Editor config
-$index = $FD->sql()->conn()->query('SELECT * FROM `'.$FD->config('pref').'editor_config`');
+$index = $FD->db()->conn()->query('SELECT * FROM `'.$FD->env('DB_PREFIX').'editor_config`');
 $editor_config = $index->fetch(PDO::FETCH_ASSOC);
 
 $SHOW = TRUE;
@@ -60,9 +60,9 @@ if ( $config_arr['com_antispam'] == 1 && isset($_SESSION['user_id']) && $_SESSIO
 //// User has rights ////
 /////////////////////////
 settype ( $_SESSION['user_id'], 'integer' );
-$index = $FD->sql()->conn()->query ( '
+$index = $FD->db()->conn()->query ( '
                 SELECT *
-                FROM `'.$FD->config('pref')."user`
+                FROM `'.$FD->env('DB_PREFIX')."user`
                 WHERE user_id = '".intval($_SESSION['user_id'])."'");
 $user_arr = $index->fetch(PDO::FETCH_ASSOC);
 
@@ -99,9 +99,9 @@ if (isset($_POST['add_comment']))
                     $commentdate = time();
                     $duplicate_time = $commentdate - ( 5 * 60 );
 
-                    $stmt = $FD->sql()->conn()->prepare('
+                    $stmt = $FD->db()->conn()->prepare('
                                     SELECT COUNT(`comment_id`)
-                                    FROM `'.$FD->config('pref')."comments`
+                                    FROM `'.$FD->env('DB_PREFIX')."comments`
                                     WHERE
                                         `comment_text` = ?
                                     AND `comment_date` >  '".$duplicate_time."'
@@ -116,9 +116,9 @@ if (isset($_POST['add_comment']))
                             $userid = 0;
                         }
 
-                        $stmt = $FD->sql()->conn()->prepare('
+                        $stmt = $FD->db()->conn()->prepare('
                                         INSERT INTO
-                                            `'.$FD->config('pref')."comments` (
+                                            `'.$FD->env('DB_PREFIX')."comments` (
                                                 content_id,
                                                 content_type,
                                                 comment_poster,
@@ -143,7 +143,7 @@ if (isset($_POST['add_comment']))
                                            $_SERVER['REMOTE_ADDR'],
                                            $_POST['title'],
                                            $_POST['text'] ) );
-                        $FD->sql()->conn()->exec('UPDATE `'.$FD->config('pref').'counter` SET comments=comments+1');
+                        $FD->db()->conn()->exec('UPDATE `'.$FD->env('DB_PREFIX').'counter` SET comments=comments+1');
                         $SHOW = FALSE;
                         $template = forward_message ( $FD->text("frontend", "news_title"), $FD->text("frontend", "comment_added"), $FD->cfg('virtualhost') );
                     } else {
@@ -195,7 +195,7 @@ if ($SHOW===TRUE)
   $fs_active = ($fs) ? 'an' : 'aus';
   $html_active = ($html) ? 'an' : 'aus';
 
-  $index = $FD->sql()->conn()->query('SELECT * FROM `'.$FD->config('pref')."comments` WHERE content_id = '".intval($_GET['id'])."' AND content_type='dl' ORDER BY comment_date ASC");
+  $index = $FD->db()->conn()->query('SELECT * FROM `'.$FD->env('DB_PREFIX')."comments` WHERE content_id = '".intval($_GET['id'])."' AND content_type='dl' ORDER BY comment_date ASC");
 
   $comments = '';
   while ($comment_arr = $index->fetch(PDO::FETCH_ASSOC))
@@ -204,7 +204,7 @@ if ($SHOW===TRUE)
     // Get user
     if ($comment_arr['comment_poster_id'] != 0)
     {
-      $index2 = $FD->sql()->conn()->query('SELECT `user_name`, `user_is_admin`, `user_is_staff`, `user_group` FROM `'.$FD->config('pref').'user` WHERE user_id = '.$comment_arr['comment_poster_id']);
+      $index2 = $FD->db()->conn()->query('SELECT `user_name`, `user_is_admin`, `user_is_staff`, `user_group` FROM `'.$FD->env('DB_PREFIX').'user` WHERE user_id = '.$comment_arr['comment_poster_id']);
       $user_arr = $index2->fetch(PDO::FETCH_ASSOC);
       $comment_arr['comment_poster'] = kill_replacements ( $user_arr['user_name'], TRUE );
       $comment_arr['user_is_admin'] = $user_arr['user_is_admin'];
@@ -286,7 +286,7 @@ if ($SHOW===TRUE)
   $form_spam = new template();
   $form_spam->setFile('0_news.tpl');
   $form_spam->load('COMMENT_CAPTCHA');
-  $form_spam->tag('captcha_url', FS2_ROOT_PATH . 'resources/captcha/captcha.php?i='.generate_pwd(8) );
+  $form_spam->tag('captcha_url', FS2SOURCE . '/resources/captcha/captcha.php?i='.generate_pwd(8) );
   $form_spam = $form_spam->display ();
 
   // Get Comments Form Name Template
@@ -328,7 +328,7 @@ if ($SHOW===TRUE)
 
   $_GET['id'] = (isset($_GET['fileid']) && !isset($_GET['id'])) ? $_GET['fileid'] : $_GET['id'];
   settype($_GET['id'], 'integer');
-  $presence = $FD->sql()->conn()->query('SELECT COUNT(dl_id) FROM `'.$FD->config('pref').'dl` where dl_id = '.$_GET['id'].' AND dl_open = 1');
+  $presence = $FD->db()->conn()->query('SELECT COUNT(dl_id) FROM `'.$FD->env('DB_PREFIX').'dl` where dl_id = '.$_GET['id'].' AND dl_open = 1');
   if ($presence->fetchColumn()>0)
   {
     $template = $news_message_template . $dl_template . $comments . $formular_template;

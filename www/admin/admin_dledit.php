@@ -11,14 +11,14 @@ if (isset($_POST['dledit']) && isset($_POST['title']) && isset($_POST['text']) &
     // Delete Download
     if (isset($_POST['deldl']))
     {
-        $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref')."dl WHERE dl_id = '$_POST[editdlid]'");
-        $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref')."dl_files WHERE dl_id = '$_POST[editdlid]'");
+        $FD->db()->conn()->exec('DELETE FROM '.$FD->env('DB_PREFIX')."dl WHERE dl_id = '$_POST[editdlid]'");
+        $FD->db()->conn()->exec('DELETE FROM '.$FD->env('DB_PREFIX')."dl_files WHERE dl_id = '$_POST[editdlid]'");
         image_delete('images/dl/', "$_POST[editdlid]_s");
         image_delete('images/dl/', $_POST['editdlid']);
         systext('Download wurde gel&ouml;scht');
 
         // Delete from Search Index
-        require_once ( FS2_ROOT_PATH . 'includes/searchfunctions.php' );
+        require_once ( FS2SOURCE . 'includes/searchfunctions.php' );
         delete_search_index_for_one ( $_POST['editdlid'], 'dl' );
     }
     else
@@ -46,7 +46,7 @@ if (isset($_POST['dledit']) && isset($_POST['title']) && isset($_POST['text']) &
 
         $dlopen = isset($_POST['dlopen']) ? 1 : 0;
 
-        $stmt = $FD->sql()->conn()->prepare('UPDATE '.$FD->config('pref')."dl
+        $stmt = $FD->db()->conn()->prepare('UPDATE '.$FD->env('DB_PREFIX')."dl
                    SET cat_id       = '$_POST[catid]',
                        dl_name      = ?,
                        dl_text      = ?,
@@ -63,7 +63,7 @@ if (isset($_POST['dledit']) && isset($_POST['title']) && isset($_POST['text']) &
         // Update Search Index (or not)
         if ( $FD->config('cronjobs', 'search_index_update') === 1 ) {
             // Include searchfunctions.php
-            require_once ( FS2_ROOT_PATH . 'includes/searchfunctions.php' );
+            require_once ( FS2SOURCE . 'includes/searchfunctions.php' );
             update_search_index ( 'dl' );
         }
 
@@ -74,7 +74,7 @@ if (isset($_POST['dledit']) && isset($_POST['title']) && isset($_POST['text']) &
             if (isset($_POST['delf'][$i]) && $_POST['delf'][$i]!=0)
             {
                 settype($_POST['delf'][$i], 'integer');
-                $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref').'dl_files WHERE file_id = ' . $_POST['delf'][$i]);
+                $FD->db()->conn()->exec('DELETE FROM '.$FD->env('DB_PREFIX').'dl_files WHERE file_id = ' . $_POST['delf'][$i]);
             }
             else
             {
@@ -85,8 +85,8 @@ if (isset($_POST['dledit']) && isset($_POST['title']) && isset($_POST['text']) &
 
                 if ($_POST['fnew'][$i]==1 && $_POST['fname'][$i]!='')
                 {
-                    $stmt = $FD->sql()->conn()->prepare(
-                                'INSERT INTO '.$FD->config('pref')."dl_files
+                    $stmt = $FD->db()->conn()->prepare(
+                                'INSERT INTO '.$FD->env('DB_PREFIX')."dl_files
                                     (dl_id, file_count, file_name, file_url, file_size, file_is_mirror)
                                  VALUES ('".$_POST['editdlid']."',
                                        '".$_POST['fcount'][$i]."',
@@ -98,7 +98,7 @@ if (isset($_POST['dledit']) && isset($_POST['title']) && isset($_POST['text']) &
                 }
                 elseif ($_POST['fnew'][$i]==0)
                 {
-                    $stmt = $FD->sql()->conn()->prepare('UPDATE '.$FD->config('pref')."dl_files
+                    $stmt = $FD->db()->conn()->prepare('UPDATE '.$FD->env('DB_PREFIX')."dl_files
                                SET file_count     = '".$_POST['fcount'][$i]."',
                                    file_name      = ?,
                                    file_url       = ?,
@@ -131,7 +131,7 @@ if (isset($_POST['dlid']) || isset($_POST['dlid']) && isset($_POST['files_add'])
     }
     settype($_POST['dlid'], 'integer');
 
-    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."dl WHERE dl_id =  '$_POST[dlid]'");
+    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX')."dl WHERE dl_id =  '$_POST[dlid]'");
     $row = $index->fetch(PDO::FETCH_ASSOC);
     if (!isset($_POST['title']))
     {
@@ -160,9 +160,9 @@ if (isset($_POST['dlid']) || isset($_POST['dlid']) && isset($_POST['files_add'])
 
     $_POST['dlopen'] = ($_POST['dlopen'] == 1) ? 'checked' : '';
 
-    $index = $FD->sql()->conn()->query('SELECT COUNT(*) FROM '.$FD->config('pref')."dl_files WHERE dl_id = '$_POST[dlid]'");
+    $index = $FD->db()->conn()->query('SELECT COUNT(*) FROM '.$FD->env('DB_PREFIX')."dl_files WHERE dl_id = '$_POST[dlid]'");
     $rows = $index->fetchColumn();
-    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."dl_files WHERE dl_id = '$_POST[dlid]' ORDER BY file_id");
+    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX')."dl_files WHERE dl_id = '$_POST[dlid]' ORDER BY file_id");
     for($i=0; $i<$rows; $i++)
     {
         $row = $index->fetch(PDO::FETCH_ASSOC);
@@ -277,7 +277,7 @@ if (isset($_POST['dlid']) || isset($_POST['dlid']) && isset($_POST['files_add'])
                                 </td>
                             </tr>
     ';
-    $index = $FD->sql()->conn()->query('SELECT `ftp_id` FROM '.$FD->config('pref')."ftp WHERE `ftp_type` = 'dl' LIMIT 0,1");
+    $index = $FD->db()->conn()->query('SELECT `ftp_id` FROM '.$FD->env('DB_PREFIX')."ftp WHERE `ftp_type` = 'dl' LIMIT 0,1");
     $ftp = ($index !== FALSE && $index->fetch(PDO::FETCH_ASSOC) !== FALSE);
 
     // Mirrors auflisten
@@ -398,7 +398,7 @@ if (isset($_POST['dlid']) || isset($_POST['dlid']) && isset($_POST['files_add'])
                   </td>
               </tr>
               ';
-    $comments = $FD->sql()->conn()->query('SELECT COUNT(*) FROM `'.$FD->config('pref').'comments` WHERE content_type=\'dl\' AND content_id=\''.$_POST['dlid']."'");
+    $comments = $FD->db()->conn()->query('SELECT COUNT(*) FROM `'.$FD->env('DB_PREFIX').'comments` WHERE content_type=\'dl\' AND content_id=\''.$_POST['dlid']."'");
     if ($comments->fetchColumn()==0)
     {
       echo '<tr>
@@ -413,7 +413,7 @@ if (isset($_POST['dlid']) || isset($_POST['dlid']) && isset($_POST['files_add'])
                   <td class="config" width="25%" valign="top">Datum</td>
                   <td class="config" width="15%" valign="top">bearbeiten</td>
             </tr>';
-      $comments = $FD->sql()->conn()->query('SELECT * FROM `'.$FD->config('pref').'comments` WHERE content_type=\'dl\' AND content_id=\''.$_POST['dlid']."'");
+      $comments = $FD->db()->conn()->query('SELECT * FROM `'.$FD->env('DB_PREFIX').'comments` WHERE content_type=\'dl\' AND content_id=\''.$_POST['dlid']."'");
       while ($row = $comments->fetch(PDO::FETCH_ASSOC))
       {
         echo '<tr>
@@ -421,7 +421,7 @@ if (isset($_POST['dlid']) || isset($_POST['dlid']) && isset($_POST['files_add'])
                 <td class="configthin small">';
         if ($row['comment_poster_id']!=0)
         {
-          $user = $FD->sql()->conn()->query('SELECT user_name FROM `'.$FD->config('pref')."user` WHERE user_id='".$row['comment_poster_id']."' LIMIT 1");
+          $user = $FD->db()->conn()->query('SELECT user_name FROM `'.$FD->env('DB_PREFIX')."user` WHERE user_id='".$row['comment_poster_id']."' LIMIT 1");
           $row['comment_poster'] = $user->fetchColumn();
         }
         echo $row['comment_poster'].'</td>
@@ -515,13 +515,13 @@ else
         settype($_POST['dlcatid'], 'integer');
         $wherecat = 'WHERE cat_id = ' . $_POST['dlcatid'];
     }
-    $index = $FD->sql()->conn()->query('SELECT dl_id, dl_name, cat_id FROM '.$FD->config('pref')."dl $wherecat ORDER BY dl_name");
+    $index = $FD->db()->conn()->query('SELECT dl_id, dl_name, cat_id FROM '.$FD->env('DB_PREFIX')."dl $wherecat ORDER BY dl_name");
     while ($dl_arr = $index->fetch(PDO::FETCH_ASSOC))
     {
-        $catindex = $FD->sql()->conn()->query('SELECT cat_name FROM '.$FD->config('pref')."dl_cat WHERE cat_id = '$dl_arr[cat_id]'");
+        $catindex = $FD->db()->conn()->query('SELECT cat_name FROM '.$FD->env('DB_PREFIX')."dl_cat WHERE cat_id = '$dl_arr[cat_id]'");
         $dbcatname = $catindex->fetchColumn();
         
-        $comments = $FD->sql()->conn()->query('SELECT COUNT(*) FROM `'.$FD->config('pref').'comments` WHERE content_type=\'dl\' AND content_id=\''.$dl_arr['dl_id']."'");
+        $comments = $FD->db()->conn()->query('SELECT COUNT(*) FROM `'.$FD->env('DB_PREFIX').'comments` WHERE content_type=\'dl\' AND content_id=\''.$dl_arr['dl_id']."'");
         $comments_num = $comments->fetchColumn();    
         
         echo'

@@ -2,3 +2,5 @@
 Thumbs.db
 /update-database.bat
 /dump-database.bat
+/www/config/main.cfg.php
+/www/config/env.cfg.php

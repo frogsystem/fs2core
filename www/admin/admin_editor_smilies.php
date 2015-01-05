@@ -9,15 +9,15 @@ if (isset($_FILES['newsmilie']['name']) AND $_FILES['newsmilie']['name'] != '' A
     $_POST['replace_string'] = killhtml($_POST['replace_string']);
     settype($_POST['insert_after'], 'integer');
 
-    $FD->sql()->conn()->exec('UPDATE '.$FD->config('pref')."smilies
+    $FD->db()->conn()->exec('UPDATE '.$FD->env('DB_PREFIX')."smilies
                  SET `order`=`order`+1
                  WHERE `order`>$_POST[insert_after]");
-    $stmt = $FD->sql()->conn()->prepare('INSERT INTO '.$FD->config('pref')."smilies
+    $stmt = $FD->db()->conn()->prepare('INSERT INTO '.$FD->env('DB_PREFIX')."smilies
                  (replace_string, `order`)
                  VALUES (?, '$_POST[insert_after]'+1)");
     $stmt->execute(array($_POST['replace_string']));
 
-    $id = $FD->sql()->conn()->lastInsertId();
+    $id = $FD->db()->conn()->lastInsertId();
     $upload = upload_img($_FILES['newsmilie'], 'images/smilies/', $id, 1024*1024, 999, 999);
     systext(upload_img_notice($upload));
 }
@@ -31,11 +31,11 @@ elseif (isset($_POST['delete_smilies']))
     foreach($_POST['delsmilie'] as $value)
     {
         $value = intval($value);
-        $index = $FD->sql()->conn()->query('SELECT id FROM '.$FD->config('pref')."smilies
+        $index = $FD->db()->conn()->query('SELECT id FROM '.$FD->env('DB_PREFIX')."smilies
                               WHERE `order`=$value");
         $id = $index->fetchColumn();
 
-        $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref')."smilies
+        $FD->db()->conn()->exec('DELETE FROM '.$FD->env('DB_PREFIX')."smilies
                      WHERE `order`=$value");
         image_delete('images/smilies/', $id);
     }
@@ -43,7 +43,7 @@ elseif (isset($_POST['delete_smilies']))
     foreach($_POST['delsmilie'] as $value)
     {
         $value = intval($value);
-        $FD->sql()->conn()->exec('UPDATE '.$FD->config('pref')."smilies
+        $FD->db()->conn()->exec('UPDATE '.$FD->env('DB_PREFIX')."smilies
                  SET `order`=`order`-1
                  WHERE `order`>$value");
     }
@@ -59,16 +59,16 @@ elseif (isset($_GET['action']) AND ($_GET['action']=='moveup' OR $_GET['action']
     $_GET['oid'] = intval($_GET['oid']);
     if ($_GET['action']=='moveup')
     {
-        $FD->sql()->conn()->exec('UPDATE '.$FD->config('pref')."smilies SET `order`=0 WHERE `order`=$_GET[oid]");
-        $FD->sql()->conn()->exec('UPDATE '.$FD->config('pref')."smilies SET `order`=`order`+1 WHERE `order`=$_GET[oid]-1");
-        $FD->sql()->conn()->exec('UPDATE '.$FD->config('pref')."smilies SET `order`=$_GET[oid]-1 WHERE `order`=0");
+        $FD->db()->conn()->exec('UPDATE '.$FD->env('DB_PREFIX')."smilies SET `order`=0 WHERE `order`=$_GET[oid]");
+        $FD->db()->conn()->exec('UPDATE '.$FD->env('DB_PREFIX')."smilies SET `order`=`order`+1 WHERE `order`=$_GET[oid]-1");
+        $FD->db()->conn()->exec('UPDATE '.$FD->env('DB_PREFIX')."smilies SET `order`=$_GET[oid]-1 WHERE `order`=0");
     }
 
     if ($_GET['action']=='movedown')
     {
-        $FD->sql()->conn()->exec('UPDATE '.$FD->config('pref')."smilies SET `order`=0 WHERE `order`=$_GET[oid]");
-        $FD->sql()->conn()->exec('UPDATE '.$FD->config('pref')."smilies SET `order`=`order`-1 WHERE `order`=$_GET[oid]+1");
-        $FD->sql()->conn()->exec('UPDATE '.$FD->config('pref')."smilies SET `order`=$_GET[oid]+1 WHERE `order`=0");
+        $FD->db()->conn()->exec('UPDATE '.$FD->env('DB_PREFIX')."smilies SET `order`=0 WHERE `order`=$_GET[oid]");
+        $FD->db()->conn()->exec('UPDATE '.$FD->env('DB_PREFIX')."smilies SET `order`=`order`-1 WHERE `order`=$_GET[oid]+1");
+        $FD->db()->conn()->exec('UPDATE '.$FD->env('DB_PREFIX')."smilies SET `order`=$_GET[oid]+1 WHERE `order`=0");
     }
 }
 
@@ -76,14 +76,14 @@ elseif (isset($_GET['action']) AND ($_GET['action']=='moveup' OR $_GET['action']
 ////// smilie list //////
 /////////////////////////
 
-  $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'editor_config');
+  $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX').'editor_config');
   $config_arr = $index->fetch(PDO::FETCH_ASSOC);
 
   $config_arr['num_smilies'] = $config_arr['smilies_rows']*$config_arr['smilies_cols'];
 
-  $index = $FD->sql()->conn()->query('SELECT COUNT(*) FROM '.$FD->config('pref').'smilies');
+  $index = $FD->db()->conn()->query('SELECT COUNT(*) FROM '.$FD->env('DB_PREFIX').'smilies');
   $num_rows = $index->fetchColumn();
-  $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'smilies ORDER BY `order` ASC');
+  $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX').'smilies ORDER BY `order` ASC');
 
   echo'<form action="" method="post" enctype="multipart/form-data">
          <input type="hidden" value="editor_smilies" name="go">
@@ -164,9 +164,9 @@ if ( $num_rows > 0 )
     ';
 
     // Read Smilies from DB
-    $index = $FD->sql()->conn()->query('SELECT COUNT(*) FROM '.$FD->config('pref').'smilies');
+    $index = $FD->db()->conn()->query('SELECT COUNT(*) FROM '.$FD->env('DB_PREFIX').'smilies');
     $smilie_last = $index->fetchColumn();
-    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'smilies ORDER BY `order` ASC');
+    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX').'smilies ORDER BY `order` ASC');
     $i=0;
     while ($smilie_arr = $index->fetch(PDO::FETCH_ASSOC))
     {

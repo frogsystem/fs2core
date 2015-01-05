@@ -236,10 +236,10 @@ abstract class NewsFeed extends Feed {
         $FD->loadConfig('news');
 
         // Get News from DB
-        $news_arr = $FD->sql()->conn()->query(
+        $news_arr = $FD->db()->conn()->query(
                         'SELECT N.news_id, N.news_text, N.news_title, N.news_date, N.user_id, C.cat_name
-                         FROM '.$FD->config('pref').'news N
-                         LEFT JOIN '.$FD->config('pref').'news_cat C
+                         FROM '.$FD->env('DB_PREFIX').'news N
+                         LEFT JOIN '.$FD->env('DB_PREFIX').'news_cat C
                          ON N.cat_id = C.cat_id
                          WHERE N.`news_date` <= '.$FD->env('time').' AND N.`news_active` = 1
                          '.(!empty($this->settings['cat_filter']) ? 'AND N.`cat_id` NOT IN ('.implode(',', $this->settings['cat_filter']).')' : '').'
@@ -257,15 +257,15 @@ abstract class NewsFeed extends Feed {
         global $FD;
 
         // Include functions & libs
-        require_once(FS2_ROOT_PATH . 'includes/fscode.php');
+        require_once(FS2SOURCE . '/includes/fscode.php');
 
         // check for latest news_date
         if ($news['news_date'] > $this->lastUpdate)
             $this->lastUpdate = $news['news_date'];
 
         // get user name
-        $news['user_name'] = $FD->sql()->conn()->query(
-                                 'SELECT user_name FROM '.$FD->config('pref').'user
+        $news['user_name'] = $FD->db()->conn()->query(
+                                 'SELECT user_name FROM '.$FD->env('DB_PREFIX').'user
                                   WHERE user_id = '.intval($news['user_id']).' LIMIT 1');
         $news['user_name'] = $news['user_name']->fetchColumn();
 
