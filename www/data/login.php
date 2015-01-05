@@ -21,7 +21,7 @@ elseif (isset($_GET['newpassword']) && (!isset($_POST['login']) || $_POST['login
 
         // check for mail
         $user = $FD->db()->conn()->prepare(
-                      'SELECT user_id, user_name, user_mail FROM '.$FD->config('pref').'user
+                      'SELECT user_id, user_name, user_mail FROM '.$FD->env('DB_PREFIX').'user
                        WHERE `user_mail` = ? LIMIT 1');
         $user->execute(array($_POST['newpassword_mail']));
         $user = $user->fetch(PDO::FETCH_ASSOC);

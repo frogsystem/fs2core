@@ -1,7 +1,7 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
 $date = date('U');
-$index = $FD->db()->conn()->query('SELECT * FROM '.$FD->config('pref')."poll WHERE poll_end > $date AND poll_start < $date ORDER BY poll_start DESC LIMIT 0,1 ");
+$index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX')."poll WHERE poll_end > $date AND poll_start < $date ORDER BY poll_start DESC LIMIT 0,1 ");
 if ( $poll_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
 
     $poll_arr['poll_start'] = date('d.m.Y' , $poll_arr['poll_start']);
@@ -15,12 +15,12 @@ if ( $poll_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
 
     $index = $FD->db()->conn()->query ( "
                     SELECT SUM(`answer_count`) AS 'num_votes'
-                    FROM ".$FD->config('pref')."poll_answers
+                    FROM ".$FD->env('DB_PREFIX')."poll_answers
                     WHERE `poll_id` = '".$poll_arr['poll_id']."'");
     $row = $index->fetch(PDO::FETCH_ASSOC);
     $all_votes = $row['num_votes'];
 
-    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->config('pref')."poll_answers WHERE poll_id = '".$poll_arr['poll_id']."' ORDER BY answer_id ASC");
+    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX')."poll_answers WHERE poll_id = '".$poll_arr['poll_id']."' ORDER BY answer_id ASC");
     $antworten = '';
     while ($answer_arr = $index->fetch(PDO::FETCH_ASSOC))
     {
@@ -100,7 +100,7 @@ if ( $poll_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
 
 $index = $FD->db()->conn()->query ( "
                 SELECT COUNT(DISTINCT(P.`poll_id`)) AS 'num_polls', SUM(DISTINCT(P.`poll_participants`)) AS 'num_participants', SUM(A.`answer_count`) AS 'num_votes'
-                FROM ".$FD->config('pref').'poll P, '.$FD->config('pref').'poll_answers A
+                FROM ".$FD->env('DB_PREFIX').'poll P, '.$FD->env('DB_PREFIX').'poll_answers A
                 WHERE P.`poll_id` = A.`poll_id`' );
 $row = $index->fetch(PDO::FETCH_ASSOC);
 $num_polls = $row['num_polls'];
@@ -112,7 +112,7 @@ settype ( $num_votes, 'integer' );
 if ( $num_polls  > 0 ) {
     $index = $FD->db()->conn()->query ( '
                     SELECT `poll_quest`, `poll_participants`
-                    FROM '.$FD->config('pref').'poll
+                    FROM '.$FD->env('DB_PREFIX').'poll
                     ORDER BY `poll_participants` DESC
                     LIMIT 0,1' );
     $row = $index->fetch(PDO::FETCH_ASSOC);
@@ -121,7 +121,7 @@ if ( $num_polls  > 0 ) {
 
     $index = $FD->db()->conn()->query ( "
                     SELECT P.`poll_quest`, SUM(A.`answer_count`) AS 'num_votes'
-                    FROM ".$FD->config('pref').'poll P, '.$FD->config('pref').'poll_answers A
+                    FROM ".$FD->env('DB_PREFIX').'poll P, '.$FD->env('DB_PREFIX').'poll_answers A
                     WHERE P.`poll_id` = A.`poll_id`
                     GROUP BY P.`poll_quest`
                     ORDER BY `num_votes` DESC

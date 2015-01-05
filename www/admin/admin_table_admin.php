@@ -17,7 +17,7 @@
     //get valid tables
     $allowed = array();
     $query = $FD->db()->conn()->query('SELECT TABLE_NAME FROM information_schema.tables '
-       .'WHERE TABLE_NAME LIKE \''.$FD->config('pref').'%\' AND TABLE_SCHEMA=\''.$FD->db()->getDatabaseName().'\'');
+       .'WHERE TABLE_NAME LIKE \''.$FD->env('DB_PREFIX').'%\' AND TABLE_SCHEMA=\''.$FD->db()->getDatabaseName().'\'');
     while ($row = $query->fetch(PDO::FETCH_ASSOC))
     {
       $allowed[] = $row['TABLE_NAME'];
@@ -71,7 +71,7 @@
   $hasInnoDB = false;
   $total = array('tabs' => 0, 'rows' => 0, 'size' => 0, 'free' => 0);
   $query = $FD->db()->conn()->query('SELECT * FROM information_schema.tables'
-    .' WHERE table_name LIKE \''.$FD->config('pref').'%\''
+    .' WHERE table_name LIKE \''.$FD->env('DB_PREFIX').'%\''
     .' AND TABLE_SCHEMA=\''.$FD->db()->getDatabaseName().'\' ORDER BY table_name ASC');
   while ($row = $query->fetch(PDO::FETCH_ASSOC))
   {

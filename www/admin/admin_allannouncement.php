@@ -15,7 +15,7 @@ if ( isset ( $_POST['sended'] ) )
 
     // SQL-Queries
     $stmt = $FD->db()->conn()->prepare ( '
-                    UPDATE `'.$FD->config('pref')."announcement`
+                    UPDATE `'.$FD->env('DB_PREFIX')."announcement`
                     SET
                         `announcement_text` = ?,
                         `show_announcement` = '".$_POST['show_announcement']."',
@@ -47,7 +47,7 @@ if ( TRUE )
     } else {
         $index = $FD->db()->conn()->query ( '
                                 SELECT *
-                                FROM `'.$FD->config('pref')."announcement`
+                                FROM `'.$FD->env('DB_PREFIX')."announcement`
                                 WHERE `id` = '1'");
         $config_arr = $index->fetch(PDO::FETCH_ASSOC);
         putintopost ( $config_arr );

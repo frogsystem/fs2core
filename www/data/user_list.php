@@ -38,7 +38,7 @@ $FD->loadConfig('users');
 $config_arr = $FD->configObject('users')->getConfigArray();
 
 // Get Number of Users
-$index = $FD->db()->conn()->query ( 'SELECT COUNT(`user_id`) AS num_users FROM `'.$FD->config('pref').'user`' );
+$index = $FD->db()->conn()->query ( 'SELECT COUNT(`user_id`) AS num_users FROM `'.$FD->env('DB_PREFIX').'user`' );
 $row = $index->fetch(PDO::FETCH_ASSOC);
 $config_arr['number_of_users'] = $row['num_users'];
 if ( $config_arr['user_per_page'] == -1 ) {
@@ -63,7 +63,7 @@ $template_page_nav = get_page_nav ( $_GET['page'], $config_arr['number_of_pages'
 ////////////////////////
 //// Load User Data ////
 ////////////////////////
-$pref = $FD->config('pref');
+$pref = $FD->env('DB_PREFIX');
 $query = 'SELECT `user_id`, `user_name`, `user_is_staff`, `user_is_admin`, `user_group`, `user_mail`, `user_show_mail`, `user_reg_date`,
 
   (SELECT COUNT(`news_id`) FROM `'.$pref.'news`

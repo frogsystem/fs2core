@@ -32,7 +32,7 @@ if (
 
     // SQL-Queries
     $FD->db()->conn()->exec ( '
-            UPDATE `'.$FD->config('pref')."styles`
+            UPDATE `'.$FD->env('DB_PREFIX')."styles`
             SET
                 `style_allow_use` = '".$_POST['style_allow_use']."',
                 `style_allow_edit` = '".$_POST['style_allow_edit']."'
@@ -40,7 +40,7 @@ if (
 
     $index = $FD->db()->conn()->query ( '
                     SELECT `style_tag`
-                    FROM `'.$FD->config('pref')."styles`
+                    FROM `'.$FD->env('DB_PREFIX')."styles`
                     WHERE `style_id` = ".$_POST['style_id'] );
 
     $new_ini_data = $_POST['style_name']."
@@ -83,7 +83,7 @@ elseif (
         // Check if style is last
         $index = $FD->db()->conn()->query ( '
                         SELECT COUNT(`style_id`)
-                        FROM `'.$FD->config('pref').'styles`
+                        FROM `'.$FD->env('DB_PREFIX').'styles`
                         WHERE `style_allow_use` = 1
                         AND `style_id` != '.$_POST['style_id'] );
 
@@ -93,7 +93,7 @@ elseif (
             // SQL-Delete-Query
             $FD->db()->conn()->exec ('
                     DELETE
-                    FROM `'.$FD->config('pref').'styles`
+                    FROM `'.$FD->env('DB_PREFIX').'styles`
                     WHERE `style_id` = '.$_POST['style_id'] );
 
             if (
@@ -106,7 +106,7 @@ elseif (
 
                 $index = $FD->db()->conn()->query ( '
                                 SELECT `style_tag`
-                                FROM `'.$FD->config('pref').'styles`
+                                FROM `'.$FD->env('DB_PREFIX').'styles`
                                 WHERE `style_id` = '.$_POST['new_style_id'].'
                                 AND `style_id` != 0
                                 AND `style_allow_use` = 1
@@ -116,7 +116,7 @@ elseif (
                     // SQL-Queries
                     $stmt = $FD->db()->conn()->prepare('
                                 UPDATE
-                                    `'.$FD->config('pref')."global_config`
+                                    `'.$FD->env('DB_PREFIX')."global_config`
                                 SET
                                     `style_id` = '".$_POST['new_style_id']."',
                                     `style_tag` = ?
@@ -157,7 +157,7 @@ elseif (
         // SQL-Queries
         $stmt = $FD->db()->conn()->prepare('
                     INSERT INTO
-                        `'.$FD->config('pref')."styles`
+                        `'.$FD->env('DB_PREFIX')."styles`
                         (`style_tag`, `style_allow_use`, `style_allow_edit`)
                     VALUES
                         ( ?, 1, 1 )");
@@ -207,7 +207,7 @@ if ( isset ( $_POST['style_id'] ) && $_POST['style_action'] )
         } else {
             $index = $FD->db()->conn()->query ( '
                             SELECT *
-                            FROM `'.$FD->config('pref')."styles`
+                            FROM `'.$FD->env('DB_PREFIX')."styles`
                             WHERE `style_id` = '".$_POST['style_id']."'
                             LIMIT 0,1" );
             $data_arr = $index->fetch(PDO::FETCH_ASSOC);
@@ -319,7 +319,7 @@ if ( isset ( $_POST['style_id'] ) && $_POST['style_action'] )
         // Check if style is last
         $index = $FD->db()->conn()->query ( '
                         SELECT COUNT(`style_id`)
-                        FROM `'.$FD->config('pref').'styles`
+                        FROM `'.$FD->env('DB_PREFIX').'styles`
                         WHERE `style_id` != 0
                         AND `style_allow_use` = 1
                         AND `style_id` != '.$_POST['style_id'].'
@@ -346,7 +346,7 @@ if ( isset ( $_POST['style_id'] ) && $_POST['style_action'] )
             // get style from db
             $data = $FD->db()->conn()->query ( '
                         SELECT *
-                        FROM `'.$FD->config('pref').'styles`
+                        FROM `'.$FD->env('DB_PREFIX').'styles`
                         WHERE `style_id` = '.$_POST['style_id'].'
                         LIMIT 0,1');
             $data_arr = $data->fetch(PDO::FETCH_ASSOC);
@@ -374,7 +374,7 @@ if ( isset ( $_POST['style_id'] ) && $_POST['style_action'] )
                 ';
                 $index = $FD->db()->conn()->query ( '
                         SELECT `style_id`, `style_tag`
-                        FROM `'.$FD->config('pref').'styles`
+                        FROM `'.$FD->env('DB_PREFIX').'styles`
                         WHERE `style_id` != 0
                         AND `style_allow_use` = 1
                         AND `style_id` != '.$_POST['style_id'].'
@@ -438,7 +438,7 @@ if ( !isset ( $_POST['style_id'] ) )
     // get Styles from db
     $index = $FD->db()->conn()->query ( '
                     SELECT COUNT(*)
-                    FROM `'.$FD->config('pref')."styles`
+                    FROM `'.$FD->env('DB_PREFIX')."styles`
                     WHERE `style_id` != 0
                     AND `style_tag` != 'default'
                     ORDER BY `style_tag`" );
@@ -447,7 +447,7 @@ if ( !isset ( $_POST['style_id'] ) )
 
     $index = $FD->db()->conn()->query ( '
                     SELECT *
-                    FROM `'.$FD->config('pref')."styles`
+                    FROM `'.$FD->env('DB_PREFIX')."styles`
                     WHERE `style_id` != 0
                     AND `style_tag` != 'default'
                     ORDER BY `style_tag`" );

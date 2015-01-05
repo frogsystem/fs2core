@@ -24,7 +24,7 @@ if (
     // Get File Data
     $index = $FD->db()->conn()->query ( '
                     SELECT `file_is_mirror`, `file_url`
-                    FROM `'.$FD->config('pref').'dl_files`
+                    FROM `'.$FD->env('DB_PREFIX').'dl_files`
                     WHERE `file_id` = '.$_GET['id'].' ' );
     $dlf_row = $index->fetch(PDO::FETCH_ASSOC);
     $check_file_is_mirror = $dlf_row['file_is_mirror'];
@@ -40,7 +40,7 @@ if (
     {
         // Update Counter
         $FD->db()->conn()->exec ( '
-                UPDATE `'.$FD->config('pref')."dl_files`
+                UPDATE `'.$FD->env('DB_PREFIX')."dl_files`
                 SET `file_count` = `file_count` + 1
                 WHERE `file_id` = '".$_GET['id']."'" );
         // Forward to the URL

@@ -27,7 +27,7 @@ if (
 
 	// SQL-Update-Query
 	$stmt = $FD->db()->conn()->prepare('
-					INSERT INTO '.$FD->config('pref')."news_cat (cat_name, cat_date, cat_user)
+					INSERT INTO '.$FD->env('DB_PREFIX')."news_cat (cat_name, cat_date, cat_user)
 					VALUES (
 						?,
 						'".$cat_date."',
@@ -76,7 +76,7 @@ elseif (
 
 	// SQL-Update-Query
 	$stmt = $FD->db()->conn()->prepare('
-                    UPDATE '.$FD->config('pref')."news_cat
+                    UPDATE '.$FD->env('DB_PREFIX')."news_cat
                     SET
                         cat_name 		= ?,
                         cat_description = ?,
@@ -125,7 +125,7 @@ elseif (
 
 		// SQL-Query to move News to other Category
 		$FD->db()->conn()->exec ('
-                UPDATE '.$FD->config('pref')."news
+                UPDATE '.$FD->env('DB_PREFIX')."news
                 SET
 				    cat_id = '".$_POST['cat_move_to']."'
                 WHERE
@@ -133,7 +133,7 @@ elseif (
 
 		// SQL-Delete-Query
     	$FD->db()->conn()->exec ('
-                DELETE FROM '.$FD->config('pref')."news_cat
+                DELETE FROM '.$FD->env('DB_PREFIX')."news_cat
                 WHERE
                     cat_id = '".$_POST['cat_id']."'" );
 		$message = $FD->text('page', 'cat_deleted');
@@ -172,7 +172,7 @@ if ( isset($_POST['cat_id']) && isset($_POST['cat_action']) )
 	{
 
 		// Load Data from DB
-		$index = $FD->db()->conn()->query ( 'SELECT * FROM '.$FD->config('pref')."news_cat WHERE cat_id = '".$_POST['cat_id']."'" );
+		$index = $FD->db()->conn()->query ( 'SELECT * FROM '.$FD->env('DB_PREFIX')."news_cat WHERE cat_id = '".$_POST['cat_id']."'" );
 		$cat_arr = $index->fetch(PDO::FETCH_ASSOC);
 
 		// Display Error Messages
@@ -186,7 +186,7 @@ if ( isset($_POST['cat_id']) && isset($_POST['cat_action']) )
 		$cat_arr['cat_description'] = killhtml ( $cat_arr['cat_description'] );
 
     	// Get User
-    	$index = $FD->db()->conn()->query ( 'SELECT user_name FROM '.$FD->config('pref')."user WHERE user_id = '".$cat_arr['cat_user']."'" );
+    	$index = $FD->db()->conn()->query ( 'SELECT user_name FROM '.$FD->env('DB_PREFIX')."user WHERE user_id = '".$cat_arr['cat_user']."'" );
     	$cat_arr['cat_username'] = killhtml ( $index->fetchColumn() );
 
 		// Create Date-Arrays
@@ -302,12 +302,12 @@ if ( isset($_POST['cat_id']) && isset($_POST['cat_action']) )
 	// Delete Category
 	elseif ( $_POST['cat_action'] == 'delete' )
 	{
-		$index = $FD->db()->conn()->query ( 'SELECT COUNT(*) FROM '.$FD->config('pref').'news_cat' );
+		$index = $FD->db()->conn()->query ( 'SELECT COUNT(*) FROM '.$FD->env('DB_PREFIX').'news_cat' );
 
 		// Not Last Category
 		if ( $index->fetchColumn() > 1 ) {
 
-			$index = $FD->db()->conn()->query ( 'SELECT * FROM '.$FD->config('pref')."news_cat WHERE cat_id = '".$_POST['cat_id']."'" );
+			$index = $FD->db()->conn()->query ( 'SELECT * FROM '.$FD->env('DB_PREFIX')."news_cat WHERE cat_id = '".$_POST['cat_id']."'" );
 			$cat_arr = $index->fetch(PDO::FETCH_ASSOC);
 
 			$cat_arr['cat_name'] = killhtml ( $cat_arr['cat_name'] );
@@ -360,7 +360,7 @@ if ( isset($_POST['cat_id']) && isset($_POST['cat_action']) )
 									<select class="text" name="cat_move_to" size="1">
 			';
 
-			$index = $FD->db()->conn()->query ( 'SELECT * FROM '.$FD->config('pref')."news_cat WHERE cat_id != '".$cat_arr['cat_id']."' ORDER BY cat_name" );
+			$index = $FD->db()->conn()->query ( 'SELECT * FROM '.$FD->env('DB_PREFIX')."news_cat WHERE cat_id != '".$cat_arr['cat_id']."' ORDER BY cat_name" );
 			while ( $move_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
 				echo '<option value="'.$move_arr['cat_id'].'">'.killhtml ( $move_arr['cat_name'] ).'</option>';
 			}
@@ -464,10 +464,10 @@ elseif ( $showdefault == TRUE )
 	';
 
 	// Get Categories from DB
-	$index = $FD->db()->conn()->query ( 'SELECT * FROM '.$FD->config('pref').'news_cat ORDER BY cat_name' );
+	$index = $FD->db()->conn()->query ( 'SELECT * FROM '.$FD->env('DB_PREFIX').'news_cat ORDER BY cat_name' );
 	while ( $cat_arr = $index->fetch(PDO::FETCH_ASSOC) )
 	{
-		$index_username = $FD->db()->conn()->query ( 'SELECT user_name FROM '.$FD->config('pref')."user WHERE user_id = '".$cat_arr['cat_user']."'" );
+		$index_username = $FD->db()->conn()->query ( 'SELECT user_name FROM '.$FD->env('DB_PREFIX')."user WHERE user_id = '".$cat_arr['cat_user']."'" );
         $cat_arr['cat_user'] = $index_username->fetchColumn();
 
 		// Display each Category

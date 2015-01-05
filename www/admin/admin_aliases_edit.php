@@ -18,7 +18,7 @@ if (
 
     // SQL-Queries
     $stmt = $FD->db()->conn()->prepare ( '
-                UPDATE `'.$FD->config('pref')."aliases`
+                UPDATE `'.$FD->env('DB_PREFIX')."aliases`
                 SET
                     `alias_go` = ?,
                     `alias_forward_to` = ?,
@@ -53,7 +53,7 @@ elseif (
         // SQL-Delete-Query
         $FD->db()->conn()->exec ('
                         DELETE
-                        FROM `'.$FD->config('pref').'aliases`
+                        FROM `'.$FD->env('DB_PREFIX').'aliases`
                         WHERE `alias_id` IN ('.implode ( ',', $_POST['alias_id'] ).')');
 
         systext ( $FD->text('admin', 'aliases_deleted'),
@@ -95,7 +95,7 @@ if ( isset ( $_POST['alias_id'] ) && isset($_POST['alias_action']) )
         } else {
             $index = $FD->db()->conn()->query ( '
                                     SELECT *
-                                    FROM `'.$FD->config('pref')."aliases`
+                                    FROM `'.$FD->env('DB_PREFIX')."aliases`
                                     WHERE `alias_id` = '".$_POST['alias_id']."'
                                     LIMIT 0,1" );
             $data_arr = $index->fetch(PDO::FETCH_ASSOC);
@@ -190,7 +190,7 @@ if ( isset ( $_POST['alias_id'] ) && isset($_POST['alias_action']) )
         // get aliases from db
         $index = $FD->db()->conn()->query ( '
                                 SELECT *
-                                FROM `'.$FD->config('pref').'aliases`
+                                FROM `'.$FD->env('DB_PREFIX').'aliases`
                                 WHERE `alias_id` IN ('.implode ( ',', $_POST['alias_id'] ).')
                                 ORDER BY `alias_go` ASC, `alias_forward_to` ASC' );
         // aliases found?
@@ -242,7 +242,7 @@ if ( !isset ( $_POST['alias_id'] ) )
     // get Aliases from db
     $index = $FD->db()->conn()->query ( '
                     SELECT COUNT(*)
-                    FROM `'.$FD->config('pref').'aliases`');
+                    FROM `'.$FD->env('DB_PREFIX').'aliases`');
 
     // Aliases found
     if ( $index->fetchColumn() > 0 ) {
@@ -260,7 +260,7 @@ if ( !isset ( $_POST['alias_id'] ) )
         // display Aliases
         $index = $FD->db()->conn()->query ( '
                         SELECT *
-                        FROM `'.$FD->config('pref').'aliases`
+                        FROM `'.$FD->env('DB_PREFIX').'aliases`
                         ORDER BY `alias_go` ASC, `alias_forward_to` ASC');
         while ( $data_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
 

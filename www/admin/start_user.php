@@ -2,14 +2,14 @@
 
 $index = $FD->db()->conn()->query ( '
                 SELECT `user`
-                FROM '.$FD->config('pref').'counter
+                FROM '.$FD->env('DB_PREFIX').'counter
                 LIMIT 0,1' );
 $row = $index->fetch(PDO::FETCH_ASSOC);
 $num_user = $row['user'];
 
 $index = $FD->db()->conn()->query ( '
                 SELECT `user_name`
-                FROM '.$FD->config('pref').'user
+                FROM '.$FD->env('DB_PREFIX').'user
                 ORDER BY `user_reg_date` DESC
                 LIMIT 0,1' );
 $row = $index->fetch(PDO::FETCH_ASSOC);
@@ -17,7 +17,7 @@ $last_user = $row['user_name'];
 
 $index = $FD->db()->conn()->query ( "
                 SELECT COUNT(`user_id`) AS 'num_staff'
-                FROM ".$FD->config('pref').'user
+                FROM ".$FD->env('DB_PREFIX').'user
                 WHERE `user_is_staff` = 1
                 AND `user_is_admin` = 0
                 AND `user_id` != 1' );
@@ -26,7 +26,7 @@ $num_staff = $row['num_staff'];
 
 $index = $FD->db()->conn()->query ( "
                 SELECT COUNT(`user_group_id`) AS 'num_groups'
-                FROM ".$FD->config('pref').'user_groups
+                FROM ".$FD->env('DB_PREFIX').'user_groups
                 WHERE `user_group_id` > 1' );
 $row = $index->fetch(PDO::FETCH_ASSOC);
 $num_groups = $row['num_groups'];
@@ -36,7 +36,7 @@ $temp_biggest_exists = false;
 if ( $num_groups  > 0 ) {
     $index = $FD->db()->conn()->query ( "
                     SELECT G.`user_group_name`, COUNT(U.`user_id`) AS 'biggest_num'
-                    FROM ".$FD->config('pref').'user_groups G, '.$FD->config('pref')."user U
+                    FROM ".$FD->env('DB_PREFIX').'user_groups G, '.$FD->env('DB_PREFIX')."user U
                     WHERE U.`user_group` = G.`user_group_id`
                     AND U.`user_group` > '1'
                     AND U.`user_is_staff` = '1'
@@ -55,7 +55,7 @@ if ( $temp_biggest_exists ) {
 
 $index = $FD->db()->conn()->query ( '
                 SELECT `user_group_name`
-                FROM '.$FD->config('pref').'user_groups
+                FROM '.$FD->env('DB_PREFIX').'user_groups
                 ORDER BY `user_group_date` DESC
                 LIMIT 0,1' );
 $row = $index->fetch(PDO::FETCH_ASSOC);
@@ -63,7 +63,7 @@ $last_group = $row['user_group_name'];
 
 $index = $FD->db()->conn()->query ( "
                 SELECT COUNT(`user_id`) AS 'num_admin'
-                FROM ".$FD->config('pref').'user
+                FROM ".$FD->env('DB_PREFIX').'user
                 WHERE `user_is_admin` = 1
                 OR `user_id` = 1' );
 $row = $index->fetch(PDO::FETCH_ASSOC);
@@ -72,7 +72,7 @@ $num_staff += $num_admin;
 
 $index = $FD->db()->conn()->query ( '
                 SELECT `user_name`
-                FROM '.$FD->config('pref').'user
+                FROM '.$FD->env('DB_PREFIX').'user
                 WHERE `user_id` = 1
                 LIMIT 0,1' );
 $row = $index->fetch(PDO::FETCH_ASSOC);

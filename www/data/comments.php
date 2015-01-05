@@ -10,7 +10,7 @@ $FD->setConfig('info', 'canonical', array('id'));
 $FD->loadConfig('news');
 $config_arr = $FD->configObject('news')->getConfigArray();
 //Editor config
-$index = $FD->db()->conn()->query('SELECT * FROM `'.$FD->config('pref').'editor_config`');
+$index = $FD->db()->conn()->query('SELECT * FROM `'.$FD->env('DB_PREFIX').'editor_config`');
 $editor_config = $index->fetch(PDO::FETCH_ASSOC);
 
 $SHOW = TRUE;
@@ -33,7 +33,7 @@ if ( $config_arr['com_antispam'] == 1 && isset($_SESSION['user_id']) && $_SESSIO
 settype ( $_SESSION['user_id'], 'integer' );
 $index = $FD->db()->conn()->query ( '
                 SELECT *
-                FROM `'.$FD->config('pref')."user`
+                FROM `'.$FD->env('DB_PREFIX')."user`
                 WHERE user_id = '".$_SESSION["user_id"]."'");
 $user_arr = $index->fetch(PDO::FETCH_ASSOC);
 
@@ -62,7 +62,7 @@ if (isset($_POST['add_comment']))
                 settype($_POST['id'], 'integer');
                 $index = $FD->db()->conn()->query( '
                                 SELECT `news_comments_allowed`
-                                FROM '.$FD->config('pref').'news
+                                FROM '.$FD->env('DB_PREFIX').'news
                                 WHERE news_id = '.$_POST['id'].'
                                 LIMIT 0,1' );
 
@@ -77,7 +77,7 @@ if (isset($_POST['add_comment']))
 
                     $stmt = $FD->db()->conn()->prepare('
                                     SELECT COUNT(`comment_id`) AS duplicate_comment
-                                    FROM `'.$FD->config('pref')."comments`
+                                    FROM `'.$FD->env('DB_PREFIX')."comments`
                                     WHERE
                                         `comment_text` = ?
                                     AND `comment_date` >  '".$duplicate_time."'
@@ -94,7 +94,7 @@ if (isset($_POST['add_comment']))
 
                         $stmt = $FD->db()->conn()->prepare('
                                         INSERT INTO
-                                            `'.$FD->config('pref')."comments` (
+                                            `'.$FD->env('DB_PREFIX')."comments` (
                                                 content_id,
                                                 content_type,
                                                 comment_poster,
@@ -120,7 +120,7 @@ if (isset($_POST['add_comment']))
                                            $_SERVER['REMOTE_ADDR'],
                                            $_POST['title'],
                                            $_POST['text'] ) );
-                        $FD->db()->conn()->exec('UPDATE `'.$FD->config('pref').'counter` SET comments=comments+1');
+                        $FD->db()->conn()->exec('UPDATE `'.$FD->env('DB_PREFIX').'counter` SET comments=comments+1');
                         $SHOW = FALSE;
                         $template = forward_message ( $FD->text("frontend", "news_title"), $FD->text("frontend", "comment_added"), $FD->cfg('virtualhost') );
                     } else {
@@ -160,7 +160,7 @@ if ( $SHOW == TRUE ) {
     // show news
     $index = $FD->db()->conn()->query( '
                     SELECT COUNT(*) AS news_rows
-                    FROM '.$FD->config('pref')."news
+                    FROM '.$FD->env('DB_PREFIX')."news
                     WHERE news_date <= $time
                     AND news_active = 1
                     AND news_id = ".$_GET['id'].'
@@ -171,7 +171,7 @@ if ( $SHOW == TRUE ) {
     if ($news_rows > 0) {
         $index = $FD->db()->conn()->query( '
                     SELECT *
-                    FROM '.$FD->config('pref')."news
+                    FROM '.$FD->env('DB_PREFIX')."news
                     WHERE news_date <= $time
                     AND news_active = 1
                     AND news_id = ".$_GET['id'].'
@@ -211,7 +211,7 @@ if ( $SHOW == TRUE ) {
     $html_active = ($html) ? 'an' : 'aus';
 
     // Generate comments
-    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->config('pref').'comments WHERE content_id = '.$_GET['id'].' AND content_type=\'news\' ORDER BY comment_date '.$config_arr['com_sort'] );
+    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX').'comments WHERE content_id = '.$_GET['id'].' AND content_type=\'news\' ORDER BY comment_date '.$config_arr['com_sort'] );
     $num_rows = 0;
     if (!isset($comments_template))
       $comments_template = '';
@@ -221,7 +221,7 @@ if ( $SHOW == TRUE ) {
         // Get user
         if ($comment_arr['comment_poster_id'] != 0)
         {
-            $index2 = $FD->db()->conn()->query('SELECT `user_name`, `user_is_admin`, `user_is_staff`, `user_group` FROM `'.$FD->config('pref').'user` WHERE user_id = '.$comment_arr['comment_poster_id']);
+            $index2 = $FD->db()->conn()->query('SELECT `user_name`, `user_is_admin`, `user_is_staff`, `user_group` FROM `'.$FD->env('DB_PREFIX').'user` WHERE user_id = '.$comment_arr['comment_poster_id']);
             $row = $index2->fetch(PDO::FETCH_ASSOC);
             $comment_arr['comment_poster'] = kill_replacements ( $row['user_name'], TRUE );
             $comment_arr['user_is_admin'] = $row['user_is_admin'];

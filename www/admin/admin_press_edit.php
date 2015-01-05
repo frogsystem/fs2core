@@ -27,7 +27,7 @@ if ((isset($_POST['title']) AND $_POST['title'] != '')
     settype($_POST['lang'], 'integer');
 
     $stmt = $FD->db()->conn()->prepare(
-              'UPDATE '.$FD->config('pref')."press
+              'UPDATE '.$FD->env('DB_PREFIX')."press
                SET press_title = ?,
                    press_url = ?,
                    press_date = '$datum',
@@ -64,7 +64,7 @@ elseif (isset($_POST['press_action']) && $_POST['press_action'] == 'delete'
 
     if ($_POST['delete_press'])   // Delete Press report
     {
-        $FD->db()->conn()->exec('DELETE FROM '.$FD->config('pref')."press WHERE press_id = '$_POST[press_id]'");
+        $FD->db()->conn()->exec('DELETE FROM '.$FD->env('DB_PREFIX')."press WHERE press_id = '$_POST[press_id]'");
         systext('Der Pressebericht wurde gel&ouml;scht.');
     }
     else
@@ -90,7 +90,7 @@ elseif (isset($_POST['press_action']) && $_POST['press_action'] == 'edit'
     settype($_POST['press_id'], 'integer');
 
     // Load Press Report
-    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->config('pref')."press WHERE press_id = '$_POST[press_id]'");
+    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX')."press WHERE press_id = '$_POST[press_id]'");
     $press_arr = $index->fetch(PDO::FETCH_ASSOC);
 
     $press_arr['press_title'] = killhtml($press_arr['press_title']);
@@ -233,7 +233,7 @@ elseif (isset($_POST['press_action']) && $_POST['press_action'] == 'edit'
                                 <td class="config" valign="top">
                                     <select name="game" size="1" class="text">';
 
-    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->config('pref')."press_admin
+    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX')."press_admin
                                         WHERE type = '1' ORDER BY title");
     while ($game_arr = $index->fetch(PDO::FETCH_ASSOC))
     {
@@ -255,7 +255,7 @@ elseif (isset($_POST['press_action']) && $_POST['press_action'] == 'edit'
                                 <td class="config" valign="top">
                                     <select name="cat" size="1" class="text">';
 
-    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->config('pref')."press_admin
+    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX')."press_admin
                                         WHERE type = '2' ORDER BY title");
     while ($cat_arr = $index->fetch(PDO::FETCH_ASSOC))
     {
@@ -277,7 +277,7 @@ elseif (isset($_POST['press_action']) && $_POST['press_action'] == 'edit'
                                 <td class="config" valign="top">
                                     <select name="lang" size="1" class="text">';
 
-    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->config('pref')."press_admin
+    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX')."press_admin
                                         WHERE type = '3' ORDER BY title");
     while ($lang_arr = $index->fetch(PDO::FETCH_ASSOC))
     {
@@ -316,7 +316,7 @@ elseif (isset($_POST['press_action'])
     $_POST['press_id'] = $_POST['press_id'][0];
     settype($_POST['press_id'], 'integer');
 
-    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->config('pref')."press WHERE press_id = $_POST[press_id]");
+    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX')."press WHERE press_id = $_POST[press_id]");
     $press_arr = $index->fetch(PDO::FETCH_ASSOC);
 
     $press_arr['press_title'] = killhtml($press_arr['press_title']);
@@ -327,11 +327,11 @@ elseif (isset($_POST['press_action'])
     settype($press_arr['press_cat'], 'integer');
     settype($press_arr['press_lang'], 'integer');
 
-    $index = $FD->db()->conn()->query('SELECT title FROM '.$FD->config('pref')."press_admin WHERE id = $press_arr[press_game] AND type = 1");
+    $index = $FD->db()->conn()->query('SELECT title FROM '.$FD->env('DB_PREFIX')."press_admin WHERE id = $press_arr[press_game] AND type = 1");
     $press_arr['press_game'] = $index->fetchColumn();
-    $index = $FD->db()->conn()->query('SELECT title FROM '.$FD->config('pref')."press_admin WHERE id = $press_arr[press_cat] AND type = 2");
+    $index = $FD->db()->conn()->query('SELECT title FROM '.$FD->env('DB_PREFIX')."press_admin WHERE id = $press_arr[press_cat] AND type = 2");
     $press_arr['press_cat'] = $index->fetchColumn();
-    $index = $FD->db()->conn()->query('SELECT title FROM '.$FD->config('pref')."press_admin WHERE id = $press_arr[press_lang] AND type = 3");
+    $index = $FD->db()->conn()->query('SELECT title FROM '.$FD->env('DB_PREFIX')."press_admin WHERE id = $press_arr[press_lang] AND type = 3");
     $press_arr['press_lang'] = $index->fetchColumn();
 
     echo'
@@ -380,7 +380,7 @@ elseif (isset($_POST['press_action'])
 //////////////////////////
 /// List Press reports ///
 //////////////////////////
-$index = $FD->db()->conn()->query('SELECT COUNT(press_id) FROM '.$FD->config('pref').'press');
+$index = $FD->db()->conn()->query('SELECT COUNT(press_id) FROM '.$FD->env('DB_PREFIX').'press');
 $num_rows = $index->fetchColumn();
 
 if (!isset($_POST['press_id']) && $num_rows > 0)
@@ -446,7 +446,7 @@ if (!isset($_POST['press_id']) && $num_rows > 0)
                                         ($_POST['gameid'] == 0 ? ' selected="selected"' : '').
                                         '>alle anzeigen</option>';
 
-    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->config('pref').'press_admin WHERE type = 1 ORDER BY title');
+    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX').'press_admin WHERE type = 1 ORDER BY title');
     while ($game_arr = $index->fetch(PDO::FETCH_ASSOC))
     {
         echo '
@@ -489,7 +489,7 @@ if (!isset($_POST['press_id']) && $num_rows > 0)
                                         ($_POST['catid'] == 0 ? ' selected="selected"' : '').
                                         '>alle anzeigen</option>';
 
-    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->config('pref').'press_admin WHERE type = 2 ORDER BY title');
+    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX').'press_admin WHERE type = 2 ORDER BY title');
     while ($cat_arr = $index->fetch(PDO::FETCH_ASSOC))
     {
         echo '
@@ -511,7 +511,7 @@ if (!isset($_POST['press_id']) && $num_rows > 0)
                                         ($_POST['langid'] == 0 ? ' selected="selected"' : '').
                                         '>alle anzeigen</option>';
 
-    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->config('pref').'press_admin WHERE type = 3 ORDER BY title');
+    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX').'press_admin WHERE type = 3 ORDER BY title');
     while ($lang_arr = $index->fetch(PDO::FETCH_ASSOC))
     {
         echo '
@@ -533,7 +533,7 @@ if (!isset($_POST['press_id']) && $num_rows > 0)
 //// Select Press reports ////
 //////////////////////////////
     $index = $FD->db()->conn()->query('SELECT COUNT(*)
-                          FROM '.$FD->config('pref')."press
+                          FROM '.$FD->env('DB_PREFIX')."press
                           $filterwhere
                           ORDER BY $_POST[order_by] $_POST[order_type]");
     if ($index->fetchColumn() > 0)
@@ -559,16 +559,16 @@ if (!isset($_POST['press_id']) && $num_rows > 0)
         ';
 
         $index = $FD->db()->conn()->query('SELECT press_id, press_title, press_date, press_game, press_cat, press_lang
-                          FROM '.$FD->config('pref')."press
+                          FROM '.$FD->env('DB_PREFIX')."press
                           $filterwhere
                           ORDER BY $_POST[order_by] $_POST[order_type]");
         while ($press_arr = $index->fetch(PDO::FETCH_ASSOC))
         {
-            $index2 = $FD->db()->conn()->query('SELECT title FROM '.$FD->config('pref')."press_admin WHERE id = $press_arr[press_game] AND type = 1");
+            $index2 = $FD->db()->conn()->query('SELECT title FROM '.$FD->env('DB_PREFIX')."press_admin WHERE id = $press_arr[press_game] AND type = 1");
             $press_arr['press_game'] = $index2->fetchColumn();
-            $index2 = $FD->db()->conn()->query('SELECT title FROM '.$FD->config('pref')."press_admin WHERE id = $press_arr[press_cat] AND type = 2");
+            $index2 = $FD->db()->conn()->query('SELECT title FROM '.$FD->env('DB_PREFIX')."press_admin WHERE id = $press_arr[press_cat] AND type = 2");
             $press_arr['press_cat'] = $index2->fetchColumn();
-            $index2 = $FD->db()->conn()->query('SELECT title FROM '.$FD->config('pref')."press_admin WHERE id = $press_arr[press_lang] AND type = 3");
+            $index2 = $FD->db()->conn()->query('SELECT title FROM '.$FD->env('DB_PREFIX')."press_admin WHERE id = $press_arr[press_lang] AND type = 3");
             $press_arr['press_lang'] = $index2->fetchColumn();
 
             $press_arr['press_date'] = date('d.m.Y', $press_arr['press_date']);

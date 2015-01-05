@@ -43,7 +43,7 @@ if (
     // style tag
     try {
         $data['style_tag'] = $FD->db()->conn()->query(
-                                 'SELECT style_tag FROM '.$FD->config('pref').'styles
+                                 'SELECT style_tag FROM '.$FD->env('DB_PREFIX').'styles
                                   WHERE `style_id` = '.intval($_POST['style_id']).' AND `style_id` != 0 AND `style_allow_use` = 1
                                   LIMIT 1');
         $data['style_tag'] = $data['style_tag']->fetchColumn();
@@ -119,7 +119,7 @@ if ( TRUE )
 
     // styles
     $styles = $FD->db()->conn()->query(
-                  'SELECT style_id, style_tag FROM '.$FD->config('pref').'styles
+                  'SELECT style_id, style_tag FROM '.$FD->env('DB_PREFIX').'styles
                   WHERE `style_id` != 0 AND `style_allow_use` = 1
                   ORDER BY `style_tag`');
     $styles = $styles->fetchAll(PDO::FETCH_ASSOC);

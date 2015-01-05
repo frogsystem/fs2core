@@ -35,7 +35,7 @@ if (
         // SQL-Queries
         $stmt = $FD->db()->conn()->prepare( '
                 INSERT INTO
-                    `'.$FD->config('pref')."styles`
+                    `'.$FD->env('DB_PREFIX')."styles`
                     ( `style_tag`, `style_allow_use`, `style_allow_edit` )
                 VALUES
                     ( ?, '".$_POST['style_allow_use']."', '".$_POST['style_allow_edit']."' )" );
@@ -46,7 +46,7 @@ if (
             // SQL-Queries
             $index = $FD->db()->conn()->query ( '
                             SELECT `style_tag`
-                            FROM `'.$FD->config('pref').'styles`
+                            FROM `'.$FD->env('DB_PREFIX').'styles`
                             WHERE `style_id` = '.$_POST['copy_style_id'].'
                             LIMIT 0,1' );
             $copy_style_path = FS2STYLES . '/' . $index->fetchColumn();
@@ -149,7 +149,7 @@ if ( !is_writable ( FS2STYLES ) ) {
 
     $index = $FD->db()->conn()->query ( '
                     SELECT `style_id`, `style_tag`
-                    FROM `'.$FD->config('pref').'styles`
+                    FROM `'.$FD->env('DB_PREFIX').'styles`
                     ORDER BY `style_id`' );
     while ( $style_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
         settype ( $style_arr['style_id'], 'integer' );

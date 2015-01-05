@@ -11,7 +11,7 @@ if ((isset($_POST['d']) && isset($_POST['m']) && isset($_POST['y']) && isset($_P
     settype($_POST['y'], 'integer');
     settype($_POST['v'], 'integer');
     settype($_POST['h'], 'integer');
-    $FD->db()->conn()->exec('UPDATE '.$FD->config('pref')."counter_stat
+    $FD->db()->conn()->exec('UPDATE '.$FD->env('DB_PREFIX')."counter_stat
                  SET s_visits = $_POST[v],
                      s_hits   = $_POST[h]
                  WHERE s_day   = $_POST[d] AND
@@ -31,7 +31,7 @@ elseif ((isset($_POST['ed']) && isset($_POST['em']) && isset($_POST['ey'])) AND 
     settype($_POST['ey'], 'integer');
     $index = $FD->db()->conn()->query('SELECT s_visits,
                                  s_hits
-                          FROM '.$FD->config('pref')."counter_stat
+                          FROM '.$FD->env('DB_PREFIX')."counter_stat
                           WHERE s_day = $_POST[ed] and
                                 s_month = $_POST[em] and
                                 s_year = $_POST[ey]");
@@ -108,7 +108,7 @@ elseif ((isset($_POST['editvisits']) && $_POST['editvisits'] != '' &&
     settype($_POST['editartikel'], 'integer');
     settype($_POST['editcomments'], 'integer');
     $FD->db()->conn()->exec(
-        'UPDATE '.$FD->config('pref')."counter
+        'UPDATE '.$FD->env('DB_PREFIX')."counter
          SET visits = '$_POST[editvisits]',
              hits = '$_POST[edithits]',
              user = '$_POST[edituser]',
@@ -124,23 +124,23 @@ elseif ((isset($_POST['editvisits']) && $_POST['editvisits'] != '' &&
 
 elseif (isset($_POST['do']) && $_POST['do'] == 'sync')
 {
-    $index = $FD->db()->conn()->query("SELECT SUM(s_hits) AS 'hits', SUM(s_visits) AS 'visits' FROM ".$FD->config('pref').'counter_stat');
+    $index = $FD->db()->conn()->query("SELECT SUM(s_hits) AS 'hits', SUM(s_visits) AS 'visits' FROM ".$FD->env('DB_PREFIX').'counter_stat');
     $sync_arr = $index->fetch(PDO::FETCH_ASSOC);
 
-    $index = $FD->db()->conn()->query("SELECT COUNT(user_id) AS 'user' FROM ".$FD->config('pref').'user');
+    $index = $FD->db()->conn()->query("SELECT COUNT(user_id) AS 'user' FROM ".$FD->env('DB_PREFIX').'user');
     $sync_arr['user'] = $index->fetchColumn();
 
-    $index = $FD->db()->conn()->query("SELECT COUNT(news_id) AS 'news' FROM ".$FD->config('pref').'news');
+    $index = $FD->db()->conn()->query("SELECT COUNT(news_id) AS 'news' FROM ".$FD->env('DB_PREFIX').'news');
     $sync_arr['news'] = $index->fetchColumn();
 
-    $index = $FD->db()->conn()->query("SELECT COUNT(comment_id) AS 'comments' FROM ".$FD->config('pref').'comments');
+    $index = $FD->db()->conn()->query("SELECT COUNT(comment_id) AS 'comments' FROM ".$FD->env('DB_PREFIX').'comments');
     $sync_arr['comments'] = $index->fetchColumn();
 
-    $index = $FD->db()->conn()->query("SELECT COUNT(article_id) AS 'articles' FROM ".$FD->config('pref').'articles');
+    $index = $FD->db()->conn()->query("SELECT COUNT(article_id) AS 'articles' FROM ".$FD->env('DB_PREFIX').'articles');
     $sync_arr['articles'] = $index->fetchColumn();
 
     $FD->db()->conn()->exec(
-        'UPDATE '.$FD->config('pref')."counter
+        'UPDATE '.$FD->env('DB_PREFIX')."counter
          SET visits = '$sync_arr[visits]',
              hits = '$sync_arr[hits]',
              user = '$sync_arr[user]',
@@ -160,7 +160,7 @@ else
     $heute['m'] = date('m');
     $heute['y'] = date('Y');
 
-    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->config('pref').'counter');
+    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX').'counter');
     $counter_arr = $index->fetch(PDO::FETCH_ASSOC);
 
     echo'

@@ -17,7 +17,7 @@ if (isset($_POST['sended']))
     for ($i=1; $i<=5; $i++) {
         if ($_FILES['img'.$i]['name'] != '') {
             // Insert into DB
-            $stmt = $FD->db()->conn()->prepare('INSERT INTO '.$FD->config('pref')."screen (`cat_id`, `screen_name`) VALUES ('".$_POST['catid']."', ?)");
+            $stmt = $FD->db()->conn()->prepare('INSERT INTO '.$FD->env('DB_PREFIX')."screen (`cat_id`, `screen_name`) VALUES ('".$_POST['catid']."', ?)");
             $stmt->execute(array($_POST['title'.$i]));
             $id = $FD->db()->conn()->lastInsertId();
 
@@ -27,7 +27,7 @@ if (isset($_POST['sended']))
 
             // Upload Failed => Delete from DB
             if ($upload != 0) {
-                $FD->db()->conn()->exec('DELETE FROM '.$FD->config('pref')."screen WHERE screen_id = '".$id."'");
+                $FD->db()->conn()->exec('DELETE FROM '.$FD->env('DB_PREFIX')."screen WHERE screen_id = '".$id."'");
 
             // Else create Thumb
             } else {
@@ -75,7 +75,7 @@ if (!isset($_POST['catid']))
 {
   $_POST['catid'] = -1;
 }
-$index = $FD->db()->conn()->query('SELECT * FROM '.$FD->config('pref').'screen_cat WHERE cat_type = 1');
+$index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX').'screen_cat WHERE cat_type = 1');
 while ($cat_arr = $index->fetch(PDO::FETCH_ASSOC))
 {
     echo'

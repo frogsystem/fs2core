@@ -14,7 +14,7 @@ if (isset($_GET['h'])) {
                 //load user data from db
                 $userdata = $FD->db()->conn()->query(
                                   'SELECT user_id, user_name, user_mail
-                                   FROM '.$FD->config('pref').'user
+                                   FROM '.$FD->env('DB_PREFIX').'user
                                    WHERE user_id = '.intval($hash->getTypeId()).' LIMIT 1');
                 $userdata = $userdata->fetch(PDO::FETCH_ASSOC);
 
@@ -26,7 +26,7 @@ if (isset($_GET['h'])) {
 
                 // save password to db
                 $stmt = $FD->db()->conn()->prepare(
-                              'UPDATE '.$FD->config('pref').'user
+                              'UPDATE '.$FD->env('DB_PREFIX').'user
                                SET user_password = ?, user_salt = ?
                                WHERE user_id = '.intval($userdata['user_id']).'
                                LIMIT 1');

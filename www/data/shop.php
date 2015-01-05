@@ -9,7 +9,7 @@ $screen_config_arr = $FD->configObject('screens')->getConfigArray();
 // Get Data from DB
 $index = $FD->db()->conn()->query ( '
                 SELECT *
-                FROM `'.$FD->config('pref').'shop`' );
+                FROM `'.$FD->env('DB_PREFIX').'shop`' );
 
 // Security Functions
 $shop_items = array();

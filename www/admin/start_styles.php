@@ -4,7 +4,7 @@ $active_style = $FD->config('style_tag');
 
 $index = $FD->db()->conn()->query ( "
                 SELECT COUNT(`style_id`) AS 'num_styles'
-                FROM `".$FD->config('pref')."styles`
+                FROM `".$FD->env('DB_PREFIX')."styles`
                 WHERE `style_id` != 0
                 AND `style_tag` != 'default'");
 $row = $index->fetch(PDO::FETCH_ASSOC);
@@ -12,7 +12,7 @@ $num_styles = $row['num_styles'];
 
 $index = $FD->db()->conn()->query ( '
                 SELECT `style_tag`
-                FROM `'.$FD->config('pref').'styles`
+                FROM `'.$FD->env('DB_PREFIX').'styles`
                 WHERE `style_id` != 0
                 AND `style_tag` != \'default\'
                 ORDER BY `style_id` DESC

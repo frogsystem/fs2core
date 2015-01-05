@@ -9,7 +9,7 @@ function user_name_free ( $USERNAME ) {
 
     $stmt = $FD->db()->conn()->prepare('
                 SELECT COUNT(`user_id`)
-                FROM `'.$FD->config('pref')."user`
+                FROM `'.$FD->env('DB_PREFIX')."user`
                 WHERE `user_name` = ?");
     $stmt->execute(array($USERNAME));
     if ( $stmt->fetchColumn() > 0 ) {
@@ -75,7 +75,7 @@ if (
 
     // SQL-Queries
     $stmt = $FD->db()->conn()->prepare ( '
-                INSERT INTO `'.$FD->config('pref')."user`
+                INSERT INTO `'.$FD->env('DB_PREFIX')."user`
                     ( `user_name`, `user_password`, `user_salt`,
                     `user_mail`, `user_is_staff`, `user_group`, `user_is_admin`,
                     `user_reg_date`, `user_show_mail`, `user_homepage`,
@@ -109,7 +109,7 @@ if (
     $message = 'Benutzer wurde erfolgreich hinzugef&uuml;gt';
 
     $FD->db()->conn()->exec ( '
-        UPDATE '.$FD->config('pref').'counter
+        UPDATE '.$FD->env('DB_PREFIX').'counter
         SET `user` = `user`+1' );
 
     // upload image
@@ -301,7 +301,7 @@ if ( TRUE )
 
     $index = $FD->db()->conn()->query ('
                     SELECT `user_group_id`, `user_group_name`
-                    FROM '.$FD->config('pref').'user_groups
+                    FROM '.$FD->env('DB_PREFIX').'user_groups
                     WHERE `user_group_id` > 1
                     ORDER BY `user_group_name`' );
 
@@ -312,7 +312,7 @@ if ( TRUE )
 
     $index = $FD->db()->conn()->query ('
                     SELECT `user_group_id`, `user_group_name`
-                    FROM '.$FD->config('pref').'user_groups
+                    FROM '.$FD->env('DB_PREFIX').'user_groups
                     WHERE `user_group_id` = 1
                     ORDER BY `user_group_name`
                     LIMIT 0,1');

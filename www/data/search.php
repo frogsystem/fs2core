@@ -65,7 +65,7 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
 
                 // get data for entry
                 $news = $FD->db()->conn()->query(
-                            'SELECT news_id, news_title, news_date FROM '.$FD->config('pref').'news
+                            'SELECT news_id, news_title, news_date FROM '.$FD->env('DB_PREFIX').'news
                              WHERE `news_id` = '.intval($found['id']).' AND `news_date` <= '.time().' AND `news_active` = 1');
                 $news = $news->fetch(PDO::FETCH_ASSOC);
 
@@ -129,7 +129,7 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
                 // get data for entry
                 $article = $FD->db()->conn()->query(
                                 'SELECT article_id, article_url, article_title, article_date
-                                 FROM '.$FD->config('pref').'articles
+                                 FROM '.$FD->env('DB_PREFIX').'articles
                                  WHERE `article_id` = '.intval($found['id']));
                 $article = $article->fetch(PDO::FETCH_ASSOC);
 
@@ -199,7 +199,7 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
 
                 // get data for entry
                 $dl = $FD->db()->conn()->query(
-                          'SELECT dl_id, dl_date, dl_name FROM '.$FD->config('pref').'dl
+                          'SELECT dl_id, dl_date, dl_name FROM '.$FD->env('DB_PREFIX').'dl
                            WHERE `dl_id` = '.intval($found['id']).' AND `dl_open` = 1');
                 $dl = $dl->fetch(PDO::FETCH_ASSOC);
 

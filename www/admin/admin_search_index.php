@@ -54,8 +54,8 @@ if ( isset ( $_POST['do'] ) && ( in_array ( $_POST['do'], array ( 'update', 'new
 if ( TRUE )
 {
     // Get some Data
-    $words = $FD->db()->conn()->query ( "SELECT COUNT(`search_word_id`) AS 'words' FROM `".$FD->config('pref').'search_words`' );
-    $docs = $FD->db()->conn()->query ( "SELECT COUNT(`search_time_id`) AS 'docs' FROM `".$FD->config('pref').'search_time`'  );
+    $words = $FD->db()->conn()->query ( "SELECT COUNT(`search_word_id`) AS 'words' FROM `".$FD->env('DB_PREFIX').'search_words`' );
+    $docs = $FD->db()->conn()->query ( "SELECT COUNT(`search_time_id`) AS 'docs' FROM `".$FD->env('DB_PREFIX').'search_time`'  );
 
     // Display Form
     echo '

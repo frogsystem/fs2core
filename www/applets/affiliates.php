@@ -6,7 +6,7 @@ $config_arr = $FD->configObject('affiliates')->getConfigArray();
 // Get Affiliates
 $index = $FD->db()->conn()->query ( '
                 SELECT *
-                FROM `'.$FD->config('pref').'partner`
+                FROM `'.$FD->env('DB_PREFIX').'partner`
                 ORDER BY `partner_id`' );
 
 $all_arr = array();

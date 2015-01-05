@@ -25,14 +25,14 @@ if (
     settype ( $_POST['applet_include'], 'integer' );
 
     // Check if Applet exists
-    $index = $FD->db()->conn()->prepare ( 'SELECT `applet_id` FROM `'.$FD->config('pref').'applets` WHERE `applet_file` = ?' );
+    $index = $FD->db()->conn()->prepare ( 'SELECT `applet_id` FROM `'.$FD->env('DB_PREFIX').'applets` WHERE `applet_file` = ?' );
     $index->execute(array($_POST['applet_file']));
     $row = $index->fetch(PDO::FETCH_ASSOC);
 
     // New Applet
     if ( $row === false ) {
         // SQL-Queries
-        $stmt = $FD->db()->conn()->prepare ( 'INSERT INTO `'.$FD->config('pref')."applets` (
+        $stmt = $FD->db()->conn()->prepare ( 'INSERT INTO `'.$FD->env('DB_PREFIX')."applets` (
                                   `applet_file`,
                                   `applet_active`,
                                   `applet_include`,

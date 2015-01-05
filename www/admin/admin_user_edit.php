@@ -9,7 +9,7 @@ function user_name_free_or_itself ( $USERNAME, $USER_ID ) {
 
     $index = $FD->db()->conn()->prepare ( '
                     SELECT `user_id`
-                    FROM `'.$FD->config('pref')."user`
+                    FROM `'.$FD->env('DB_PREFIX')."user`
                     WHERE `user_name` = ?
                     LIMIT 0,1" );
     $index->execute(array($USERNAME));
@@ -90,7 +90,7 @@ if (
 
     $index = $FD->db()->conn()->query ( '
                     SELECT `user_is_staff`, `user_is_admin`
-                    FROM '.$FD->config('pref')."user
+                    FROM '.$FD->env('DB_PREFIX')."user
                     WHERE `user_id` = '".$_POST['user_id']."'
                     LIMIT 0,1" );
     $row = $index->fetch(PDO::FETCH_ASSOC);
@@ -101,14 +101,14 @@ if (
     if ( $was_staff == 1 && $_POST['user_is_staff'] == 0 ) {
         $FD->db()->conn()->exec ('
                 DELETE
-                FROM '.$FD->config('pref')."user_permissions
+                FROM '.$FD->env('DB_PREFIX')."user_permissions
                 WHERE `perm_for_group` = '0'
                 AND `x_id` = '".$_POST['user_id']."'" );
     }
 
     // SQL-Queries
     $stmt = $FD->db()->conn()->prepare ( '
-                UPDATE `'.$FD->config('pref')."user`
+                UPDATE `'.$FD->env('DB_PREFIX')."user`
                 SET
                     `user_name` = ?,
                     ".$pw_update."
@@ -194,7 +194,7 @@ elseif (
         // get data from db
         $index = $FD->db()->conn()->query ( '
                         SELECT `user_name`
-                        FROM '.$FD->config('pref')."user
+                        FROM '.$FD->env('DB_PREFIX')."user
                         WHERE `user_id` = '".$_POST['user_id']."'
                         LIMIT 0,1" );
         $user_arr = $index->fetch(PDO::FETCH_ASSOC);
@@ -202,54 +202,54 @@ elseif (
         // Delete Permissions
         $FD->db()->conn()->exec ( '
                 DELETE
-                FROM '.$FD->config('pref')."user_permissions
+                FROM '.$FD->env('DB_PREFIX')."user_permissions
                 WHERE `perm_for_group` = '0'
                 AND `x_id` = '".$_POST['user_id']."'" );
 
         // update stats
         $FD->db()->conn()->exec ( '
-                UPDATE '.$FD->config('pref').'counter
+                UPDATE '.$FD->env('DB_PREFIX').'counter
                 SET `user` = `user`-1' );
 
         // update groups
         $FD->db()->conn()->exec ( '
-                UPDATE '.$FD->config('pref')."user_groups
+                UPDATE '.$FD->env('DB_PREFIX')."user_groups
                 SET `user_group_user` = '1'
                 WHERE `user_group_user` = '".$_POST['user_id']."'" );
 
         // update articles
         $FD->db()->conn()->exec ( '
-                UPDATE '.$FD->config('pref')."articles
+                UPDATE '.$FD->env('DB_PREFIX')."articles
                 SET `article_user` = '0'
                 WHERE `article_user` = '".$_POST['user_id']."'" );
 
         // update articles_cat
         $FD->db()->conn()->exec ( '
-                UPDATE '.$FD->config('pref')."articles_cat
+                UPDATE '.$FD->env('DB_PREFIX')."articles_cat
                 SET `cat_user` = '1'
                 WHERE `cat_user` = '".$_POST['user_id']."'" );
 
         // update dl
         $FD->db()->conn()->exec ( '
-                UPDATE '.$FD->config('pref')."dl
+                UPDATE '.$FD->env('DB_PREFIX')."dl
                 SET `user_id` = '1'
                 WHERE `user_id` = '".$_POST['user_id']."'" );
 
         // update news
         $FD->db()->conn()->exec ( '
-                UPDATE '.$FD->config('pref')."news
+                UPDATE '.$FD->env('DB_PREFIX')."news
                 SET `user_id` = '1'
                 WHERE `user_id` = '".$_POST['user_id']."'" );
 
         // update news_cat
         $FD->db()->conn()->exec ( '
-                UPDATE '.$FD->config('pref')."news_cat
+                UPDATE '.$FD->env('DB_PREFIX')."news_cat
                 SET `cat_user` = '1'
                 WHERE `cat_user` = '".$_POST['user_id']."'" );
 
         // update comments
         $stmt = $FD->db()->conn()->prepare ( '
-                    UPDATE '.$FD->config('pref')."comments
+                    UPDATE '.$FD->env('DB_PREFIX')."comments
                     SET `comment_poster_id` = '0',
                         `comment_poster` = ?
                     WHERE `comment_poster_id` = '".$_POST['user_id']."'" );
@@ -257,7 +257,7 @@ elseif (
 
         // SQL-Delete-Query
         $FD->db()->conn()->exec ('
-                DELETE FROM '.$FD->config('pref')."user
+                DELETE FROM '.$FD->env('DB_PREFIX')."user
                  WHERE user_id = '".$_POST['user_id']."'" );
         $message = 'Benutzer wurde erfolgreich gel&ouml;scht';
 
@@ -322,7 +322,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
         } else {
             $index = $FD->db()->conn()->query ( '
                             SELECT *
-                            FROM '.$FD->config('pref')."user
+                            FROM '.$FD->env('DB_PREFIX')."user
                             WHERE `user_id` = '".$_POST['user_id']."'
                             LIMIT 0,1" );
             $user_arr = $index->fetch(PDO::FETCH_ASSOC);
@@ -520,7 +520,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
 
         $index = $FD->db()->conn()->query ('
                         SELECT `user_group_id`, `user_group_name`
-                        FROM '.$FD->config('pref')."user_groups
+                        FROM '.$FD->env('DB_PREFIX')."user_groups
                         WHERE `user_group_id` > 1
                         ORDER BY `user_group_name`" );
 
@@ -531,7 +531,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
 
         $index = $FD->db()->conn()->query ('
                         SELECT `user_group_id`, `user_group_name`
-                        FROM '.$FD->config('pref').'user_groups
+                        FROM '.$FD->env('DB_PREFIX').'user_groups
                         WHERE `user_group_id` = 1
                         ORDER BY `user_group_name`
                         LIMIT 0,1' );
@@ -624,7 +624,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
         // get data from db
         $index = $FD->db()->conn()->query ( '
                         SELECT `user_name`
-                        FROM '.$FD->config('pref')."user
+                        FROM '.$FD->env('DB_PREFIX')."user
                         WHERE `user_id` = '".$_POST['user_id']."'
                         LIMIT 0,1" );
         $user_arr = $index->fetch(PDO::FETCH_ASSOC);
@@ -718,7 +718,7 @@ if ( !isset ( $_POST['user_id'] ) )
         $sql_filter = '%'.$_POST['filter'].'%';
         $stmt = $FD->db()->conn()->prepare ( '
                         SELECT COUNT(`user_id`)
-                        FROM '.$FD->config('pref')."user
+                        FROM '.$FD->env('DB_PREFIX')."user
                         WHERE ( `user_name` LIKE ? OR `user_mail` LIKE ? )
                         AND `user_id` != '".$_SESSION['user_id']."'
                         AND `user_id` != '1'" );
@@ -740,7 +740,7 @@ if ( !isset ( $_POST['user_id'] ) )
             // display users
             $index = $FD->db()->conn()->prepare ( '
                             SELECT `user_id`, `user_name`, `user_mail`, `user_is_staff`, `user_is_admin`
-                            FROM '.$FD->config('pref')."user
+                            FROM '.$FD->env('DB_PREFIX')."user
                             WHERE ( `user_name` LIKE ? OR `user_mail` LIKE ? )
                             AND `user_id` != '".$_SESSION['user_id']."'
                             AND `user_id` != '1'

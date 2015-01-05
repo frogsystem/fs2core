@@ -9,7 +9,7 @@ $FD->loadConfig('news');
 ////// Suchfeld erzeugen ///////
 ////////////////////////////////
 
-$index = $FD->db()->conn()->query('SELECT news_date FROM '.$FD->config('pref').'news ORDER BY news_date ASC LIMIT 0,1' );
+$index = $FD->db()->conn()->query('SELECT news_date FROM '.$FD->env('DB_PREFIX').'news ORDER BY news_date ASC LIMIT 0,1' );
 $years_arr = $index->fetch(PDO::FETCH_ASSOC);
 if ($years_arr == false) {
     $years = date('Y');
@@ -48,7 +48,7 @@ if (isset($_REQUEST['year']) && isset($_REQUEST['month']))
     // News lesen und ausgeben
     $index = $FD->db()->conn()->query ( '
                             SELECT COUNT(*)
-                            FROM '.$FD->config('pref').'news
+                            FROM '.$FD->env('DB_PREFIX').'news
                             WHERE news_date > '.$starttime.'
                             AND `news_date` < '.$endtime.'
                             AND `news_active` = 1
@@ -59,7 +59,7 @@ if (isset($_REQUEST['year']) && isset($_REQUEST['month']))
     {
         $index = $FD->db()->conn()->query ( '
                             SELECT *
-                            FROM '.$FD->config('pref').'news
+                            FROM '.$FD->env('DB_PREFIX').'news
                             WHERE news_date > '.$starttime.'
                             AND `news_date` < '.$endtime.'
                             AND `news_active` = 1
@@ -90,7 +90,7 @@ elseif (isset($_REQUEST['keyword']))
     // News lesen und ausgeben
     $stmt = $FD->db()->conn()->prepare ( '
                     SELECT COUNT(*)
-                    FROM '.$FD->config('pref')."news
+                    FROM '.$FD->env('DB_PREFIX')."news
                     WHERE ( news_text LIKE ?
                     OR news_title LIKE ? )
                     AND `news_active` = 1
@@ -102,7 +102,7 @@ elseif (isset($_REQUEST['keyword']))
     {
         $stmt = $FD->db()->conn()->prepare ( '
                     SELECT *
-                    FROM '.$FD->config('pref')."news
+                    FROM '.$FD->env('DB_PREFIX')."news
                     WHERE ( news_text LIKE ?
                     OR news_title LIKE ? )
                     AND `news_active` = 1

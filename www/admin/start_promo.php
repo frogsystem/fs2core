@@ -2,14 +2,14 @@
 
 $index = $FD->db()->conn()->query ( "
 				SELECT COUNT(`partner_id`) AS 'num_partner'
-				FROM ".$FD->config('pref').'partner' );
+				FROM ".$FD->env('DB_PREFIX').'partner' );
 $row = $index->fetch(PDO::FETCH_ASSOC);
 $num_partner = $row['num_partner'];
 
 if ( $num_partner  > 0 ) {
 	$index = $FD->db()->conn()->query ( '
 				SELECT `partner_name`
-				FROM '.$FD->config('pref').'partner
+				FROM '.$FD->env('DB_PREFIX').'partner
 				ORDER BY `partner_id` DESC
 				LIMIT 0,1' );
     $row = $index->fetch(PDO::FETCH_ASSOC);
@@ -18,14 +18,14 @@ if ( $num_partner  > 0 ) {
 
 $index = $FD->db()->conn()->query ( "
 				SELECT COUNT(`artikel_id`) AS 'num_shop'
-				FROM ".$FD->config('pref').'shop' );
+				FROM ".$FD->env('DB_PREFIX').'shop' );
 $row = $index->fetch(PDO::FETCH_ASSOC);
 $num_shop = $row['num_shop'];
 
 if ( $num_shop  > 0 ) {
 	$index = $FD->db()->conn()->query ( '
 				SELECT `artikel_name`
-				FROM '.$FD->config('pref').'shop
+				FROM '.$FD->env('DB_PREFIX').'shop
 				ORDER BY `artikel_id` DESC
 				LIMIT 0,1'  );
     $row = $index->fetch(PDO::FETCH_ASSOC);

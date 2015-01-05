@@ -97,7 +97,7 @@ class HashMapper
         if (empty($time))
             $time = $FD->env('time');
 
-        $FD->db()->conn()->exec('DELETE FROM '.$FD->config('pref').'hashes
+        $FD->db()->conn()->exec('DELETE FROM '.$FD->env('DB_PREFIX').'hashes
                                   WHERE `deleteTime` < '.intval($time));
     }
 

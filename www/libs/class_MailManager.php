@@ -16,7 +16,7 @@ class MailManager
         global $FD;
 
         try {
-            $html = $FD->db()->conn()->query('SELECT html FROM '.$FD->config('pref').'email LIMIT 1');
+            $html = $FD->db()->conn()->query('SELECT html FROM '.$FD->env('DB_PREFIX').'email LIMIT 1');
             $html = $html->fetchColumn();
             return (boolean) $html;
         } catch (Exception $e) {
@@ -30,7 +30,7 @@ class MailManager
 
         try {
             $data = $FD->db()->conn()->query(
-                          'SELECT use_admin_mail, email FROM '.$FD->config('pref').'email LIMIT 1');
+                          'SELECT use_admin_mail, email FROM '.$FD->env('DB_PREFIX').'email LIMIT 1');
             $data = $data->fetch(PDO::FETCH_ASSOC);
             if ($data['use_admin_mail'] == 1)
                 return $FD->cfg('admin_mail');

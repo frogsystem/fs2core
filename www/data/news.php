@@ -23,7 +23,7 @@ $config_arr = $FD->configObject('news')->getConfigArray();
 $time = time();
 
 // Headlines erzeugen
-$index = $FD->db()->conn()->query('SELECT * FROM '.$FD->config('pref')."news
+$index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX')."news
                       WHERE news_date <= $time
                       AND news_active = 1
                       ORDER BY news_date DESC
@@ -53,7 +53,7 @@ unset($newshead_arr);
 
 // Neuste Downloads erzeugen
 $index = $FD->db()->conn()->query('SELECT dl_name, dl_id, dl_date
-                      FROM '.$FD->config('pref')."dl
+                      FROM '.$FD->env('DB_PREFIX')."dl
                       WHERE dl_open = 1
                       ORDER BY dl_date DESC
                       LIMIT $config_arr[num_head]");
@@ -95,7 +95,7 @@ $headline_template = $template;
 ////// News ausgeben ///////
 ////////////////////////////
 
-$index = $FD->db()->conn()->query('SELECT * FROM '.$FD->config('pref')."news
+$index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX')."news
                       WHERE news_date <= $time
                       AND news_active = 1
                       ".$cat_filter."

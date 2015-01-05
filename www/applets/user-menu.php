@@ -30,7 +30,7 @@ if ( is_loggedin() ) {
     // Admin-Link
     $index = $FD->db()->conn()->query ('
                             SELECT `user_id`, `user_is_staff`, `user_is_admin`
-                            FROM '.$FD->config('pref')."user
+                            FROM '.$FD->env('DB_PREFIX')."user
                             WHERE `user_id` = '".$user_id."'" );
     $data_arr = $index->fetch( PDO::FETCH_ASSOC );
     if ( $data_arr['user_is_staff'] == 1 || $data_arr['user_is_admin'] == 1 || $data_arr['user_id'] == 1 ) {

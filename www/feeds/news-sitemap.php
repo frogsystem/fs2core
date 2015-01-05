@@ -51,8 +51,8 @@ class NewsSitemap extends NewsFeed {
         // Get News from DB
         $news_arr = $FD->db()->conn()->query(
                         'SELECT N.news_id, N.news_text, N.news_title, N.news_date, N.user_id, C.cat_name
-                         FROM '.$FD->config('pref').'news N
-                         LEFT JOIN '.$FD->config('pref').'news_cat C
+                         FROM '.$FD->env('DB_PREFIX').'news N
+                         LEFT JOIN '.$FD->env('DB_PREFIX').'news_cat C
                          ON N.cat_id = C.cat_id
                          WHERE N.`news_active` = 1
                          AND N.`news_date` <= '.$FD->env('time').'

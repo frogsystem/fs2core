@@ -30,10 +30,10 @@ function delete_search_index ( $FOR ) {
     global $FD;
 
     $FD->db()->conn()->exec ( '
-                    DELETE FROM `'.$FD->config('pref')."search_index`
+                    DELETE FROM `'.$FD->env('DB_PREFIX')."search_index`
                     WHERE `search_index_type` = '".$FOR."'");
     $FD->db()->conn()->exec ( '
-                    DELETE FROM `'.$FD->config('pref')."search_time`
+                    DELETE FROM `'.$FD->env('DB_PREFIX')."search_time`
                     WHERE `search_time_type` = '".$FOR."'");
 }
 
@@ -41,11 +41,11 @@ function delete_search_index_for_one ( $ID, $TYPE ) {
     global $FD;
 
     $FD->db()->conn()->exec ( '
-                    DELETE FROM `'.$FD->config('pref')."search_index`
+                    DELETE FROM `'.$FD->env('DB_PREFIX')."search_index`
                     WHERE `search_index_type` = '".$TYPE."'
                     AND `search_index_document_id` = '".$ID."'");
     $FD->db()->conn()->exec ( '
-                    DELETE FROM `'.$FD->config('pref')."search_time`
+                    DELETE FROM `'.$FD->env('DB_PREFIX')."search_time`
                     WHERE `search_time_type` = '".$TYPE."'
                     AND `search_time_document_id` = '".$ID."'");
 }
@@ -55,7 +55,7 @@ function delete_word_list () {
     global $FD;
 
     $FD->db()->conn()->exec ( '
-                    TRUNCATE TABLE `'.$FD->config('pref').'search_words`');
+                    TRUNCATE TABLE `'.$FD->env('DB_PREFIX').'search_words`');
 }
 
 function update_search_index ( $FOR ) {
@@ -69,17 +69,17 @@ function update_search_index ( $FOR ) {
         // Remove Old Indexes & Update Timestamp
         if ( $data_arr['search_time_id'] != null ) {
              $FD->db()->conn()->exec ( '
-                            DELETE FROM `'.$FD->config('pref')."search_index`
+                            DELETE FROM `'.$FD->env('DB_PREFIX')."search_index`
                             WHERE `search_index_type` = '".$data_arr['search_time_type']."'
                             AND `search_index_document_id` = ".$data_arr['search_time_document_id']);
              $FD->db()->conn()->exec ( '
-                            UPDATE `'.$FD->config('pref')."search_time`
+                            UPDATE `'.$FD->env('DB_PREFIX')."search_time`
                             SET `search_time_date` = '".time()."'
                             WHERE `search_time_id` = '".$data_arr['search_time_id']."'" );
         } else {
              $FD->db()->conn()->exec ( '
                             INSERT INTO
-                                `'.$FD->config('pref')."search_time`
+                                `'.$FD->env('DB_PREFIX')."search_time`
                                 (`search_time_type`, `search_time_document_id`, `search_time_date`)
                             VALUES (
                                 '".$data_arr['search_time_type']."',
@@ -117,7 +117,7 @@ function update_search_index ( $FOR ) {
         // Insert Indexes
         $FD->db()->conn()->exec ( '
                         INSERT INTO
-                            `'.$FD->config('pref').'search_index`
+                            `'.$FD->env('DB_PREFIX').'search_index`
                             (`search_index_word_id`, `search_index_type`, `search_index_document_id`, `search_index_count`)
                         VALUES
                             ' . implode ( ',', $insert_values ) . '' );
@@ -137,8 +137,8 @@ function get_make_search_index ( $FOR ) {
                     `search_time_id`,
                     'dl' AS 'search_time_type',
                     CONCAT(`dl_name`, ' ', `dl_text`) AS 'search_data'
-                FROM `".$FD->config('pref').'dl`
-                LEFT JOIN `'.$FD->config('pref')."search_time`
+                FROM `".$FD->env('DB_PREFIX').'dl`
+                LEFT JOIN `'.$FD->env('DB_PREFIX')."search_time`
                     ON `search_time_document_id` = `dl_id`
                     AND FIND_IN_SET('dl', `search_time_type`)
                 WHERE 1
@@ -153,8 +153,8 @@ function get_make_search_index ( $FOR ) {
                     `search_time_id`,
                     'articles' AS 'search_time_type',
                     CONCAT(`article_title`, ' ', `article_text`) AS 'search_data'
-                FROM `".$FD->config('pref').'articles`
-                LEFT JOIN `'.$FD->config('pref')."search_time`
+                FROM `".$FD->env('DB_PREFIX').'articles`
+                LEFT JOIN `'.$FD->env('DB_PREFIX')."search_time`
                     ON `search_time_document_id` = `article_id`
                     AND FIND_IN_SET('articles', `search_time_type`)
                 WHERE 1
@@ -169,8 +169,8 @@ function get_make_search_index ( $FOR ) {
                     `search_time_id`,
                     'news' AS 'search_time_type',
                     CONCAT(`news_title`, ' ', `news_text`) AS 'search_data'
-                FROM `".$FD->config('pref').'news`
-                LEFT JOIN `'.$FD->config('pref')."search_time`
+                FROM `".$FD->env('DB_PREFIX').'news`
+                LEFT JOIN `'.$FD->env('DB_PREFIX')."search_time`
                     ON `search_time_document_id` = `news_id`
                     AND FIND_IN_SET('news', `search_time_type`)
                 WHERE 1
@@ -184,7 +184,7 @@ function get_search_word_id ( $WORD ) {
     global $FD;
 
     $stmt = $FD->db()->conn()->prepare ( '
-                SELECT `search_word_id` FROM `'.$FD->config('pref').'search_words`
+                SELECT `search_word_id` FROM `'.$FD->env('DB_PREFIX').'search_words`
                 WHERE `search_word` = ?');
     $stmt->execute(array($WORD));
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -195,7 +195,7 @@ function get_search_word_id ( $WORD ) {
         return $id;
     } else {
         $stmt = $FD->db()->conn()->prepare ( '
-                    INSERT INTO `'.$FD->config('pref')."search_words` (`search_word`)
+                    INSERT INTO `'.$FD->env('DB_PREFIX')."search_words` (`search_word`)
                     VALUES (?)");
         $stmt->execute(array($WORD));
         return $FD->db()->conn()->lastInsertId();

@@ -16,7 +16,7 @@ if (   ( isset($_POST['signup']) && $_POST['signup'] != '' )
 
     // SQL-Queries
     $stmt = $FD->db()->conn()->prepare ( '
-                UPDATE `'.$FD->config('pref')."email`
+                UPDATE `'.$FD->env('DB_PREFIX')."email`
                 SET
                     `signup` = ?,
                     `change_password` = ?,
@@ -51,7 +51,7 @@ if ( TRUE )
     } else {
         $index = $FD->db()->conn()->query ( '
                         SELECT *
-                        FROM '.$FD->config('pref')."email
+                        FROM '.$FD->env('DB_PREFIX')."email
                         WHERE `id` = '1'" );
         $email_arr = $index->fetch(PDO::FETCH_ASSOC);
         putintopost ( $email_arr );

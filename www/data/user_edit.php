@@ -41,7 +41,7 @@ if (
     }
 
     $stmt = $FD->db()->conn()->prepare('
-        UPDATE '.$FD->config('pref').'user
+        UPDATE '.$FD->env('DB_PREFIX').'user
         SET `user_mail` = ?,
             `user_show_mail` = ?,
             `user_homepage` = ?,
@@ -67,7 +67,7 @@ if (
     if ( $_POST['old_pwd'] && $_POST['new_pwd'] && $_POST['wdh_pwd'] ) {
         $index = $FD->db()->conn()->query ( '
             SELECT `user_name`, `user_password`, `user_salt`
-            FROM `'.$FD->config('pref')."user`
+            FROM `'.$FD->env('DB_PREFIX')."user`
             WHERE `user_id` = '".intval($_SESSION['user_id'])."'" );
         $row = $index->fetch(PDO::FETCH_ASSOC);
         $old_password = $row['user_password'];
@@ -88,7 +88,7 @@ if (
 
                 // Update Password
                 $FD->db()->conn()->exec ( '
-                    UPDATE '.$FD->config('pref')."user
+                    UPDATE '.$FD->env('DB_PREFIX')."user
                     SET `user_password` = '".$md5_password."',
                         `user_salt` = '".$new_salt."'
                     WHERE `user_id` = '".$_SESSION['user_id']."'" );
@@ -141,12 +141,12 @@ else {
 
         $index = $FD->db()->conn()->query ( '
             SELECT COUNT(*)
-            FROM `'.$FD->config('pref')."user`
+            FROM `'.$FD->env('DB_PREFIX')."user`
             WHERE `user_id` = '".$_SESSION['user_id']."'" );
         $num_rows = $index->fetchColumn();
         if ( $num_rows > 0 ) {
             $index = $FD->db()->conn()->query ( '
-                SELECT * FROM `'.$FD->config('pref')."user`
+                SELECT * FROM `'.$FD->env('DB_PREFIX')."user`
                 WHERE `user_id` = '".$_SESSION['user_id']."'" );
 
             $user_arr = $index->fetch(PDO::FETCH_ASSOC);
