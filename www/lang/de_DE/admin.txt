@@ -121,7 +121,7 @@ selection_import:                        Auswahl importieren
 
 
 # Button Captions
-button_arrow:                            <img class="middle" src="img/pointer.png" alt="->">
+button_arrow:                            <img class="middle" src="?images=pointer.png" alt="->">
 do_action_button:                        Ausführen
 do_action_button_long:                   Aktion ausführen
 save_changes_button:                     Änderungen speichern

@@ -91,7 +91,7 @@ td.nw {
     padding-right:9px;
     width:100%;
     height: 27px;
-    background-image:url('../img/button.jpg');
+    background-image:url('?images=button.jpg');
     background-repeat:repeat;
     font-weight:bold;
     color:#FFFFFF;
@@ -105,7 +105,7 @@ td.nw {
 .button_new:hover, .button_new:focus
 {
     text-decoration:none;
-    background-image:url('../img/button_hover.jpg');
+    background-image:url('?images=button_hover.jpg');
 }
 
 a.image_hover {
@@ -150,7 +150,7 @@ table.configtable .config .small, table.configtable .configthin .small, table.co
 
 td.line, td.line_red
 {
-    background-image:url('../images/line_green.jpg');
+    background-image:url('?images=line_green.jpg');
     background-repeat:repeat-x;
     background-position:left 25px;
     height:45px;
@@ -162,7 +162,7 @@ td.line, td.line_red
 }
 td.line_red
 {
-    background-image:url('../images/line_red.jpg');
+    background-image:url('?images=line_red.jpg');
 }
 td.space
 {
@@ -178,7 +178,7 @@ td.buttontd
 }
 td.combi_button
 {
-    background-image:url('../img/button.jpg');
+    background-image:url('?images=button.jpg');
     background-repeat:repeat;
     border:1px solid #000000;
     white-space:nowrap;

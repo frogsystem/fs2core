@@ -284,10 +284,10 @@ function create_dl_cat ($CAT_ID, $GET_ID, $NAVI_TEMPLATE) {
         $open_url = ( ( $array['cat_id'] == $GET_ID || in_array ( $GET_ID, $ids ) ) ? $top_url : $cat_url );
         $nbsp = str_repeat( '&nbsp;', $i-1);
 
-        $template = str_repeat( '<img class="textmiddle" src="images/design/null.gif" alt="" border="0" align="absmiddle" width="16" height="0">', $i-1) . $template;
+        $template = str_repeat( '<img class="textmiddle" src="?images=null.gif" alt="" border="0" align="absmiddle" width="16" height="0">', $i-1) . $template;
 
         if ( $num_subcat <= 0 ) {
-            $template = str_replace( '{open_link}', $nbsp.'<img class="textmiddle" src="images/design/null.gif" alt="" width="16" height="0">', $template );
+            $template = str_replace( '{open_link}', $nbsp.'<img class="textmiddle" src="?images=null.gif" alt="" width="16" height="0">', $template );
         }
         $template = str_replace( '{open_link}', $nbsp.'<a class="textmiddle" href="'.$open_url.'"><img class="textmiddle" style="margin-left:4px; margin-right:3px;" src="images/icons/dl/'.$open.'" alt="" border="0" align="absmiddle"></a>', $template );
         $template = str_replace( '{folder_link}', '&nbsp;<a class="textmiddle" href="'.$cat_url.'"><img class="textmiddle" src="images/icons/dl/'.$folder.'" alt="" border="0" align="absmiddle"></a>', $template );

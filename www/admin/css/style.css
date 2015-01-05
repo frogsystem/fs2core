@@ -2,11 +2,11 @@
 /* background design styles */
 /**************************************************/
 body {
-    background:#2A2A2A url('../images/bg.jpg');
+    background:#2A2A2A url('?images=bg.jpg');
 }
 
 #bg {
-    background:#485247 url('../images/bg_loop.jpg');
+    background:#485247 url('?images=bg_loop.jpg');
     background-repeat:repeat-y;
     position:absolute;
     width:991px;
@@ -33,7 +33,7 @@ body {
     height:71px;
     padding-top:5px;
     padding-left:10px;
-    background:#DDDDDD url('../images/head.jpg') no-repeat;
+    background:#DDDDDD url('?images=head.jpg') no-repeat;
     color:#363636;
     font-family:"Palatino Linotype", "Palatino", "Times New Roman", Times, serif;
     font-size:20pt;
@@ -83,7 +83,7 @@ body {
 .cb {
     padding:15px 25px 30px;
     margin:30px 10px 30px 30px;
-    background:#D4D4D4 url(../images/cb_bg.jpg) repeat;
+    background:#D4D4D4 url('?images=cb_bg.jpg') repeat;
     text-align:left;
     border-radius:25px;
     box-shadow: 3px 3px 5px #444;
@@ -105,11 +105,11 @@ body {
 /**************************************************/
 hr.green {
     background-color:#008800;
-    background-image:url('../images/line_green.jpg');
+    background-image:url('?images=line_green.jpg');
 }
 hr.red {
     background-color:#FF0000;
-    background-image:url('../images/line_red.jpg');
+    background-image:url('?images=line_red.jpg');
 }
 
 
@@ -195,7 +195,7 @@ table.content tr h3+hr, tr.line h3+hr {
     border:none;
     margin-top:7px;
     background-color:#008800;
-    background-image:url('../images/line_green.jpg');
+    background-image:url('?images=line_green.jpg');
 }
 
 table.content .space {
@@ -245,7 +245,7 @@ table.config tr>td:first-child:not(:only-child) {
     width:100%;
     height:25px;
     padding-top:1px;
-    background-image:url('../images/topmenu.jpg');
+    background-image:url('?images=topmenu.jpg');
     background-repeat:repeat-x;
     font-family:"Century Gothic", "Futura", Arial, Helvetica, sans-serif;
     font-size:10pt;
@@ -253,13 +253,13 @@ table.config tr>td:first-child:not(:only-child) {
 }
 
 #find_container {
-    background-image:url('../images/content_loop_small.jpg');
+    background-image:url('?images=content_loop_small.jpg');
     background-repeat:repeat-y;
     width:308px;
     text-align:left;
 }
 #find_top {
-    background-image:url('../images/content_top_small.jpg');
+    background-image:url('?images=content_top_small.jpg');
     background-repeat:no-repeat;
     width:308px;
     height:25px;
@@ -271,7 +271,7 @@ table.config tr>td:first-child:not(:only-child) {
     font-weight:bold;
 }
 #find_foot {
-    background-image:url('../images/content_foot_small.jpg');
+    background-image:url('?images=content_foot_small.jpg');
     background-repeat:no-repeat;
     width:308px;
     height:53px;
@@ -378,7 +378,7 @@ table.content .button, a.link_button {
     height:27px;
     margin-top:15px;
     padding-right:10px;
-    background:#019934 url('../images/button.jpg');
+    background:#019934 url('?images=button.jpg');
     background-repeat:repeat-x;
     background-position:top left;
     border:1px solid #000000;

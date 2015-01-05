@@ -29,6 +29,7 @@ class Frogsystem2 {
     
     public function init() {
         // Set constants
+        define('FS2ADMIN', FS2SOURCE.'/admin');
         define('FS2ROOT', $this->root);
         define('FS2_ROOT_PATH', FS2ROOT.'/', true); // DEPRECATED
         

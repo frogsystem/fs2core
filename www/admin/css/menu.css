@@ -7,7 +7,7 @@
     width:159px;
     height:38px;
     z-index:5;
-    background:#019934 url('../images/topmenu_left.jpg');
+    background:#019934 url('?images=topmenu_left.jpg');
     background-repeat:no-repeat;
     margin-left:170px;
 }
@@ -18,7 +18,7 @@
     width:630px;
     height:35px;
     z-index:5;
-    background:#019934 url('../images/topmenu.jpg');
+    background:#019934 url('?images=topmenu.jpg');
     background-repeat:repeat-x;
     margin-left:329px;
     padding:0px;
@@ -53,12 +53,12 @@ ul.topmenu li a {
 }
 ul.topmenu li a:hover, ul.topmenu li a:focus, ul.topmenu li a:active {
     text-decoration:none;
-    background:url('../images/topmenu_hover.jpg') left top repeat-x;
+    background:url('?images=topmenu_hover.jpg') left top repeat-x;
 }
 
 ul.topmenu li.selected a{
     font-weight:bold;
-    background:url('../images/topmenu_hover.jpg') left top repeat-x;
+    background:url('?images=topmenu_hover.jpg') left top repeat-x;
 }
 
 
@@ -71,7 +71,7 @@ ul.topmenu li.selected a{
     width:59px;
     height:29px;
     z-index:5;
-    background:#DDDDDD url('../images/login_bg.jpg');
+    background:#DDDDDD url('?images=login_bg.jpg');
     background-repeat:no-repeat;
     margin-left:888px;
     padding-left:12px;
@@ -105,7 +105,7 @@ ul.topmenu li.selected a{
     position:relative;
     min-height:45px;
     padding:12px 0px 0px 7px;
-    background:#DDDDDD url('../images/leftmenu.jpg') no-repeat;
+    background:#DDDDDD url('?images=leftmenu.jpg') no-repeat;
     background-repeat:no-repeat;
 }
 .leftmenu * {
@@ -115,7 +115,7 @@ ul.topmenu li.selected a{
 }
 
 .leftmenu[class~='top'] {
-    background-image:url('../images/leftmenu_top.jpg');
+    background-image:url('?images=leftmenu_top.jpg');
     min-height:43px;
     padding-top:10px;
 }

@@ -1,9 +1,9 @@
-@import url("default.css");
-@import url("menu.css");
-@import url("style.css");
-@import url("functional.css");
-@import url("html-editor.css");
-@import url("pagination.css");
+@import url("?css=default.css");
+@import url("?css=menu.css");
+@import url("?css=style.css");
+@import url("?css=functional.css");
+@import url("?css=html-editor.css");
+@import url("?css=pagination.css");
 
 
 /**************************************************/

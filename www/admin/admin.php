@@ -8,6 +8,29 @@ require_once(FS2SOURCE . '/includes/templatefunctions.php');
 require_once(FS2SOURCE . '/libs/class_adminpage.php');
 
 
+######################
+### ASSETS ###########
+######################
+$imgct = function($name) {
+    switch (strtolower(pathinfo($name, PATHINFO_EXTENSION))) {
+        case 'png':
+            return 'image/png';
+        case 'gif':
+            return 'image/gif';
+        case 'jpg':
+        case 'jpeg':
+        default:
+            return 'image/jpeg';
+    }
+};
+serve_asset('css', 'text/css');
+serve_asset('js', 'application/javascript');
+serve_asset('images', $imgct);
+serve_asset('editor', $imgct);
+serve_asset('html-editor', $imgct);
+serve_asset('icons', $imgct);
+
+
 global $FD;
 
 // Constructor Calls
@@ -129,23 +152,23 @@ echo'<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.
     <title>Frogsystem 2 - '.$PAGE_DATA_ARR['title'].'</title>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
-    <link rel="stylesheet" type="text/css" href="css/admin_old.css">
-    <link rel="stylesheet" type="text/css" href="css/editor.css">
+    <link rel="stylesheet" type="text/css" href="?css=admin_old.css">
+    <link rel="stylesheet" type="text/css" href="?css=editor.css">
 
-    <link rel="stylesheet" type="text/css" href="css/main.css">
-    <link rel="stylesheet" type="text/css" href="css/noscript.css" id="noscriptcss">
+    <link rel="stylesheet" type="text/css" href="?css=main.css">
+    <link rel="stylesheet" type="text/css" href="?css=noscript.css" id="noscriptcss">
 
-    <link rel="shortcut icon" href="icons/favicon.ico">
+    <link rel="shortcut icon" href="?icons=favicon.ico">
 
     <script src="../resources/jquery/jquery.min.js" type="text/javascript"></script>
     <script src="../resources/jquery/jquery-ui.min.js" type="text/javascript"></script>
-    <script src="functions.js" type="text/javascript"></script>
+    <script src="?js=functions.js" type="text/javascript"></script>
     <script src="../includes/js_functions.js" type="text/javascript"></script>
-    <script src="js/admin.js" type="text/javascript"></script>
+    <script src="?js=admin.js" type="text/javascript"></script>
 
     <link rel="stylesheet" type="text/css" href="../resources/colorpicker/css/colorpicker.css">
     <script type="text/javascript" src="../resources/colorpicker/js/colorpicker.js"></script>
-    <script type="text/javascript" src="js/colorpicker.js"></script>
+    <script type="text/javascript" src="?js=colorpicker.js"></script>
 </head>
 <!-- /HTML Head -->
 ';
@@ -219,7 +242,7 @@ echo'
         <tr valign="top">
             <td id="topmenu_login_image">
                 <a href="?go='.$log_link.'" target="_self" class="small">
-                    <img src="icons/'.$log_image.'" alt="" title="'.$log_text.'" border="0">
+                    <img src="?icons='.$log_image.'" alt="" title="'.$log_text.'" border="0">
                 </a>
             </td>
             <td>
@@ -241,7 +264,7 @@ echo'
 if ($template_navi == '') {
     $template_navi = '
         <div class="leftmenu top" style="height:43px;">
-            <img src="icons/arrow.gif" alt="->">&nbsp;<b>Hallo Admin!</b>
+            <img src="?icons=arrow.gif" alt="->">&nbsp;<b>Hallo Admin!</b>
             <div><br>
                Herzlich<br>Willkommen
                im<br>Admin-CP des<br>Frogsystem 2!
@@ -307,7 +330,7 @@ echo $head;
 echo'
 <body id="find_body">
     <div id="find_head">
-        &nbsp;<img border="0" src="img/pointer.png" alt="->" class="middle">&nbsp;
+        &nbsp;<img border="0" src="?images=pointer.png" alt="->" class="middle">&nbsp;
         <strong>'.$PAGE_DATA_ARR['title'].'</strong>
     </div>
     <div align="left">

@@ -841,7 +841,7 @@ if ($FILE_SHOW_START)
 
     //cat filter options
     initstr($cat_filter_options);
-    $catsFD->db()sql->conn()->query('SELECT cat_id, cat_name FROM '.$FD->env('DB_PREFIX').'news_cat');
+    $cats = $FD->db()->conn()->query('SELECT cat_id, cat_name FROM '.$FD->env('DB_PREFIX').'news_cat');
     $cats = $cats->fetchAll(PDO::FETCH_ASSOC);
     foreach ($cats as $cat) {
         $cat = array_map('killhtml', $cat);

@@ -66,7 +66,7 @@ else
                                     <input type="hidden" id="screen_id" name="screen_id" value="'. $_POST['screen_id'] .'">
                                 </td>
                                 <td class="config" valign="top" width="200">
-                                    <img id="selected_pic" src="icons/image_error.gif" alt="Kein Bild gefunden" />
+                                    <img id="selected_pic" src="?icons=image_error.gif" alt="Kein Bild gefunden" />
                                 </td>
                             </tr>
                             <tr>

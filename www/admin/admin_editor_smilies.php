@@ -172,18 +172,18 @@ if ( $num_rows > 0 )
     {
         $i++;
         $pointer_up = '
-            <a class="image_hover" style="margin-right:3px; float:right; width:24px; height:24px; background-image:url('.$FD->config('virtualhost').'admin/icons/arrow_up.png)" href="'.$_SERVER['PHP_SELF'].'?go='.$_GET['go'].'&oid='.$smilie_arr['order'].'&action=moveup" title="'.$FD->text('page', 'smilies_up').'">
-                <img border="0" src="img/null.gif" alt="'.$FD->text('page', 'smilies_up').'">
+            <a class="image_hover" style="margin-right:3px; float:right; width:24px; height:24px; background-image:url(?icons=arrow_up.png)" href="'.$_SERVER['PHP_SELF'].'?go='.$_GET['go'].'&oid='.$smilie_arr['order'].'&action=moveup" title="'.$FD->text('page', 'smilies_up').'">
+                <img border="0" src="?images=null.gif" alt="'.$FD->text('page', 'smilies_up').'">
             </a>';
         $pointer_down = '
-            <a class="image_hover" style="margin-right:36px; float:right; width:24px; height:24px; background-image:url('.$FD->config('virtualhost').'admin/icons/arrow_down.png)" href="'.$_SERVER['PHP_SELF'].'?go='.$_GET['go'].'&oid='.$smilie_arr['order'].'&action=movedown" title="'.$FD->text('page', 'smilies_down').'">
-                <img border="0" src="img/null.gif" alt="'.$FD->text('page', 'smilies_down').'">
+            <a class="image_hover" style="margin-right:36px; float:right; width:24px; height:24px; background-image:url(?icons=arrow_down.png)" href="'.$_SERVER['PHP_SELF'].'?go='.$_GET['go'].'&oid='.$smilie_arr['order'].'&action=movedown" title="'.$FD->text('page', 'smilies_down').'">
+                <img border="0" src="?images=null.gif" alt="'.$FD->text('page', 'smilies_down').'">
             </a>';
         if ($smilie_arr['order']==1) {
-            $pointer_up = '<img style="margin-right:3px; float:right; width:24px; height:24px; display:block;" src="img/null.gif" border="0" alt="">';
+            $pointer_up = '<img style="margin-right:3px; float:right; width:24px; height:24px; display:block;" src="?images=null.gif" border="0" alt="">';
         }
         if ($smilie_arr['order']>=$smilie_last) {
-            $pointer_down = '<img style="margin-right:36px; float:right; width:24px; height:24px; display:block;" src="img/null.gif" border="0" alt="" width="24" height="24">';
+            $pointer_down = '<img style="margin-right:36px; float:right; width:24px; height:24px; display:block;" src="?images=null.gif" border="0" alt="" width="24" height="24">';
         }
 
         echo'

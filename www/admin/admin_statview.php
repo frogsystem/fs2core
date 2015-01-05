@@ -135,8 +135,8 @@ for ($d=1; $d<date('t',mktime(0, 0, 0, $_GET['s_month'], 1, $_GET['s_year']))+1;
                                             '.point_number($dbhits).'
                                         </td>
                                         <td '.$class.'align="left" style="font-size:1pt;">
-                                            <img border="0" src="img/cvisits.gif" height="4" width="'.round($visitswidth).'"><br>
-                                            <img border="0" src="img/chits.gif" height="4" width="'.round($hitswidth).'">
+                                            <img border="0" src="?images=cvisits.gif" height="4" width="'.round($visitswidth).'"><br>
+                                            <img border="0" src="?images=chits.gif" height="4" width="'.round($hitswidth).'">
                                         </td>
                                     </tr>
         ';
@@ -255,10 +255,10 @@ for ($m=1; $m<13; $m++)
                                         <td class="n" align="left" style="font-size:1pt;" class="bottom">
                                             <img align="left" title="'.$FD->text("page", "show_chart").'" class="bottom"
                                             onClick=\''.openpopup ('?go=statgfx&amp;s_year='.$_GET['s_year'].'&amp;s_month='.$m.'', 520, 330).'\' 
-                                            style="cursor:pointer; padding-left:2px; padding-right:2px;" border="0" src="img/cdiag.gif">
-                                            <img border="0" src="img/null.gif" height="4" width="1"><br>
-                                            <img border="0" src="img/cvisits.gif" height="4" width="'.round($visitswidth).'"><br>
-                                            <img border="0" src="img/chits.gif" height="4" width="'.round($hitswidth).'">
+                                            style="cursor:pointer; padding-left:2px; padding-right:2px;" border="0" src="?images=cdiag.gif">
+                                            <img border="0" src="?images=null.gif" height="4" width="1"><br>
+                                            <img border="0" src="?images=cvisits.gif" height="4" width="'.round($visitswidth).'"><br>
+                                            <img border="0" src="?images=chits.gif" height="4" width="'.round($hitswidth).'">
                                         </td>
                                     </tr>
         ';

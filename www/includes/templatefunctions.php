@@ -607,7 +607,7 @@ function get_original_array ( $EDITOR_NAME, $FILE, $ROWS, $COLS )
     if ( file_exists ( FS2SOURCE . '/styles/default/' . $FILE ) ) {
         $original['button'] = '
                                             <div class="html-editor-button html-editor-button-original" onClick="toggelOriginal(\''.$EDITOR_NAME.'\')" title="Original anzeigen">
-                                                <img src="img/null.gif" alt="Original anzeigen" border="0">
+                                                <img src="?images=null.gif" alt="Original anzeigen" border="0">
                                             </div>
         ';
 
@@ -711,12 +711,12 @@ function create_templateeditor ( $editor_arr, $HIGHLIGHTER, $FILE, $MANYFILES )
                                         '.$original['row'].'
                                         <div class="html-editor-row">
                                             <div class="html-editor-button html-editor-button-big" onClick="open_editor(\''.$editor_arr['name'].'\')" title="In Editor-Fenster &ouml;ffnen">
-                                                <img src="img/null.gif" alt="In Editor-Fenster &ouml;ffnen" border="0">
+                                                <img src="?images=null.gif" alt="In Editor-Fenster &ouml;ffnen" border="0">
                                             </div>
                                             '.$original['button'].'
                                             <div class="html-editor-line"></div>
                                             <div class="html-editor-button html-editor-button-active html-editor-button-line-numbers" onClick="toggelLineNumbers(this,\'editor_'.$editor_arr['name'].'\')" title="Zeilen-Nummerierung">
-                                                <img src="img/null.gif" alt="Zeilen-Nummerierung" border="0">
+                                                <img src="?images=null.gif" alt="Zeilen-Nummerierung" border="0">
                                             </div>
                                             '.$help_template.'
                                             '.$dropdowns['global_vars'].'

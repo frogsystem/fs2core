@@ -220,7 +220,7 @@ if ( isset($_POST['edit_user_group_id']) && $_POST['edit_user_group_id'] > 1)
             }
             echo '<p>'.$GROUP_ARR['title'].' <span class="small">(<span class="link" onclick="permselect($(this), true)">'.$FD->text('page', 'all').'</span>/<span class="link" onclick="permselect($(this), false)">'.$FD->text('page', 'none').'</span>)</span><br>';
             foreach ( $GROUP_ARR['links'] as $PAGE_ID => $PAGE_ARR ) {
-                echo ( isset($PAGE_ARR['sub']) && ($PAGE_ARR['sub'] == TRUE) ) ? '<img style="vertical-align: middle;" src="icons/sub-right-arrow.gif" alt="->">' : '';
+                echo ( isset($PAGE_ARR['sub']) && ($PAGE_ARR['sub'] == TRUE) ) ? '<img style="vertical-align: middle;" src="?icons=sub-right-arrow.gif" alt="->">' : '';
                 echo '<input class="pointer" type="checkbox" style="vertical-align: middle;" id="'.$PAGE_ID.'" name="'.$PAGE_ID.'" value="1"
                 '.getchecked ( $PAGE_ARR['granted'], 'group' ).'
                 '.getdisabled ( $PAGE_ARR['granted'], 'bad' ).'
