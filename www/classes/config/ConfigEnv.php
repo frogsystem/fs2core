@@ -24,18 +24,18 @@ class ConfigEnv extends ConfigData {
         $this->setConfig('day', date('d', $this->get('date')));
         $this->setConfig('hour', date('H', $this->get('date')));
         $this->setConfig('minute', date('i', $this->get('date')));
+        $this->setConfig('path', FS2CONTENT.'/');
         
         // DEPRECATED
         $this->setConfig('min', $this->get('minute'));
         $this->setConfig('pref', $this->get('DB_PREFIX'));
         $this->setConfig('spam', $this->get('SPAM_KEY'));
         $this->setConfig('data', $this->get('DB_NAME'));
-        $this->setConfig('path', FS2CONTENT);
     }
     
     // get config entry
     public function get($name) {
-        if (oneof($name, 'pref', 'spam', 'data', 'path', 'min')) {
+        if (oneof($name, 'pref', 'spam', 'data', 'min')) {
             trigger_error("Usage of config value env/{$name} is deprecated.", E_USER_DEPRECATED);
         }
         return $this->config[$name];

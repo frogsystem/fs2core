@@ -19,7 +19,7 @@ class ConfigMain extends ConfigData {
         $this->setConfig('pref',        $FD->env('DB_PREFIX'));
         $this->setConfig('spam',        $FD->env('SPAM_KEY'));
         $this->setConfig('data',        $FD->env('DB_NAME'));
-        $this->setConfig('path',        FS2CONTENT);
+        $this->setConfig('path',        $FD->env('path'));
 
         // rewrite to other protocol if allowd
         if ($this->get('other_protocol')) {

@@ -1,5 +1,13 @@
 <?php
 
+// inlcude files
+require_once(FS2SOURCE . '/includes/adminfunctions.php');
+require_once(FS2SOURCE . '/includes/templatefunctions.php');
+
+//Include Library-Classes
+require_once(FS2SOURCE . '/libs/class_adminpage.php');
+
+
 global $FD;
 
 // Constructor Calls
