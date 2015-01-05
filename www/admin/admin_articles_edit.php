@@ -42,7 +42,7 @@ function default_display_filter ( $FORM )
                                             <option value="0" '.getselected( 0, $FORM['cat_id'] ).'>'.$FD->text('page', 'edit_filter_all_cat').'</option>
     ';
     // List Categories
-    $index = $FD->sql()->conn()->query ( 'SELECT * FROM '.$FD->config('pref').'articles_cat' );
+    $index = $FD->db()->conn()->query ( 'SELECT * FROM '.$FD->env('DB_PREFIX').'articles_cat' );
     while ( $cat_arr = $index->fetch(PDO::FETCH_ASSOC) )
     {
         settype ( $cat_arr['cat_id'], 'integer' );
@@ -90,9 +90,9 @@ function default_get_pagenav_data ()
 	}
 
     // Create Pagenavigation
-	$index = $FD->sql()->conn()->query ( "
+	$index = $FD->db()->conn()->query ( "
 					SELECT COUNT(article_id) AS 'number'
-					FROM ".$FD->sql()->getPrefix().'articles
+					FROM ".$FD->db()->getPrefix().'articles
 					'.$where_clause);
 
     $pagenav_arr = get_pagenav_start ( $index->fetchColumn(), $limit, ($_REQUEST['page']-1)*$limit );
@@ -119,9 +119,9 @@ function default_get_entry_data ( $articles_arr )
     }
 
 
-    $index = $FD->sql()->conn()->query ( '
+    $index = $FD->db()->conn()->query ( '
                     SELECT '.$fields.'
-                    FROM '.$FD->config('pref')."articles
+                    FROM '.$FD->env('DB_PREFIX')."articles
                     WHERE `article_id` = '".$articles_arr['article_id']."'
                     LIMIT 0,1");
     $articles_arr = $index->fetch(PDO::FETCH_ASSOC);
@@ -144,13 +144,13 @@ function default_get_entry_data ( $articles_arr )
         }
 
         if ( $articles_arr['article_user'] != 0 ) {
-            $index2 = $FD->sql()->conn()->query('SELECT user_name FROM '.$FD->config('pref').'user WHERE user_id = '.$articles_arr['article_user']);
+            $index2 = $FD->db()->conn()->query('SELECT user_name FROM '.$FD->env('DB_PREFIX').'user WHERE user_id = '.$articles_arr['article_user']);
             $articles_arr['user_name'] = $FD->text('admin', 'by') .' <b>' . $index2->fetchColumn() . '</b>,';
         } else {
             $articles_arr['user_name'] = '';
         }
 
-        $index2 = $FD->sql()->conn()->query('SELECT cat_name FROM '.$FD->config('pref').'articles_cat WHERE cat_id = '.$articles_arr['article_cat_id']);
+        $index2 = $FD->db()->conn()->query('SELECT cat_name FROM '.$FD->env('DB_PREFIX').'articles_cat WHERE cat_id = '.$articles_arr['article_cat_id']);
         $articles_arr['cat_name'] = $index2->fetchColumn();
     }
 
@@ -233,9 +233,9 @@ function default_display_all_entries ( $pagenav_arr )
     }
 
     // Load News From DB
-    $index = $FD->sql()->conn()->query ( '
+    $index = $FD->db()->conn()->query ( '
                                                         SELECT `article_id`
-                                                        FROM '.$FD->config('pref').'articles
+                                                        FROM '.$FD->env('DB_PREFIX').'articles
                                                         '.$where_clause.'
                                                         ORDER BY '.$_REQUEST['order'].' '.$_REQUEST['sort'].', article_title ASC
                                                         LIMIT '.$pagenav_arr['cur_start'].', '.$pagenav_arr['entries_per_page'].'');
@@ -316,10 +316,10 @@ function default_display_page ( $entries, $pagenav_arr, $FORM )
 
 function action_edit_get_data ( $ARTICLE_ID )
 {
-    global $FD, $sql;
+    global $FD;
 
     //Load Article
-    $index = $FD->sql()->conn()->query ( 'SELECT * FROM '.$FD->config('pref')."articles WHERE article_id = '".$ARTICLE_ID."' LIMIT 0, 1" );
+    $index = $FD->db()->conn()->query ( 'SELECT * FROM '.$FD->env('DB_PREFIX')."articles WHERE article_id = '".$ARTICLE_ID."' LIMIT 0, 1" );
     $articles_arr = $index->fetch(PDO::FETCH_ASSOC);
     $old_url = $articles_arr['article_url'];
 
@@ -335,10 +335,10 @@ function action_edit_get_data ( $ARTICLE_ID )
             trim($articles_arr['article_url']) != ''
            )
         {
-            $stmt = $FD->sql()->conn()->prepare('SELECT COUNT(`article_id`) FROM `'.$FD->config('pref')."articles` WHERE `article_url` = ?");
+            $stmt = $FD->db()->conn()->prepare('SELECT COUNT(`article_id`) FROM `'.$FD->env('DB_PREFIX')."articles` WHERE `article_url` = ?");
             $stmt->execute(array($articles_arr['article_url']));
             $num_rows = $stmt->fetchColumn();
-            $stmt = $FD->sql()->conn()->prepare('SELECT `article_id` FROM `'.$FD->config('pref')."articles` WHERE `article_url` = ?");
+            $stmt = $FD->db()->conn()->prepare('SELECT `article_id` FROM `'.$FD->env('DB_PREFIX')."articles` WHERE `article_url` = ?");
             $stmt->execute(array($articles_arr['article_url']));
             if ($num_rows != 0 && $stmt->fetchColumn() != $ARTICLE_ID)
             {
@@ -375,7 +375,7 @@ function action_edit_get_data ( $ARTICLE_ID )
 
     // Get User
     if ( $articles_arr['article_user'] != 0 ) {
-        $index = $FD->sql()->conn()->query ( 'SELECT user_name, user_id FROM '.$FD->config('pref')."user WHERE user_id = '".$articles_arr['article_user']."'" );
+        $index = $FD->db()->conn()->query ( 'SELECT user_name, user_id FROM '.$FD->env('DB_PREFIX')."user WHERE user_id = '".$articles_arr['article_user']."'" );
         $articles_arr['article_user_name'] = killhtml ( $index->fetchColumn() );
     } else {
         $articles_arr['article_user_name'] = '';
@@ -439,7 +439,7 @@ function action_edit_display_page ( $data_arr )
                                     <select name="article_cat_id">
     ';
     // List categories
-    $index = $FD->sql()->conn()->query ( 'SELECT * FROM '.$FD->config('pref').'articles_cat' );
+    $index = $FD->db()->conn()->query ( 'SELECT * FROM '.$FD->env('DB_PREFIX').'articles_cat' );
     while ( $cat_arr = $index->fetch(PDO::FETCH_ASSOC) )
     {
         settype ( $cat_arr['cat_id'], 'integer' );
@@ -560,7 +560,7 @@ function action_delete_get_data ( $ARTICLE_ID )
 
     settype ( $ARTICLE_ID, 'integer' );
 
-    $index = $FD->sql()->conn()->query ( 'SELECT * FROM '.$FD->config('pref')."articles WHERE article_id = '".$ARTICLE_ID."'" );
+    $index = $FD->db()->conn()->query ( 'SELECT * FROM '.$FD->env('DB_PREFIX')."articles WHERE article_id = '".$ARTICLE_ID."'" );
     $articles_arr = $index->fetch(PDO::FETCH_ASSOC);
 
     // Get other Data
@@ -573,7 +573,7 @@ function action_delete_get_data ( $ARTICLE_ID )
     $articles_arr['article_text_short'] = truncate_string ( strip_tags(killfs (  $articles_arr['article_text'] )) , 250, '...' );
 
     if ( $articles_arr['article_user'] != 0 ) {
-        $index2 = $FD->sql()->conn()->query('SELECT user_name FROM '.$FD->config('pref').'user WHERE user_id = '.$articles_arr['article_user']);
+        $index2 = $FD->db()->conn()->query('SELECT user_name FROM '.$FD->env('DB_PREFIX').'user WHERE user_id = '.$articles_arr['article_user']);
         $articles_arr['user_name'] = $FD->text('admin', 'by') .' <b>' . $index2->fetchColumn() . '</b>,';
     } else {
         $articles_arr['user_name'] = '';
@@ -585,7 +585,7 @@ function action_delete_get_data ( $ARTICLE_ID )
         $articles_arr['article_url'] = '';
     }
 
-    $index2 = $FD->sql()->conn()->query('SELECT cat_name FROM '.$FD->config('pref').'articles_cat WHERE cat_id = '.$articles_arr['article_cat_id']);
+    $index2 = $FD->db()->conn()->query('SELECT cat_name FROM '.$FD->env('DB_PREFIX').'articles_cat WHERE cat_id = '.$articles_arr['article_cat_id']);
     $articles_arr['cat_name'] = $index2->fetchColumn();
 
     return $articles_arr;
@@ -702,8 +702,8 @@ function db_edit_article ( $DATA )
     }
 
     // SQL-Update-Query
-    $stmt = $FD->sql()->conn()->prepare('
-                UPDATE '.$FD->config('pref')."articles
+    $stmt = $FD->db()->conn()->prepare('
+                UPDATE '.$FD->env('DB_PREFIX')."articles
                 SET
                     article_url = ?,
                     article_title = ?,
@@ -722,7 +722,7 @@ function db_edit_article ( $DATA )
     // Update Search Index (or not)
     if ( $FD->config('cronjobs', 'search_index_update') === 1 ) {
         // Include searchfunctions.php
-        require_once ( FS2_ROOT_PATH . 'includes/searchfunctions.php' );
+        require_once ( FS2SOURCE . '/includes/searchfunctions.php' );
         update_search_index ( 'articles' );
     }
 
@@ -738,18 +738,18 @@ function db_delete_article ( $DATA )
         settype ( $DATA['article_id'], 'integer' );
 
         // SQL-Delete-Query: Article
-        $affected = $FD->sql()->conn()->exec ( '
-                        DELETE FROM '.$FD->config('pref')."articles
+        $affected = $FD->db()->conn()->exec ( '
+                        DELETE FROM '.$FD->env('DB_PREFIX')."articles
                         WHERE
                             article_id = '".$DATA['article_id']."'
                         LIMIT 1");
 
         // Delete from Search Index
-        require_once ( FS2_ROOT_PATH . 'includes/searchfunctions.php' );
+        require_once ( FS2SOURCE . '/includes/searchfunctions.php' );
         delete_search_index_for_one ( $DATA['article_id'], 'articles' );
 
         // Update Counter
-        $FD->sql()->conn()->exec ( 'UPDATE '.$FD->config('pref').'counter SET artikel = artikel - '.intval($affected));
+        $FD->db()->conn()->exec ( 'UPDATE '.$FD->env('DB_PREFIX').'counter SET artikel = artikel - '.intval($affected));
 
         systext( $FD->text('page', 'article_deleted'), $FD->text('admin', 'info'));
     } else {
@@ -784,7 +784,7 @@ if (
     )
 {
     settype($_POST['article_id'], 'integer');
-    $stmt = $FD->sql()->conn()->prepare('SELECT COUNT(`article_id`) FROM `'.$FD->config('pref')."articles` WHERE `article_url` = ?");
+    $stmt = $FD->db()->conn()->prepare('SELECT COUNT(`article_id`) FROM `'.$FD->env('DB_PREFIX')."articles` WHERE `article_url` = ?");
     $success = false;
     if (trim($_POST['article_url']) == '')
     {
@@ -800,7 +800,7 @@ if (
       }
       else
       {
-        $stmt = $FD->sql()->conn()->prepare('SELECT `article_id` FROM `'.$FD->config('pref')."articles` WHERE `article_url` = ?");
+        $stmt = $FD->db()->conn()->prepare('SELECT `article_id` FROM `'.$FD->env('DB_PREFIX')."articles` WHERE `article_url` = ?");
         $stmt->execute(array($_POST['article_url']));
         $success = ($stmt->fetchColumn() == $_POST['article_id']);
       }

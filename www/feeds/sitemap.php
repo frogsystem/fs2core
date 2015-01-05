@@ -7,22 +7,6 @@ $feed_url = 'feeds/sitemap.php';
 ## Settings End ##
 ##################
 
-
-/* FS2 PHP Init */
-set_include_path('.');
-define('FS2_ROOT_PATH', './../', true);
-require_once(FS2_ROOT_PATH . 'includes/phpinit.php');
-phpinit(false, 'Content-type: application/xml');
-/* End of FS2 PHP Init */
-
-
-// Inlcude DB Connection File or exit()
-require( FS2_ROOT_PATH . 'login.inc.php');
-
-//Include Functions-Files & Feed-Lib
-require_once(FS2_ROOT_PATH . 'libs/class_Feed.php');
-
-
 class Sitemap extends Feed {
 
     // Return Header XML
@@ -37,9 +21,9 @@ class Sitemap extends Feed {
         global $FD;
 
         // news
-        $news_arr = $FD->sql()->conn()->query(
+        $news_arr = $FD->db()->conn()->query(
                         'SELECT `news_id`, `news_date`, `news_search_update`
-                         FROM '.$FD->config('pref').'news
+                         FROM '.$FD->env('DB_PREFIX').'news
                          WHERE `news_active` = 1 AND `news_date` <= '.$FD->env('time').'
                          ORDER BY `news_search_update` DESC');
         $news_arr = $news_arr->fetchAll(PDO::FETCH_ASSOC);
@@ -57,9 +41,9 @@ class Sitemap extends Feed {
         }
 
         // articles
-        $articles = $FD->sql()->conn()->query(
+        $articles = $FD->db()->conn()->query(
                         'SELECT `article_id`, `article_url`, `article_date`, `article_search_update`
-                         FROM '.$FD->config('pref').'articles
+                         FROM '.$FD->env('DB_PREFIX').'articles
                          WHERE `article_date` <= '.$FD->env('time').'
                          ORDER BY `article_search_update` DESC');
         $articles = $articles->fetchAll(PDO::FETCH_ASSOC);
@@ -80,9 +64,9 @@ class Sitemap extends Feed {
         }
 
         // downloads
-        $downloads = $FD->sql()->conn()->query(
+        $downloads = $FD->db()->conn()->query(
                         'SELECT `dl_id`, `dl_date`, `dl_search_update`
-                         FROM '.$FD->config('pref').'dl
+                         FROM '.$FD->env('DB_PREFIX').'dl
                          WHERE `dl_open` = 1 AND `dl_date` <= '.$FD->env('time').'
                          ORDER BY `dl_search_update` DESC');
         $downloads = $downloads->fetchAll(PDO::FETCH_ASSOC);
@@ -124,8 +108,5 @@ class Sitemap extends Feed {
 // create feed
 $sitemap = new Sitemap($FD->cfg('virtualhost').$feed_url, $settings);
 echo $sitemap;
-
-// Shutdown System
-unset($FD);
 
 ?>

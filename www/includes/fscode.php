@@ -1,5 +1,5 @@
 <?php
-require_once(FS2_ROOT_PATH . 'libs/class_StringParser_BBCode.php');
+//~ require_once(FS2SOURCE . 'libs/class_StringParser_BBCode.php');
 
 // strip any fscode
 function strip_fs($str, $allowable_tags = '') {
@@ -473,7 +473,7 @@ function simple_replace_ignore_attributs ($action, $attributes, $content, $param
 function do_fscode_smilies ($text) {
     global $FD;
 
-    $smilies = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'smilies');
+    $smilies = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX').'smilies');
     $smilies = $smilies->fetchAll(PDO::FETCH_ASSOC);
     foreach ($smilies as $smiley) {
         $url = image_url('images/smilies/', $smiley['id']);
@@ -535,7 +535,7 @@ function do_fscode_homelink ($action, $attributes, $content, $params, $node_obje
 
     // URL in Content => Use "go[key1=val1 key2=val2]" or oldschool style
     } else {
-        require_once(FS2_ROOT_PATH . 'includes/indexfunctions.php');
+        require_once(FS2SOURCE . '/includes/indexfunctions.php');
 
         $url = $content;
 
@@ -826,7 +826,7 @@ function do_fscode_quote ($action, $attributes, $content, $params, $node_object)
 
 // Create a videoplayer
 function do_fscode_video ($action, $attributes, $content, $params, $node_object) {
-    require_once ( FS2_ROOT_PATH . 'resources/player/player_flv_include.php' );
+    require_once ( FS2SOURCE . '/resources/player/player_flv_include.php' );
 
     if ($action == 'validate') {
         return true;

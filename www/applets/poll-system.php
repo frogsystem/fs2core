@@ -15,7 +15,7 @@ $FD->loadConfig('polls');
 //poll id given
 if ($SCRIPT['argc'] >= 2 && is_numeric($SCRIPT['argv'][1])) {
     try {
-        $poll_arr = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'poll WHERE poll_id = '.intval($SCRIPT['argv'][1]).' LIMIT 1');
+        $poll_arr = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX').'poll WHERE poll_id = '.intval($SCRIPT['argv'][1]).' LIMIT 1');
         $poll_arr = $poll_arr->fetch(PDO::FETCH_ASSOC);
     } catch (Exception $e) {
         $poll_arr = array();
@@ -25,8 +25,8 @@ if ($SCRIPT['argc'] >= 2 && is_numeric($SCRIPT['argv'][1])) {
 } elseif ($SCRIPT['argc'] >= 2 && $SCRIPT['argv'][1] == 'random') {
     $date = time();
     try {
-        $poll_ids = $FD->sql()->conn()->query(
-                         'SELECT poll_id FROM '.$FD->config('pref').'poll
+        $poll_ids = $FD->db()->conn()->query(
+                         'SELECT poll_id FROM '.$FD->env('DB_PREFIX').'poll
                           WHERE `poll_end` > '.$date.' AND `poll_start` < '.$date);
         $poll_ids = $poll_ids->fetchAll(PDO::FETCH_ASSOC);
         $filterd_ids = array_filter($poll_ids, create_function('$poll',
@@ -39,8 +39,8 @@ if ($SCRIPT['argc'] >= 2 && is_numeric($SCRIPT['argv'][1])) {
         if (count($filterd_ids) == 0)
             Throw new ErrorException('No active Poll in Database');
 
-        $poll_arr = $FD->sql()->conn()->query(
-                     'SELECT * FROM '.$FD->config('pref').'poll
+        $poll_arr = $FD->db()->conn()->query(
+                     'SELECT * FROM '.$FD->env('DB_PREFIX').'poll
                       WHERE poll_id = '.intval($poll_ids[array_rand($filterd_ids)]['poll_id']).'
                       LIMIT 1');
         $poll_arr = $poll_arr->fetch(PDO::FETCH_ASSOC);
@@ -51,8 +51,8 @@ if ($SCRIPT['argc'] >= 2 && is_numeric($SCRIPT['argv'][1])) {
 
 // last poll
 } else {
-    $poll_arr = $FD->sql()->conn()->query(
-                     'SELECT * FROM '.$FD->config('pref').'poll
+    $poll_arr = $FD->db()->conn()->query(
+                     'SELECT * FROM '.$FD->env('DB_PREFIX').'poll
                       WHERE `poll_end` > '.$FD->env('date').' AND `poll_start` < '.$FD->env('date').'
                       ORDER BY `poll_start` DESC, `poll_id` DESC
                       LIMIT 0,1');
@@ -79,7 +79,7 @@ if (
     $voter_ip = $_SERVER['REMOTE_ADDR'];
 
     $date = time();
-    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'poll WHERE poll_id = '.$poll_arr['poll_id']);
+    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX').'poll WHERE poll_id = '.$poll_arr['poll_id']);
     $poll_arr = $index->fetch(PDO::FETCH_ASSOC);
 
     // Yay! New vote
@@ -88,22 +88,22 @@ if (
         if ($poll_arr['poll_type'] == 0)
         {
             settype($_POST['answer'], 'integer');
-            $FD->sql()->conn()->exec('UPDATE '.$FD->config('pref')."poll_answers SET answer_count = answer_count + 1 WHERE answer_id = '".$_POST['answer']."'");
+            $FD->db()->conn()->exec('UPDATE '.$FD->env('DB_PREFIX')."poll_answers SET answer_count = answer_count + 1 WHERE answer_id = '".$_POST['answer']."'");
             if ($_POST['answer'] != 0) {
                 registerVoter($poll_arr['poll_id'], $voter_ip); //Register Voter if voted
-                $FD->sql()->conn()->exec('UPDATE '.$FD->config('pref')."poll SET poll_participants = poll_participants + 1 WHERE poll_id = '".$poll_arr['poll_id']."'");
+                $FD->db()->conn()->exec('UPDATE '.$FD->env('DB_PREFIX')."poll SET poll_participants = poll_participants + 1 WHERE poll_id = '".$poll_arr['poll_id']."'");
             }
         }
         elseif (count($_POST['answer']) > 1)
         {
-            $stmt = $FD->sql()->conn()->prepare('UPDATE '.$FD->config('pref').'poll_answers SET answer_count = answer_count + 1 WHERE answer_id = ?');
+            $stmt = $FD->db()->conn()->prepare('UPDATE '.$FD->env('DB_PREFIX').'poll_answers SET answer_count = answer_count + 1 WHERE answer_id = ?');
             foreach ($_POST['answer'] as $id)
             {
                 settype($id, 'integer');
                 $stmt->execute(array($id));
             }
             registerVoter($poll_arr['poll_id'], $voter_ip); //Register Voter if voted
-            $FD->sql()->conn()->exec('UPDATE '.$FD->config('pref')."poll SET poll_participants = poll_participants + 1 WHERE poll_id = '".$poll_arr['poll_id']."'");
+            $FD->db()->conn()->exec('UPDATE '.$FD->env('DB_PREFIX')."poll SET poll_participants = poll_participants + 1 WHERE poll_id = '".$poll_arr['poll_id']."'");
         }
         elseif (is_array($_POST['answer']))
         {
@@ -111,24 +111,24 @@ if (
             $id = each($_POST['answer']);
             $id = $id['value'];
             settype($id, 'integer');
-            $FD->sql()->conn()->exec('UPDATE '.$FD->config('pref')."poll_answers SET answer_count = answer_count + 1 WHERE answer_id = '$id'");
+            $FD->db()->conn()->exec('UPDATE '.$FD->env('DB_PREFIX')."poll_answers SET answer_count = answer_count + 1 WHERE answer_id = '$id'");
             if (count($_POST['answer']) != 0) {
                 registerVoter($poll_arr['poll_id'], $voter_ip); //Register Voter if voted
-                $FD->sql()->conn()->exec('UPDATE '.$FD->config('pref')."poll SET poll_participants = poll_participants + 1 WHERE poll_id = '".$poll_arr['poll_id']."'");
+                $FD->db()->conn()->exec('UPDATE '.$FD->env('DB_PREFIX')."poll SET poll_participants = poll_participants + 1 WHERE poll_id = '".$poll_arr['poll_id']."'");
             }
         }
     }
 
-    $index = $FD->sql()->conn()->query('SELECT poll_participants FROM '.$FD->config('pref').'poll WHERE poll_id = '.$poll_arr['poll_id']);
+    $index = $FD->db()->conn()->query('SELECT poll_participants FROM '.$FD->env('DB_PREFIX').'poll WHERE poll_id = '.$poll_arr['poll_id']);
     $result_poll = $index->fetch(PDO::FETCH_ASSOC);
     $poll_arr['poll_participants'] = $result_poll['poll_participants'];
 
-    $index = $FD->sql()->conn()->query('SELECT SUM(answer_count) AS all_votes FROM '.$FD->config('pref').'poll_answers WHERE poll_id = '.$poll_arr['poll_id']);
+    $index = $FD->db()->conn()->query('SELECT SUM(answer_count) AS all_votes FROM '.$FD->env('DB_PREFIX').'poll_answers WHERE poll_id = '.$poll_arr['poll_id']);
     $answer_arr = $index->fetch(PDO::FETCH_ASSOC);
     $all_votes = $answer_arr['all_votes'];
 
     $antworten = '';
-    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'poll_answers WHERE poll_id = '.$poll_arr['poll_id'].' ORDER BY answer_id ASC');
+    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX').'poll_answers WHERE poll_id = '.$poll_arr['poll_id'].' ORDER BY answer_id ASC');
     while ($answer_arr = $index->fetch(PDO::FETCH_ASSOC))
     {
         if ($all_votes != 0) {
@@ -180,7 +180,7 @@ elseif (isset($poll_arr['poll_id']) && !checkVotedPoll($poll_arr['poll_id'])) {
 
     $poll_arr['poll_type_text'] = ( $poll_arr['poll_type'] == 1 ) ? $FD->text("frontend", "multiple_choise") : $FD->text("frontend", "single_choice");
 
-    $index2 = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'poll_answers WHERE poll_id = '.$poll_arr['poll_id'].' ORDER BY answer_id ASC');
+    $index2 = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX').'poll_answers WHERE poll_id = '.$poll_arr['poll_id'].' ORDER BY answer_id ASC');
     initstr($antworten);
     while ($answer_arr = $index2->fetch(PDO::FETCH_ASSOC)) {
         if ($poll_arr['poll_type'] == 0) {

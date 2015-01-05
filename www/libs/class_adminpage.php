@@ -25,7 +25,7 @@ class adminpage {
         $this->name = substr($pagefile, 0, -4);
 
         // load tpl file
-        $path = FS2_ROOT_PATH.'admin/templates/'.$this->name.'.tpl';
+        $path = FS2SOURCE.'/admin/templates/'.$this->name.'.tpl';
 
         if (is_readable($path)) {
             $this->loadTpl(file_get_contents($path));

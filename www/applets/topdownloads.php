@@ -28,7 +28,7 @@
     as well as that of the covered work.
 */
 
-  $index = $FD->sql()->doQuery('SELECT t1.dl_id AS id, t1.dl_name AS name, SUM(t2.file_count) AS sum_loads
+  $index = $FD->db()->doQuery('SELECT t1.dl_id AS id, t1.dl_name AS name, SUM(t2.file_count) AS sum_loads
         FROM `{..pref..}dl_files` t2
         LEFT JOIN `{..pref..}dl` t1 ON t2.dl_id=t1.dl_id
         GROUP  BY t2.dl_id

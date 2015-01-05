@@ -17,7 +17,7 @@ $adminpage->addText('file_id', $_GET['id']);
 echo $adminpage->get('script');
 
 try {
-    $ftp = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'ftp WHERE `ftp_id` = 1 LIMIT 1');
+    $ftp = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX').'ftp WHERE `ftp_id` = 1 LIMIT 1');
     $ftp = $ftp->fetch(PDO::FETCH_ASSOC);
 
     // establish connection

@@ -1,8 +1,8 @@
 <?php
 // Get Data from DB
-$index = $FD->sql()->conn()->query ( '
+$index = $FD->db()->conn()->query ( '
             SELECT `artikel_id`, `artikel_name`, `artikel_url`, `artikel_preis`
-            FROM `'.$FD->config('pref').'shop`
+            FROM `'.$FD->env('DB_PREFIX').'shop`
             WHERE `artikel_hot` = 1' );
 
 // Security Functions

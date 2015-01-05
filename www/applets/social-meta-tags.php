@@ -106,10 +106,10 @@ $settings = (object) $settings;
     // news
     if ($settings->for_news && 'comments' == $FD->env('goto')) {
         // load data
-        $news_arr = $FD->sql()->conn()->query(
+        $news_arr = $FD->db()->conn()->query(
                         'SELECT N.*, C.cat_name
-                         FROM '.$FD->config('pref').'news N
-                         LEFT JOIN '.$FD->config('pref').'news_cat C
+                         FROM '.$FD->env('DB_PREFIX').'news N
+                         LEFT JOIN '.$FD->env('DB_PREFIX').'news_cat C
                          ON N.cat_id = C.cat_id
                          WHERE N.`news_id` = '.intval($_GET['id']).'
                          AND N.`news_date` <= '.$FD->env('time').' AND N.`news_active` = 1
@@ -134,9 +134,9 @@ $settings = (object) $settings;
     } else if ($settings->for_articles && 'articles' == $FD->env('goto')) {
         //load data
         if ($FD->cfg('goto') == 'articles') {
-            $article_arr = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'articles WHERE article_id = '.intval($_GET['id']));
+            $article_arr = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX').'articles WHERE article_id = '.intval($_GET['id']));
         } else {
-            $article_arr = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."articles WHERE `article_url` = '".$FD->cfg('goto')."' ORDER BY `article_id` LIMIT 1");
+            $article_arr = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX')."articles WHERE `article_url` = '".$FD->cfg('goto')."' ORDER BY `article_id` LIMIT 1");
         }
         $article_arr = $article_arr->fetch(PDO::FETCH_ASSOC);
 
@@ -154,9 +154,9 @@ $settings = (object) $settings;
     // download
     } else if ($settings->for_downloads && 'dlfile' == $FD->env('goto')) {
         // load data
-        $downloads = $FD->sql()->conn()->query(
+        $downloads = $FD->db()->conn()->query(
                         'SELECT `dl_id`, `dl_name`, `dl_text`, `dl_date`, `dl_search_update`
-                         FROM '.$FD->config('pref').'dl
+                         FROM '.$FD->env('DB_PREFIX').'dl
                          WHERE `dl_id` = '.intval($_GET['id']).'
                          AND `dl_open` = 1 AND `dl_date` <= '.$FD->env('time').'
                          ORDER BY `dl_search_update` DESC');

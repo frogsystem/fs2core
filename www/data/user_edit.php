@@ -40,8 +40,8 @@ if (
         $_POST['user_homepage'] = 'http://'.$_POST['user_homepage'];
     }
 
-    $stmt = $FD->sql()->conn()->prepare('
-        UPDATE '.$FD->config('pref').'user
+    $stmt = $FD->db()->conn()->prepare('
+        UPDATE '.$FD->env('DB_PREFIX').'user
         SET `user_mail` = ?,
             `user_show_mail` = ?,
             `user_homepage` = ?,
@@ -65,9 +65,9 @@ if (
 
     // Save New Password
     if ( $_POST['old_pwd'] && $_POST['new_pwd'] && $_POST['wdh_pwd'] ) {
-        $index = $FD->sql()->conn()->query ( '
+        $index = $FD->db()->conn()->query ( '
             SELECT `user_name`, `user_password`, `user_salt`
-            FROM `'.$FD->config('pref')."user`
+            FROM `'.$FD->env('DB_PREFIX')."user`
             WHERE `user_id` = '".intval($_SESSION['user_id'])."'" );
         $row = $index->fetch(PDO::FETCH_ASSOC);
         $old_password = $row['user_password'];
@@ -87,8 +87,8 @@ if (
                 unset ( $_POST['wdh_pwd'] );
 
                 // Update Password
-                $FD->sql()->conn()->exec ( '
-                    UPDATE '.$FD->config('pref')."user
+                $FD->db()->conn()->exec ( '
+                    UPDATE '.$FD->env('DB_PREFIX')."user
                     SET `user_password` = '".$md5_password."',
                         `user_salt` = '".$new_salt."'
                     WHERE `user_id` = '".$_SESSION['user_id']."'" );
@@ -139,14 +139,14 @@ else {
             $messages = '';
         }
 
-        $index = $FD->sql()->conn()->query ( '
+        $index = $FD->db()->conn()->query ( '
             SELECT COUNT(*)
-            FROM `'.$FD->config('pref')."user`
+            FROM `'.$FD->env('DB_PREFIX')."user`
             WHERE `user_id` = '".$_SESSION['user_id']."'" );
         $num_rows = $index->fetchColumn();
         if ( $num_rows > 0 ) {
-            $index = $FD->sql()->conn()->query ( '
-                SELECT * FROM `'.$FD->config('pref')."user`
+            $index = $FD->db()->conn()->query ( '
+                SELECT * FROM `'.$FD->env('DB_PREFIX')."user`
                 WHERE `user_id` = '".$_SESSION['user_id']."'" );
 
             $user_arr = $index->fetch(PDO::FETCH_ASSOC);
@@ -183,7 +183,7 @@ else {
         }
     } else { // Show Login-Page
         $_SESSION['last_url'] = 'user_edit';
-        include ( FS2_ROOT_PATH . 'data/login.php' );
+        include ( FS2SOURCE . '/data/login.php' );
     }
 }
 ?>

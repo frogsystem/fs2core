@@ -20,9 +20,9 @@ echo $adminpage->get('search');
 if (!empty($_POST['filter'])) {
 
     //get users by filter
-    $users = $FD->sql()->conn()->prepare(
+    $users = $FD->db()->conn()->prepare(
                   'SELECT user_name, user_id, user_is_admin, user_is_staff
-                   FROM '.$FD->config('pref').'user
+                   FROM '.$FD->env('DB_PREFIX').'user
                    WHERE user_name LIKE ?
                    ORDER BY `user_name`');
     $users->execute(array('%'.$_POST['filter'].'%'));

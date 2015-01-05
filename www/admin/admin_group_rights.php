@@ -10,9 +10,9 @@ function get_group_rights_array ( $GROUP_ID )
 
     unset ( $rights );
 
-    $index = $FD->sql()->conn()->query ( '
+    $index = $FD->db()->conn()->query ( '
                     SELECT `perm_id`
-                    FROM '.$FD->config('pref')."user_permissions
+                    FROM '.$FD->env('DB_PREFIX')."user_permissions
                     WHERE `x_id` = '".intval($GROUP_ID)."'
                     AND `perm_for_group` = '1'" );
     while ( $temp_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
@@ -38,9 +38,9 @@ if (isset($_POST['user_group_id']) && $_POST['user_group_id'] > 1) {
     unset ( $group_rights );
 
     // get group of current user
-    $index = $FD->sql()->conn()->query ( '
+    $index = $FD->db()->conn()->query ( '
                     SELECT `user_group`
-                    FROM `'.$FD->config('pref')."user`
+                    FROM `'.$FD->env('DB_PREFIX')."user`
                     WHERE `user_id` = '".$_SESSION['user_id']."'
                     LIMIT 0,1" );
     $current_user_group = $index->fetchColumn();
@@ -52,25 +52,25 @@ if (isset($_POST['user_group_id']) && $_POST['user_group_id'] > 1) {
         $group_rights = get_group_rights_array ($_POST['user_group_id']);
 
         // get pages
-        $pageaction = $FD->sql()->conn()->query ( '
+        $pageaction = $FD->db()->conn()->query ( '
                             SELECT `page_id`
-                            FROM `'.$FD->config('pref')."admin_cp`
+                            FROM `'.$FD->env('DB_PREFIX')."admin_cp`
                             WHERE `group_id` > '0'" );
         while ($page_arr = $pageaction->fetch(PDO::FETCH_ASSOC)) {
             // permission is not longer granted
             if ( ( !isset($_POST[$page_arr['page_id']]) || ($_POST[$page_arr['page_id']] == 0) ) && in_array ( $page_arr['page_id'], $group_rights ) ) {
-                $FD->sql()->conn()->exec ( '
+                $FD->db()->conn()->exec ( '
                                 DELETE
-                                FROM `'.$FD->config('pref')."user_permissions`
+                                FROM `'.$FD->env('DB_PREFIX')."user_permissions`
                                 WHERE `perm_id` = '".$page_arr['page_id']."'
                                 AND `x_id` = '".$_POST['user_group_id']."'
                                 AND `perm_for_group` = '1'" );
 
             // permission is now granted
             } elseif ( isset($_POST[$page_arr['page_id']]) && $_POST[$page_arr['page_id']] == 1 && !in_array ( $page_arr['page_id'], $group_rights ) ) {
-                $FD->sql()->conn()->exec ( '
+                $FD->db()->conn()->exec ( '
                                 INSERT
-                                INTO `'.$FD->config('pref')."user_permissions` (`perm_id`, `x_id`, `perm_for_group`)
+                                INTO `'.$FD->env('DB_PREFIX')."user_permissions` (`perm_id`, `x_id`, `perm_for_group`)
                                 VALUES ('".$page_arr['page_id']."', '".$_POST['user_group_id']."', 1)" );
             }
         }
@@ -98,9 +98,9 @@ if ( isset($_POST['edit_user_group_id']) && $_POST['edit_user_group_id'] > 1)
     settype ($_POST['edit_user_group_id'], 'integer');
 
     // get group data
-    $index = $FD->sql()->conn()->query ( '
+    $index = $FD->db()->conn()->query ( '
                     SELECT `user_group_name`, `user_group_id`
-                    FROM `'.$FD->config('pref').'user_groups` G, `'.$FD->config('pref')."user` U
+                    FROM `'.$FD->env('DB_PREFIX').'user_groups` G, `'.$FD->env('DB_PREFIX')."user` U
                     WHERE G.`user_group_id` = '".$_POST['edit_user_group_id']."'
                     AND U.`user_id` = '".$_SESSION['user_id']."'
                     AND G.`user_group_id` != U.`user_group`
@@ -111,9 +111,9 @@ if ( isset($_POST['edit_user_group_id']) && $_POST['edit_user_group_id'] > 1)
     $group_rights = get_group_rights_array($user_group_arr['user_group_id']);
 
     // get group of current user
-    $index = $FD->sql()->conn()->query ( '
+    $index = $FD->db()->conn()->query ( '
                     SELECT `user_group`
-                    FROM `'.$FD->config('pref')."user`
+                    FROM `'.$FD->env('DB_PREFIX')."user`
                     WHERE `user_id` = '".$_SESSION['user_id']."'
                     LIMIT 0,1" );
     $current_user_group = $index->fetchColumn();
@@ -123,33 +123,33 @@ if ( isset($_POST['edit_user_group_id']) && $_POST['edit_user_group_id'] > 1)
     $entries = 0;
 
     // get groups
-    $groupaction = $FD->sql()->conn()->query ( '
+    $groupaction = $FD->db()->conn()->query ( '
                         SELECT `group_id`
-                        FROM `'.$FD->config('pref')."admin_groups`
+                        FROM `'.$FD->env('DB_PREFIX')."admin_groups`
                         WHERE `menu_id` != 'none'
                         ORDER BY `menu_id`, `group_pos`" );
     while ( $group_arr = $groupaction->fetch(PDO::FETCH_ASSOC) ) {
         $DATA_ARR[$group_arr['group_id']]['title'] = $FD->text('menu', 'group_'.$group_arr['group_id']);
 
         // get pages
-        $pageaction = $FD->sql()->conn()->query ( '
+        $pageaction = $FD->db()->conn()->query ( '
                             SELECT COUNT(`page_id`)
-                            FROM `'.$FD->config('pref')."admin_cp`
+                            FROM `'.$FD->env('DB_PREFIX')."admin_cp`
                             WHERE `group_id` = '".$group_arr['group_id']."' AND `page_int_sub_perm` = 0" );
         $pa_num_rows = $pageaction->fetchColumn();
-        $pageaction = $FD->sql()->conn()->query ( '
+        $pageaction = $FD->db()->conn()->query ( '
                             SELECT `page_id`
-                            FROM `'.$FD->config('pref')."admin_cp`
+                            FROM `'.$FD->env('DB_PREFIX')."admin_cp`
                             WHERE `group_id` = '".$group_arr['group_id']."' AND `page_int_sub_perm` = 0
                             ORDER BY `page_pos` ASC, `page_id` ASC" );
-        $pageaction_sub = $FD->sql()->conn()->query ( '
+        $pageaction_sub = $FD->db()->conn()->query ( '
                             SELECT COUNT(`page_id`)
-                            FROM `'.$FD->config('pref')."admin_cp`
+                            FROM `'.$FD->env('DB_PREFIX')."admin_cp`
                             WHERE `group_id` = '".$group_arr['group_id']."' AND `page_int_sub_perm` = 1" );
         $pas_num_rows = $pageaction_sub->fetchColumn();
-        $pageaction_sub = $FD->sql()->conn()->query ( '
+        $pageaction_sub = $FD->db()->conn()->query ( '
                             SELECT `page_id`, `page_file`
-                            FROM `'.$FD->config('pref')."admin_cp`
+                            FROM `'.$FD->env('DB_PREFIX')."admin_cp`
                             WHERE `group_id` = '".$group_arr['group_id']."' AND `page_int_sub_perm` = 1
                             ORDER BY `page_file` ASC, `page_pos` ASC, `page_id` ASC" );
         // count number of entries
@@ -265,9 +265,9 @@ else
     ';
 
     // get groups from db
-    $index = $FD->sql()->conn()->query ( '
+    $index = $FD->db()->conn()->query ( '
                     SELECT COUNT(`user_group_id`)
-                    FROM `'.$FD->config('pref').'user_groups` G, `'.$FD->config('pref')."user` U
+                    FROM `'.$FD->env('DB_PREFIX').'user_groups` G, `'.$FD->env('DB_PREFIX')."user` U
                     WHERE U.`user_id` = '".$_SESSION['user_id']."'
                     AND G.`user_group_id` != U.`user_group`
                     AND G.`user_group_id` > 1" );
@@ -286,24 +286,24 @@ else
         ';
 
         // display groups
-        $index = $FD->sql()->conn()->query ( '
+        $index = $FD->db()->conn()->query ( '
                         SELECT `user_group_id`, `user_group_name`, `user_group_user`, `user_group_date`
-                        FROM `'.$FD->config('pref').'user_groups` G, `'.$FD->config('pref')."user` U
+                        FROM `'.$FD->env('DB_PREFIX').'user_groups` G, `'.$FD->env('DB_PREFIX')."user` U
                         WHERE U.`user_id` = '".$_SESSION['user_id']."'
                         AND G.`user_group_id` != U.`user_group`
                         AND G.`user_group_id` > 1
                         ORDER BY `user_group_name`" );
         while ( $group_arr = $index->fetch(PDO::FETCH_ASSOC) )
         {
-            $index_username = $FD->sql()->conn()->query ( '
+            $index_username = $FD->db()->conn()->query ( '
                                     SELECT `user_name`
-                                    FROM `'.$FD->config('pref')."user`
+                                    FROM `'.$FD->env('DB_PREFIX')."user`
                                     WHERE `user_id` = '".$group_arr['user_group_user']."'" );
             $group_arr['user_group_user_name'] = $index_username->fetchColumn();
 
-            $index_numusers = $FD->sql()->conn()->query ( "
+            $index_numusers = $FD->db()->conn()->query ( "
                                     SELECT COUNT(`user_id`) AS 'num_users'
-                                    FROM `".$FD->config('pref')."user`
+                                    FROM `".$FD->env('DB_PREFIX')."user`
                                     WHERE `user_group` = '".$group_arr['user_group_id']."'" );
             $group_arr['user_group_num_users'] = $index_numusers->fetchColumn();
 

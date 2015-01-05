@@ -92,8 +92,6 @@ function http_response_text($code) {
 //// Decode JSON to Array with UTF8 ////
 ////////////////////////////////////////
 function json_array_decode ($string) {
-    // JSON for PHP <= 5.2
-    require_once(FS2_ROOT_PATH . 'resources/jsonwrapper/jsonwrapper_helper.php');
     
     $data = json_decode($string, true);
     // empty json creates null not emtpy array => error
@@ -105,8 +103,6 @@ function json_array_decode ($string) {
 //// Encode Array from JSON & UTF8 ////
 ///////////////////////////////////////
 function json_array_encode ($array) {
-    // JSON for PHP <= 5.2
-    require_once(FS2_ROOT_PATH . 'resources/jsonwrapper/jsonwrapper_helper.php');
     return json_encode(array_map('utf8_encode', $array), JSON_FORCE_OBJECT);
 }
 
@@ -216,11 +212,11 @@ function highlight ($word, $text, $class = 'red', $style = '')
 ////////////////////////
 //// create SEO URL ////
 ////////////////////////
-function url_seo ($go, $args, $go_in_args = false) {
+function url_seo ($go, $args, $go_in_args = false, $safeargs = array()) {
 
 	$urlencodeext = create_function ('$url', '
 		// Folge von Bindestriche um zwei Striche erweitern
-		return urlencode(preg_replace(\'/-+/\', \'$0--\', $url));');
+		return rawurlencode(preg_replace(\'/-+/\', \'$0--\', $url));');
 
     if ($go_in_args) {
         unset($args['go']);
@@ -246,6 +242,10 @@ function url_seo ($go, $args, $go_in_args = false) {
 
 	if (!empty($seourl))
 		$seourl .= '.html';
+
+    $safeargs = http_build_query($safeargs, 'p', '&amp;');
+	if (!empty($safeargs))
+        $seourl .= '?'.$safeargs;
 
     return $seourl;
 }
@@ -484,6 +484,10 @@ function array_real_merge ($arr1, $arr2, $intersect, $symdiff) {
 //// debug print_r ////
 ///////////////////////
 function print_d ($text, $return = false) {
+    if (!FS2_DEBUG) {
+        return '';
+    }
+    
     if ($return) {
         $string = '<pre>';
         $string .= print_r($text, true);
@@ -495,6 +499,5 @@ function print_d ($text, $return = false) {
         echo '</pre>';
     }
 }
-
 
 ?>

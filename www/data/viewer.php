@@ -1,32 +1,6 @@
 <?php
-/* FS2 PHP Init */
-set_include_path('.');
-define('FS2_ROOT_PATH', './', true);
-require_once(FS2_ROOT_PATH . 'includes/phpinit.php');
-phpinit();
-/* End of FS2 PHP Init */
-
-// Inlcude DB Connection File or exit()
-require_once(FS2_ROOT_PATH . 'login.inc.php');
-
-//Include Functions-Files
-require_once(FS2_ROOT_PATH . 'classes/exceptions.php');
-require_once(FS2_ROOT_PATH . 'includes/cookielogin.php');
-require_once(FS2_ROOT_PATH . 'includes/imagefunctions.php');
-require_once(FS2_ROOT_PATH . 'includes/indexfunctions.php');
-
-
-// Constructor Calls
-// TODO: "Constructor Hook"
-userlogin();
-setTimezone($FD->cfg('timezone'));
-run_cronjobs();
-if (isset($_COOKIE['style']) && !isset($_GET['style'])) {
-  $_GET['style'] = $_COOKIE['style'];
-}
-set_style();
-
     // Security Functions
+    settype( $_GET['id'], 'integer' );
     $_GET['id'] = ( isset ( $_GET['screenid'] ) ) ? $_GET['screenid'] : $_GET['id'];
     settype( $_GET['id'], 'integer' );
     $_GET['single'] = ( isset ( $_GET['single'] ) ) ? TRUE : FALSE;
@@ -47,7 +21,7 @@ set_style();
 
     // Any Image?
     if ( isset ( $_GET['file'] ) && $_GET['file'] != '' ) {
-        $path_parts = pathinfo ( $_GET['file'] );
+        $path_parts = pathinfo ( urldecode($_GET['file']) );
         $data_array['image'] = image_url ( $path_parts['dirname'].'/', $path_parts['filename'], FALSE );
         $data_array['image_url'] = image_url ( $path_parts['dirname'].'/', $path_parts['filename'] );
         $data_array['image_sizeinfo'] = image_url ( $path_parts['dirname'].'/', $path_parts['filename'], FALSE, TRUE );
@@ -56,8 +30,8 @@ set_style();
     // Gallery Image
     } else {
         // Get Image Data
-        $index = $FD->sql()->conn()->query ( '
-                                SELECT `screen_name`, `cat_id` FROM `'.$FD->config('pref').'screen`
+        $index = $FD->db()->conn()->query ( '
+                                SELECT `screen_name`, `cat_id` FROM `'.$FD->env('DB_PREFIX').'screen`
                                 WHERE `screen_id` = '.$_GET['id'].'
                                 LIMIT 0,1' );
 
@@ -85,9 +59,9 @@ set_style();
         // No single Image
         } else {
             // exists a NEXT image?
-            $index = $FD->sql()->conn()->query ( '
+            $index = $FD->db()->conn()->query ( '
                             SELECT `screen_id`
-                            FROM `'.$FD->config('pref').'screen`
+                            FROM `'.$FD->env('DB_PREFIX').'screen`
                             WHERE `cat_id` = '.$cat_id.'
                             AND `screen_id` > '.$_GET['id'].'
                             ORDER BY `screen_id`
@@ -96,15 +70,15 @@ set_style();
             if ( $row !== false ) {
                 $next_id = $row['screen_id'];
 
-                $data_array['next_url'] = 'imageviewer.php?id='.$next_id;
+                $data_array['next_url'] = url('viewer', array('id' => $next_id));
                 $data_array['next_link'] = '<a href="'.$data_array['next_url'].'" target="_self">'.$FD->text('frontend', 'popupviewer_next_text').'</a>';
                 $data_array['next_image_link'] = '<a href="'.$data_array['next_url'].'" target="_self"><img src="styles/'.$FD->config('style').'/icons/next.gif" alt="'.$FD->text('frontend', 'popupviewer_next_text').'" title="'.$FD->text('frontend', 'popupviewer_next_text').'"></a>';
             }
 
             // exists a PREVIOUS image?
-            $index = $FD->sql()->conn()->query ( '
+            $index = $FD->db()->conn()->query ( '
                             SELECT `screen_id`
-                            FROM `'.$FD->config('pref').'screen`
+                            FROM `'.$FD->env('DB_PREFIX').'screen`
                             WHERE `cat_id` = '.$cat_id.'
                             AND `screen_id` < '.$_GET['id'].'
                             ORDER BY `screen_id` DESC
@@ -113,7 +87,7 @@ set_style();
             if ( $row !== false ) {
                 $prev_id = $row['screen_id'];
 
-                $data_array['prev_url'] = 'imageviewer.php?id='.$prev_id;
+                $data_array['prev_url'] = url('viewer', array('id' => $prev_id));
                 $data_array['prev_link'] = '<a href="'.$data_array['prev_url'].'" target="_self">'.$FD->text('frontend', 'popupviewer_prev_text').'</a>';
                 $data_array['prev_image_link'] = '<a href="'.$data_array['prev_url'].'" target="_self"><img src="styles/'.$FD->config('style').'/icons/previous.gif" alt="'.$FD->text('frontend', 'popupviewer_prev_text').'" title="'.$FD->text('frontend', 'popupviewer_prev_text').'"></a>';
             }
@@ -165,8 +139,5 @@ set_style();
 
     // Display Page
     echo get_maintemplate($template_popupviewer);
-
-// Shutdown System
-// TODO: "Shutdown Hook"
-unset($FD);
+    exit;
 ?>

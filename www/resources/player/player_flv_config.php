@@ -13,7 +13,7 @@ header('Content-type: text/plain');
 require ( FS2_ROOT_PATH . 'login.inc.php' );
 require ( FS2_ROOT_PATH . 'includes/newfunctions.php' );
 
-if ( $FD->sql()->conn() )
+if ( $FD->db()->conn() )
 {
     $FD->loadConfig('video_player');
     $config_arr = $FD->configObject('video_player')->getConfigArray();
@@ -96,7 +96,5 @@ iconplaycolor='.$config_arr['cfg_iconplaycolor'].'
 iconplaybgcolor='.$config_arr['cfg_iconplaybgcolor'].'
 iconplaybgalpha='.$config_arr['cfg_iconplaybgalpha'].'
 showtitleandstartimage='.$config_arr['cfg_showtitleandstartimage'].'';
-
-    unset($sql);
 }
 ?>
