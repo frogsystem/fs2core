@@ -251,60 +251,6 @@ function get_sub_cats ( $CAT_ID, $REC_SUB_CAT_ARRAY )
     return $sub_cat_ids;
 }
 
-/////////////////////////////////
-//// Create DL-Folder-System ////
-/////////////////////////////////
-function create_dl_cat ($CAT_ID, $GET_ID, $NAVI_TEMPLATE) {
-    global $FD;
-    static $navi;
-    static $i = 0;
-
-    $i++;
-    $data[$CAT_ID] = $FD->db()->conn()->query ( '
-        SELECT *
-        FROM `'.$FD->env('DB_PREFIX')."dl_cat`
-        WHERE `subcat_id` = '".$CAT_ID."'" );
-
-    while ( $array = $data[$CAT_ID]->fetch(PDO::FETCH_ASSOC) ) {
-        $index = $FD->db()->conn()->query ( '
-            SELECT `cat_id`
-            FROM `'.$FD->env('DB_PREFIX')."dl_cat`
-            WHERE `subcat_id` = '".$array['cat_id']."'");
-        $all_subcats = $index->fetchAll(PDO::FETCH_ASSOC);
-        $num_subcat = is_array ( $all_subcats ) ? count($all_subcats) : 0;
-
-        unset ( $ids );
-        $ids = get_sub_cats ( $array['cat_id'], array() );
-
-        $template = $NAVI_TEMPLATE;
-        $cat_url = url('download', array('catid' => $array['cat_id']));
-        $top_url = url('download', array('catid' => $array['subcat_id']));
-        $folder = ( $array['cat_id'] == $GET_ID ? 'folder_open.gif' : 'folder.gif' );
-        $open = ( ( $array['cat_id'] == $GET_ID || in_array ( $GET_ID, $ids ) ) ? 'minus.gif' : 'plus.gif' );
-        $open_url = ( ( $array['cat_id'] == $GET_ID || in_array ( $GET_ID, $ids ) ) ? $top_url : $cat_url );
-        $nbsp = str_repeat( '&nbsp;', $i-1);
-
-        $template = str_repeat( '<img class="textmiddle" src="?images=null.gif" alt="" border="0" align="absmiddle" width="16" height="0">', $i-1) . $template;
-
-        if ( $num_subcat <= 0 ) {
-            $template = str_replace( '{open_link}', $nbsp.'<img class="textmiddle" src="?images=null.gif" alt="" width="16" height="0">', $template );
-        }
-        $template = str_replace( '{open_link}', $nbsp.'<a class="textmiddle" href="'.$open_url.'"><img class="textmiddle" style="margin-left:4px; margin-right:3px;" src="images/icons/dl/'.$open.'" alt="" border="0" align="absmiddle"></a>', $template );
-        $template = str_replace( '{folder_link}', '&nbsp;<a class="textmiddle" href="'.$cat_url.'"><img class="textmiddle" src="images/icons/dl/'.$folder.'" alt="" border="0" align="absmiddle"></a>', $template );
-
-        $template = str_replace( '{cat_url}', $cat_url, $template);
-        $template = str_replace( '{cat_name}', $array['cat_name'], $template );
-        $template = str_replace( '{class}', ( $array['cat_id'] == $GET_ID ? ' active' : '' ), $template);
-
-        $navi .= $template;
-        if ( $array['cat_id'] == $GET_ID || in_array ( $GET_ID, $ids ) ) {
-            create_dl_cat ( $array['cat_id'], $GET_ID, $NAVI_TEMPLATE );
-        }
-    }
-    $i--;
-    return $navi;
-}
-
 
 ////////////////////////////////////////
 //// Get Preview Image by Timetable ////
