@@ -4,3 +4,6 @@
 
 # OS-related/generic files
 Thumbs.db
+
+/vendor/
+/node_modules
