@@ -64,7 +64,7 @@ for ($d=1; $d<$anz_tage+1; $d++)
                   WHERE s_year  = $_GET[s_year] and
                         s_month = $_GET[s_month] and
                         s_day   = $d" );
-    $row = $index->fetchColumn();
+    $row = $index->fetch(PDO::FETCH_ASSOC);
     if ($row !== false)
     {
         $dbhits = $row['s_hits'];
@@ -189,7 +189,7 @@ for ($d=1; $d<$anz_tage+1; $d++)
 {
     $dayname = date('w', mktime(0, 0, 0, $_GET['s_month'], $d, $_GET['s_year']));
     $daynumber = date('d', mktime(0, 0, 0, $_GET['s_month'], $d, $_GET['s_year']));
-    imagestringup($image,1,$startwert,280,$daynumber.' '.$day_arr[$dayname],$farbe_text2);
+    imagestringup($image,1,$startwert,280,$daynumber.' '.$dayname,$farbe_text2);
     $startwert = $startwert + $feldbreite;
 }
 
