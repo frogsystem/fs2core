@@ -104,9 +104,9 @@ time_appendix:                           o'clock
 at_date:                                 on
 
 # Frequently used Images
-sub_arrow:                               <img class="middle" src="img/sub-arrow.gif" alt="'->">
-checkbox:                                <img class="checkbox" src="images/checkbox.png" alt="[_]">
-radio:                                   <img class="checkbox" src="images/radio.png" alt="(_)">
+sub_arrow:                               <img class="middle" src="?images=sub-arrow.gif" alt="'->">
+checkbox:                                <img class="checkbox" src="?images=checkbox.png" alt="[_]">
+radio:                                   <img class="checkbox" src="?images=radio.png" alt="(_)">
 
 
 # Action Selection

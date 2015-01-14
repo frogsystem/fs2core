@@ -875,7 +875,7 @@ function get_leftmenu_group ($GROUP_ID, $IS_FIRST, $GO)
     if (!empty($template)) {
         $template = '
         <div class="leftmenu'.$class.'">
-            <img src="icons/arrow.gif" alt="->" class="middle">&nbsp;<strong class="middle">'.$FD->text('menu', 'group_'.$GROUP_ID).'</strong>
+            <img src="?icons=arrow.gif" alt="->" class="middle">&nbsp;<strong class="middle">'.$FD->text('menu', 'group_'.$GROUP_ID).'</strong>
             <ul>'.$template.'
             </ul>
         </div>';
