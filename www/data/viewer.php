@@ -21,10 +21,9 @@
 
     // Any Image?
     if ( isset ( $_GET['file'] ) && $_GET['file'] != '' ) {
-        $path_parts = pathinfo ( urldecode($_GET['file']) );
-        $data_array['image'] = image_url ( $path_parts['dirname'].'/', $path_parts['filename'], FALSE );
-        $data_array['image_url'] = image_url ( $path_parts['dirname'].'/', $path_parts['filename'] );
-        $data_array['image_sizeinfo'] = image_url ( $path_parts['dirname'].'/', $path_parts['filename'], FALSE, TRUE );
+        $data_array['image'] = $FD->cfg('virtualhost').urldecode($_GET['file']);
+        $data_array['image_url'] = $data_array['image'];
+        $data_array['image_sizeinfo'] = $data_array['image'];
         $image_found = TRUE;
 
     // Gallery Image
