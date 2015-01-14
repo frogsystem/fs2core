@@ -1,0 +1,2 @@
+reg_antispam:                                      Anti-spam at registration
+reg_antispam_desc:                                 Activates the anti-spam question at registration.

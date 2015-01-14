@@ -145,8 +145,6 @@ feed_rss091:                                       RSS 0.91
 feed_rss10:                                        RSS 1.0
 feed_rss20:                                        RSS 2.0
 feed_atom10:                                       Atom 1.0
-reg_antispam:                                      Anti-Spam bei Registrierung
-reg_antispam_desc:                                 Aktiviert die Anti-Spam Abfrage bei der Registrierung.
 date:                                              Datum
 date_desc:                                         Datumsformat, das auf der Seite verwendet werden soll.
 date_info:                                         verwendet den Syntax der PHP-Funktion <a href="http://www.php.net/manual/de/function.date.php" target="_blank" class="small">date()</a>
