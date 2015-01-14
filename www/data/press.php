@@ -175,7 +175,7 @@ if (!($config_arr['game_navi'] == 0 && $config_arr['cat_navi'] == 0 && $config_a
 
                             $template->tag('navi_url', url($navi_url ,$navi_url3));
                             $template->tag('title', $entry_arr['title'] );
-                            $template->tag('img_url', image_url ( 'images/press/', $entry_arr['type'].'_'.$entry_arr['id'] ) );
+                            $template->tag('img_url', image_url ( '/press', $entry_arr['type'].'_'.$entry_arr['id'] ) );
                             $template->tag('icon_url', $entry_arr['icon_url'] );
 
                             $template = $template->display ();
@@ -214,7 +214,7 @@ if (!($config_arr['game_navi'] == 0 && $config_arr['cat_navi'] == 0 && $config_a
 
                         $template->tag('navi_url', url($navi_url ,$navi_url2));
                         $template->tag('title', $entry_arr['title'] );
-                        $template->tag('img_url', image_url ( 'images/press/', $entry_arr['type'].'_'.$entry_arr['id'] ) );
+                        $template->tag('img_url', image_url ( '/press', $entry_arr['type'].'_'.$entry_arr['id'] ) );
                         $template->tag('icon_url', $entry_arr['icon_url'] );
 
                         $template = $template->display ();
@@ -257,7 +257,7 @@ if (!($config_arr['game_navi'] == 0 && $config_arr['cat_navi'] == 0 && $config_a
 
                 $template->tag('navi_url', url($navi_url, $navi_url1));
                 $template->tag('title', $entry_arr['title'] );
-                $template->tag('img_url', image_url ( 'images/press/', $entry_arr['type'].'_'.$entry_arr['id'] ) );
+                $template->tag('img_url', image_url ( '/press', $entry_arr['type'].'_'.$entry_arr['id'] ) );
                 $template->tag('icon_url', $entry_arr['icon_url'] );
 
                 $template = $template->display ();
@@ -399,11 +399,11 @@ if ($config_arr['show_press_sql'] == true)
         $template->tag('intro', ( $press_arr['press_intro'] != '' ) ? $press_arr['press_intro_formated'] : '' );
         $template->tag('note', ( $press_arr['press_note'] != '' ) ? $press_arr['press_note_formated'] : '' );
         $template->tag('game_title', $press_arr['press_game_title'] );
-        $template->tag('game_img_url', image_url ( 'images/press/', '1_' . $press_arr['press_game'] ) );
+        $template->tag('game_img_url', image_url ( '/press', '1_' . $press_arr['press_game'] ) );
         $template->tag('cat_title', $press_arr['press_cat_title'] );
-        $template->tag('cat_img_url', image_url ( 'images/press/', '2_' . $press_arr['press_cat'] ) );
+        $template->tag('cat_img_url', image_url ( '/press', '2_' . $press_arr['press_cat'] ) );
         $template->tag('lang_title', $press_arr['press_lang_title'] );
-        $template->tag('lang_img_url', image_url ( 'images/press/', '3_' . $press_arr['press_lang'] ) );
+        $template->tag('lang_img_url', image_url ( '/press', '3_' . $press_arr['press_lang'] ) );
 
         $press_releases .= $template->display ();
     }

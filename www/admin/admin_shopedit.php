@@ -12,8 +12,8 @@ if (isset($_POST['title']) && isset($_POST['url']) && isset($_POST['preis']) && 
     if (isset($_POST['delartikel']))
     {
         $FD->db()->conn()->exec('DELETE FROM '.$FD->env('DB_PREFIX')."shop WHERE artikel_id = $_POST[artikelid]");
-        image_delete ('images/shop/', $_POST['artikelid'] );
-        image_delete( 'images/shop/', $_POST['artikelid'] );
+        image_delete ('/shop', $_POST['artikelid'] );
+        image_delete( '/shop', $_POST['artikelid'] );
         systext('Artikel wurde gel&ouml;scht');
     }
     else
@@ -24,9 +24,9 @@ if (isset($_POST['title']) && isset($_POST['url']) && isset($_POST['preis']) && 
 
         if (!empty($_FILES['artikelimg']['name']))
         {
-            $upload = upload_img($_FILES['artikelimg'], 'images/shop/', $_POST['artikelid'], 2*1024*1024, 400, 600);
+            $upload = upload_img($_FILES['artikelimg'], '/shop', $_POST['artikelid'], 2*1024*1024, 400, 600);
             $messages[] = upload_img_notice($upload);
-            $thumb = create_thumb_from(image_url('images/shop/',$_POST['artikelid'],FALSE, TRUE), 100, 100);
+            $thumb = create_thumb_from(image_url('/shop',$_POST['artikelid'],FALSE, TRUE), 100, 100);
             $messages[] = create_thumb_notice($thumb);
         }
         $stmt = $FD->db()->conn()->prepare(
@@ -78,7 +78,7 @@ if (isset($_POST['artikelid']))
                                     <font class="small">Aktuelles Artikelbild</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    '.get_image_output('images/shop/', $artikel_arr['artikel_id'].'_s', "", '<span class="small">['.$FD->text('admin', 'error').': '.$FD->text('admin', 'image_not_found').']</span>', false).'
+                                    '.get_image_output('/shop', $artikel_arr['artikel_id'].'_s', "", '<span class="small">['.$FD->text('admin', 'error').': '.$FD->text('admin', 'image_not_found').']</span>', false).'
                                 </td>
                             </tr>
                             <tr>
@@ -188,7 +188,7 @@ else
         echo'
                             <tr class="select_entry thin">
                                 <td class="config">
-                                    <img src="'.image_url ( 'images/shop/', $artikel_arr['artikel_id'].'_s' ).'" alt="'. killhtml($artikel_arr['artikel_name']) .'">
+                                    <img src="'.image_url ( '/shop', $artikel_arr['artikel_id'].'_s' ).'" alt="'. killhtml($artikel_arr['artikel_name']) .'">
                                 </td>
                                 <td class="configthin">
                                     '. $artikel_arr['artikel_name'] .'

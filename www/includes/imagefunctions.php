@@ -3,9 +3,9 @@
 //// Get Image HTML ////
 ////////////////////////
 
-function get_image_html ( $PATH, $TITLE, $SHOW_TITLE = TRUE, $OTHER = FALSE )
+function get_image_html ( $URL, $TITLE, $SHOW_TITLE = TRUE, $OTHER = FALSE )
 {
-    $img_html = '<img src="'.$PATH.'" alt="'.$TITLE.'"';
+    $img_html = '<img src="'.$URL.'" alt="'.$TITLE.'"';
     $img_html .= ( $SHOW_TITLE === TRUE ) ? ' title="'.$TITLE.'"' : '';
     $img_html .= ( $OTHER != FALSE ) ? ' '.$OTHER.'>' : '>';
 
@@ -16,10 +16,10 @@ function get_image_html ( $PATH, $TITLE, $SHOW_TITLE = TRUE, $OTHER = FALSE )
 //// Get Image Output ////
 //////////////////////////
 
-function get_image_output ( $PATH, $NAME, $TITLE, $NO_TEXT = '', $SHOW_TITLE = TRUE, $OTHER = FALSE )
+function get_image_output ( $SUBPATH, $NAME, $TITLE, $NO_TEXT = '', $SHOW_TITLE = TRUE, $OTHER = FALSE )
 {
-    if ( image_exists ( $PATH, $NAME ) ) {
-        return get_image_html ( image_url ( $PATH, $NAME, FALSE ), $TITLE, $SHOW_TITLE, $OTHER );
+    if ( image_exists ( $SUBPATH, $NAME ) ) {
+        return get_image_html ( image_url ( $SUBPATH, $NAME, FALSE ), $TITLE, $SHOW_TITLE, $OTHER );
     } else {
         return $NO_TEXT;
     }
@@ -30,11 +30,11 @@ function get_image_output ( $PATH, $NAME, $TITLE, $NO_TEXT = '', $SHOW_TITLE = T
 //// Image exists ////
 //////////////////////
 
-function image_exists ( $PATH, $NAME )
+function image_exists ( $SUBPATH, $NAME )
 {
     global $FD;
 
-    $CHECK_PATH = $FD->env('path') . $PATH;
+    $CHECK_PATH = FS2MEDIA . $SUBPATH . '/';
 
     if (
             file_exists ( $CHECK_PATH . $NAME . '.jpg' ) ||
@@ -52,36 +52,38 @@ function image_exists ( $PATH, $NAME )
 //////////////////////////
 //// Create Image URL ////
 //////////////////////////
-
-function image_url ( $PATH, $NAME, $ERROR = TRUE, $GETPATH = FALSE )
+// Returns the full URL or Filesystem path or an image
+function image_url ( $SUBPATH, $NAME, $ERROR = TRUE, $GETPATH = FALSE )
 {
     global $FD;
 
-    $CHECK_PATH = $FD->cfg('env', 'path') . $PATH;
+    $CHECK_PATH = FS2MEDIA . $SUBPATH . '/';
+    $PATH = 'media' . $SUBPATH. '/';
 
     if ( file_exists ( $CHECK_PATH . $NAME . '.jpg' ) ) {
-        $url = $PATH . $NAME . '.jpg';
+        $file = $NAME . '.jpg';
     }
     elseif ( file_exists ( $CHECK_PATH . $NAME . '.jpeg' ) ) {
-        $url = $PATH . $NAME . '.jpeg';
+        $file = $NAME . '.jpeg';
     }
     elseif ( file_exists ( $CHECK_PATH . $NAME . '.gif' ) ) {
-        $url = $PATH . $NAME . '.gif';
+        $file = $NAME . '.gif';
     }
     elseif ( file_exists ( $CHECK_PATH . $NAME . '.png' ) ) {
-        $url = $PATH . $NAME . '.png';
+        $file = $NAME . '.png';
     }
     elseif ( $ERROR == TRUE ) {
-        $url = 'styles/'.$FD->cfg('style').'/icons/image_error.gif';
+        $file = '/'.$FD->cfg('style').'/icons/image_error.gif';
+        return $GETPATH ? FS2STYLES.$file : $FD->cfg('virtualhost').'styles'.$file;
     }
     else {
-        return $CHECK_PATH . $NAME;
+        $file = $NAME;
     }
 
     if ( $GETPATH == TRUE ) {
-        $url = $FD->cfg('env', 'path') . $url;
+        $url = $CHECK_PATH . $file;
     } else {
-        $url = $FD->cfg('virtualhost') . $url;
+        $url = $FD->cfg('virtualhost') . $PATH . $file;
     }
 
     return $url;
@@ -91,23 +93,23 @@ function image_url ( $PATH, $NAME, $ERROR = TRUE, $GETPATH = FALSE )
 //// Delete Image           ////
 ////////////////////////////////
 
-function image_delete ( $PATH, $NAME )
+function image_delete ( $SUBPATH, $NAME )
 {
     global $FD;
 
-    $CHECK_PATH = $FD->env('path') . $PATH;
+    $CHECK_PATH = FS2MEDIA . $SUBPATH . '/' . $NAME;
 
-    if ( file_exists ( $CHECK_PATH . $NAME . '.jpg' ) ) {
-        $file = $CHECK_PATH . $NAME . '.jpg';
+    if ( file_exists ( $CHECK_PATH.'.jpg' ) ) {
+        $file = $CHECK_PATH.'.jpg';
     }
-    elseif ( file_exists ( $CHECK_PATH . $NAME . '.jpeg' ) ) {
-        $file = $CHECK_PATH . $NAME . '.jpeg';
+    elseif ( file_exists ( $CHECK_PATH.'.jpeg' ) ) {
+        $file = $CHECK_PATH.'.jpeg';
     }
-    elseif ( file_exists ( $CHECK_PATH . $NAME . '.gif' ) ) {
-        $file = $CHECK_PATH . $NAME . '.gif';
+    elseif ( file_exists ( $CHECK_PATH.'.gif' ) ) {
+        $file = $CHECK_PATH.'.gif';
     }
-    elseif ( file_exists ( $CHECK_PATH . $NAME . '.png' ) ) {
-        $file = $CHECK_PATH . $NAME . '.png';
+    elseif ( file_exists ( $CHECK_PATH.'.png' ) ) {
+        $file = $CHECK_PATH.'.png';
     } else {
         return false;
     }
@@ -120,14 +122,14 @@ function image_delete ( $PATH, $NAME )
 //// Rename Image           ////
 ////////////////////////////////
 
-function image_rename ( $PATH, $NAME, $NEWNAME )
+function image_rename ( $SUBPATH, $NAME, $NEWNAME )
 {
     global $FD;
 
-    if ( image_exists ( $PATH, $NAME ) && !image_exists ( $PATH, $NEWNAME ) ) {
-        $extension = pathinfo ( image_url ( $PATH, $NAME, FALSE, TRUE ) );
+    if ( image_exists ( $SUBPATH, $NAME ) && !image_exists ( $SUBPATH, $NEWNAME ) ) {
+        $extension = pathinfo ( image_url ( $SUBPATH, $NAME, FALSE, TRUE ) );
         $extension = $extension['extension'];
-        rename ( image_url ( $PATH, $NAME, FALSE, TRUE ), $FD->env('path') . $PATH . $NEWNAME . '.' . $extension );
+        rename ( image_url ( $SUBPATH, $NAME, FALSE, TRUE ), FS2MEDIA . $SUBPATH . '/' . $NEWNAME . '.' . $extension );
         return true;
     } else {
         return false;
@@ -180,7 +182,7 @@ function upload_img_notice ( $UPLOAD, $ADMIN = TRUE )
 ///// Pic Upload + Thumbnail ///
 ////////////////////////////////
 
-function upload_img ( $IMAGE, $PATH, $NAME, $MAX_SIZE, $MAX_WIDTH, $MAX_HEIGHT, $QUALITY = 100, $THIS_SIZE = false )
+function upload_img ( $IMAGE, $SUBPATH, $NAME, $MAX_SIZE, $MAX_WIDTH, $MAX_HEIGHT, $QUALITY = 100, $THIS_SIZE = false )
 {
     global $FD;
 
@@ -221,12 +223,12 @@ function upload_img ( $IMAGE, $PATH, $NAME, $MAX_SIZE, $MAX_WIDTH, $MAX_HEIGHT, 
     }
 
     // Create Image
-    $full_path = $FD->env('path') . $PATH . $NAME . '.' . $type;
+    $full_path = FS2MEDIA . $SUBPATH . '/' . $NAME . '.' . $type;
     move_uploaded_file ( $IMAGE['tmp_name'], $full_path );
     chmod ( $full_path, 0644 );
     clearstatcache();
 
-    if ( image_exists ( $PATH, $NAME) ) {
+    if ( image_exists ( $SUBPATH, $NAME) ) {
         return 0; // Display 0: Das Bild wurde erfolgreich hochgeladen!
     } else {
         return 6; // Error 6: Fehler bei der Bild erstellung

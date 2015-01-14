@@ -211,8 +211,8 @@ if ($SHOW===TRUE)
       $comment_arr['user_is_staff'] = $user_arr['user_is_staff'];
       $comment_arr['user_group'] = $user_arr['user_group'];
 
-      if (image_exists('media/user-images/',$comment_arr['comment_poster_id'])) {
-        $comment_arr['comment_avatar'] = '<img align="left" src="'.image_url('media/user-images/',$comment_arr['comment_poster_id']).'" alt="'.$comment_arr['comment_poster'].'">';
+      if (image_exists('/user-images',$comment_arr['comment_poster_id'])) {
+        $comment_arr['comment_avatar'] = '<img align="left" src="'.image_url('/user-images',$comment_arr['comment_poster_id']).'" alt="'.$comment_arr['comment_poster'].'">';
       } else {
         $comment_arr['comment_avatar'] = '';
       }

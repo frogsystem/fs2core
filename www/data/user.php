@@ -27,7 +27,7 @@ $user_arr = $index->fetch( PDO::FETCH_ASSOC );
 
 if ( $user_arr!==false ) {
     $user_arr['user_name'] = kill_replacements ( $user_arr['user_name'], TRUE );
-    $user_arr['user_image'] = ( image_exists ( 'media/user-images/', $user_arr['user_id'] ) ? '<img src="'.image_url ( 'media/user-images/', $user_arr['user_id'] ).'" alt="'.$FD->text('frontend', 'user_image_of').' '.$user_arr['user_name'].'">' : $FD->text('frontend', 'user_image_not_found') );
+    $user_arr['user_image'] = ( image_exists ( '/user-images', $user_arr['user_id'] ) ? '<img src="'.image_url ( '/user-images', $user_arr['user_id'] ).'" alt="'.$FD->text('frontend', 'user_image_of').' '.$user_arr['user_name'].'">' : $FD->text('frontend', 'user_image_not_found') );
     $user_arr['user_mail'] = ( $user_arr['user_show_mail'] == 1 ? kill_replacements ( $user_arr['user_mail'], TRUE ) : '-' );
     $user_arr['user_is_staff_text'] = ( $user_arr['user_is_staff'] == 1 || $user_arr['user_is_admin'] == 1 ? $FD->text('frontend', "'yes'") : $FD->text('frontend', "'no'") );
     $user_arr['user_is_admin_text'] = ( $user_arr['user_is_admin'] == 1 ? $FD->text('frontend', "'yes'") : $FD->text('frontend', "'no'") );
@@ -93,7 +93,7 @@ if ( $user_arr!==false ) {
     $template->tag ( 'user_id', $user_arr['user_id'] );
     $template->tag ( 'user_name', $user_arr['user_name'] );
     $template->tag ( 'user_image', $user_arr['user_image'] );
-    $template->tag ( 'user_image_url', image_url ( 'media/user-images/', $user_arr['user_id'] ) );
+    $template->tag ( 'user_image_url', image_url ( '/user-images', $user_arr['user_id'] ) );
     $template->tag ( 'user_rank', $user_arr['user_rank'] );
     $template->tag ( 'user_mail', $user_arr['user_mail'] );
 

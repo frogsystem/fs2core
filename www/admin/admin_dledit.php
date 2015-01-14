@@ -13,8 +13,8 @@ if (isset($_POST['dledit']) && isset($_POST['title']) && isset($_POST['text']) &
     {
         $FD->db()->conn()->exec('DELETE FROM '.$FD->env('DB_PREFIX')."dl WHERE dl_id = '$_POST[editdlid]'");
         $FD->db()->conn()->exec('DELETE FROM '.$FD->env('DB_PREFIX')."dl_files WHERE dl_id = '$_POST[editdlid]'");
-        image_delete('images/dl/', "$_POST[editdlid]_s");
-        image_delete('images/dl/', $_POST['editdlid']);
+        image_delete('/downloads', "$_POST[editdlid]_s");
+        image_delete('/downloads', $_POST['editdlid']);
         systext('Download wurde gel&ouml;scht');
 
         // Delete from Search Index
@@ -38,9 +38,9 @@ if (isset($_POST['dledit']) && isset($_POST['title']) && isset($_POST['text']) &
 
         if ($_FILES['dlimg']['name'] != '')
         {
-            $upload = upload_img($_FILES['dlimg'], 'images/downloads/', $_POST['editdlid'], 2*1024*1024, $admin_dl_config_arr['screen_x'], $admin_dl_config_arr['screen_y']);
+            $upload = upload_img($_FILES['dlimg'], '/downloads', $_POST['editdlid'], 2*1024*1024, $admin_dl_config_arr['screen_x'], $admin_dl_config_arr['screen_y']);
             systext(upload_img_notice($upload));
-            $thumb = create_thumb_from(image_url('images/downloads/',$_POST['editdlid'],FALSE, TRUE), $admin_dl_config_arr['thumb_x'], $admin_dl_config_arr['thumb_y']);
+            $thumb = create_thumb_from(image_url('/downloads',$_POST['editdlid'],FALSE, TRUE), $admin_dl_config_arr['thumb_x'], $admin_dl_config_arr['thumb_y']);
             systext(create_thumb_notice($thumb));
         }
 

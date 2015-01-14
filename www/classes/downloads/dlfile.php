@@ -33,9 +33,9 @@ if ($dl_arr !== false)
         $dl_arr['dl_autor_link'] = '<a href="'.$dl_arr['dl_autor_url'].'" target="_blank">'.$dl_arr['dl_autor'].'</a>';
     }
 
-    $dl_arr['dl_bild'] = image_url( 'images/downloads/', $dl_arr['dl_id'] );
-    if ( image_exists ( 'images/downloads/', $dl_arr['dl_id'] ) ) {
-        $dl_arr['viewer_link'] = url('viewer', array('single' => 1), false, array('file' => 'images/downloads/'.basename($dl_arr['dl_bild'])));
+    $dl_arr['dl_bild'] = image_url( '/downloads', $dl_arr['dl_id'] );
+    if ( image_exists ( '/downloads', $dl_arr['dl_id'] ) ) {
+        $dl_arr['viewer_link'] = url('viewer', array('single' => 1), false, array('file' => 'media/downloads/'.basename($dl_arr['dl_bild'])));
     } else {
         $dl_arr['viewer_link'] = url('viewer', array('single' => 1), false, array('file' => 'styles/'.$FD->config('style').'/icons/image_error.gif'));
     }
@@ -43,7 +43,7 @@ if ($dl_arr !== false)
     if ( $screen_config_arr['show_type'] == 1 ) {
         $dl_arr['viewer_link'] = "javascript:popUp('".urlencode($dl_arr['viewer_link'])."','popupviewer','".$screen_config_arr['show_size_x']."','".$screen_config_arr['show_size_y']."');";
     }
-    $dl_arr['dl_thumb'] = image_url('images/downloads/', $dl_arr['dl_id'].'_s');
+    $dl_arr['dl_thumb'] = image_url('/downloads', $dl_arr['dl_id'].'_s');
 
     // Sonstige Daten ermitteln
     $dl_arr['dl_date'] = date_loc ( $FD->config('date'), $dl_arr['dl_date'] );

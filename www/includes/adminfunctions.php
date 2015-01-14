@@ -573,7 +573,7 @@ function create_editor($name, $text='', $width='', $height='', $class='', $do_sm
     $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX').'smilies ORDER by `order` ASC LIMIT 0, 10');
     while ($smilie_arr = $index->fetch(PDO::FETCH_ASSOC))
     {
-        $smilie_arr['url'] = image_url('images/smilies/', $smilie_arr['id'], false);
+        $smilie_arr['url'] = image_url('/smilies', $smilie_arr['id'], false);
 
         $smilie_template = '<td><img src="'.$smilie_arr['url'].'" alt="'.$smilie_arr['replace_string'].'" onClick="insert(\''.$name.'\', \''.$smilie_arr['replace_string'].'\', \'\')" class="editor_smilies" /></td>';
 

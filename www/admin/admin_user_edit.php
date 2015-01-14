@@ -138,13 +138,13 @@ if (
 
     // image operations
     if ( $_POST['user_pic_delete'] == 1 ) {
-        if ( image_delete ( 'images/avatare/', $_POST['user_id'] ) ) {
+        if ( image_delete ( '/user-images', $_POST['user_id'] ) ) {
         $message .= '<br>' . $FD->text("admin", "image_deleted");
       } else {
         $message .= '<br>' . $FD->text("admin", "image_not_deleted");
       }
     } elseif ( $_FILES['user_pic']['name'] != '' ) {
-        $upload = upload_img ( $_FILES['user_pic'], 'images/avatare/', $_POST['user_id'], $config_arr['avatar_size']*1024, $config_arr['avatar_x'], $config_arr['avatar_y'] );
+        $upload = upload_img ( $_FILES['user_pic'], '/user-images', $_POST['user_id'], $config_arr['avatar_size']*1024, $config_arr['avatar_x'], $config_arr['avatar_y'] );
         $message .= '<br>' . upload_img_notice ( $upload );
     }
 
@@ -262,7 +262,7 @@ elseif (
         $message = 'Benutzer wurde erfolgreich gel&ouml;scht';
 
         // Delete Image
-        if ( image_delete ( 'images/avatare/', $_POST['user_id'] ) ) {
+        if ( image_delete ( '/user-images', $_POST['user_id'] ) ) {
             $message .= '<br>' . $FD->text("admin", "image_deleted");
         }
     } else {
@@ -475,8 +475,8 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
                                 <td class="config">
                                     Benutzer-Bild: <span class="small">(optional)</span>
         ';
-        if ( image_exists ( 'images/avatare/', $_POST['user_id'] ) ) {
-            echo '<br><br><img src="'.image_url( 'images/avatare/', $_POST['user_id'] ).'" alt="" border="0"><br><br>';
+        if ( image_exists ( '/user-images', $_POST['user_id'] ) ) {
+            echo '<br><br><img src="'.image_url( '/user-images', $_POST['user_id'] ).'" alt="" border="0"><br><br>';
         }
         echo '
                                 </td>
@@ -484,7 +484,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
                                     <input class="text" name="user_pic" type="file" size="35"><br>
                                     <span class="small">['.$FD->text("admin", "max").' '.$config_arr['avatar_x'].' '.$FD->text("admin", "resolution_x").' '.$config_arr['avatar_y'].' '.$FD->text("admin", "pixel").'] ['.$FD->text("admin", "max").' '.$config_arr['avatar_size'].' '.$FD->text("admin", "kib").']</span>
         ';
-        if ( image_exists ( 'images/avatare/', $_POST['user_id'] ) ) {
+        if ( image_exists ( '/user-images', $_POST['user_id'] ) ) {
             echo '
                                     <br>
                                     <span class="small"><b>Nur ausw&auml;hlen, wenn das bisherige Bild &uuml;berschrieben werden soll!</b></span><br><br>

@@ -73,13 +73,13 @@ if (isset($_GET['catid']))
             $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX')."wallpaper WHERE cat_id = $cat_arr[cat_id] ORDER BY wallpaper_id $config_arr[wp_sort] LIMIT $config_arr[page_start],$config_arr[pics_per_page]");
             while ($wp_arr = $index->fetch(PDO::FETCH_ASSOC))
             {
-                $wp_arr['thumb_url'] = image_url('images/wallpaper/', $wp_arr['wallpaper_name'].'_s');
+                $wp_arr['thumb_url'] = image_url('/wallpaper', $wp_arr['wallpaper_name'].'_s');
 
                 $index2 = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX')."wallpaper_sizes WHERE wallpaper_id = $wp_arr[wallpaper_id] ORDER BY size_id ASC");
                 $sizes = '';
                 while ($sizes_arr = $index2->fetch(PDO::FETCH_ASSOC))
                 {
-                    $sizes_arr['url'] = image_url('images/wallpaper/', $wp_arr['wallpaper_name'].'_'.$sizes_arr['size']);
+                    $sizes_arr['url'] = image_url('/wallpaper', $wp_arr['wallpaper_name'].'_'.$sizes_arr['size']);
 
                     // Get Template
                     $template = new template();
@@ -137,8 +137,8 @@ if (isset($_GET['catid']))
             $pics = '';
             while ($screen_arr = $index->fetch(PDO::FETCH_ASSOC))
             {
-                $screen_arr['screen_thumb'] = image_url('images/screenshots/', $screen_arr['screen_id'].'_s');
-                $screen_arr['screen_url'] = image_url('images/screenshots/', $screen_arr['screen_id'] );
+                $screen_arr['screen_thumb'] = image_url('/screenshots', $screen_arr['screen_id'].'_s');
+                $screen_arr['screen_url'] = image_url('/screenshots', $screen_arr['screen_id'] );
                 $screen_arr['img_link'] = url('viewer', array('id' => $screen_arr['screen_id']));
                 if ( $config_arr['show_type'] == 1 ) {
                     $screen_arr['img_link'] = "javascript:popUp('".urlencode($screen_arr['img_link'])."','popupviewer','".$config_arr['show_size_x']."','".$config_arr['show_size_y']."');";

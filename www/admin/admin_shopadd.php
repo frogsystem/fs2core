@@ -21,9 +21,9 @@ if (isset($_FILES['artikelimg']) && isset($_POST['title']) && isset($_POST['url'
     $messages = array();
     if (!empty($_FILES['artikelimg']['name']))
     {
-        $upload = upload_img($_FILES['artikelimg'], 'images/shop/', $id, 2*1024*1024, 400, 600);
+        $upload = upload_img($_FILES['artikelimg'], '/shop', $id, 2*1024*1024, 400, 600);
         $messages[] = upload_img_notice($upload);
-        $thumb = create_thumb_from(image_url('images/shop/',$id,FALSE, TRUE), 100, 100);
+        $thumb = create_thumb_from(image_url('/shop',$id,FALSE, TRUE), 100, 100);
         $messages[] = create_thumb_notice($thumb);
     }
 

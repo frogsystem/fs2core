@@ -114,7 +114,7 @@ if (
 
     // upload image
     if ( $_FILES['user_pic']['name'] != '' ) {
-        $upload = upload_img ( $_FILES['user_pic'], 'images/avatare/', $user_id, $config_arr['avatar_size']*1024, $config_arr['avatar_x'], $config_arr['avatar_y'] );
+        $upload = upload_img ( $_FILES['user_pic'], '/user-images', $user_id, $config_arr['avatar_size']*1024, $config_arr['avatar_x'], $config_arr['avatar_y'] );
         $message .= '<br>' . upload_img_notice ( $upload );
     }
 

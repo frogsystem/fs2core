@@ -21,7 +21,7 @@ if (isset($_POST['entry_action'])
 
     if ($_FILES['entry_pic']['name'] != '') {
         $id = $FD->db()->conn()->lastInsertId();
-        $upload = upload_img($_FILES['entry_pic'], 'images/press/', $_POST['entry_is'].'_'.$id, 1024*1024, 999, 999);
+        $upload = upload_img($_FILES['entry_pic'], '/press', $_POST['entry_is'].'_'.$id, 1024*1024, 999, 999);
         $msg[] = upload_img_notice($upload);
     } else {
         $msg[] = 'Es wurde kein Bild zum Upload ausgew&auml;hlt.';
@@ -54,14 +54,14 @@ elseif ((isset($_POST['title']) AND $_POST['title'] != '')
 
     if (isset($_POST['entry_pic_delete']) && $_POST['entry_pic_delete'] == 1)
     {
-      if (image_delete('images/press/', $_POST['entry_is'].'_'.$_POST['entry_id']))
+      if (image_delete('/press', $_POST['entry_is'].'_'.$_POST['entry_id']))
       {
         systext('Das Bild wurde erfolgreich gel&ouml;scht!');
       }
     }
     elseif ($_FILES['entry_pic']['name'] != '')
     {
-        $upload = upload_img($_FILES['entry_pic'], 'images/press/', $_POST['entry_is'].'_'.$_POST['entry_id'], 1024*1024, 999, 999);
+        $upload = upload_img($_FILES['entry_pic'], '/press', $_POST['entry_is'].'_'.$_POST['entry_id'], 1024*1024, 999, 999);
         systext(upload_img_notice($upload));
     }
 
@@ -113,7 +113,7 @@ elseif (isset($_POST['entry_action'])
 
         $msg[] = 'Der Eintrag wurde gel&ouml;scht!';
 
-        if (image_delete('images/press/', $entry_arr['type'].'_'.$_POST['entry_id']))
+        if (image_delete('/press', $entry_arr['type'].'_'.$_POST['entry_id']))
         {
             $msg[] = 'Das Bild wurde erfolgreich gel&ouml;scht!';
         }
@@ -202,14 +202,14 @@ elseif (isset($_POST['entry_action'])
                                 <td class="config">
     ';
 
-    if (image_exists('images/press/', $entry_arr['type'].'_'.$entry_arr['id']))
+    if (image_exists('/press', $entry_arr['type'].'_'.$entry_arr['id']))
     {
-        echo'<img src="'.image_url('images/press/', $entry_arr['type'].'_'.$entry_arr['id']).'" alt="" /><br /><br />';
+        echo'<img src="'.image_url('/press', $entry_arr['type'].'_'.$entry_arr['id']).'" alt="" /><br /><br />';
     }
 
     echo'<input name="entry_pic" type="file" size="40" class="text" /><br />';
 
-    if (image_exists('images/press/', $entry_arr['type'].'_'.$entry_arr['id']))
+    if (image_exists('/pres/', $entry_arr['type'].'_'.$entry_arr['id']))
     {
         echo'
                                     <font class="small">
@@ -290,8 +290,8 @@ elseif (isset($_POST['entry_action'])
                                              </td>
                                             <td class="configthin">
         ';
-        if (image_exists('images/press/', $entry_arr['type'].'_'.$entry_arr['id'])) {
-            echo'<img src="'.image_url('images/press/', $entry_arr['type'].'_'.$entry_arr['id']).'" alt="" />';
+        if (image_exists('/press', $entry_arr['type'].'_'.$entry_arr['id'])) {
+            echo'<img src="'.image_url('/press', $entry_arr['type'].'_'.$entry_arr['id']).'" alt="" />';
         }
         echo'
                                              </td>
@@ -497,8 +497,8 @@ if (!isset($_POST['entry_id']))
                             <tr class="thin select_entry">
                                 <td>
             ';
-            if (image_exists('images/press/', $entry_arr['type'].'_'.$entry_arr['id'])) {
-                echo'<img src="'.image_url('images/press/', $entry_arr['type'].'_'.$entry_arr['id']).'" alt="">';
+            if (image_exists('/press', $entry_arr['type'].'_'.$entry_arr['id'])) {
+                echo'<img src="'.image_url('/press', $entry_arr['type'].'_'.$entry_arr['id']).'" alt="">';
             }
             echo'
                                 </td>

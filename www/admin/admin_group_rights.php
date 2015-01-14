@@ -319,8 +319,8 @@ else
                                 <td class="configthin middle">
                                     <b>'.$group_arr['user_group_name'].'</b>
             ';
-            if ( image_exists ( 'images/groups/', 'staff_'.$group_arr['user_group_id'] ) ) {
-                echo '<br><img src="'.image_url ( 'images/groups/', 'staff_'.$group_arr['user_group_id'] ).'" alt="'.$group_arr['user_group_name'].'" border="0">';
+            if ( image_exists ( '/group-images', 'staff_'.$group_arr['user_group_id'] ) ) {
+                echo '<br><img src="'.image_url ( '/group-images', 'staff_'.$group_arr['user_group_id'] ).'" alt="'.$group_arr['user_group_name'].'" border="0">';
             }
             echo '
                                 </td>

@@ -123,7 +123,7 @@
 			$cat_arr['cat_name'] = '?';
 			$cat_arr['cat_id'] = -1;
 		}
-        $cat_arr['cat_pic'] = image_url('images/cat/', 'news_'.$cat_arr['cat_id']);
+        $cat_arr['cat_pic'] = image_url('/cat', 'news_'.$cat_arr['cat_id']);
 
 
         // Get Related Links

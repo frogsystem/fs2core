@@ -476,7 +476,7 @@ function do_fscode_smilies ($text) {
     $smilies = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX').'smilies');
     $smilies = $smilies->fetchAll(PDO::FETCH_ASSOC);
     foreach ($smilies as $smiley) {
-        $url = image_url('images/smilies/', $smiley['id']);
+        $url = image_url('/smilies', $smiley['id']);
         $text = str_replace ($smiley['replace_string'], '<img src="'.$url.'" alt="'.$smiley['replace_string'].'" align="top">', $text);
     }
 

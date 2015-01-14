@@ -189,7 +189,7 @@ FS2_STRING;
                     }
 
                     if(isset($_POST['thumb']) && !empty($_POST['width']) && !empty($_POST['height'])){
-                        $thumb = create_thumb_from(image_url('media/content/', $row['name'], FALSE, TRUE), $_POST['width'], $_POST['height']);
+                        $thumb = create_thumb_from(image_url('/content', $row['name'], FALSE, TRUE), $_POST['width'], $_POST['height']);
                         $text[] = create_thumb_notice($thumb);
                         $FD->db()->conn()->exec('UPDATE `'.$FD->env('DB_PREFIX').'cimg` SET `hasthumb`=1 WHERE `id`='.$file);
                     } elseif (isset($_POST['thumb'])) {

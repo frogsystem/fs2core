@@ -35,9 +35,9 @@
                                 WHERE `screen_id` = '.$_GET['id'].'
                                 LIMIT 0,1' );
 
-        $data_array['image'] = image_url ( 'images/screenshots/', $_GET['id'], FALSE );
-        $data_array['image_url'] = image_url ( 'images/screenshots/', $_GET['id'] );
-        $data_array['image_sizeinfo'] = image_url ( 'images/screenshots/', $_GET['id'], FALSE, TRUE );
+        $data_array['image'] = image_url ( '/screenshots', $_GET['id'], FALSE );
+        $data_array['image_url'] = image_url ( '/screenshots', $_GET['id'] );
+        $data_array['image_sizeinfo'] = image_url ( '/screenshots', $_GET['id'], FALSE, TRUE );
 
         $row = $index->fetch(PDO::FETCH_ASSOC);
         if ( $row !== false ) {

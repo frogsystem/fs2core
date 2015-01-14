@@ -8,8 +8,8 @@ if ( is_loggedin() ) {
     // Get some data
     $user_id = $_SESSION['user_id'];
     settype ( $user_id, 'integer' );
-    $image_url = image_url ( 'media/user-images/', $user_id ) ;
-    if ( image_exists ( 'media/user-images/', $user_id ) ) {
+    $image_url = image_url ( '/user-images', $user_id ) ;
+    if ( image_exists ( '/user-images', $user_id ) ) {
         $image_link = '<img src="'.$image_url .'" alt="'.$FD->text('frontend', 'user_image_of').' '.kill_replacements ( $_SESSION['user_name'], TRUE ).'">';
     } else {
         $image_link = '';

@@ -48,13 +48,13 @@ if ((isset($_POST['name']) AND $_POST['name'] != '')
 
     if ($_FILES['bild_small']['name'] != '')
     {
-      $upload = upload_img($_FILES['bild_small'], 'images/partner/', $_POST['partner_id'].'_small', $config_arr['file_size']*1024, $config_arr['small_x'], $config_arr['small_y'], 100, $config_arr['small_allow_bool']);
+      $upload = upload_img($_FILES['bild_small'], '/partner', $_POST['partner_id'].'_small', $config_arr['file_size']*1024, $config_arr['small_x'], $config_arr['small_y'], 100, $config_arr['small_allow_bool']);
       $message .= $FD->text('page', 'small_pic') . ': ' . upload_img_notice($upload) . '<br />';
     }
 
     if ($_FILES['bild_big']['name'] != '')
     {
-      $upload = upload_img($_FILES['bild_big'], 'images/partner/', $_POST['partner_id'].'_big', $config_arr['file_size']*1024, $config_arr['big_x'], $config_arr['big_y'], 100, $config_arr['big_allow_bool']);
+      $upload = upload_img($_FILES['bild_big'], '/partner', $_POST['partner_id'].'_big', $config_arr['file_size']*1024, $config_arr['big_x'], $config_arr['big_y'], 100, $config_arr['big_allow_bool']);
       $message .= $FD->text('page', 'big_pic') . ': ' . upload_img_notice($upload) . '<br />';
     }
 
@@ -83,8 +83,8 @@ elseif (isset($_POST['partner_action'])
     if ($_POST['delete_partner'])   // Delete affiliated site
     {
         $FD->db()->conn()->exec('DELETE FROM '.$FD->env('DB_PREFIX')."partner WHERE partner_id = '$_POST[partner_id]'");
-        image_delete('images/partner/', $_POST['partner_id'].'_small');
-        image_delete('images/partner/', $_POST['partner_id'].'_big');
+        image_delete('/partner', $_POST['partner_id'].'_small');
+        image_delete('/partner', $_POST['partner_id'].'_big');
         systext($FD->text('page', 'note_deleted'));
     }
     else
@@ -143,7 +143,7 @@ elseif (isset($_POST['partner_action'])
                                     <font class="small">'.$FD->text("page", "small_pic_desc").'</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    '.get_image_output('images/partner/', $_POST['partner_id'].'_small', "", '<span class="small">['.$FD->text("admin", "error").': '.$FD->text("admin", "image_not_found").']</span>', false).'
+                                    '.get_image_output('/partner', $_POST['partner_id'].'_small', "", '<span class="small">['.$FD->text("admin", "error").': '.$FD->text("admin", "image_not_found").']</span>', false).'
                                    <br /><br />
                                    <input type="file" class="text" name="bild_small" size="50"><br />
                                    <font class="small">
@@ -160,7 +160,7 @@ elseif (isset($_POST['partner_action'])
                                     <font class="small">'.$FD->text("page", "big_pic_desc").'</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    '.get_image_output('images/partner/', $_POST['partner_id'].'_big', "", '<span class="small">['.$FD->text("admin", "error").': '.$FD->text("admin", "image_not_found").']</span>', false).'
+                                    '.get_image_output('/partner', $_POST['partner_id'].'_big', "", '<span class="small">['.$FD->text("admin", "error").': '.$FD->text("admin", "image_not_found").']</span>', false).'
                                    <br /><br />
                                    <input type="file" class="text" name="bild_big" size="50"><br />
                                    <font class="small">
@@ -251,7 +251,7 @@ elseif (isset($_POST['partner_action'])
                             </tr>
                             <tr align="left" valign="top">
                                 <td class="config" colspan="2">
-                                    <img src="'.image_url('images/partner/', $partner_arr['partner_id'].'_big').'">
+                                    <img src="'.image_url('/partner', $partner_arr['partner_id'].'_big').'">
                                     <br /><br />
                                 </td>
                             </tr>
@@ -311,7 +311,7 @@ if (!isset($_POST['partner_id']))
             echo'
                             <tr class="select_entry thin">
                                 <td class="configthin" height="'.$config_arr['small_y'].'">
-                                    <img src="'.image_url('images/partner/',$partner_arr['partner_id'].'_small').'" alt="" />
+                                    <img src="'.image_url('/partner',$partner_arr['partner_id'].'_small').'" alt="" />
                                 </td>
                                 <td class="configthin">
                                     '.$partner_arr['partner_name'].'

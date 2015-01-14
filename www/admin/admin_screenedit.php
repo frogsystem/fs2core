@@ -15,8 +15,8 @@ if (isset($_POST['title']) AND $_POST['do'] == 'edit')
     if ($_POST['delscreen'])   // Delete Screenshot
     {
         $FD->db()->conn()->exec('DELETE FROM '.$FD->env('DB_PREFIX')."screen WHERE screen_id = $_POST[editscreenid]");
-        image_delete('images/screenshots/', $_POST['editscreenid']);
-        image_delete('images/screenshots/', "$_POST[editscreenid]_s");
+        image_delete('/screenshots', $_POST['editscreenid']);
+        image_delete('/screenshots', "$_POST[editscreenid]_s");
         systext('Screenshot wurde gel&ouml;scht');
     }
     else   // Edit Screenshot
@@ -49,9 +49,9 @@ elseif (isset($_POST['screenid']))
 
     if (isset($_POST['do']) && $_POST['do'] == 'newthumb')
     {
-        image_delete('images/screenshots/',$_POST['screenid'].'_s');
+        image_delete('/screenshots',$_POST['screenid'].'_s');
 
-        $newthumb = @create_thumb_from(image_url('images/screenshots/',$_POST['screenid'],FALSE, TRUE),$config_arr['screen_thumb_x'],$config_arr['screen_thumb_y']);
+        $newthumb = @create_thumb_from(image_url('/screenshots',$_POST['screenid'],FALSE, TRUE),$config_arr['screen_thumb_x'],$config_arr['screen_thumb_y']);
         systext(create_thumb_notice($newthumb));
     }
 
@@ -71,7 +71,7 @@ elseif (isset($_POST['screenid']))
                                     <font class="small">Thumbnail des Screenshots</font>
                                 </td>
                                 <td class="config" valign="top">
-                                   <img src="'.image_url('images/screenshots/',$screen_arr['screen_id'].'_s').'?cachebreaker='.time().'" />
+                                   <img src="'.image_url('/screenshots',$screen_arr['screen_id'].'_s').'?cachebreaker='.time().'" />
                                 </td>
                             </tr>
                             <tr>
@@ -218,7 +218,7 @@ else
                                 onmouseout="javascript:this.style.backgroundColor=\'transparent\'"
                                 onClick=\'document.getElementById("'.$screen_arr['screen_id'].'").checked="true";\'>
                                 <td class="configthin">
-                                    <img src="'.image_url('images/screenshots/',killhtml($screen_arr['screen_id']).'_s').'"  style="max-width:200px; max-height:100px;">
+                                    <img src="'.image_url('/screenshots',killhtml($screen_arr['screen_id']).'_s').'"  style="max-width:200px; max-height:100px;">
                                 </td>
                                 <td class="thin">
                                     '.killhtml($screen_arr['screen_name']).'

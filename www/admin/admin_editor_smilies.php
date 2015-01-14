@@ -18,7 +18,7 @@ if (isset($_FILES['newsmilie']['name']) AND $_FILES['newsmilie']['name'] != '' A
     $stmt->execute(array($_POST['replace_string']));
 
     $id = $FD->db()->conn()->lastInsertId();
-    $upload = upload_img($_FILES['newsmilie'], 'images/smilies/', $id, 1024*1024, 999, 999);
+    $upload = upload_img($_FILES['newsmilie'], '/smilies', $id, 1024*1024, 999, 999);
     systext(upload_img_notice($upload));
 }
 
@@ -37,7 +37,7 @@ elseif (isset($_POST['delete_smilies']))
 
         $FD->db()->conn()->exec('DELETE FROM '.$FD->env('DB_PREFIX')."smilies
                      WHERE `order`=$value");
-        image_delete('images/smilies/', $id);
+        image_delete('/smilies', $id);
     }
     $_POST['delsmilie'] = array_reverse($_POST['delsmilie']);
     foreach($_POST['delsmilie'] as $value)
@@ -199,7 +199,7 @@ if ( $num_rows > 0 )
                             >
                                 <td></td>
                                 <td align="left">
-                                    <img src="'.image_url('images/smilies/', $smilie_arr['id']).'" alt="" />
+                                    <img src="'.image_url('/smilies', $smilie_arr['id']).'" alt="" />
                                 </td>
                                 <td class="configthin">
                                     '.$smilie_arr['replace_string'].'

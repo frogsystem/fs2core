@@ -39,7 +39,7 @@ if (
 
 	// Image-Operations
     if ( $_FILES['cat_pic']['name'] != '' ) {
-      $upload = upload_img ( $_FILES['cat_pic'], 'images/cat/', 'articles_'.$id, $articles_config_arr['cat_pic_size']*1024, $articles_config_arr['cat_pic_x'], $articles_config_arr['cat_pic_y'] );
+      $upload = upload_img ( $_FILES['cat_pic'], '/cat', 'articles_'.$id, $articles_config_arr['cat_pic_size']*1024, $articles_config_arr['cat_pic_x'], $articles_config_arr['cat_pic_y'] );
       $message .= '<br>' . upload_img_notice ( $upload );
     }
 
@@ -90,14 +90,14 @@ elseif (
 
 	// Image-Operations
     if ( isset($_POST['cat_pic_delete']) && $_POST['cat_pic_delete'] == 1 ) {
-      if ( image_delete ( 'images/cat/', 'articles_'.$_POST['cat_id'] ) ) {
+      if ( image_delete ( '/cat', 'articles_'.$_POST['cat_id'] ) ) {
         $message .= '<br>' . $FD->text("admin", "image_deleted");
       } else {
 		$message .= '<br>' . $FD->text("admin", "image_not_deleted");
       }
     } elseif ( $_FILES['cat_pic']['name'] != '' ) {
-      image_delete ( 'images/cat/', 'articles_'.$_POST['cat_id'] );
-	  $upload = upload_img ( $_FILES['cat_pic'], 'images/cat/', 'articles_'.$_POST['cat_id'], $articles_config_arr['cat_pic_size']*1024, $articles_config_arr['cat_pic_x'], $articles_config_arr['cat_pic_y'] );
+      image_delete ( '/cat', 'articles_'.$_POST['cat_id'] );
+	  $upload = upload_img ( $_FILES['cat_pic'], '/cat', 'articles_'.$_POST['cat_id'], $articles_config_arr['cat_pic_size']*1024, $articles_config_arr['cat_pic_x'], $articles_config_arr['cat_pic_y'] );
       $message .= '<br>' . upload_img_notice ( $upload );
     }
 
@@ -140,7 +140,7 @@ elseif (
 		$message = $FD->text('page', 'cat_deleted');
 
 		// Delete Category Image
-		if ( image_delete ( 'images/cat/', 'articles_'.$_POST['cat_id'] ) ) {
+		if ( image_delete ( '/cat', 'articles_'.$_POST['cat_id'] ) ) {
 			$message .= '<br>' . $FD->text('admin', 'image_deleted');
 		}
 
@@ -246,9 +246,9 @@ if ( isset($_POST['cat_id']) && isset($_POST['cat_action']) )
            						<td class="config">
              						'.$FD->text("page", "edit_cat_image").': <span class="small">('.$FD->text("admin", "optional").')</span><br><br>
 	 	';
-        if ( image_exists ( 'images/cat/', 'articles_'.$cat_arr['cat_id'] ) ) {
+        if ( image_exists ( '/cat', 'articles_'.$cat_arr['cat_id'] ) ) {
             echo '
-									<img src="'.image_url ( 'images/cat/', 'articles_'.$cat_arr['cat_id'] ).'" alt="'.$cat_arr['cat_name'].'" border="0">
+									<img src="'.image_url ( '/cat', 'articles_'.$cat_arr['cat_id'] ).'" alt="'.$cat_arr['cat_name'].'" border="0">
 		    						<table>
 										<tr>
 											<td>
@@ -268,7 +268,7 @@ if ( isset($_POST['cat_id']) && isset($_POST['cat_action']) )
 								<td class="config">
 									<input name="cat_pic" type="file" size="40" class="text"><br>
 		';
-        if ( image_exists ( 'images/cat/', 'articles_'.$cat_arr['cat_id'] ) ) {
+        if ( image_exists ( '/cat', 'articles_'.$cat_arr['cat_id'] ) ) {
             echo '<span class="small"><b>'.$FD->text("admin", "replace_img").'</b></span><br>';
         }
         echo'
@@ -454,8 +454,8 @@ elseif ( $showdefault == TRUE )
 							>
 								<td class="config">
 		';
-        if ( image_exists ( 'images/cat/', 'articles_'.$cat_arr['cat_id'] ) ) {
-            echo '<img src="'.image_url ( 'images/cat/', 'articles_'.$cat_arr['cat_id'] ).'" alt="'.$cat_arr['cat_name'].'" border="0">';
+        if ( image_exists ( '/cat', 'articles_'.$cat_arr['cat_id'] ) ) {
+            echo '<img src="'.image_url ( '/cat', 'articles_'.$cat_arr['cat_id'] ).'" alt="'.$cat_arr['cat_name'].'" border="0">';
         }
         echo '
 								</td>

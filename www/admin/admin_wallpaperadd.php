@@ -43,7 +43,7 @@ if ($row['wp_count']==0) {
       if (isset($_FILES[$filesname]) AND $_POST['size'][$j] != '')
       {
         $j = $i - 1;
-        $upload = upload_img($_FILES[$filesname], 'images/wallpaper/', $_POST['wallpaper_name'].'_'.$_POST['size'][$j], $config_arr['wp_size']*1024, $config_arr['wp_x'], $config_arr['wp_y']);
+        $upload = upload_img($_FILES[$filesname], '/wallpaper', $_POST['wallpaper_name'].'_'.$_POST['size'][$j], $config_arr['wp_size']*1024, $config_arr['wp_x'], $config_arr['wp_y']);
         $message .= "WP Gr&ouml;&szlig;e $i: ".upload_img_notice($upload).'<br>';
         switch ($upload)
         {
@@ -56,11 +56,11 @@ if ($row['wp_count']==0) {
 
       }
     }
-    if (image_exists('images/wallpaper/', $_POST['wallpaper_name'].'_'.$_POST['size'][0]))
+    if (image_exists('/wallpaper', $_POST['wallpaper_name'].'_'.$_POST['size'][0]))
     {
-      create_thumb_from(image_url('images/wallpaper/', $_POST['wallpaper_name'].'_'.$_POST['size'][0], FALSE, TRUE), $config_arr['wp_thumb_x'], $config_arr['wp_thumb_y']);
+      create_thumb_from(image_url('/wallpaper', $_POST['wallpaper_name'].'_'.$_POST['size'][0], FALSE, TRUE), $config_arr['wp_thumb_x'], $config_arr['wp_thumb_y']);
       $message .= create_thumb_notice($upload).'<br>';
-      image_rename('images/wallpaper/', $_POST['wallpaper_name'].'_'.$_POST['size'][0].'_s', $_POST['wallpaper_name'].'_s');
+      image_rename('/wallpaper', $_POST['wallpaper_name'].'_'.$_POST['size'][0].'_s', $_POST['wallpaper_name'].'_s');
     }
 
   $message .= '<br>Weiteres Wallpaper hinzuf&uuml;gen:';

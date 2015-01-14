@@ -87,7 +87,7 @@ $settings = (object) $settings;
         preg_match_all('#\[(c?img).*\]([^\s]+)\[\/\1\]#', $text, $images, PREG_SET_ORDER);
         foreach ($images as $image) {
             if ($image[1] == 'cimg') {
-                $url = $FD->cfg('virtualhost').'media/content/'.$image[2];
+                $url = FS2MEDIA.'/content/'.$image[2];
             } else {
                 $url = $image[2];
             }
@@ -169,8 +169,8 @@ $settings = (object) $settings;
             $content->url = get_canonical_url();
             $content->date = date('c', $downloads['dl_date']?:$downloads['dl_search_update']);
             $content->last_update = date('c', $downloads['dl_date']?:$downloads['dl_search_update']);
-            if (image_exists('images/downloads/', $downloads['dl_id'])) {
-                $content->image = image_url('images/downloads/', $downloads['dl_id']);
+            if (image_exists('/downloads', $downloads['dl_id'])) {
+                $content->image = image_url('/downloads', $downloads['dl_id']);
             }
         }
     }

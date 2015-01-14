@@ -189,7 +189,7 @@ function get_user_rank ( $GROUP_ID, $IS_ADMIN = 0 )
         $group_arr = $index->fetch(PDO::FETCH_ASSOC);
 
         settype ( $group_arr['user_group_id'], 'integer' );
-        $group_arr['user_group_image'] = ( image_exists ( 'media/group-images/staff_', $group_arr['user_group_id'] ) ? '<img src="'.image_url ( 'media/group-images/staff_', $group_arr['user_group_id'] ).'" alt="'.$FD->text('frontend', 'group_image_of').' '.$group_arr['user_group_name'].'">' : '' );
+        $group_arr['user_group_image'] = ( image_exists ( '/group-images', 'staff_'.$group_arr['user_group_id'] ) ? '<img src="'.image_url ( '/group-images', 'staff_'.$group_arr['user_group_id'] ).'" alt="'.$FD->text('frontend', 'group_image_of').' '.$group_arr['user_group_name'].'">' : '' );
 
         unset ( $title_style );
         $title_style = ( $group_arr['user_group_color'] != -1 ? 'color:#'.$group_arr['user_group_color'].';' : '' );
@@ -215,7 +215,7 @@ function get_user_rank ( $GROUP_ID, $IS_ADMIN = 0 )
         $rank_template->load ( 'USERRANK' );
         $rank_template->tag ( 'group_name', $group_arr['user_group_name'] );
         $rank_template->tag ( 'group_image', $group_arr['user_group_image'] );
-        $rank_template->tag ( 'group_image_url', image_url ( 'media/group-images/staff_', $group_arr['user_group_id'] ) );
+        $rank_template->tag ( 'group_image_url', image_url ( '/group-images', 'staff_'.$group_arr['user_group_id'] ) );
         $rank_template->tag ( 'group_title', $group_arr['user_group_title_colored'] );
         $rank_template->tag ( 'group_title_text_only', $group_arr['user_group_title'] );
         $rank_template = $rank_template->display ();
@@ -651,7 +651,7 @@ function create_textarea($name, $text='', $width='', $height='', $class='', $all
                             LIMIT 0, '.$config_arr['num_smilies'].' ' );
     while ( $smilie_arr = $index->fetch(PDO::FETCH_ASSOC) )
     {
-        $smilie_arr['url'] = image_url ( 'images/smilies/', $smilie_arr['id'] );
+        $smilie_arr['url'] = image_url ( '/smilies', $smilie_arr['id'] );
         $smilie_template = '<td><img src="'.$smilie_arr['url'].'" alt="'.$smilie_arr['replace_string'].'" onClick="insert(\''.$name.'\', \''.$smilie_arr['replace_string'].'\', \'\')" class="editor_smilies"></td>';
         $zaehler += 1;
 
@@ -959,7 +959,7 @@ function display_news ($news_arr, $html_code, $fs_code, $para_handling)
     $index2 = $FD->db()->conn()->query('SELECT cat_name FROM '.$FD->env('DB_PREFIX')."news_cat WHERE cat_id = '".$news_arr['cat_id']."'");
     $row = $index2->fetch(PDO::FETCH_ASSOC);
     $news_arr['cat_name'] = $row['cat_name'];
-    $news_arr['cat_pic'] = image_url('images/cat/', 'news_'.$news_arr['cat_id']);
+    $news_arr['cat_pic'] = image_url('/cat', 'news_'.$news_arr['cat_id']);
 
     // Text formatieren
     switch ($html_code)

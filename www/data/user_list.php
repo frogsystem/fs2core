@@ -161,8 +161,8 @@ while ( $row = $index->fetch(PDO::FETCH_ASSOC) )
     $line_template->tag ( 'user_id', $row['user_id'] );
     $line_template->tag ( 'user_name', kill_replacements ( $row['user_name'], TRUE ) );
     $line_template->tag ( 'user_url', url('user', array('id' => $row['user_id'])));
-    $line_template->tag ( 'user_image', ( image_exists ( 'media/user-images/', $row['user_id'] ) ) ? '<img src="'.image_url ( 'media/user-images/', $row['user_id'] ).'" alt="'.$FD->text("frontend", "user_image_of").' '.kill_replacements ( $row['user_name'], TRUE ).'">' : $FD->text("frontend", "user_image_not_found") );
-    $line_template->tag ( 'user_image_url', image_url ( 'media/user-images/', $row['user_id'] ) );
+    $line_template->tag ( 'user_image', ( image_exists ( '/user-images', $row['user_id'] ) ) ? '<img src="'.image_url ( '/user-images', $row['user_id'] ).'" alt="'.$FD->text("frontend", "user_image_of").' '.kill_replacements ( $row['user_name'], TRUE ).'">' : $FD->text("frontend", "user_image_not_found") );
+    $line_template->tag ( 'user_image_url', image_url ( '/user-images', $row['user_id'] ) );
     $line_template->tag ( 'user_mail', ( $row['user_show_mail'] == 1 ) ? kill_replacements ( $row['user_mail'], TRUE ) : '-' );
     $line_template->tag ( 'user_rank', $temp_rank_data );
     $line_template->tag ( 'user_reg_date', date_loc ( $config_arr['user_list_reg_date_format'], $row['user_reg_date'] ) );
