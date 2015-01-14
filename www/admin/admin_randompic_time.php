@@ -136,7 +136,7 @@ elseif (isset($_POST['random_action']) && $_POST['random_action'] == 'edit'
                                     <input type="hidden" id="screen_id" name="screen_id" value="'.$random_arr['screen_id'].'">
                                 </td>
                                 <td class="config" valign="top" width="200">
-                                    <img id="selected_pic" src="'.image_url('/screenshots', $random_arr['screen_id'].'_s').'" alt="" />
+                                    <img id="selected_pic" src="'.image_url('/gallery', $random_arr['screen_id'].'_s').'" alt="" />
                                 </td>
                             </tr>
                             <tr><td></td></tr>
@@ -236,7 +236,7 @@ elseif (isset($_POST['random_action']) && $_POST['random_action'] == 'delete'
                             <tr><td></td></tr>
                             <tr valign="top">
                                 <td class="config" colspan="2">
-                                    <img src="'.image_url('/screenshots', $random_arr['screen_id'].'_s').'" alt=""  style="float:left; padding-right:10px;" />
+                                    <img src="'.image_url('/gallery', $random_arr['screen_id'].'_s').'" alt=""  style="float:left; padding-right:10px;" />
                                     '.$random_arr['title'].'
                                     <span class="small">aktiv vom <b>'.$random_arr['start'].'</b><br />
                                     bis zum <b>'.$random_arr['end'].'</b></span>
@@ -297,7 +297,7 @@ if (!isset($_POST['random_id']))
         echo'
                             <tr class="select_entry">
                                 <td class="thin">
-                                    <img src="'.image_url('/screenshots', $random_arr['screen_id'].'_s').'" alt="" />
+                                    <img src="'.image_url('/gallery', $random_arr['screen_id'].'_s').'" alt="" />
                                 </td>
                                  <td class="thin">
                                     '.$random_arr['screen_name'].'

@@ -22,7 +22,7 @@ if (isset($_POST['sended']))
             $id = $FD->db()->conn()->lastInsertId();
 
             // File Operations
-            $upload = upload_img($_FILES['img'.$i], '/screenshots', $id, $config_arr['screen_size']*1024, $config_arr['screen_x'], $config_arr['screen_y']);
+            $upload = upload_img($_FILES['img'.$i], '/gallery', $id, $config_arr['screen_size']*1024, $config_arr['screen_x'], $config_arr['screen_y']);
             $log[$i][] = upload_img_notice($upload);
 
             // Upload Failed => Delete from DB
@@ -31,7 +31,7 @@ if (isset($_POST['sended']))
 
             // Else create Thumb
             } else {
-                $thumb = create_thumb_from(image_url('/screenshots', $id, FALSE, TRUE), $config_arr['screen_thumb_x'], $config_arr['screen_thumb_y']);
+                $thumb = create_thumb_from(image_url('/gallery', $id, FALSE, TRUE), $config_arr['screen_thumb_x'], $config_arr['screen_thumb_y']);
                 $log[$i][] = create_thumb_notice($thumb);
             }
 

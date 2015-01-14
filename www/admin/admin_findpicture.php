@@ -65,7 +65,7 @@ if (isset($_POST['cat']))
                                     onmouseover="this.style.backgroundColor=\'#EEEEEE\';"
                                     onmouseout="this.style.backgroundColor=\'transparent\';"
                                 >';
-            $new_img_path = image_url('/screenshots', $screen_arr['screen_id'].'_s', true);
+            $new_img_path = image_url('/gallery', $screen_arr['screen_id'].'_s', true);
             $lines .= '
                                     <img src="'.$new_img_path.'" name="'.$screen_arr['screen_id'].'" style="cursor:pointer;"
                                         onclick="javascript:opener.document.getElementById(\'screen_id\').value=\''. $screen_arr['screen_id'] .'\';

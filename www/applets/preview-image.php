@@ -44,9 +44,9 @@ if ( $config_arr['active'] == 1 ) {
         $template->setFile('0_previewimg.tpl');
         $template->load('BODY');
 
-        $template->tag('previewimg', get_image_output ( '/screenshots', $data['id'] . '_s', $data['caption'] ) );
-        $template->tag('previewimg_url', image_url ( '/screenshots', $data['id'] . '_s' ) );
-        $template->tag('image_url', image_url ( '/screenshots', $data['id'] ) );
+        $template->tag('previewimg', get_image_output ( '/gallery', $data['id'] . '_s', $data['caption'] ) );
+        $template->tag('previewimg_url', image_url ( '/gallery', $data['id'] . '_s' ) );
+        $template->tag('image_url', image_url ( '/gallery', $data['id'] ) );
         $template->tag('viewer_url', $link);
         $template->tag('caption', $data['caption']);
         $template->tag('cat_title', $data['cat_title']);

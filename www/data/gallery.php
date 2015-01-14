@@ -137,8 +137,8 @@ if (isset($_GET['catid']))
             $pics = '';
             while ($screen_arr = $index->fetch(PDO::FETCH_ASSOC))
             {
-                $screen_arr['screen_thumb'] = image_url('/screenshots', $screen_arr['screen_id'].'_s');
-                $screen_arr['screen_url'] = image_url('/screenshots', $screen_arr['screen_id'] );
+                $screen_arr['screen_thumb'] = image_url('/gallery', $screen_arr['screen_id'].'_s');
+                $screen_arr['screen_url'] = image_url('/gallery', $screen_arr['screen_id'] );
                 $screen_arr['img_link'] = url('viewer', array('id' => $screen_arr['screen_id']));
                 if ( $config_arr['show_type'] == 1 ) {
                     $screen_arr['img_link'] = "javascript:popUp('".urlencode($screen_arr['img_link'])."','popupviewer','".$config_arr['show_size_x']."','".$config_arr['show_size_y']."');";
