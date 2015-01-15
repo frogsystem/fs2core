@@ -18,16 +18,16 @@ captcha_config_bg_transparent:           Transparenter Hintergrund
 captcha_config_text_color_title:         Textfarbe
 captcha_config_text_color_desc:          Die Farbe in der die Aufgabe dargestellt wird.
 captcha_config_dimensions_title:         Abmessungen
-captcha_config_dimensions_desc:          GrÃ¶ÃŸe des Captcha-Bildes.
+captcha_config_dimensions_desc:          Größe des Captcha-Bildes.
 captcha_config_text_position_title:      Text-Position
 captcha_config_text_position_desc:       Position des Textes relativ zur linken, oberen Ecke.
 captcha_config_text_position_help:       Abstand nach links und oben
-captcha_config_text_style_title:         Schriftart und -grÃ¶ÃŸe
-captcha_config_text_style_desc:          Standard-Schriftart in 5 GrÃ¶ÃŸen oder eingefÃ¼gter PHP-Font.
-captcha_config_text_style_default:       Standard, GrÃ¶ÃŸe
+captcha_config_text_style_title:         Schriftart und -größe
+captcha_config_text_style_desc:          Standard-Schriftart in 5 Größen oder eingefügter PHP-Font.
+captcha_config_text_style_default:       Standard, Größe
 captcha_config_text_options_title:       Text-Optionen
 captcha_config_text_options_desc:        Optionen um das Captcha zu formatieren.
 captcha_config_questionmark:             zeige Fragezeichen [1+1=?]
-captcha_config_spaces:                   Leerzeichen einfÃ¼gen [1 + 1 =]
+captcha_config_spaces:                   Leerzeichen einfügen [1 + 1 =]
 captcha_config_multiplication_as_x:      verwende x statt * [1x1=]
-captcha_config_one_operation:            Es muss mindestens eine Rechenoperation ausgewÃ¤hlt werden
+captcha_config_one_operation:            Es muss mindestens eine Rechenoperation ausgewählt werden
