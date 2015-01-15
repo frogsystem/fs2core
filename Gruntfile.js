@@ -80,7 +80,7 @@ module.exports = function(grunt) {
       dev: {
         files: [
           { 
-            'dist/js/admin.js' : ['assets/vendor/jquery/dist/jquery.js', 'assets/js/_frontend.js', 'assets/js/admin/**/_*.js']
+            'dist/js/admin.js' : ['vendor/jquery/dist/jquery.js', 'assets/js/_frontend.js', 'assets/js/admin/**/_*.js']
           }
         ]
       }
