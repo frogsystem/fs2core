@@ -151,24 +151,16 @@ echo'<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.
 <head>
     <title>Frogsystem 2 - '.$PAGE_DATA_ARR['title'].'</title>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-
-    <link rel="stylesheet" type="text/css" href="?css=admin_old.css">
-    <link rel="stylesheet" type="text/css" href="?css=editor.css">
-
-    <link rel="stylesheet" type="text/css" href="?css=main.css">
-    <link rel="stylesheet" type="text/css" href="?css=noscript.css" id="noscriptcss">
-
     <link rel="shortcut icon" href="?icons=favicon.ico">
 
-    <script src="../resources/jquery/jquery.min.js" type="text/javascript"></script>
-    <script src="../resources/jquery/jquery-ui.min.js" type="text/javascript"></script>
-    <script src="?js=functions.js" type="text/javascript"></script>
-    <script src="../includes/js_functions.js" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="?css=admin.css">
+    <link rel="stylesheet" type="text/css" href="?css=noscript.css" id="noscriptcss">
+
     <script src="?js=admin.js" type="text/javascript"></script>
+    <script src="../resources/jquery/jquery-ui.min.js" type="text/javascript"></script>
 
     <link rel="stylesheet" type="text/css" href="../resources/colorpicker/css/colorpicker.css">
     <script type="text/javascript" src="../resources/colorpicker/js/colorpicker.js"></script>
-    <script type="text/javascript" src="?js=colorpicker.js"></script>
 </head>
 <!-- /HTML Head -->
 ';

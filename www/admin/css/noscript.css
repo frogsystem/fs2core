@@ -2,19 +2,16 @@
 /* noscript style */
 /**************************************************/
 .hidden {
-    display:block;
-}
+  display: block; }
+
 tr.hidden {
-    display:table-row;
-}
+  display: table-row; }
+
 td.hidden {
-    display:table-cell;
-}
+  display: table-cell; }
 
 img.checkbox {
-    display:none;
-}
+  display: none; }
 
 .nshide {
-    display:none;
-}
+  display: none; }
