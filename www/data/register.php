@@ -118,7 +118,7 @@ elseif ( isset( $_POST['register'] ) ) {
 
 if ( $show_form == TRUE ) {
     // Get some Data
-    $captcha_url = FS2SOURCE . '/resources/captcha/captcha.php?i='.generate_pwd(8);
+    $captcha_url = url('captcha', array('i' => generate_pwd(8)), true);
 
     // Check Cpatcha Use
     if ( $config_arr['registration_antispam'] == 0 ) {

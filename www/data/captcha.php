@@ -1,14 +1,4 @@
 <?php
-// Start Session
-session_start();
-
-// fs2 include path
-set_include_path ( '.' );
-define ( 'FS2_ROOT_PATH', './../../', TRUE );
-
-// include db-data
-require ( FS2_ROOT_PATH . 'login.inc.php' );
-
 /////////////////////
 //// Load Config ////
 /////////////////////
@@ -112,7 +102,7 @@ function encrypt ( $STRING, $KEY ) {
     }
     return base64_encode ( $result );
 }
-$_SESSION['captcha'] = encrypt ( $result, $FD->config('spam') ); //Key
+$_SESSION['captcha'] = @encrypt ( $result, $FD->env('spam') ); //Key
 $_SESSION['captcha'] = str_replace ( '=', '', $_SESSION['captcha'] );
 
 //Create String

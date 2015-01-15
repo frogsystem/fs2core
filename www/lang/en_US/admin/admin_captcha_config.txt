@@ -1,0 +1,33 @@
+captcha_config_preview:                  Preview
+captcha_config_title:                    Settings
+captcha_config_first_title:              Range 1
+captcha_config_first_desc:               Range of numbers that are used to generate the first value.
+captcha_config_second_title:             Range 2
+captcha_config_second_desc:              Range of numbers that are used to generate the second value.
+captcha_config_use_operations_title:     Allowed arithmetic operations
+captcha_config_addition:                 Addition (+)
+captcha_config_subtraction:              Subtraction (-)
+captcha_config_multiplication:           Multiplication (*)
+captcha_config_use_operations_desc:      Defines which arithmetic operations will be used.
+captcha_config_easy_arithmetics_title:   Easy arithmetics only
+captcha_config_easy_arithmetics_desc:    Activates an AI to generate easier arithmetics.
+captcha_config_design_title:             Design
+captcha_config_bg_color_title:           Background color
+captcha_config_bg_color_desc:            The background color of the captcha image.
+captcha_config_bg_transparent:           Transparent Background
+captcha_config_text_color_title:         Text color
+captcha_config_text_color_desc:          The color in which the arithmetic problem is shown.
+captcha_config_dimensions_title:         Dimensions
+captcha_config_dimensions_desc:          Size of the captcha image.
+captcha_config_text_position_title:      Text position
+captcha_config_text_position_desc:       Position of text relative to the left, upper corner.
+captcha_config_text_position_help:       Distance to left edge and top edge
+captcha_config_text_style_title:         Font face and size
+captcha_config_text_style_desc:          Default font face in 5 sizes or inserted PHP-Font.
+captcha_config_text_style_default:       Standard, size
+captcha_config_text_options_title:       Text Options
+captcha_config_text_options_desc:        Options to format the captcha.
+captcha_config_questionmark:             show question mark [1+1=?]
+captcha_config_spaces:                   insert spaces [1 + 1 =]
+captcha_config_multiplication_as_x:      use x instead of * [1x1=]
+captcha_config_one_operation:            You have to select at least one arithmetic operation.
