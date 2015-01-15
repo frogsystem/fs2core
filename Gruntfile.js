@@ -10,7 +10,40 @@ module.exports = function(grunt) {
       '<%= pkg.homepage ? "* " + pkg.homepage + "\\n" : "" %>' +
       '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
       ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */\n',
+
     // Task configuration.
+    sass: {
+      options: {
+        unixNewlines: true
+      },
+      
+      dev: {
+        files: [
+          {
+            expand: true,
+            cwd: 'assets/sass',
+            src: '**/[!_]*.scss',
+            dest: 'assets/css',
+            ext: '.css'
+          }
+        ]
+      },
+      dist: {
+        options: {
+          style: 'compressed',
+        },
+        files: [
+          {
+            expand: true,
+            cwd: 'assets/sass',
+            src: '**/[!_]*.scss',
+            dest: 'assets/css',
+            ext: '.css'
+          }
+        ]
+      }
+    },    
+    
     concat: {
       options: {
         banner: '<%= banner %>',
@@ -49,27 +82,36 @@ module.exports = function(grunt) {
       },
       gruntfile: {
         src: 'Gruntfile.js'
-      },
-      lib_test: {
-        src: ['lib/**/*.js', 'test/**/*.js']
       }
+      //~ , No tests at the moment
+      //~ lib_test: {
+        //~ src: ['lib/**/*.js', 'test/**/*.js']
+      //~ }
     },
-    nodeunit: {
-      files: ['test/**/*_test.js']
-    },
+    //~ No tests at the moment
+    //~ nodeunit: {
+      //~ files: ['test/**/*_test.js']
+    //~ },
+    
     watch: {
+      sass: {
+        files: ['assets/sass/**/*.scss'],
+        tasks: ['sass:dev']
+      },
       gruntfile: {
         files: '<%= jshint.gruntfile.src %>',
         tasks: ['jshint:gruntfile']
-      },
-      lib_test: {
-        files: '<%= jshint.lib_test.src %>',
-        tasks: ['jshint:lib_test', 'nodeunit']
       }
+      //~ , No tests at the moment
+      //~ lib_test: {
+        //~ files: '<%= jshint.lib_test.src %>',
+        //~ tasks: ['jshint:lib_test', 'nodeunit']
+      //~ }
     }
   });
 
   // These plugins provide necessary tasks.
+  grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-nodeunit');
@@ -77,6 +119,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
 
   // Default task.
-  grunt.registerTask('default', ['jshint', 'nodeunit', 'concat', 'uglify']);
+  grunt.registerTask('default', ['sass:dev', 'jshint', 'concat', 'uglify']);
 
 };

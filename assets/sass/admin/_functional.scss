@@ -1,0 +1,20 @@
+/**************************************************/
+/* DON'T CHANGE OR USE THESE CLASSES! */
+/* SOMETHING RELIES ON THEM           */
+/**************************************************/
+.default {}
+.hidden {
+    display:none;
+}
+
+.cb-red, .cb-green {}
+
+table.select_list {}
+tr.select_entry, input.select_box {}
+select.select_type, option.select_red, option.select_one {}
+
+
+table.xdebug-error, table.xdebug-error * {
+    font-family:Arial;
+    font-size:110%;
+}
