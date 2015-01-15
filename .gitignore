@@ -5,7 +5,7 @@
 # OS-related/generic files
 Thumbs.db
 
-/assets/vendor/
+/vendor/
 /node_modules
-/assets/css
 /.sass-cache
+/dist

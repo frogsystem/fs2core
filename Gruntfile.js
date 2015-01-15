@@ -13,11 +13,28 @@ module.exports = function(grunt) {
 
     // Task configuration.
     bower: {
+      options: {
+        copy: false
+      },
       install: {
 				options: {
-					cops: false,
+					copy: false,
           verbose: true
 				}
+      }
+    },
+    
+    copy: {
+			admin: {
+        files: [
+          {
+            'www/admin/js/' : ['dist/js/admin.js']
+          },
+					{
+						src: ['dist/css/admin/*.css'],
+						dest: 'www/admin/css/'
+					}
+        ]
       }
     },
     
@@ -32,7 +49,7 @@ module.exports = function(grunt) {
             expand: true,
             cwd: 'assets/sass',
             src: '**/[!_]*.scss',
-            dest: 'assets/css',
+            dest: 'dist/css',
             ext: '.css'
           }
         ]
@@ -46,7 +63,7 @@ module.exports = function(grunt) {
             expand: true,
             cwd: 'assets/sass',
             src: '**/[!_]*.scss',
-            dest: 'assets/css',
+            dest: 'dist/css',
             ext: '.css'
           }
         ]
@@ -61,7 +78,7 @@ module.exports = function(grunt) {
       dev: {
         files: [
           { 
-            'assets/js/admin.js' : ['assets/vendor/jquery/dist/jquery.js', 'assets/js/_frontend.js', 'assets/js/admin/**/_*.js']
+            'dist/js/admin.js' : ['assets/vendor/jquery/dist/jquery.js', 'assets/js/_frontend.js', 'assets/js/admin/**/_*.js']
           }
         ]
       }
@@ -72,17 +89,17 @@ module.exports = function(grunt) {
         banner: '<%= banner %>',
         compress: true,
         mangle: true,
-        sourceMap: true
+        sourceMap: false
       },
       
       dist: {
         files: [
           {
             expand: true,
-            cwd: 'assets/js',
+            cwd: 'dist/js',
             src: '**/[!_]*.js',
-            dest: 'assets/js',
-            ext: '.min.js'
+            dest: 'dist/js',
+            ext: '.js'
           }
         ]
       }
@@ -134,6 +151,10 @@ module.exports = function(grunt) {
       lib_test: {
         files: '<%= jshint.lib_test.src %>',
         tasks: ['jshint:lib_test', 'nodeunit']
+      }, 
+      copy: {
+        files: ['dist/**'],
+        tasks: ['newer:copy:dev']
       }
     }
   });
@@ -150,8 +171,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-bower-task');
 
   // Default task.
-  grunt.registerTask('default', ['sass:dev', 'jshint', 'concat']);
-  grunt.registerTask('build', ['bower:install', 'sass:dist', 'jshint', 'concat', 'uglify:dist']);
-  //~ grunt.registerTask('serve', ['']);
-
+  grunt.registerTask('default', ['sass:dev', 'jshint', 'concat', 'copy']);
+  grunt.registerTask('build', ['bower:install', 'sass:dist', 'jshint', 'concat', 'uglify:dist', 'copy']);
 };
