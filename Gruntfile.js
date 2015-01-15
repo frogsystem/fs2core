@@ -28,9 +28,11 @@ module.exports = function(grunt) {
 			admin: {
         files: [
           {
-            'www/admin/js/' : ['dist/js/admin.js']
+            'www/admin/js/admin.js' : 'dist/js/admin.js'
           },
 					{
+						expand: true,
+						flatten: true,
 						src: ['dist/css/admin/*.css'],
 						dest: 'www/admin/css/'
 					}
