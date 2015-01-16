@@ -63,8 +63,6 @@ if (
 
     // Update Search Index (or not)
     if ( $FD->config('cronjobs', 'search_index_update') === 1 ) {
-        // Include searchfunctions.php
-        require ( FS2SOURCE . '/includes/searchfunctions.php' );
         update_search_index ( 'articles' );
     }
 

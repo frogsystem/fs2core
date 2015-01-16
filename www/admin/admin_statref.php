@@ -359,4 +359,64 @@ else
         ';
     }
 }
+
+
+
+
+//////////////////////////////////////
+//// Where Clause for Text-Filter ////
+//////////////////////////////////////
+function get_filter_where ( $FILTER, $SEARCH_FIELD )
+{
+    $filterarray = explode ( ',', $FILTER );
+    $filterarray = array_map ( 'trim', $filterarray );
+    $query = '';
+    $and_query = '';
+    $or_query = '';
+
+    $first_and = true;
+    $first_or = true;
+
+    foreach ( $filterarray as $string )
+    {
+        if ( substr ( $string, 0, 1 ) == '!' && substr ( $string, 1 ) != '' )
+        {
+            $like = $SEARCH_FIELD.' NOT LIKE';
+            $string = substr ( $string, 1 );
+            if ( !$first_and )
+            {
+                $and_query .= ' AND ';
+            }
+            $and_query .= $like . " '%" . $string . "%'";
+            $first_and = false;
+        }
+        elseif ( substr ( $string, 0, 1 ) != '!' && $string != '' )
+        {
+            $like = $SEARCH_FIELD.' LIKE';
+            if ( !$first_or )
+            {
+                $or_query .= ' OR ';
+            }
+            $or_query .= $like . " '%" . $string . "%'";
+            $first_or = false;
+        }
+    }
+
+    if ( $or_query != '' )
+    {
+        $or_query = '('.$or_query.')';
+        if ( $and_query != '' )
+        {
+            $and_query = ' AND '.$and_query;
+        }
+    }
+
+    if ( $or_query != '' || $and_query != '' )
+    {
+        $query = 'WHERE ';
+    }
+    $query .= $or_query . $and_query;
+
+    return $query;
+}
 ?>

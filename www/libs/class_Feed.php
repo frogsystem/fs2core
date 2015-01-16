@@ -256,9 +256,6 @@ abstract class NewsFeed extends Feed {
     protected function parseNews ($news) {
         global $FD;
 
-        // Include functions & libs
-        require_once(FS2SOURCE . '/includes/fscode.php');
-
         // check for latest news_date
         if ($news['news_date'] > $this->lastUpdate)
             $this->lastUpdate = $news['news_date'];

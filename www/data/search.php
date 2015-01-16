@@ -308,8 +308,6 @@ $_REQUEST['phonetic_search'] = $_REQUEST['phonetic_search'] ? 'checked' : '';
 $_REQUEST['keyword'] = usersave($_REQUEST['keyword']);
 
 // Get Default-Operators
-// get searchfunctions if not loaded
-require_once(FS2SOURCE . '/includes/searchfunctions.php');
 $ops = get_default_operators();
 
 

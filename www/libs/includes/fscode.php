@@ -1,5 +1,59 @@
 <?php
-//~ require_once(FS2SOURCE . 'libs/class_StringParser_BBCode.php');
+
+////////////////
+// DEPRECATED //
+////////////////
+
+// Format text with FS Code
+function fscode($text, $all=true, $html=false, $para=false, $do_b=0, $do_i=0, $do_u=0, $do_s=0, $do_center=0, $do_url=0, $do_homelink = 0, $do_email=0, $do_img=0, $do_cimg=0, $do_list=0, $do_numlist=0, $do_font=0, $do_color=0, $do_size=0, $do_code=0, $do_quote=0, $do_noparse=0, $do_smilies=0, $do_player=0, $do_fscode=0, $do_html=0, $do_nohtml=0)
+{
+    $flags = array('html' => $html, 'paragraph' => $para,
+    );
+
+    if ($all)
+        $fscodes = get_all_fscodes();
+    else {
+        $fscodes = array();
+
+        if ($do_b==1)           array_push($fscodes, 'b');
+        if ($do_i==1)           array_push($fscodes, 'i');
+        if ($do_u==1)           array_push($fscodes, 'u');
+        if ($do_s==1)           array_push($fscodes, 's');
+        if ($do_center==1)      array_push($fscodes, 'center');
+        if ($do_url==1)         array_push($fscodes, 'url');
+        if ($do_homelink==1)    array_push($fscodes, 'home');
+        if ($do_email==1)       array_push($fscodes, 'email');
+        if ($do_img==1)         array_push($fscodes, 'img');
+        if ($do_cimg==1)        array_push($fscodes, 'cimg');
+        if ($do_list==1)        array_push($fscodes, 'list');
+        if ($do_numlist==1)     array_push($fscodes, 'numlist');
+        if ($do_font==1)        array_push($fscodes, 'font');
+        if ($do_color==1)       array_push($fscodes, 'color');
+        if ($do_size==1)        array_push($fscodes, 'size');
+        if ($do_code==1)        array_push($fscodes, 'code');
+        if ($do_quote==1)       array_push($fscodes, 'quote');
+        if ($do_nofscode==1)    array_push($fscodes, 'nofscode');
+        if ($do_player==1)      array_push($fscodes, 'player');
+        if ($do_smilies==1)     array_push($fscodes, 'smilies');
+        if ($do_fscode==1)      array_push($fscodes, 'fscode');
+        if ($do_html==1)        array_push($fscodes, 'html');
+        if ($do_nohtml==1)      array_push($fscodes, 'nohtml');
+    }
+
+    return parse_fscode($text, $flags, $fscodes);
+}
+
+// kill FS Code in text 
+function killfs($text)
+{
+    return strip_fs($text);
+}
+
+/////////////////
+// /DEPRECATED //
+/////////////////
+
+
 
 // strip any fscode
 function strip_fs($str, $allowable_tags = '') {
@@ -535,7 +589,6 @@ function do_fscode_homelink ($action, $attributes, $content, $params, $node_obje
 
     // URL in Content => Use "go[key1=val1 key2=val2]" or oldschool style
     } else {
-        require_once(FS2SOURCE . '/includes/indexfunctions.php');
 
         $url = $content;
 

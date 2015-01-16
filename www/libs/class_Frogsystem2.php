@@ -106,7 +106,7 @@ class Frogsystem2 {
         // Constructor Calls
         // TODO: "Constructor Hook"
         
-        get_goto();
+        $this->get_goto();
         userlogin();
         setTimezone($FD->cfg('timezone'));
         run_cronjobs();
@@ -230,6 +230,56 @@ class Frogsystem2 {
         
         return $default;
     }
+    
+
+    ///////////////////
+    //// get $goto ////
+    ///////////////////
+    private function get_goto ()
+    {
+        global $FD;
+
+        //check seo
+        if ($FD->cfg('url_style') == 'seo') {
+            get_seo();
+        }
+
+        // Check $_GET['go']
+        $FD->setConfig('env', 'get_go_raw', isset($_GET['go'])?$_GET['go']:null);
+        $goto = empty($_GET['go']) ? $FD->cfg('home_real') : $_GET['go'];
+        $FD->setConfig('env', 'get_go', $goto);
+
+        // Forward Aliases
+        $goto = $this->forward_aliases($goto);
+
+        // write $goto into $global_config_arr['goto']
+        $FD->setConfig('goto', $goto);
+        $FD->setConfig('env', 'goto', $goto);
+    }
+
+
+    /////////////////////////
+    //// forward aliases ////
+    /////////////////////////
+    private function forward_aliases ( $GOTO )
+    {
+        global $FD;
+
+        $aliases = $FD->db()->conn()->prepare(
+                         'SELECT alias_go, alias_forward_to FROM '.$FD->env('DB_PREFIX').'aliases
+                          WHERE `alias_active` = 1 AND `alias_go` = ?');
+        $aliases->execute(array($GOTO));
+        $aliases = $aliases->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($aliases as $alias) {
+            if ($GOTO == $alias['alias_go']) {
+                $GOTO = $alias['alias_forward_to'];
+            }
+        }
+
+        return $GOTO;
+    }    
+    
 }
 
 ?>

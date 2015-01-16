@@ -22,7 +22,6 @@ class lang
     // constructor
     public function  __construct ($local = false, $type = false) {
         global $FD;
-        require_once(FS2SOURCE.'/includes/indexfunctions.php');
 
         if ($local == false)
             $this->local = $FD->cfg('language_text');

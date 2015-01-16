@@ -454,8 +454,6 @@ if (
 
         // Update Search Index (or not)
         if ( $FD->config('cronjobs', 'search_index_update') === 1 ) {
-            // Include searchfunctions.php
-            require ( FS2SOURCE . '/includes/searchfunctions.php' );
             update_search_index ('news');
         }
 
@@ -493,7 +491,6 @@ elseif (
             $num = $FD->db()->conn()->exec('DELETE FROM '.$FD->env('DB_PREFIX').'news WHERE `news_id` IN ('.implode(',',$_POST['news_id']).')');
 
             // Delete from Search Index
-            require_once ( FS2SOURCE . '/includes/searchfunctions.php' );
             delete_search_index_for_one($_POST['news_id'], 'news');
 
             // delete all links

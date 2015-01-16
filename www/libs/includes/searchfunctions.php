@@ -1,4 +1,20 @@
 <?php
+///////////////////////////////////
+//// Maybe Update Search Index ////
+///////////////////////////////////
+function search_index ()
+{
+    global $FD;
+
+    if ($FD->cfg('cronjobs', 'search_index_update') == 2) {
+        update_search_index('news');
+        update_search_index('articles');
+        update_search_index('dl');
+    }
+}
+
+
+
 function get_default_operators () {
     global $FD;
     $FD->loadConfig('search');

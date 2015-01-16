@@ -71,8 +71,6 @@ class SearchQuery
 
     // tokenize querystring
     private function tokenize() {
-        // get some search functions
-        require_once(FS2SOURCE . '/includes/searchfunctions.php');
 
         // reset tokens
         $this->tokens = array();

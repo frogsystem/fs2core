@@ -1,94 +1,6 @@
 <?php
-///////////////////////////////
-//// start pseudo cronjobs ////
-///////////////////////////////
-function run_cronjobs ($time = null, $save_time = true) {
-    global $FD;
-
-    // set now
-    if (empty($time))
-        $time = $FD->env('time');
-
-    // calc 3am
-    $today_3am = mktime(3, 0, 0, date('m', $time), date ('d', $time), date ('Y', $time));
-    $today_3am = ($today_3am > $FD->cfg('time')) ? $today_3am - 24*60*60 : $today_3am;
-
-    // calc next hour
-    $last_hour = $time-(date('i', $time)*60)-date('s', $time); // now - min and sec of this hour
-
-    // Run Cronjobs or not
-    if ($FD->cfg('cronjobs', 'last_cronjob_time_daily') < $today_3am)
-        cronjobs_daily($time);
-    if ($FD->cfg('cronjobs', 'last_cronjob_time_hourly') < $last_hour)
-        cronjobs_hourly($time);
-    if (($FD->cfg('cronjobs', 'last_cronjob_time')+5*60) < $time)
-        cronjobs_instantly_bufferd($time);
-}
-
-////////////////////////
-//// daily cronjobs ////
-////////////////////////
-function cronjobs_daily ($save_time = null) {
-    global $FD;
-
-    // Run Cronjobs
-    search_index();
-    clean_referers();
-    HashMapper::deleteByTime();
-
-    // save time
-    if (!empty($save_time))
-        $FD->saveConfig('cronjobs', array('last_cronjob_time_daily' => $save_time));
-}
-
-/////////////////////////
-//// hourly cronjobs ////
-/////////////////////////
-function cronjobs_hourly ($save_time = null) {
-    global $FD;
-
-    // Run Cronjobs
-
-    // save time
-    if (!empty($save_time))
-        $FD->saveConfig('cronjobs', array('last_cronjob_time_hourly' => $save_time));
-}
-
-/////////////////////////////////////////
-//// instant tasks, bufferd for 5min ////
-/////////////////////////////////////////
-function cronjobs_instantly_bufferd ($save_time = null) {
-    global $FD;
-
-    // Run Cronjobs
-    clean_timed_preview_images();
-
-    // save time
-    if (!empty($save_time))
-        $FD->saveConfig('cronjobs', array('last_cronjob_time' => $save_time));
-}
 
 
-//////////////////////////////////////
-//// clean up referrers by config ////
-//////////////////////////////////////
-function clean_referers ($time = null) {
-    global $FD;
-
-    // set time
-    if (empty($time))
-        $time = $FD->env('time');
-
-    if ($FD->cfg('cronjobs', 'ref_cron') == 1) {
-        delete_referrers(
-            $FD->cfg('cronjobs', 'ref_days'),
-            $FD->cfg('cronjobs', 'ref_hits'),
-            $FD->cfg('cronjobs', 'ref_contact'),
-            $FD->cfg('cronjobs', 'ref_age'),
-            $FD->cfg('cronjobs', 'ref_amount'),
-            $time);
-    }
-}
 
 
 //////////////////////////////
@@ -102,21 +14,7 @@ function setTimezone ($timezone) {
 }
 
 
-///////////////////////////////////
-//// Maybe Update Search Index ////
-///////////////////////////////////
-function search_index ()
-{
-    global $FD;
 
-    if ($FD->cfg('cronjobs', 'search_index_update') == 2) {
-        // Include searchfunctions.php
-        require ( FS2SOURCE . '/includes/searchfunctions.php' );
-        update_search_index('news');
-        update_search_index('articles');
-        update_search_index('dl');
-    }
-}
 
 ///////////////////////////
 //// get Main-Template ////
@@ -453,6 +351,84 @@ function get_content ($GOTO)
 }
 
 
+
+
+//////////////////////
+//// Load Applets ////
+//////////////////////
+function load_applets()
+{
+    global $FD;
+
+    // Load Applets from DB
+    $applet_data = $FD->db()->conn()->query(
+                       'SELECT applet_include, applet_file, applet_output
+                        FROM '.$FD->env('DB_PREFIX').'applets
+                        WHERE `applet_active` = 1');
+    $applet_data = $applet_data->fetchAll(PDO::FETCH_ASSOC);
+
+    // Write Applets into Array & get Applet Template
+    initstr($template);
+    $new_applet_data = array();
+    foreach ($applet_data as $entry) {
+        // prepare data
+        $entry['applet_file'] .= '.php';
+        settype($entry['applet_output'], 'boolean');
+
+        // include applets & load template
+        if ($entry['applet_include'] == 1) {
+            $entry['applet_template'] = load_an_applet($entry['applet_file'], $entry['applet_output'], array());
+        }
+
+        $new_applet_data[$entry['applet_file']] = $entry;
+    }
+
+    // Return Content
+    return $new_applet_data;
+}
+
+//////////////////////
+//// Load Applets ////
+//////////////////////
+function load_an_applet($file, $output, $args)
+{
+	global $FD;
+    // Setup $SCRIPT Var
+    unset($SCRIPT, $template);
+    $SCRIPT['argc'] = array_unshift($args, $file);
+    $SCRIPT['argv'] = $args;
+
+    //start output buffering
+    ob_start();
+
+    // include applet & load template
+    try {
+        include(FS2APPLETS.'/'.$file);
+    } catch (Exception $e) {}
+
+    //end & clean output buffering
+    $return_data = ob_get_clean();
+
+    // set empty str
+    if (!isset($template)) {
+		initstr($template);
+    }
+
+    //create return value
+    if ($output) {
+        return($return_data.$template);
+    }
+    return '';
+}
+
+
+
+
+
+
+
+
+
 ////////////////////////////////////
 //// Init Template Replacements ////
 ////////////////////////////////////
@@ -579,74 +555,6 @@ function remove_tpl_functions ($TEMPLATE, $FUNCTIONS)
 function get_all_tpl_functions()
 {
     return array('APP', 'NAV', 'DATE', 'VAR', 'URL', 'SNP');
-}
-
-//////////////////////
-//// Load Applets ////
-//////////////////////
-function load_applets()
-{
-    global $FD;
-
-    // Load Applets from DB
-    $applet_data = $FD->db()->conn()->query(
-                       'SELECT applet_include, applet_file, applet_output
-                        FROM '.$FD->env('DB_PREFIX').'applets
-                        WHERE `applet_active` = 1');
-    $applet_data = $applet_data->fetchAll(PDO::FETCH_ASSOC);
-
-    // Write Applets into Array & get Applet Template
-    initstr($template);
-    $new_applet_data = array();
-    foreach ($applet_data as $entry) {
-        // prepare data
-        $entry['applet_file'] .= '.php';
-        settype($entry['applet_output'], 'boolean');
-
-        // include applets & load template
-        if ($entry['applet_include'] == 1) {
-            $entry['applet_template'] = load_an_applet($entry['applet_file'], $entry['applet_output'], array());
-        }
-
-        $new_applet_data[$entry['applet_file']] = $entry;
-    }
-
-    // Return Content
-    return $new_applet_data;
-}
-
-//////////////////////
-//// Load Applets ////
-//////////////////////
-function load_an_applet($file, $output, $args)
-{
-	global $FD;
-    // Setup $SCRIPT Var
-    unset($SCRIPT, $template);
-    $SCRIPT['argc'] = array_unshift($args, $file);
-    $SCRIPT['argv'] = $args;
-
-    //start output buffering
-    ob_start();
-
-    // include applet & load template
-    try {
-        include(FS2APPLETS.'/'.$file);
-    } catch (Exception $e) {}
-
-    //end & clean output buffering
-    $return_data = ob_get_clean();
-
-    // set empty str
-    if (!isset($template)) {
-		initstr($template);
-    }
-
-    //create return value
-    if ($output) {
-        return($return_data.$template);
-    }
-    return '';
 }
 
 
@@ -811,395 +719,5 @@ function tpl_func_url($original, $main_argument, $other_arguments)
 
     // finally create URL
     return url(trim($main_argument), $params, $full);
-}
-
-// fs2seourl Version 1.01 (27.08.2001)
-function get_seo () {
-
-    global $FD;
-
-    // Anzahl der mittel ? übergegebenen Parameter speichern
-    if (isset($_GET))
-        $numparams = count($_GET);
-    else
-        $numparams = 0;
-
-    $redirect = false;
-
-    // Wurde dieser Skript direkt aufgrufen werden oder indirekt ueber mod_rewrite?
-    $calledbyrewrite = isset($_SERVER['REDIRECT_QUERY_STRING']);
-
-    // mod_rewrite schreibt in seoq den Dateinamen der fiktiven HTML-Datei (ohne die .html-Dateiendung).
-    // Dieser Name muss nun zerlegt und in die Parameter uebersetzt werden, welche das FrogSystem erwaretet.
-    if ((isset($_GET['seoq'])) && ($calledbyrewrite)) {
-        // seoq wurde von mod_rewrite eingefuegt und ist daher kein echter Parameter
-        $numparams--;
-
-        // Drei oder mehr Bindestriche temporaer durch zwei weniger \x1 ersetzen, um sie von Seperatoren unterscheiden zu koennen
-        $_GET['seoq'] = preg_replace_callback('/---+/', create_function('$matches', 'return str_repeat("\x1", strlen($matches[0]) - 2);'), $_GET['seoq']);
-
-        $paramdelim = strpos($_GET['seoq'], '--');
-
-        if ($numparams > 0 && isset($_GET['go'])) {
-            //Wurden hinter das .html noch Parameter gepackt, sind diese massgeblich => Den Rest verwerfen und weiterleiten
-            $redirect =	true;
-        }
-        else if ($paramdelim === false) {
-            // Kein -- => Keine Parameter => Der komplette Dateiname ist der go-Parameter
-            if (!isset($_GET['go']))
-                $_GET['go'] = str_replace("\x1", '-', $_GET['seoq']);
-        }
-        else {
-            // -- vorhanden => Alles davor ist der go-Parameter, alles dahinter sind weitere Parameter.
-            // Diese muessen allerdings ein bestimmtes Format einhalten, ansonsten wird auf das richtige Format weitergeleitet
-
-            if (!isset($_GET['go']))
-                $_GET['go'] = substr($_GET['seoq'], 0, $paramdelim);
-
-            $seoparamstr = substr($_GET['seoq'], $paramdelim + 2);
-
-            // Hinter dem -- muss noch etwas kommen, sonst Weiterleitung
-            if (strlen($seoparamstr) > 0)
-            {
-                $seoparams = explode('-', $seoparamstr);
-                for ($i = 0; $i < count($seoparams); $i++)
-                    $seoparams[$i] = str_replace("\x1", '-', $seoparams[$i]);
-
-                // Die Anzahl der mit "-" getrennten Werte muss gerade sein, sonst Weiterleitung
-                // letzer paramter hat keinen wert, strich am ende fällt weg
-                if ((count($seoparams) % 2 != 0) && (count($seoparams) > 0)) {
-                    //$redirect = true;
-                    array_push($seoparams, null);
-                }
-
-                for ($i = 0; $i < count($seoparams); $i += 2)
-                {
-                    // i ist der Name des Parameters, i+1 ist der Wert des Parameters
-                    if (!isset($_GET[$seoparams[$i]]))
-                        $_GET[$seoparams[$i]] = $seoparams[$i+1];
-
-                    // Die Parameter muessen alphabetisch sortiert sein, sonst Weiterleitung
-                    if (($i >= 2) && (strcmp($seoparams[$i - 2], $seoparams[$i]) >= 0))
-                        $redirect = true;
-                }
-            }
-            else {
-                $redirect = true;
-            }
-        }
-
-        unset($seoparams);
-        unset($seoparamstr);
-        unset($paramdelim);
-    }
-    elseif ($numparams > 0) {
-        $redirect = true;
-    }
-
-    unset($_GET['seoq']);
-    unset($_REQUEST['seoq']);
-
-    // Expliziter Aufruf von index.php bzw. indexseo.php => Weiterleitung erzwingen
-    if ((!$calledbyrewrite) && (substr($_SERVER['REQUEST_URI'], -1) != '/')) {
-        $redirect = true;
-    }
-    // Bei Bedarf Weiterleitung auf die neue URL im richtigen Format
-    if ($redirect) {
-        header('Location: ' . $FD->cfg('virtualhost') . url_seo($_GET['go'], $_GET, true), true, 301);
-        die();
-    }
-
-    // Inhalt von $_GET nach $_REQUEST kopieren
-    foreach ($_GET as $k => $v)
-        $_REQUEST[$k] = $v;
-
-    // Query-String anpassen
-    $_SERVER['QUERY_STRING'] = '';
-    foreach ($_GET as $k => $v)
-        $_SERVER['QUERY_STRING'] .= urlencode($k) . '=' . urlencode($v) . '&';
-    $_SERVER['REQUEST_URI'] = '/index.php?' . $_SERVER['QUERY_STRING'];
-
-    // Hotlinkingschutz vom FS2 zufrieden stellen
-    if (isset($_SERVER['HTTP_REFERER']))
-      if (preg_match('/\/dlfile--.*\.html$/', $_SERVER['HTTP_REFERER']))
-          $_SERVER['HTTP_REFERER'] .= '?go=dlfile';
-}
-
-
-
-
-
-///////////////////
-//// get $goto ////
-///////////////////
-function get_goto ()
-{
-    global $FD;
-
-    //check seo
-    if ($FD->cfg('url_style') == 'seo') {
-        get_seo();
-    }
-
-    // Check $_GET['go']
-    $FD->setConfig('env', 'get_go_raw', isset($_GET['go'])?$_GET['go']:null);
-    $goto = empty($_GET['go']) ? $FD->cfg('home_real') : $_GET['go'];
-    $FD->setConfig('env', 'get_go', $goto);
-
-    // Forward Aliases
-    $goto = forward_aliases($goto);
-
-    // write $goto into $global_config_arr['goto']
-    $FD->setConfig('goto', $goto);
-    $FD->setConfig('env', 'goto', $goto);
-}
-
-
-/////////////////////////
-//// forward aliases ////
-/////////////////////////
-function forward_aliases ( $GOTO )
-{
-    global $FD;
-
-    $aliases = $FD->db()->conn()->prepare(
-                     'SELECT alias_go, alias_forward_to FROM '.$FD->env('DB_PREFIX').'aliases
-                      WHERE `alias_active` = 1 AND `alias_go` = ?');
-    $aliases->execute(array($GOTO));
-    $aliases = $aliases->fetchAll(PDO::FETCH_ASSOC);
-
-    foreach ($aliases as $alias) {
-        if ($GOTO == $alias['alias_go']) {
-            $GOTO = $alias['alias_forward_to'];
-        }
-    }
-
-    return $GOTO;
-}
-
-///////////////////
-//// count hit ////
-///////////////////
-function count_all ( $GOTO )
-{
-    $hit_year = date ( 'Y' );
-    $hit_month = date ( 'm' );
-    $hit_day = date ( 'd' );
-
-    visit_day_exists ( $hit_year, $hit_month, $hit_day );
-    count_hit ( $GOTO );
-}
-
-///////////////////////////////////
-//// check if visit day exists ////
-///////////////////////////////////
-function visit_day_exists ( $YEAR, $MONTH, $DAY )
-{
-    global $FD;
-
-    // check if visit-day exists
-    $daycounter = $FD->db()->conn()->query ('SELECT * FROM '.$FD->env('DB_PREFIX').'counter_stat
-                                WHERE s_year = '.$YEAR.' AND s_month = '.$MONTH.' AND s_day = '.$DAY);
-
-    if ( $daycounter->fetch(PDO::FETCH_ASSOC) === false )
-    {
-        $FD->db()->conn()->exec('INSERT INTO '.$FD->env('DB_PREFIX')."counter_stat (s_year, s_month, s_day, s_visits, s_hits) VALUES ('".$YEAR."', '".$MONTH."', '".$DAY."', '0', '0')" );
-    }
-}
-
-
-///////////////////
-//// count hit ////
-///////////////////
-function count_hit ( $GOTO )
-{
-    global $FD;
-
-    $hit_year = date ( 'Y' );
-    $hit_month = date ( 'm' );
-    $hit_day = date ( 'd' );
-
-    if ( $GOTO != '404' && $GOTO != '403' ) {
-        // count page_hits
-        $FD->db()->conn()->exec ( 'UPDATE '.$FD->env('DB_PREFIX').'counter SET hits = hits + 1' );
-        $FD->db()->conn()->exec ( 'UPDATE '.$FD->env('DB_PREFIX').'counter_stat
-                                    SET s_hits = s_hits + 1
-                                    WHERE s_year = '.$hit_year.' AND s_month = '.$hit_month.' AND s_day = '.$hit_day );
-    }
-}
-
-
-/////////////////////
-//// count visit ////
-/////////////////////
-function count_visit ()
-{
-    global $FD;
-
-    $visit_year = date ( 'Y' );
-    $visit_month = date( 'm' );
-    $visit_day = date ( 'd' );
-
-    $FD->db()->conn()->exec('UPDATE '.$FD->env('DB_PREFIX').'counter SET visits = visits + 1');
-    $FD->db()->conn()->exec('UPDATE '.$FD->env('DB_PREFIX').'counter_stat
-                              SET s_visits = s_visits + 1
-                              WHERE s_year = '.$visit_year.' AND s_month = '.$visit_month.' AND s_day = '.$visit_day);
-}
-
-
-///////////////////////
-//// save visitors ////
-///////////////////////
-function save_visitors ()
-{
-    global $FD;
-
-    clean_iplist(); // remove old users first
-
-    // get user_id or set user_id=0
-    if (is_loggedin() && isset($_SESSION['user_id'])) {
-        $user_id = $_SESSION['user_id'];
-        settype($user_id, 'integer');
-    } else {
-        $user_id = 0;
-    }
-
-    // Exisiting user for ip?
-    $user = $FD->db()->conn()->prepare('SELECT * FROM '.$FD->env('DB_PREFIX').'useronline WHERE `ip` = ? LIMIT 1');
-    $user->execute(array($_SERVER['REMOTE_ADDR']));
-    $user = $user->fetch(PDO::FETCH_ASSOC);
-
-    // no user => create new
-    if (empty($user)) {
-        $stmt = $FD->db()->conn()->prepare('INSERT INTO '.$FD->env('DB_PREFIX').'useronline SET `ip` = ?, user_id='.$user_id.', date='.(int) $FD->env('time'));
-        $stmt->execute(array($_SERVER['REMOTE_ADDR']));
-
-        // and count the visit
-        count_visit();
-    }
-
-    // new user_id (and update time)
-    else if ($user['user_id'] != $user_id) {
-        $stmt = $FD->db()->conn()->prepare('UPDATE '.$FD->env('DB_PREFIX').'useronline SET user_id = '.$user_id.', date = '.(int) $FD->env('time').' WHERE ip = ? LIMIT 1');
-        $stmt->execute(array($_SERVER['REMOTE_ADDR']));
-    }
-
-    // we know the user => just update time
-    else {
-        $stmt = $FD->db()->conn()->prepare('UPDATE '.$FD->env('DB_PREFIX').'useronline SET date = '.(int) $FD->env('time').' WHERE ip = ? LIMIT 1');
-        $stmt->execute(array($_SERVER['REMOTE_ADDR']));
-    }
-}
-
-//////////////////////
-//// clean iplist ////
-//////////////////////
-function clean_iplist()
-{
-    global $FD;
-
-    $time = strtotime('today');
-    $FD->db()->conn()->exec('DELETE FROM '.$FD->env('DB_PREFIX')."useronline WHERE `date` < '".$time."'");
-}
-
-
-//////////////////////
-//// save referer ////
-//////////////////////
-function save_referer ()
-{
-    global $FD;
-
-	if (isset($_SERVER['HTTP_REFERER'])) {
-
-		$time = time(); // timestamp
-		// save referer
-		$referer = preg_replace ( "=(.*?)\=([0-9a-z]{32})(.*?)=i", "\\1=\\3", $_SERVER['HTTP_REFERER'] );
-		$index = $FD->db()->conn()->prepare ( 'SELECT * FROM '.$FD->env('DB_PREFIX').'counter_ref WHERE ref_url = ?' );
-		$index->execute(array($referer));
-
-		if ( $index->fetch(PDO::FETCH_ASSOC) === false ) {
-			if ( substr_count ( $referer, 'http://' ) >= 1 && substr_count ( $referer, $FD->config('virtualhost') ) < 1 ) {
-				$stmt = $FD->db()->conn()->prepare ( 'INSERT INTO '.$FD->env('DB_PREFIX')."counter_ref (ref_url, ref_count, ref_first, ref_last) VALUES (?, '1', '".$time."', '".$time."')" );
-				$stmt->execute(array($referer));
-			}
-		} else {
-			if ( substr_count ( $referer, 'http://' ) >= 1 && substr_count ( $referer, $FD->config('virtualhost') ) < 1 ) {
-				$stmt = $FD->db()->conn()->prepare ( 'UPDATE '.$FD->env('DB_PREFIX')."counter_ref SET ref_count = ref_count + 1, ref_last = '".$time."' WHERE ref_url = ? LIMIT 1" );
-				$stmt->execute(array($referer));
-			}
-		}
-	}
-}
-
-
-//////////////////////////////////////////////////////////
-//// clean database from expired timed preview_images ////
-//////////////////////////////////////////////////////////
-function clean_timed_preview_images () {
-    global $FD;
-    $FD->loadConfig('preview_images');
-
-    // do we want to remove old entries?
-    if ($FD->config('preview_images', 'timed_deltime') != -1) {
-        // remove old entries
-        $FD->db()->conn()->query('DELETE FROM '.$FD->env('DB_PREFIX')."screen_random WHERE `end` < '".($FD->env('time')-$FD->config('preview_images', 'timed_deltime'))."'");
-    }
-}
-
-
-///////////////////////////////
-//// create copyright note ////
-///////////////////////////////
-function get_copyright ()
-{
-        return '<span class="copyright">Powered by <a class="copyright" href="http://www.frogsystem.de/" target="_blank">Frogsystem&nbsp;2</a> &copy; 2007 - '.date('Y').' Frogsystem-Team</span>';
-}
-
-
-////////////////////////
-/// Designs & Zones ////
-////////////////////////
-function set_style ()
-{
-    global $FD;
-
-    if ( isset ( $_GET['style'] ) && $FD->cfg('allow_other_designs') == 1 ) {
-        $index = $FD->db()->conn()->prepare ( '
-                        SELECT `style_id`, `style_tag`
-                        FROM `'.$FD->env('DB_PREFIX')."styles`
-                        WHERE `style_tag` = ?
-                        AND `style_allow_use` = 1
-                        LIMIT 0,1");
-        $index->execute(array($_GET['style']));
-        $row = $index->fetch(PDO::FETCH_ASSOC);
-        if ( $row !== false ) {
-            $FD->setConfig('style', $row['style_tag'] );
-            $FD->setConfig('style_tag', $row['style_tag'] );
-            $FD->setConfig('style_id', $row['style_id'] );
-        }
-    } elseif ( isset ( $_GET['style_id'] ) && $FD->config('allow_other_designs') == 1 ) {
-        settype ( $_GET['style_id'], 'integer' );
-        $index = $FD->db()->conn()->query ( '
-                        SELECT `style_id`, `style_tag`
-                        FROM `'.$FD->env('DB_PREFIX')."styles`
-                        WHERE `style_id` = '".$_GET['style_id']."'
-                        AND `style_allow_use` = 1
-                        LIMIT 0,1" );
-        $row = $index->fetch(PDO::FETCH_ASSOC);
-        if ( $row !== false ) {
-            $FD->setConfig('style', $row['style_tag'] );
-            $FD->setConfig('style_tag', $row['style_tag'] );
-            $FD->setConfig('style_id', $row['style_id'] );
-        }
-    }
-}
-
-//////////////////////////////////
-//// copyright security check ////
-//////////////////////////////////
-function copyright ()
-{
-return true;
 }
 ?>

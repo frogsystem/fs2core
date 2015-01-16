@@ -41,9 +41,6 @@ class Search
 
     // constructor
     public function  __construct ($type, $query, $phonetic = false) {
-        // get searchtree classe if not loaded
-        require_once(FS2SOURCE . '/libs/class_SearchQuery.php');
-        require_once(FS2SOURCE . '/includes/searchfunctions.php');
 
         // assign global vars
         global $FD;

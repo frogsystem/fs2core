@@ -5,9 +5,6 @@
 //////////////////////
 if ( isset ( $_POST['do'] ) && ( in_array ( $_POST['do'], array ( 'update', 'new', 'delete', 'delete_with_word' ) ) ) ) {
 
-    // Include searchfunctions.php
-    require ( FS2SOURCE . '/includes/searchfunctions.php' );
-
     // Update
     if ( $_POST['do'] == 'update' ) {
         update_search_index ( 'news' );
