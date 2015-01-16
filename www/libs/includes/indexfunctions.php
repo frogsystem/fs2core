@@ -43,7 +43,7 @@ function get_maintemplate ($BODY, $PATH_PREFIX = '', $BASE = FALSE)
 
     // Create Script-Lines
     $template_javascript = get_js($PATH_PREFIX).'
-    <script type="text/javascript" src="'.$PATH_PREFIX.'includes/js_functions.js"></script>';
+    <script type="text/javascript" src="'.$PATH_PREFIX.'assets/main.js"></script>';
 
     // Get HTML-Matrix
     $theTemplate->load('MATRIX');
