@@ -1159,7 +1159,7 @@ function clean_timed_preview_images () {
 ///////////////////////////////
 function get_copyright ()
 {
-        return '<span class="copyright">Powered by <a class="copyright" href="http://www.frogsystem.de/" target="_blank">Frogsystem&nbsp;2</a> &copy; 2007 - 2014 Frogsystem-Team</span>';
+        return '<span class="copyright">Powered by <a class="copyright" href="http://www.frogsystem.de/" target="_blank">Frogsystem&nbsp;2</a> &copy; 2007 - '.date('Y').' Frogsystem-Team</span>';
 }
 
 
@@ -1199,7 +1199,6 @@ function set_style ()
             $FD->setConfig('style_id', $row['style_id'] );
         }
     }
-    copyright ();
 }
 
 //////////////////////////////////
@@ -1207,25 +1206,6 @@ function set_style ()
 //////////////////////////////////
 function copyright ()
 {
-    global $FD;
-
-    $template_copyright = new template();
-    $template_copyright->setFile('0_main.tpl');
-    $template_copyright->load('MAIN');
-    $copyright = (string) $template_copyright;
-
-    if (strpos($copyright, $template_copyright->getOpener().'copyright'.$template_copyright->getCloser()) == FALSE
-        || strpos(get_copyright(), 'Frogsystem&nbsp;2' ) == FALSE || strpos(get_copyright(), '&copy; 2007 - 2014 Frogsystem-Team') == FALSE
-        || strpos(get_copyright(), 'Powered by' ) == FALSE || strpos(get_copyright(), 'frogsystem.de') == FALSE )
-    {
-        $FD->setConfig('style',  'default');
-        $FD->setConfig('style_id', 0);
-    } else {
-        $copyright_without_comments = preg_replace("/<!\s*--.*?--\s*>/s", "", $copyright);
-        if (preg_match("/\{\.\.copyright\.\.\}/", $copyright_without_comments) <= 0) {
-            $FD->setConfig('style', 'default');
-            $FD->setConfig('style_id', 0);
-        }
-    }
+return true;
 }
 ?>

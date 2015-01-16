@@ -755,15 +755,6 @@ function create_templateeditor ( $editor_arr, $HIGHLIGHTER, $FILE, $MANYFILES )
 
 function ensure_copyright ( $TEMPLATE_NAME )
 {
-    if (!isset($_POST[$TEMPLATE_NAME]))
-        return true;
-
-    $OC = new template ();
-    if ( strpos ( $_POST[$TEMPLATE_NAME], $OC->getOpener().'copyright'.$OC->getCloser() ) === FALSE ) {
-        return FALSE;
-    }
-
-    unset ( $TEMPLATE_NAME );
     return TRUE;
 }
 
