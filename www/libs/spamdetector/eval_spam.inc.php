@@ -96,7 +96,7 @@
     $comment_text = strtolower($comment_text);
     if ($use_b8)
     {
-      require_once FS2SOURCE.'/resources/spamdetector/b8/b8.php';
+      require_once FS2SOURCE.'/libs/spamdetector/b8/b8.php';
       if ($b8==NULL)
       {
         $success = 'No b8 instance passed to spamEvaluation() function!';
@@ -165,17 +165,17 @@
     if (is_float($level))
     {
       $percentage = round($level*100);
-      if ($level<=0.25) return '<font color="#00cc00">unwahrscheinlich ('.$percentage.'%)</font>';
-      if ($level<=0.5) return '<font color="#cccc00">gering ('.$percentage.'%)</font>';
-      if ($level<=0.75) return '<font color="#ff8000">mittel ('.$percentage.'%)</font>';
+      if ($level<=0.25) return '<span style="color:#00cc00;">unwahrscheinlich ('.$percentage.'%)</span>';
+      if ($level<=0.5) return '<span style="color:#cccc00;">gering ('.$percentage.'%)</span>';
+      if ($level<=0.75) return '<span style="color:#ff8000;">mittel ('.$percentage.'%)</span>';
       //higher than 75%
-      return '<font color="#ff0000"><b>hoch ('.$percentage.'%)</b></font>';
+      return '<span style="color:#ff0000;"><b>hoch ('.$percentage.'%)</b></span>';
     }
     //usual integer-based stuff
-    if ($level<=0) return '<font color="#00cc00">unwahrscheinlich</font>';
-    if ($level==1) return '<font color="#cccc00">gering</font>';
-    if ($level==2) return '<font color="#ff8000">mittel</font>';
+    if ($level<=0) return '<span style="color:#00cc00;">unwahrscheinlich</span>';
+    if ($level==1) return '<span style="color:#cccc00;">gering</span>';
+    if ($level==2) return '<span style="color:#ff8000;">mittel</span>';
     //3 or higher
-    return '<font color="#ff0000"><b>hoch</b></font>';
+    return '<span style="color:#ff0000;"><b>hoch</b></span>';
   }//function
 ?>
