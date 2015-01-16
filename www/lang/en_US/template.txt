@@ -22,7 +22,6 @@ matrix_help_css_links:                  Includes the CSS stylesheets
 matrix_help_favicon_link:               Includes the (possibly existing) favicon
 matrix_help_feed_link:                  Includes the default feed
 matrix_help_javascript:                 Includes the JavaScript files
-matrix_help_jquery:                     Includes the jQuery library
 matrix_help_body:                       Includes the template of the main page
 
 general_systemmessage_title:           System message

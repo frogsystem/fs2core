@@ -22,7 +22,6 @@ matrix_help_css_links:                  Bindet die CSS-Stylesheets ein
 matrix_help_favicon_link:               Bindet evtl. das Favicon ein
 matrix_help_feed_link:                  Bindet den Standard-Feed ein
 matrix_help_javascript:                 Bindet die JavaScript-Dateien ein
-matrix_help_jquery:                     Bindet die jQuery-Bibliothek ein
 matrix_help_body:                       Bindet das Template der Hauptseite ein
 
 general_systemmessage_title:           Systemmeldung

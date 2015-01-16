@@ -45,7 +45,6 @@
     {..css_links..}
     {..favicon_link..}
     {..feed_link..}
-    {..jquery..}
     {..javascript..}
   </head>
   {..body..}

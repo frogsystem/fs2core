@@ -119,7 +119,6 @@ class Frogsystem2 {
           $_GET['style'] = $_COOKIE['style'];
         }
         set_style();
-        copyright();
         $APP = load_applets();
 
         // Get Body-Template

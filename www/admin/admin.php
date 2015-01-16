@@ -157,7 +157,6 @@ echo'<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.
     <link rel="stylesheet" type="text/css" href="?css=noscript.css" id="noscriptcss">
 
     <script src="?js=admin.js" type="text/javascript"></script>
-    <!-- <script src="../resources/jquery/jquery-ui.min.js" type="text/javascript"></script> -->
 
     <link rel="stylesheet" type="text/css" href="../resources/colorpicker/css/colorpicker.css">
     <script type="text/javascript" src="../resources/colorpicker/js/colorpicker.js"></script>
