@@ -1,6 +1,7 @@
 /**************************************************/
 /* tooltip */
 /**************************************************/
+@import url(../../vendor/colpick-jQuery-Color-Picker/css/colpick.css);
 a.tooltip {
   position: relative;
   text-decoration: none;
@@ -1067,3 +1068,17 @@ em {
 
 .red_text {
   color: #FF0000 !important; }
+
+.colpick {
+  z-index: 1; }
+
+.colorpicker-preview {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 24px;
+  height: 24px;
+  vertical-align: bottom;
+  margin: 0 4px 0 0;
+  border: 2px solid #999999;
+  border-left: 0;
+  cursor: pointer; }

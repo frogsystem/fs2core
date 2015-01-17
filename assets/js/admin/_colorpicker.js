@@ -2,54 +2,51 @@
 // START - Document Ready Functions
 //--------------------------------
 $(document).ready(function(){
-		$('.colorpickerInput').ColorPicker({
-			onSubmit: function(hsb, hex, rgb, ele) {
-                $(ele).val(hex.toUpperCase());
-                $(ele).parents('.colorpickerParent').find('.colorpickerSelector div').css('background-color', '#' + hex);
-				$(ele).ColorPickerHide();
-			},
-			onBeforeShow: function () {
-				$(this).ColorPickerSetColor(this.value);
-			},
-            onShow: function (colpkr) {
-                $(colpkr).fadeIn(500);
-                return false;
-            },
-            onHide: function (colpkr) {
-                $(colpkr).fadeOut(500);
-                return false;
-            },
-            onChange: function (hsb, hex, rgb, ele) {
-                $(ele).val(hex.toUpperCase());
-                $(ele).parents('.colorpickerParent').find('.colorpickerSelector div').css('background-color', '#' + hex);
-            }
-		})
-		.bind('keyup', function(){
-			$(this).ColorPickerSetColor(getCorrectHex(this.value));
-		});
-
-        $('.colorpickerSelector, .colorpickerSelector div').click(function() {
-            $(this).parents('.colorpickerParent').find('.colorpickerInput').ColorPickerShow();
-        });
+    $('.colorpicker').colpick({
+        layout:'rgbhex',
         
-        $('.colorpickerInput').change(function() {
-            var newhex = getCorrectHex($(this).val());
-            $(this).parents('.colorpickerParent').find('.colorpickerSelector div').css('background-color', '#' + newhex);
-        });
+        onBeforeShow: function () {
+            $(this).colpickSetColor(this.value);
+        },        
         
-        $('.colorpickerInput').keydown(function() {
-            $(this).change();
+        onSubmit: function(hsb, hex, rgb, ele) {
+            $(ele).val(hex.toUpperCase());
+            $(ele).next('.colorpicker-preview').css('background-color', '#' + hex);
+            $(ele).colpickHide();
+        }, 
+        onChange: function (hsb, hex, rgb, ele) {
+            $(ele).val(hex.toUpperCase());
+            $(ele).next('.colorpicker-preview').css('background-color', '#' + hex);
+        }
+    })
+    .bind('keyup', function(){
+        $(this).colpickSetColor(getCorrectHex(this.value));
+    })
+    .after(function() {
+        var colorPreview = $('<span class="colorpicker-preview"></span>');
+        colorPreview.css('background-color', '#' + $(this).val());
+        colorPreview.click(function() {
+            // .colpickShow() produces an error :(
+            $(this).prev('.colorpicker').trigger('click');
         });
-        $('.colorpickerInput').keyup(function() {
-            $(this).change();
-        });
-        
-        $('.colorpickerInput').focusout(function() {
-            $(this).val(getCorrectHex($(this).val()));
-        });
-        
-        
+        return colorPreview;
+    })
+    .change(function() {
+        var newhex = getCorrectHex($(this).val());
+        $(this).next('.colorpicker-preview').css('background-color', '#' + newhex);
+    })
+    .keydown(function() {
+        $(this).change();
+    })
+    .keyup(function() {
+        $(this).change();
+    })
+    .focusout(function() {
+        $(this).val(getCorrectHex($(this).val()));
+    });
 });
+
+
 //--------------------------------
 // END - Document Ready Functions
 //--------------------------------

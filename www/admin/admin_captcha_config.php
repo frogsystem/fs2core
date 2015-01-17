@@ -219,11 +219,7 @@ if ( TRUE )
                                                 <input class="pointer middle" type="radio" name="captcha_bg_transparent" id="captcha_bg_color" value="0" '.getchecked ( 0, $_POST['captcha_bg_transparent'] ).'>
                                             </td>
                                             <td class="config middle">
-                                                <div class="colorpickerParent">
-                                                    <span class="atleft">#<input class="colorpickerInput" name="captcha_bg_color" maxlength="6" size="6" value="'.$_POST['captcha_bg_color'].'" onFocus ="$(this).parents(\'tr\').find(\'input#captcha_bg_color\').prop(\'checked\', true);"></span>
-
-                                                    <div class="colorpickerSelector atleft"><div style="background-color: #'.$_POST['captcha_bg_color'].';"></div></div>
-
+                                                    #<input class="colorpicker" name="captcha_bg_color" maxlength="6" size="6" value="'.$_POST['captcha_bg_color'].'" onFocus ="$(this).parents(\'tr\').find(\'input#captcha_bg_color\').prop(\'checked\', true);">
                                                     <span class="small">('.$FD->text('admin', 'hex_color').')</span>
                                                 </div>
                                             </td>
@@ -238,11 +234,7 @@ if ( TRUE )
                                     <span class="small">'.$FD->text('page', 'captcha_config_text_color_desc').'</span>
                                 </td>
                                 <td class="config">
-                                    <div class="colorpickerParent">
-                                        <span class="atleft">#<input class="colorpickerInput" name="captcha_text_color" maxlength="6" size="6" value="'.$_POST['captcha_text_color'].'"></span>
-
-                                        <div class="colorpickerSelector atleft"><div style="background-color: #'.$_POST['captcha_text_color'].';"></div></div>
-
+                                        #<input class="colorpicker" name="captcha_text_color" maxlength="6" size="6" value="'.$_POST['captcha_text_color'].'">
                                         <span class="small">('.$FD->text('admin', 'hex_color').')</span>
                                     </div>
                                 </td>

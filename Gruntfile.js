@@ -80,7 +80,12 @@ module.exports = function(grunt) {
       dev: {
         files: [
           { 
-            'dist/js/admin.js' : ['vendor/jquery/dist/jquery.js', 'assets/js/_frontend.js', 'assets/js/admin/**/_*.js']
+            'dist/js/admin.js' : [
+              'vendor/jquery/dist/jquery.js',
+              'vendor/colpick-jQuery-Color-Picker/js/colpick.js',
+              'assets/js/_frontend.js',
+              'assets/js/admin/**/_*.js'
+            ]
           }
         ]
       }
@@ -150,13 +155,16 @@ module.exports = function(grunt) {
         files: '<%= jshint.gruntfile.src %>',
         tasks: ['jshint:gruntfile']
       },
-      lib_test: {
-        files: '<%= jshint.lib_test.src %>',
-        tasks: ['jshint:lib_test', 'nodeunit']
-      }, 
+      //~ lib_test: {
+        //~ files: '<%= jshint.lib_test.src %>',
+        //~ tasks: ['jshint:lib_test', 'nodeunit']
+      //~ }, 
       copy: {
-        files: ['dist/**'],
-        tasks: ['newer:copy:dev']
+        options: {
+          livereload: true
+        },
+        files: ['dist/**/*'],
+        tasks: ['newer:copy']
       }
     }
   });
