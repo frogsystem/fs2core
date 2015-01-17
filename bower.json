@@ -18,6 +18,6 @@
   "dependencies": {
     "jquery": "~1.11.2",
     "jquery-ui": "~1.11.2",
-    "colpick-jQuery-Color-Picker": "josedvq/colpick-jQuery-Color-Picker#~2.0.2"
+    "colpick-jQuery-Color-Picker": "mrgrain/colpick-jQuery-Color-Picker#master"
   }
 }
