@@ -10366,7 +10366,8 @@ return jQuery;
 				layout: 'full',
 				submit: 1,
 				submitText: 'OK',
-				height: 156
+				height: 156,
+                polyfill: false
 			},
 			//Fill the inputs of the plugin
 			fillRGBFields = function  (hsb, cal) {
@@ -10577,6 +10578,9 @@ return jQuery;
 					ev.stopPropagation();
 				}
 				var cal = $('#' + $(this).data('colpickId'));
+                if (ev && !cal.data('colpick').polyfill) {
+                    ev.preventDefault();
+                }
 				cal.data('colpick').onBeforeShow.apply(this, [cal.get(0)]);
 				var pos = $(this).offset();
 				var top = pos.top + this.offsetHeight;
@@ -10665,6 +10669,20 @@ return jQuery;
 					if (!$(this).data('colpickId')) {
 						var options = $.extend({}, opt);
 						options.origColor = opt.color;
+                        
+                        // Set polyfill
+                        if (typeof opt.polyfill == 'function') {
+                            options.polyfill = opt.polyfill(this);
+                        }
+                        
+                        //Input field operations
+                        options.input = $(this).is('input');
+                        
+                        //Polyfill fixes
+                        if (options.polyfill && options.input && this.type === "color") {
+                            return;
+                        }
+                        
 						//Generate and assign a random ID
 						var id = 'collorpicker_' + parseInt(Math.random() * 1000);
 						$(this).data('colpickId', id);
@@ -11305,8 +11323,7 @@ $(document).ready(function(){
         var colorPreview = $('<span class="colorpicker-preview"></span>');
         colorPreview.css('background-color', '#' + $(this).val());
         colorPreview.click(function() {
-            // .colpickShow() produces an error :(
-            $(this).prev('.colorpicker').trigger('click');
+            $(this).prev('.colorpicker').colpickShow();;
         });
         return colorPreview;
     })
