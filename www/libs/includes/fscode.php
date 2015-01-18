@@ -879,7 +879,6 @@ function do_fscode_quote ($action, $attributes, $content, $params, $node_object)
 
 // Create a videoplayer
 function do_fscode_video ($action, $attributes, $content, $params, $node_object) {
-    require_once ( FS2SOURCE . '/resources/player/player_flv_include.php' );
 
     if ($action == 'validate') {
         return true;

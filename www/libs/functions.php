@@ -9,6 +9,7 @@
         'fscode.php',
         'imagefunctions.php',
         'indexfunctions.php',
+        'player.php',
         'searchfunctions.php',
         'statisticsfunctions.php',
         'stylefunctions.php',

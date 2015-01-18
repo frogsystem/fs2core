@@ -6,12 +6,18 @@ function get_player ( $MULTI, $WIDTH = true, $HEIGHT = true, $MODIFIER = false )
     $FD->loadConfig('video_player');
 
     $template_own = '
-    <object type="application/x-shockwave-flash" data="'.$FD->config('virtualhost').'resources/player/player_flv_maxi.swf" width="{..width..}" height="{..height..}">
-        <param name="movie" value="'.$FD->config('virtualhost').'resources/player/player_flv_maxi.swf"></param>
+    <object type="application/x-shockwave-flash" data="'.$FD->config('virtualhost').'assets/player_flv_maxi.swf" width="{..width..}" height="{..height..}">
+        <param name="movie" value="'.$FD->config('virtualhost').'assets/player_flv_maxi.swf"></param>
         <param name="allowFullScreen" value="true"></param>
-        <param name="FlashVars" value="config='.$FD->config('virtualhost').'resources/player/player_flv_config.php&amp;flv={..url..}&amp;title={..title..}&amp;width={..width..}&amp;height={..height..}"></param>
+        <param name="FlashVars" value="'.get_player_flashvars(array(
+            'flv' => "{..url..}",
+            'title' => "{..title..}"
+        )).'"></param>
+
     </object>
     ';
+    //~ <param name="FlashVars" value="config='.$FD->config('virtualhost').'resources/player/player_flv_config.php&amp;flv={..url..}&amp;title={..title..}&amp;width={..width..}&amp;height={..height..}"></param>
+
 
     $template_youtube = '
     <iframe width="{..width..}" height="{..height..}" src="//www.youtube.com/embed/{..url..}" frameborder="0" allowfullscreen></iframe>
@@ -201,5 +207,90 @@ function get_video_bbcode($url, $title, $type, $dl_id = 0) {
         $content = $FD->text('frontend', 'video').': '.$url;
     }
     return '[url='.$url.']'.$content.'[/url]';
+}
+
+
+function get_player_flashvars(array $config = array()) {
+    $allowed_options = array(
+        'autoplay',
+        'autoload',
+        'buffer',
+        'buffermessage',
+        'buffercolor',
+        'bufferbgcolor',
+        'buffershowbg',
+        'titlesize',
+        'titlecolor',
+        'margin',
+        'showstop',
+        'showvolume',
+        'showtime',
+        'showplayer',
+        'showloading',
+        'showfullscreen',
+        'showmouse',
+        'loop',
+        'playercolor',
+        'loadingcolor',
+        'bgcolor',
+        'bgcolor1',
+        'bgcolor2',
+        'buttoncolor',
+        'buttonovercolor',
+        'slidercolor1',
+        'slidercolor2',
+        'sliderovercolor',
+        'loadonstop',
+        'onclick',
+        'ondoubleclick',
+        'playertimeout',
+        'videobgcolor',
+        'volume',
+        'shortcut',
+        'playeralpha',
+        'top1',
+        'showiconplay',
+        'iconplaycolor',
+        'iconplaybgcolor',
+        'iconplaybgalpha',
+        'showtitleandstartimage',
+    );
+
+    global $FD;
+
+    $FD->loadConfig('video_player');
+    $config_arr = $FD->configObject('video_player')->getConfigArray();
+
+
+    if ( strlen ( $config_arr['cfg_top1_url'] ) > 0 ) {
+        $config_arr['cfg_top1'] = $config_arr['cfg_top1_url'].'|'.$config_arr['cfg_top1_x'].'|'.$config_arr['cfg_top1_y'];
+    } else {
+        $config_arr['cfg_top1'] = '';
+    }
+
+    // kill color hashes
+    $config_arr = array_map(create_function('$ele', '
+        if (is_hexcolor($ele))
+            $ele = substr($ele, 1);
+        return $ele;
+    '),  $config_arr);
+    
+    // merge config array
+    $the_conf = array();
+    foreach ($config_arr as $conf => $value) {
+        $conf = substr($conf, 4);
+        if (in_array($conf, $allowed_options)) {
+            $the_conf[$conf] = $value;
+        }
+    }
+    $the_conf = array_merge($the_conf, $config);
+    
+    // create output array
+    $the_output = array();
+    foreach ($the_conf as $conf => $value) {
+        $the_output[] = $conf.'='.$value;
+    }
+    return implode('&amp;', $the_output);
+
 }
 ?>
