@@ -70,7 +70,18 @@ module.exports = function(grunt) {
           }
         ]
       }
-    },    
+    },
+    
+    cssjoin: {
+      options: {
+        paths : ["assets/", "vendor/"]
+      },
+      admin: {
+        files: {
+          'dist/css/admin/admin.css': ['dist/css/admin/admin.css']
+        }
+      }
+    },
 
     concat: {
       options: {
@@ -145,7 +156,7 @@ module.exports = function(grunt) {
     watch: {
       sass: {
         files: ['assets/sass/**/*.scss'],
-        tasks: ['sass:dev']
+        tasks: ['sass:dev', 'cssjoin']
       },
       js: {
         files: ['assets/js/**/_*.js'],
@@ -179,8 +190,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-newer');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-bower-task');
+  grunt.loadNpmTasks('grunt-cssjoin');
 
   // Default task.
-  grunt.registerTask('default', ['sass:dev', 'jshint', 'concat', 'copy']);
+  grunt.registerTask('default', ['sass:dev', 'cssjoin', 'jshint', 'concat', 'copy']);
   grunt.registerTask('build', ['bower:install', 'sass:dist', 'jshint', 'concat', 'uglify:dist', 'copy']);
 };
