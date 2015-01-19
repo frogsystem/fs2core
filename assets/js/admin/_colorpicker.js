@@ -26,7 +26,7 @@ $(document).ready(function(){
         var colorPreview = $('<span class="colorpicker-preview"></span>');
         colorPreview.css('background-color', '#' + $(this).val());
         colorPreview.click(function() {
-            $(this).prev('.colorpicker').colpickShow();;
+            $(this).prev('.colorpicker').colpickShow();
         });
         return colorPreview;
     })

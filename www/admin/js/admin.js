@@ -1,4 +1,4 @@
-/*! Frogsystem2 - v2.0.0-alix7 - 2015-01-18
+/*! Frogsystem2 - v2.0.0-alix7 - 2015-01-19
 * https://github.com/mrgrain/Frogsystem-2
 * Copyright (c) 2015 ; Licensed CC BY-SA 3.0 DE */
 /*!
@@ -10348,7 +10348,18 @@ return jQuery;
 
 }));
 
-(function ($) {
+(function (factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['jquery'], factory);
+    } else if (typeof exports === 'object') {
+        // Node/CommonJS
+        factory(require('jquery'));
+    } else {
+        // Browser globals
+        factory(jQuery);
+    }
+}(function ($) {
 	var colpick = function () {
 		var
 			tpl = '<div class="colpick"><div class="colpick_color"><div class="colpick_color_overlay1"><div class="colpick_color_overlay2"><div class="colpick_selector_outer"><div class="colpick_selector_inner"></div></div></div></div></div><div class="colpick_hue"><div class="colpick_hue_arrs"><div class="colpick_hue_larr"></div><div class="colpick_hue_rarr"></div></div></div><div class="colpick_new_color"></div><div class="colpick_current_color"></div><div class="colpick_hex_field"><div class="colpick_field_letter">#</div><input type="text" maxlength="6" size="6" /></div><div class="colpick_rgb_r colpick_field"><div class="colpick_field_letter">R</div><input type="text" maxlength="3" size="3" /><div class="colpick_field_arrs"><div class="colpick_field_uarr"></div><div class="colpick_field_darr"></div></div></div><div class="colpick_rgb_g colpick_field"><div class="colpick_field_letter">G</div><input type="text" maxlength="3" size="3" /><div class="colpick_field_arrs"><div class="colpick_field_uarr"></div><div class="colpick_field_darr"></div></div></div><div class="colpick_rgb_b colpick_field"><div class="colpick_field_letter">B</div><input type="text" maxlength="3" size="3" /><div class="colpick_field_arrs"><div class="colpick_field_uarr"></div><div class="colpick_field_darr"></div></div></div><div class="colpick_hsb_h colpick_field"><div class="colpick_field_letter">H</div><input type="text" maxlength="3" size="3" /><div class="colpick_field_arrs"><div class="colpick_field_uarr"></div><div class="colpick_field_darr"></div></div></div><div class="colpick_hsb_s colpick_field"><div class="colpick_field_letter">S</div><input type="text" maxlength="3" size="3" /><div class="colpick_field_arrs"><div class="colpick_field_uarr"></div><div class="colpick_field_darr"></div></div></div><div class="colpick_hsb_b colpick_field"><div class="colpick_field_letter">B</div><input type="text" maxlength="3" size="3" /><div class="colpick_field_arrs"><div class="colpick_field_uarr"></div><div class="colpick_field_darr"></div></div></div><div class="colpick_submit"></div></div>',
@@ -10360,7 +10371,7 @@ return jQuery;
 				onChange: function () {},
 				onSubmit: function () {},
 				colorScheme: 'light',
-				color: '3289c7',
+				color: 'auto',
 				livePreview: true,
 				flat: false,
 				layout: 'full',
@@ -10599,8 +10610,12 @@ return jQuery;
 				cal.mousedown(function(ev){ev.stopPropagation();})
 			},
 			hide = function (ev) {
-				if (ev.data.cal.data('colpick').onHide.apply(this, [ev.data.cal.get(0)]) != false) {
-					ev.data.cal.hide();
+                var cal = $('#' + $(this).data('colpickId'));
+                if (ev) {
+                    cal = ev.data.cal;
+                }
+				if (cal.data('colpick').onHide.apply(this, [cal.get(0)]) != false) {
+					cal.hide();
 				}
 				$('html').off('mousedown', hide);
 			},
@@ -10653,7 +10668,8 @@ return jQuery;
 			init: function (opt) {
 				opt = $.extend({}, defaults, opt||{});
 				//Set color
-				if (typeof opt.color == 'string') {
+                if (opt.color === 'auto') {
+				} else if (typeof opt.color == 'string') {
 					opt.color = hexToHsb(opt.color);
 				} else if (opt.color.r != undefined && opt.color.g != undefined && opt.color.b != undefined) {
 					opt.color = rgbToHsb(opt.color);
@@ -10668,18 +10684,17 @@ return jQuery;
 					//If the element does not have an ID
 					if (!$(this).data('colpickId')) {
 						var options = $.extend({}, opt);
-						options.origColor = opt.color;
-                        
-                        // Set polyfill
+                        //Color
+                        if (opt.color === 'auto') {
+                            options.color = $(this).val() ? hexToHsb($(this).val()) : {h:0,s:0,b:0};
+                        }
+						options.origColor = options.color;
+
+                        //Polyfill
                         if (typeof opt.polyfill == 'function') {
                             options.polyfill = opt.polyfill(this);
                         }
-                        
-                        //Input field operations
-                        options.input = $(this).is('input');
-                        
-                        //Polyfill fixes
-                        if (options.polyfill && options.input && this.type === "color") {
+                        if (options.polyfill && $(this).is('input') && this.type === "color") {
                             return;
                         }
                         
@@ -10763,7 +10778,7 @@ return jQuery;
 			hidePicker: function() {
 				return this.each( function () {
 					if ($(this).data('colpickId')) {
-						$('#' + $(this).data('colpickId')).hide();
+                        hide.apply(this);
 					}
 				});
 			},
@@ -10884,7 +10899,7 @@ return jQuery;
 			hexToRgb: hexToRgb
 		}
 	});
-})(jQuery);
+}));
 
 //--------------------------------
 // START - Document Ready Functions
@@ -11323,7 +11338,7 @@ $(document).ready(function(){
         var colorPreview = $('<span class="colorpicker-preview"></span>');
         colorPreview.css('background-color', '#' + $(this).val());
         colorPreview.click(function() {
-            $(this).prev('.colorpicker').colpickShow();;
+            $(this).prev('.colorpicker').colpickShow();
         });
         return colorPreview;
     })
