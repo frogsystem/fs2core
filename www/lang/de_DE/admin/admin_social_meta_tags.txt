@@ -1,0 +1,42 @@
+settings_title:                 Einstellungen
+site_name:                      Name der Seite
+site_name_desc:                 Frei lassen um Standardtitel zu verwenden.
+default_image:                  Standard Vorschaubild
+default_image_desc:             URL zu einem Bild, das verwendet wird, falls kein passendes Bild im Inhalt gefunden wurde
+default_image_info:             Kein https:// - min. 200x200 Pixel (besser 280x200 Pixel)
+use_news_cat_prepend:           Newstitel um Kategorie erweitern
+use_news_cat_prepend_desc:      Erweitert den Newstitel um den Name der Kategorie
+news_cat_prepend:               Erweiterung
+news_cat_prepend_desc:          Kategorie + Erweiterung +  Newstitel
+
+googleplus_title:               Google+
+use_google_plus:                Google+ verwenden
+use_google_plus_desc:           Aktiviert Meta Tags für Nutzung in Google+
+google_plus_page:               Google+ Seite
+google_plus_page_desc:          Name der zugehörigen Google+ Seite
+
+twitter_title:                  Twitter Card
+use_twitter_card:               Twitter Card verwenden
+use_twitter_card_desc:          Aktiviert Meta Tags für Nutzung in Twitter
+twitter_site:                   Twitter-Account
+twitter_site_desc:              Name des zugehörigen Twitter-Accounts
+
+facebook_title:                 Facebook Open Graph
+use_open_graph:                 Open Graph verwenden
+use_open_graph_desc:            Aktiviert Meta Tags für Nutzung in Facebook
+fb_admins:                      Facebook Admins
+fb_admins_desc:                 IDs aller Admins der Facebook-Seite<br><a href="http://findmyfacebookid.com/" target="_blank">Find your Facebook ID</a>
+og_section:                     Open Graph Kategorie
+og_section_desc:                Eine übergeordnete Kategorie, z.B. Technology
+
+schemaorg_title:                Schema.org Meta Tags
+use_schema_org:                 Schema.org verwenden
+use_schema_org_desc:            Aktiviert Meta Tags nach Schema.org 
+
+enable_for_title:               Verwendung
+enable_news:                    News 
+enable_news_desc:               Social Meta Tags bei News verwenden
+enable_articles:                Artikel
+enable_articles_desc:           Social Meta Tags bei Artikeln verwenden
+enable_downloads:               Downloads
+enable_downloads_desc:          Social Meta Tags bei Downloads verwenden

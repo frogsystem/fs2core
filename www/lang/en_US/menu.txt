@@ -45,6 +45,7 @@ group_aliases:                  Aliases
 group_search:                   Search
 group_fscodes:                  FSCodes
 group_db:                       Database
+group_socialmedia:              Social Media
 
 # Startseiten
 page_title_start_general:       General
@@ -369,3 +370,7 @@ page_title_article_preview:     Article preview
 # Datenbank
 page_title_table_admin:         Tables
 page_link_table_admin:          Tables
+
+# Social Media
+page_title_social_meta_tags:    Social Meta Tags
+page_link_social_meta_tags:     Meta Tags
