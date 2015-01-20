@@ -71,12 +71,7 @@ $FD->setConfig('social_meta_tags', 'site_name', $FD->config('social_meta_tags', 
         }
         return false;
     }
-    
-    // Get content
-    $content = new stdClass();
-    $content->user = (object) array('google_plus' => false, 'twitter' => false);
-    $content->tag = false;
-    
+
     // news
     if ($FD->config('social_meta_tags', 'enable_news') && 'comments' == $FD->env('goto')) {
         // load data
@@ -92,6 +87,7 @@ $FD->setConfig('social_meta_tags', 'site_name', $FD->config('social_meta_tags', 
 
         // set data
         if (!empty($news_arr)) {
+            $content = new stdClass();
             $content->title = htmlspecialchars($news_arr['news_title']);
             if ($FD->config('social_meta_tags', 'use_news_cat_prepend')) {
                 $content->title = htmlspecialchars($news_arr['cat_name']).$FD->config('social_meta_tags', 'news_cat_prepend').$content->title;
@@ -116,6 +112,7 @@ $FD->setConfig('social_meta_tags', 'site_name', $FD->config('social_meta_tags', 
 
         // set data
         if (!empty($article_arr)) {
+            $content = new stdClass();
             $content->title = htmlspecialchars($article_arr['article_title']);
             $content->summery = summeryFromContent($article_arr['article_text'], 207, '');
             $content->url = get_canonical_url();
@@ -138,6 +135,7 @@ $FD->setConfig('social_meta_tags', 'site_name', $FD->config('social_meta_tags', 
 
         // set data
         if (!empty($downloads)) {
+            $content = new stdClass();
             $content->title = htmlspecialchars($downloads['dl_name']);
             $content->summery = summeryFromContent($downloads['dl_text'], 207, '');
             $content->url = get_canonical_url();
@@ -150,16 +148,19 @@ $FD->setConfig('social_meta_tags', 'site_name', $FD->config('social_meta_tags', 
     }
 }
 
+// quit if no content found
+if (!isset($content) || empty($content)) {
+    return;
+}
+
 //todo
 // better text filter
 //~ $content->tags;
 //~ $content->user->twitter;
 //~ $content->user->google_plus;
+$content->user = (object) array('google_plus' => false, 'twitter' => false);
+$content->tag = false;
 
-// quit if no content found
-if (!isset($content) || empty($content)) {
-    return;
-}
 
 // image stuff
 {
