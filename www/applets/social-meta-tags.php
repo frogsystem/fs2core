@@ -1,11 +1,5 @@
 <?php
 
-/**
- * IMPORTANT!
- *
- * Update your html tag to include the itemscope and itemtype attributes:
- * <html itemscope itemtype="http://schema.org/Article">
- */
 // load config
 $FD->loadConfig('social_meta_tags');
 $FD->setConfig('social_meta_tags', 'default_image', $FD->config('social_meta_tags', 'default_image') ?: false);
