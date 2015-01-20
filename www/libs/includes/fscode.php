@@ -349,7 +349,7 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
             $fscode->addCode ('html', 'usecontent?', 'simple_usecontent_replace', array ('usecontent_param' => 'fscode', 'start_tag' => '', 'end_tag' => ''),
                 'htmlblock', array ('list', 'listitem', 'block', 'inline', 'link'), array ());
         } elseif  (in_array('html', $to_text)) {
-            $fscode->addCode ('html', 'usecontent', 'strip_tags', array (),
+            $fscode->addCode ('html', 'usecontent', 'do_fscode_strip_tags', array (),
                 'htmlblock', array ('list', 'listitem', 'block', 'inline', 'link'), array ());
         }
 
@@ -482,7 +482,7 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
                 'htmlblock', array ('listitem', 'block', 'inline', 'link'), array ());
 
         } elseif (in_array('fscode', $to_text)) {
-            $fscode->addCode ('html', 'usecontent', 'strip_tags', array (),
+            $fscode->addCode ('html', 'usecontent', 'do_fscode_strip_tags', array (),
                 'htmlblock', array ('listitem', 'block', 'inline', 'link'), array ());
         }
     }
@@ -900,4 +900,8 @@ function do_fscode_video ($action, $attributes, $content, $params, $node_object)
     }
 }
 
+// wrapper for strip tags
+function do_fscode_strip_tags ($action, $attributes, $content, $params, &$node_object) {
+    return strip_tags($content);
+}
 ?>

@@ -26,6 +26,17 @@
         </tr>
         <tr>
             <td>
+                <!--LANG::use_external_images--><br>
+                <span class="small"><!--LANG::use_external_images_desc--></span>
+            </td>
+            <td>
+                <!--COMMON::checkbox-->
+                <input class="hidden" type="checkbox" name="use_external_images" value="1" <!--IF::use_external_images-->checked<!--ENDIF-->>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
                 <!--LANG::use_news_cat_prepend--><br>
                 <span class="small"><!--LANG::use_news_cat_prepend_desc--></span>
             </td>
@@ -133,7 +144,8 @@
             </td>
             <td>
                 <!--COMMON::checkbox-->
-                <input class="hidden" type="checkbox" name="use_schema_org" value="1" <!--IF::use_schema_org-->checked<!--ENDIF-->>
+                <input class="hidden middle" type="checkbox" name="use_schema_org" value="1" <!--IF::use_schema_org-->checked<!--ENDIF-->><br>
+                <span class="small"><!--LANG::use_schema_org_info--></span>
             </td>
         </tr>
         

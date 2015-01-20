@@ -4,6 +4,8 @@ site_name_desc:                 Frei lassen um Standardtitel zu verwenden.
 default_image:                  Standard Vorschaubild
 default_image_desc:             URL zu einem Bild, das verwendet wird, falls kein passendes Bild im Inhalt gefunden wurde
 default_image_info:             Kein https:// - min. 200x200 Pixel (besser 280x200 Pixel)
+use_external_images:            Externe Bilder nutzen       
+use_external_images_desc:       Versucht externe Bilder einzubinden.<br>Achtung: Kann Ladezeiten stark verlangsamen.
 use_news_cat_prepend:           Newstitel um Kategorie erweitern
 use_news_cat_prepend_desc:      Erweitert den Newstitel um den Name der Kategorie
 news_cat_prepend:               Erweiterung
@@ -11,19 +13,19 @@ news_cat_prepend_desc:          Kategorie + Erweiterung +  Newstitel
 
 googleplus_title:               Google+
 use_google_plus:                Google+ verwenden
-use_google_plus_desc:           Aktiviert Meta Tags für Nutzung in Google+
+use_google_plus_desc:           Aktiviert Meta Tags für Nutzung in Google+<br><a href="http://www.google.com/webmasters/tools/richsnippets" target="_blank">Debugger</a>
 google_plus_page:               Google+ Seite
 google_plus_page_desc:          Name der zugehörigen Google+ Seite
 
 twitter_title:                  Twitter Card
 use_twitter_card:               Twitter Card verwenden
-use_twitter_card_desc:          Aktiviert Meta Tags für Nutzung in Twitter
+use_twitter_card_desc:          Aktiviert Meta Tags für Nutzung in Twitter<br><a href="https://dev.twitter.com/docs/cards/validation/validator" target="_blank">Debugger</a>
 twitter_site:                   Twitter-Account
 twitter_site_desc:              Name des zugehörigen Twitter-Accounts
 
 facebook_title:                 Facebook Open Graph
 use_open_graph:                 Open Graph verwenden
-use_open_graph_desc:            Aktiviert Meta Tags für Nutzung in Facebook
+use_open_graph_desc:            Aktiviert Meta Tags für Nutzung in Facebook<br><a href="https://developers.facebook.com/tools/debug" target="_blank">Debugger</a>
 fb_admins:                      Facebook Admins
 fb_admins_desc:                 IDs aller Admins der Facebook-Seite<br><a href="http://findmyfacebookid.com/" target="_blank">Find your Facebook ID</a>
 og_section:                     Open Graph Kategorie
@@ -31,7 +33,8 @@ og_section_desc:                Eine übergeordnete Kategorie, z.B. Technology
 
 schemaorg_title:                Schema.org Meta Tags
 use_schema_org:                 Schema.org verwenden
-use_schema_org_desc:            Aktiviert Meta Tags nach Schema.org 
+use_schema_org_desc:            Aktiviert Meta Tags nach Schema.org
+use_schema_org_info:            Füge die Attribute 'itemscope' und 'itemtype' in den html-Tag ein: &lt;html itemscope itemtype="http://schema.org/Article"&gt;
 
 enable_for_title:               Verwendung
 enable_news:                    News 

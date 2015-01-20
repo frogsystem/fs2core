@@ -1,49 +1,20 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
-#TODO: fileaccess
-
 ###################
 ## Page Settings ##
 ###################
-$used_cols = array('use_google_plus', 'google_plus_page', 'use_schema_org', 'use_twitter_card', 'twitter_site', 'use_open_graph', 'fb_admins', 'og_section', 'site_name', 'default_image', 'use_news_cat_prepend', 'news_cat_prepend', 'enable_news', 'enable_articles', 'enable_downloads');
+$used_cols = array('use_google_plus', 'google_plus_page', 'use_schema_org', 'use_twitter_card', 'use_external_images', 'twitter_site', 'use_open_graph', 'fb_admins', 'og_section', 'site_name', 'default_image', 'use_news_cat_prepend', 'news_cat_prepend', 'enable_news', 'enable_articles', 'enable_downloads');
 
-
-
-    //~ // meta tag types
-    //~ 'use_google_plus' => true,
-    //~ 'google_plus_page' => '', // with +
-    //~ 
-    //~ 'use_twitter_card' => true,
-    //~ 'twitter_site' => '', // with @
-    //~ 
-    //~ 'use_open_graph' => true,
-    //~ 'fb_admins' => '', // CSV => http://findmyfacebookid.com/
-    //~ 'og_section' => '', // A high-level section name. E.g. Technology
-    //~ 
-    //~ 'use_schema_org' => true,
-//~ 
-//~ 
-//~ 
-    //~ // minimal info, this is a MUST
-    //~ 'site_name' => '',
-    //~ 'default_image' => '', // min. 200x200px, better 280x200px, no https!
-    //~ 'news_cat_prepend' => ': ', // false or delimiter string
-//~ 
-//~ 
-    //~ // enable use for content types
-    //~ 'enable_news' => true,
-    //~ 'enable_articles' => true,
-    //~ 'enable_downloads' => true,
 
 //////////////////////////////
 //// update configuration ////
 //////////////////////////////
 if (
     isset($_POST['sended'])
-    && (!$_POST['use_google_plus'] || !empty($_POST['google_plus_page']))
-    && (!$_POST['use_twitter_card'] || !empty($_POST['twitter_site']))
-    && (!$_POST['use_open_graph'] || (!empty($_POST['fb_admins']) && !empty($_POST['og_section'])))
-    && (!$_POST['use_news_cat_prepend'] || !empty($_POST['news_cat_prepend']))
+    && (!isset($_POST['use_google_plus']) || !empty($_POST['google_plus_page']))
+    && (!isset($_POST['use_twitter_card']) || !empty($_POST['twitter_site']))
+    && (!isset($_POST['use_open_graph']) || (!empty($_POST['fb_admins']) && !empty($_POST['og_section'])))
+    && (!isset($_POST['use_news_cat_prepend']) || !empty($_POST['news_cat_prepend']))
    )
 {
     // prepare data
@@ -55,6 +26,7 @@ if (
     settype($data['use_open_graph'], 'boolean');
     settype($data['use_schema_org'], 'boolean');
     settype($data['use_news_cat_prepend'], 'boolean');
+    settype($data['use_external_images'], 'boolean');
     settype($data['enable_news'], 'boolean');
     settype($data['enable_articles'], 'boolean');
     settype($data['enable_downloads'], 'boolean');
@@ -108,6 +80,7 @@ if ( TRUE )
     $adminpage->addCond('use_twitter_card', $_POST['use_twitter_card'] === 1);
     $adminpage->addCond('use_open_graph', $_POST['use_open_graph'] === 1);
     $adminpage->addCond('use_schema_org', $_POST['use_schema_org'] === 1);
+    $adminpage->addCond('use_external_images', $_POST['use_external_images'] === 1);
     $adminpage->addCond('enable_news', $_POST['enable_news'] === 1);
     $adminpage->addCond('enable_articles', $_POST['enable_articles'] === 1);
     $adminpage->addCond('enable_downloads', $_POST['enable_downloads'] === 1);
