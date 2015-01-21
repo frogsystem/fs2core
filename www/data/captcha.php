@@ -149,4 +149,5 @@ if ( $config_arr['captcha_bg_transparent'] == 1 ) {
 header('Content-type: image/gif');
 imagegif ( $img );
 imagedestroy( $img );
+exit;
 ?>
