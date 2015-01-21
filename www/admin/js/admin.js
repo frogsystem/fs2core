@@ -1,4 +1,4 @@
-/*! Frogsystem2 - v2.0.0-alix7 - 2015-01-19
+/*! Frogsystem2 - v2.0.0-alix7 - 2015-01-21
 * https://github.com/mrgrain/Frogsystem-2
 * Copyright (c) 2015 ; Licensed CC BY-SA 3.0 DE */
 /*!
@@ -11643,28 +11643,28 @@ function resetOld (resetColor, last, lastBox, object) {
 //////////////////////////
 
 // Toggle textWrapping
-function toggelTextWrapping ( theButton, editorId ) {
-    if ($(theButton).hasClass("html-editor-button-active")) {
-        $(theButton).removeClass("html-editor-button-active");
-        var newBool = false;
-    } else {
-        $(theButton).addClass("html-editor-button-active");
-        var newBool = true;
-    }
-    eval ( ""+editorId+".setTextWrapping(newBool);" );
+function toggleTextWrapping ( theButton, cm ) {
+  cm.setOption("lineWrapping", !cm.getOption("lineWrapping"));
+  $(theButton).toggleClass('html-editor-button-active');
 }
 
 // Toggle lineNumbers
-function toggelLineNumbers ( theButton, editorId ) {
-    if ($(theButton).hasClass("html-editor-button-active")) {
-        $(theButton).removeClass("html-editor-button-active");
-        var newBool = false;
-    } else {
-        $(theButton).addClass("html-editor-button-active");
-        var newBool = true;
-    }
-    eval ( ""+editorId+".setLineNumbers(newBool);" );
+function toggleLineNumbers ( theButton, cm ) {
+  cm.setOption("lineNumbers", !cm.getOption("lineNumbers"));
+  $(theButton).toggleClass('html-editor-button-active');
 }
+
+// Toggle fullscreen
+function toggleFullscreen ( theButton, cm ) {
+  cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+  //~ $(theButton).toggleClass('html-editor-button-active');
+}
+
+//Insert Tag into Editor
+function insert_editor_tag( cm, insertText ) {
+    cm.replaceSelection(insertText);
+}
+
 
 // Toggle Original
 function toggelOriginal ( editorId ) {
@@ -11684,85 +11684,44 @@ function toggelOriginal ( editorId ) {
     }
 }
 
-
-//Open Editor-PopUp
-var EditorWindow;
-function open_editor(what) {
-    $("#section_select").val(what);
-
-    if (screen.availWidth >= 1000) {
-        var editorWidth = 1000;
-    } else {
-        var editorWidth = screen.availWidth;
-    }
-
-    if (screen.availHeight >= 800) {
-        var editorHeight = 800;
-    } else {
-        var editorHeight = screen.availHeight;
-    }
-
-    x = screen.width/2 - editorWidth/2;
-    y = screen.height/2 - editorHeight/2;
-
-    EditorWindow = window.open("admin_frogpad.php?height="+editorHeight,"editor","width="+editorWidth+",height="+editorHeight+",left="+x+",top="+y+",screenX="+x+",screenY="+y+"");
-}
-//Close Editor-PopUp
-function close_editor() {
-    EditorWindow.close();
-}
-
 //Get Editor Object
 function new_editor ( textareaId, editorHeight, readOnlyState, syntaxHighlight )
 {
+  var textarea = document.getElementById(textareaId);
+  
   switch (syntaxHighlight) {
     case 3:
-        var parser = ["tokenizejavascript.js", "parsejavascript.js"];
-        var css = "../resources/codemirror/css/jscolors.css";
+        var mode = "text/javascript";
         break;
     case 2:
-        var parser = "parsecss.js";
-        var css = "../resources/codemirror/css/csscolors.css";
+        var mode = "text/css";
         break;
     default:
-        var parser = ["parsexml.js", "parsecss.js", "tokenizejavascript.js", "parsejavascript.js", "parsehtmlmixed.js"];
-        var css = ["../resources/codemirror/css/xmlcolors.css", "../resources/codemirror/css/jscolors.css", "../resources/codemirror/css/csscolors.css"];
+        var mode = "text/html";
         break;
   }
-
-  var textarea = document.getElementById(textareaId);
-  var editor = CodeMirror.fromTextArea(textareaId, {
-    parserfile: parser,
-    stylesheet: css,
-    path: "../resources/codemirror/js/",
-    content: textarea.value,
+  
+  
+  var editor = CodeMirror.fromTextArea(textarea, {
+    mode:  mode,
     lineNumbers: true,
-    //textWrapping: false,
-    continuousScanning: 500,
-    tabMode: "shift",
-    height: editorHeight+"px",
-    iframeClass:"CodeMirror-iframe",
-    readOnly: readOnlyState
+    readOnly: readOnlyState,
+    extraKeys: {
+      "F11": function(cm) {
+        cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+      },
+      "Esc": function(cm) {
+        if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+      }
+    }
+    
+    // DEPRECATED
+    //~ tabMode: "shift",
   });
-  //editor.setLineNumbers(true);
+  editor.setSize(null, editorHeight);
+  
   return editor;
 }
-//Switch to Inline-Editor
-function switch2inline_editor( editorId ) {
-    close_editor();
-    eval ( "$(\"#"+editorId+"_content\").css(\"visibility\", \"visible\")" );
-    eval ( "$(\"#"+editorId+"_editor-bar\").css(\"visibility\", \"visible\")" );
-    eval ( "$(\"#"+editorId+"_inedit\").hide()" );
-}
-
-//Insert Tag into Editor
-function insert_editor_tag( editorObject, insertText ) {
-    editorObject.replaceSelection(insertText);
-}
-
-
-
-
 
 /////////////////////////
 //// Date Operations ////

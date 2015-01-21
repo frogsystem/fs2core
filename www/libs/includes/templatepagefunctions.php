@@ -330,10 +330,10 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
 
         // Editor Form
         $return_template .= '
-                    <script src="../resources/codemirror/js/codemirror.js" type="text/javascript"></script>
+                    <script src="?js=codemirror.js" type="text/javascript"></script>
                     <input type="hidden" id="section_select" value="">
-                    <table class="content_width" border="0" cellpadding="4" cellspacing="0">
-                        <tr class="line"><td colspan="2"><h3>'.$FD->text('admin', 'edit_templates').'</h3><hr></td></tr>
+                    <table class="content_width" border="0" cellpadding="4" cellspacing="0" style="table-layout:fixed;">
+                        <tr class="line"><td><h3>'.$FD->text('admin', 'edit_templates').'</h3><hr></td></tr>
         ';
 
         // Special MANYFILES-Things
@@ -710,13 +710,16 @@ function create_templateeditor ( $editor_arr, $HIGHLIGHTER, $FILE, $MANYFILES )
                                         </div>
                                         '.$original['row'].'
                                         <div class="html-editor-row">
-                                            <div class="html-editor-button html-editor-button-big" onClick="open_editor(\''.$editor_arr['name'].'\')" title="In Editor-Fenster &ouml;ffnen">
-                                                <img src="?images=null.gif" alt="In Editor-Fenster &ouml;ffnen" border="0">
+                                            <div class="html-editor-button html-editor-button-big" onClick="toggleFullscreen(this,editor_'.$editor_arr['name'].')" title="Vollbild">
+                                                <img src="?images=null.gif" alt="Vollbild" border="0">
                                             </div>
                                             '.$original['button'].'
                                             <div class="html-editor-line"></div>
-                                            <div class="html-editor-button html-editor-button-active html-editor-button-line-numbers" onClick="toggelLineNumbers(this,\'editor_'.$editor_arr['name'].'\')" title="Zeilen-Nummerierung">
+                                            <div class="html-editor-button html-editor-button-active html-editor-button-line-numbers" onClick="toggleLineNumbers(this,editor_'.$editor_arr['name'].')" title="Zeilen-Nummerierung">
                                                 <img src="?images=null.gif" alt="Zeilen-Nummerierung" border="0">
+                                            </div>
+                                            <div class="html-editor-button html-editor-button-textwrap" onClick="toggleTextWrapping(this,editor_'.$editor_arr['name'].')" title="Zeilenumbruch">
+                                                <img src="?images=null.gif" alt="Zeilenumbruch" border="0">
                                             </div>
                                             '.$help_template.'
                                             '.$dropdowns['global_vars'].'

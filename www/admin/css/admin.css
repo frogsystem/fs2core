@@ -1274,21 +1274,24 @@ textarea.no-js-html-editor {
 /**************************************************/
 /* special codemirror styles */
 /**************************************************/
+/*
 .CodeMirror-line-numbers {
-  width: 2.2em;
-  color: #AAAAAA;
-  background-color: #EEEEEE;
-  text-align: right;
-  padding-right: .3em;
-  font-size: 10pt;
-  font-family: monospace;
-  padding-top: .4em;
-  font-weight: bold;
-  line-height: normal; }
+    width:2.2em;
+    color:#AAAAAA;
+    background-color:#EEEEEE;
+    text-align:right;
+    padding-right:.3em;
+    font-size:10pt;
+    font-family:monospace;
+    padding-top:.4em;
+    font-weight:bold;
+    line-height:normal;
+}
 
 .CodeMirror-iframe {
-  z-index: 0; }
-
+    z-index:0;
+}
+*/
 /**************************************************/
 /* html-editor styles */
 /**************************************************/
