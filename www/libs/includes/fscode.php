@@ -545,9 +545,9 @@ function do_fscode_url ($action, $attributes, $content, $params, $node_object) {
 
     // create html/text
     if (!isset ($attributes['default'])) {
-        $url = $text = htmlspecialchars ($content);
+        $url = $text = killhtml ($content);
     } else {
-        $url = htmlspecialchars ($attributes['default']);
+        $url = killhtml ($attributes['default']);
         $text = $content;
     }
 
@@ -645,9 +645,9 @@ function do_fscode_email ($action, $attributes, $content, $params, $node_object)
 
     // create html/text
     if (!isset ($attributes['default'])) {
-        $url = $text = htmlspecialchars ($content);
+        $url = $text = killhtml ($content);
     } else {
-        $url = htmlspecialchars ($attributes['default']);
+        $url = killhtml ($attributes['default']);
         $text = $content;
     }
 
@@ -710,7 +710,7 @@ function do_fscode_img ($action, $attributes, $content, $params, $node_object) {
     }
 
     // Get alt and title text
-    $content_arr = array_map ( 'htmlspecialchars', explode ( '|', $content, 3 ) );
+    $content_arr = killhtml(explode ( '|', $content, 3 ) );
 
     // Always provide alt-text
     if (count($content_arr) == 1) {
@@ -739,7 +739,7 @@ function do_fscode_img ($action, $attributes, $content, $params, $node_object) {
         if (!isset ($attributes['default']))
             return '<img src="'.$content_arr[0].'" alt="'.$content_arr[1].'"'.$title_full.'>';
         else
-            return '<img src="'.$content_arr[0].'" align="'.htmlspecialchars($attributes['default']).'" alt="'.$content_arr[1].'"'.$title_full.'>';
+            return '<img src="'.$content_arr[0].'" align="'.killhtml($attributes['default']).'" alt="'.$content_arr[1].'"'.$title_full.'>';
     }
 }
 

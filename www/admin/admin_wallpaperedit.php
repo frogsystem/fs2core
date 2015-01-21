@@ -416,7 +416,7 @@ echo '
            }
            echo'</td>';
            $index2 = $FD->db()->conn()->query('SELECT cat_name FROM '.$FD->env('DB_PREFIX')."screen_cat WHERE cat_id = $wallpaper_arr[cat_id]");
-           $db_cat_name = htmlspecialchars($index2->fetchColumn());
+           $db_cat_name = killhtml($index2->fetchColumn());
            echo'
            <td class="configthin">
                '.$db_cat_name.'

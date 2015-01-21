@@ -407,7 +407,7 @@
         if ($i<$spam_count)
         {
           echo '<tr>
-        <td class="configthin">'.htmlspecialchars($spam_words[$i]['token']).'</td>
+        <td class="configthin">'.killhtml($spam_words[$i]['token']).'</td>
         <td class="configthin" style="text-align:center;">'.$spam_words[$i]['spam'].'</td>';
         }
         else
@@ -418,7 +418,7 @@
         //Ham
         if ($i<$ham_count)
         {
-          echo '<td class="configthin">'.htmlspecialchars($ham_words[$i]['token']).'</td>
+          echo '<td class="configthin">'.killhtml($ham_words[$i]['token']).'</td>
         <td class="configthin" style="text-align:center;">'.$ham_words[$i]['ham'].'</td>
       </tr>';
         }
@@ -607,7 +607,7 @@ echo '
                <input type="hidden" name="go" value="news_edit">
                <input type="hidden" name="comment_id[]" value="'.$comment_arr['comment_id'].'">
                <input type="hidden" name="comment_action" value="edit">
-               <input class="button" type="submit" value="'.htmlspecialchars($FD->text('admin', 'edit')).'">
+               <input class="button" type="submit" value="'.killhtml($FD->text('admin', 'edit')).'">
              </form>
 
              <form action="" method="post">
@@ -617,7 +617,7 @@ echo '
                <input type="hidden" name="go" value="news_edit">
                <input type="hidden" name="comment_id[]" value="'.$comment_arr['comment_id'].'">
                <input type="hidden" name="comment_action" value="delete">
-               <input class="button" type="submit" value="'.htmlspecialchars($FD->text('admin', 'delete')).'">
+               <input class="button" type="submit" value="'.killhtml($FD->text('admin', 'delete')).'">
              </form>
            </td>
          </tr>

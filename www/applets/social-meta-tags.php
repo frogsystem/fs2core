@@ -29,7 +29,7 @@ $FD->setConfig('social_meta_tags', 'site_name', $FD->config('social_meta_tags', 
 
         $text = preg_replace("/[\n\r]/", '', $text);
 
-        $text = StringCutter::truncate(htmlspecialchars($text), $length, $extension, array('word'=>true));  //less than 200 characters
+        $text = StringCutter::truncate(killhtml($text), $length, $extension, array('word'=>true));  //less than 200 characters
         return $text;
     }
 
@@ -88,9 +88,9 @@ $FD->setConfig('social_meta_tags', 'site_name', $FD->config('social_meta_tags', 
         // set data
         if (!empty($news_arr)) {
             $content = new stdClass();
-            $content->title = htmlspecialchars($news_arr['news_title']);
+            $content->title = killhtml($news_arr['news_title']);
             if ($FD->config('social_meta_tags', 'use_news_cat_prepend')) {
-                $content->title = htmlspecialchars($news_arr['cat_name']).$FD->config('social_meta_tags', 'news_cat_prepend').$content->title;
+                $content->title = killhtml($news_arr['cat_name']).$FD->config('social_meta_tags', 'news_cat_prepend').$content->title;
             }
             $content->summery = summeryFromContent($news_arr['news_text'], 207, '');
             $content->url = get_canonical_url();
@@ -113,7 +113,7 @@ $FD->setConfig('social_meta_tags', 'site_name', $FD->config('social_meta_tags', 
         // set data
         if (!empty($article_arr)) {
             $content = new stdClass();
-            $content->title = htmlspecialchars($article_arr['article_title']);
+            $content->title = killhtml($article_arr['article_title']);
             $content->summery = summeryFromContent($article_arr['article_text'], 207, '');
             $content->url = get_canonical_url();
             $content->date = date('c', $article_arr['article_date']?:$article_arr['article_search_update']);
@@ -136,7 +136,7 @@ $FD->setConfig('social_meta_tags', 'site_name', $FD->config('social_meta_tags', 
         // set data
         if (!empty($downloads)) {
             $content = new stdClass();
-            $content->title = htmlspecialchars($downloads['dl_name']);
+            $content->title = killhtml($downloads['dl_name']);
             $content->summery = summeryFromContent($downloads['dl_text'], 207, '');
             $content->url = get_canonical_url();
             $content->date = date('c', $downloads['dl_date']?:$downloads['dl_search_update']);

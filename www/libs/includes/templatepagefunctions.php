@@ -299,7 +299,7 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
         // Get Data from Post or tpl-File
         if ( templatepage_postcheck ( $TEMPLATE_ARR ) && isset( $_POST['reload'] ) ) {
             foreach ($TEMPLATE_ARR as $template_key => $template_infos) {
-                $TEMPLATE_ARR[$template_key]['template'] = htmlspecialchars ( $_POST[$template_infos['name']] );
+                $TEMPLATE_ARR[$template_key]['template'] = killhtml ( $_POST[$template_infos['name']] );
             }
         } elseif ( $MANYFILES === TRUE ) {
             foreach ($TEMPLATE_ARR as $template_key => $template_infos) {
@@ -308,7 +308,7 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
                         $TEMPLATE_ARR[$template_key]['template'] = '';
                     } else {
                         $ACCESS = new fileaccess ();
-                        $TEMPLATE_ARR[$template_key]['template'] = htmlspecialchars ( $ACCESS->getFileData ( $file_path ) );
+                        $TEMPLATE_ARR[$template_key]['template'] = killhtml ( $ACCESS->getFileData ( $file_path ) );
                     }
                 }
             }
@@ -320,7 +320,7 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
                     $template_data->setFile($TEMPLATE_FILE);
                     $template_data->load($template_infos['name']);
                     $template_data = $template_data->display();
-                    $TEMPLATE_ARR[$template_key]['template'] = htmlspecialchars ( $template_data );
+                    $TEMPLATE_ARR[$template_key]['template'] = killhtml ( $template_data );
                 }
             }
         }
@@ -615,7 +615,7 @@ function get_original_array ( $EDITOR_NAME, $FILE, $ROWS, $COLS )
         $original['template']->setStyle('default');
         $original['template']->setFile($FILE);
         $original['template']->load($EDITOR_NAME);
-        $original['template'] = htmlspecialchars ( $original['template']->display() );
+        $original['template'] = killhtml ( $original['template']->display() );
 
         $original['template'] = '
                                     <div id="'.$EDITOR_NAME.'_original" style="background-color:#ffffff; border: 1px solid #999999; width:100%; display:none;">

@@ -110,7 +110,7 @@ else if (isset($_POST['commentid']))
                                     <font class="small">Diese Person hat den Kommentar geschrieben</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    '.htmlspecialchars($comment_arr['comment_poster']).'
+                                    '.killhtml($comment_arr['comment_poster']).'
                                 </td>
                             </tr>
                             <tr>
@@ -119,7 +119,7 @@ else if (isset($_POST['commentid']))
                                     <font class="small">Titel des Kommentars</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="33" name="title" value="'.htmlspecialchars($comment_arr['comment_title']).'" maxlength="100">
+                                    <input class="text" size="33" name="title" value="'.killhtml($comment_arr['comment_title']).'" maxlength="100">
                                 </td>
                             </tr>
                             <tr>
@@ -128,7 +128,7 @@ else if (isset($_POST['commentid']))
                                     <font class="small">HTML ist '.$config_arr['html_code'].'. FS-Code ist '.$config_arr['fs_code'].'.</font>
                                 </td>
                                 <td valign="top">
-                                    <textarea rows="8" cols="60" name="text">'.htmlspecialchars($comment_arr['comment_text']).'</textarea>
+                                    <textarea rows="8" cols="60" name="text">'.killhtml($comment_arr['comment_text']).'</textarea>
                                 </td>
                             </tr>
                             <tr>

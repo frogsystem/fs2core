@@ -92,8 +92,8 @@ function get_player ( $MULTI, $WIDTH = true, $HEIGHT = true, $MODIFIER = false )
         $video_arr['dl_id'] = 0;
     }
 
-    $video_arr['video_x'] = htmlspecialchars ( $video_arr['video_x'] );
-    $video_arr['video_title'] = htmlspecialchars ( $video_arr['video_title'] );
+    $video_arr['video_x'] = killhtml ( $video_arr['video_x'] );
+    $video_arr['video_title'] = killhtml ( $video_arr['video_title'] );
 
     // return text output?
     if ($MODIFIER == 'text') {

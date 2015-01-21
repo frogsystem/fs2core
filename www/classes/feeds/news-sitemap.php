@@ -82,7 +82,7 @@ class NewsSitemap extends NewsFeed {
         <news:language>'.$this->language.'</news:language>
       </news:publication>
       <news:publication_date>'.date("c", $item['news_date']).'</news:publication_date>
-      <news:title>'.utf8_encode(htmlspecialchars($item['news_title'])).'</news:title>
+      <news:title>'.utf8_encode(killhtml($item['news_title'])).'</news:title>
       <news:keywords>Entertainment, Video Games</news:keywords>
     </news:news>
   </url>';

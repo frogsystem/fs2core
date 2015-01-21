@@ -195,7 +195,7 @@ if ( isset ( $_POST['user_group_id'] ) && isset($_POST['group_action']) )
         $group_arr['user_group_name'] = killhtml ( $group_arr['user_group_name'] );
         $group_arr['user_group_description'] = killhtml ( $group_arr['user_group_description'] );
         $group_arr['user_group_title'] = killhtml ( $group_arr['user_group_title'] );
-        $group_arr['user_group_color'] = htmlspecialchars ( $group_arr['user_group_color'] );
+        $group_arr['user_group_color'] = killhtml ( $group_arr['user_group_color'] );
         settype ( $group_arr['user_group_highlight'], 'integer' );
 
         //Create Color-Code
