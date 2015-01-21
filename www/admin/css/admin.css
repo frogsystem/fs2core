@@ -880,7 +880,9 @@ body {
   min-height: 100%;
   height: auto !important;
   height: 100%;
-  z-index: 1; }
+  /*
+      z-index:1;
+  */ }
 
 #bg_padding {
   position: relative;
@@ -1271,27 +1273,25 @@ textarea.no-js-html-editor {
 .html-editor-button-original {
   background-image: url(?html-editor=doc-search.gif); }
 
+.html-editor-button-undo {
+  background-image: url(?html-editor=action-undo.gif); }
+
+.html-editor-button-redo {
+  background-image: url(?html-editor=action-redo.gif); }
+
 /**************************************************/
 /* special codemirror styles */
 /**************************************************/
-/*
-.CodeMirror-line-numbers {
-    width:2.2em;
-    color:#AAAAAA;
-    background-color:#EEEEEE;
-    text-align:right;
-    padding-right:.3em;
-    font-size:10pt;
-    font-family:monospace;
-    padding-top:.4em;
-    font-weight:bold;
-    line-height:normal;
-}
+.CodeMirror.html-editor-original::after {
+  content: "Original Template";
+  position: absolute;
+  bottom: 20px;
+  right: 30px;
+  color: rgba(255, 170, 170, 0.5);
+  font-family: Arial,Helvetica,sans-serif;
+  font-size: 30pt;
+  font-weight: bold; }
 
-.CodeMirror-iframe {
-    z-index:0;
-}
-*/
 /**************************************************/
 /* html-editor styles */
 /**************************************************/
