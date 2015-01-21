@@ -141,4 +141,5 @@ new_style_selected:             Neuer Style ausgew&auml;hlt
 style_select_reload:            Die Styleauswahl wird erst nach dem Neuladen der Seite aktiv.
 style_select_cookie_hint:       <b>Hinweis:</b> Damit diese Styleauswahl korrekt funktioniert, muss der Browser so eingestellt sein, dass er Cookies von dieser Seite akzeptiert.
 style_select_clear:             Styleauswahl gel&ouml;scht
+style_selection_not_allowed:    Die Auswahl eines Styles ist dir nicht erlaubt. 
 none:                           keine

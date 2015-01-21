@@ -115,9 +115,6 @@ class Frogsystem2 {
         if (!$FD->configExists('main', 'count_referers') || $FD->cfg('main', 'count_referers')==1) {
           save_referer();
         }
-        if (isset($_COOKIE['style']) && !isset($_GET['style'])) {
-          $_GET['style'] = $_COOKIE['style'];
-        }
         set_style();
         $APP = load_applets();
 

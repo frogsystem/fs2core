@@ -41,7 +41,7 @@ style_title:                Active Style
 style_desc:                 Style that is used for design of the main page.
 
 allow_other_styles:         Allow other styles
-allow_other_styles_desc:    Allows to display the site with other styles.<br> ($URL([style=xyz 1]))
+allow_other_styles_desc:    Allows other styles via URL ($URL(news[style=xyz 1])) and the style selector.
 
 show_favicon:               Use favicon
 show_favicon_desc:          Includes the favicon.<br>($VAR(style_icons)favicon.ico)

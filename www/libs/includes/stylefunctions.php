@@ -340,6 +340,10 @@ function set_style ()
 {
     global $FD;
 
+    if (isset($_COOKIE['style']) && !isset($_GET['style'])) {
+      $_GET['style'] = $_COOKIE['style'];
+    }
+
     if ( isset ( $_GET['style'] ) && $FD->cfg('allow_other_designs') == 1 ) {
         $index = $FD->db()->conn()->prepare ( '
                         SELECT `style_id`, `style_tag`
