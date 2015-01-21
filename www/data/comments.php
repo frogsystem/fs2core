@@ -331,7 +331,7 @@ if ( $SHOW == TRUE ) {
     }
 
     //Textarea
-    $template_textarea = create_textarea('text', '', $editor_config['textarea_width'], $editor_config['textarea_height'], 'text', false, $editor_config['smilies'],$editor_config['bold'],$editor_config['italic'],$editor_config['underline'],$editor_config['strike'],$editor_config['center'],$editor_config['font'],$editor_config['color'],$editor_config['size'],$editor_config['img'],$editor_config['cimg'],$editor_config['url'],$editor_config['home'],$editor_config['email'],$editor_config['code'],$editor_config['quote'],$editor_config['nofscode']);
+    $template_textarea = create_textarea('text', '', $editor_config['textarea_width'], $editor_config['textarea_height'], 'text', false, $editor_config['smilies'],$editor_config['bold'],$editor_config['italic'],$editor_config['underline'],$editor_config['strike'],$editor_config['center'],$editor_config['font'],$editor_config['color'],$editor_config['size'],$editor_config['img'],$editor_config['cimg'],$editor_config['url'],$editor_config['home'],$editor_config['email'],$editor_config['code'],$editor_config['quote'],$editor_config['noparse']);
 
     // Get Comment Form Template
     $template = new template();

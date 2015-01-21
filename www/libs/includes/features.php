@@ -57,7 +57,7 @@ function check_captcha ( $SOLUTION, $ACTIVATION )
         return base64_encode($result);
     }
 
-    $sicherheits_eingabe = encrypt_captcha ( $SOLUTION, $FD->config('spam') );
+    $sicherheits_eingabe = encrypt_captcha ( $SOLUTION, $FD->env('SPAM_KEY') );
     $sicherheits_eingabe = str_replace ('=', '', $sicherheits_eingabe );
 
     if ( $ACTIVATION === 0 ) {

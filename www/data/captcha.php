@@ -102,7 +102,7 @@ function encrypt ( $STRING, $KEY ) {
     }
     return base64_encode ( $result );
 }
-$_SESSION['captcha'] = @encrypt ( $result, $FD->env('spam') ); //Key
+$_SESSION['captcha'] = @encrypt ( $result, $FD->env('SPAM_KEY') ); //Key
 $_SESSION['captcha'] = str_replace ( '=', '', $_SESSION['captcha'] );
 
 //Create String
