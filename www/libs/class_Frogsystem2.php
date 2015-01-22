@@ -20,7 +20,7 @@ class Frogsystem2 {
              $root = realpath(__DIR__.'/../');
         }
         $this->root = $root;
-        @define('FS2SOURCE', realpath(__DIR__.'/../'));
+        @define('FS2SOURCE', $this->root);
 
         // include functions and Exceptions
         require_once(FS2SOURCE . '/classes/exceptions.php');
