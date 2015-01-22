@@ -75,15 +75,15 @@ replace_img:                                       Nur auswählen, wenn das bishe
 
 
 #icons
-error:                                             <img src="icons/error.jpg" alt="" align="absmiddle">
-ok:                                                <img src="icons/ok.jpg" alt="" align="absmiddle">
-arrow:                                             <img src="icons/pointer.gif" alt="->" align="absmiddle">
-save_small:                                        <img src="icons/save_small.gif" alt="" align="top">
-save_ok:                                           <img src="icons/save_ok.jpg" alt="" align="absmiddle">
-save_add:                                          <img src="icons/save_add.jpg" alt="" align="absmiddle">
-save_error:                                        <img src="icons/save_error.jpg" alt="" align="absmiddle">
-trash_ok:                                          <img src="icons/trash_ok.jpg" alt="" align="absmiddle">
-trash_error:                                       <img src="icons/trash_error.jpg" alt="" align="absmiddle">
+error:                                             <img src="?icons=error.jpg" alt="" align="absmiddle">
+ok:                                                <img src="?icons=ok.jpg" alt="" align="absmiddle">
+arrow:                                             <img src="?icons=pointer.gif" alt="->" align="absmiddle">
+save_small:                                        <img src="?icons=save_small.gif" alt="" align="top">
+save_ok:                                           <img src="?icons=save_ok.jpg" alt="" align="absmiddle">
+save_add:                                          <img src="?icons=save_add.jpg" alt="" align="absmiddle">
+save_error:                                        <img src="?icons=save_error.jpg" alt="" align="absmiddle">
+trash_ok:                                          <img src="?icons=trash_ok.jpg" alt="" align="absmiddle">
+trash_error:                                       <img src="?icons=trash_error.jpg" alt="" align="absmiddle">
 
 
 #menu

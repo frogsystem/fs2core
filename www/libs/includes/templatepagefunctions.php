@@ -519,7 +519,7 @@ function get_dropdowns ( $EDITOR_NAME )
     $global_vars = array ( 'url', 'style_url', 'style_images', 'style_icons', 'page_title', 'page_dyn_title', 'date', 'time', 'date_time' );
     foreach ( $global_vars as $var ) {
         $the_var = '$VAR('.$var.')';
-        $global_vars_array[] = '<tr class="pointer tag_click_class" title="'.sprintf($FD->text('admin', 'format_insert'), $the_var).'" onClick="insert_editor_tag('.$EDITOR_NAME.',\''.$the_var.'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><span class="tag_click_class">$VAR(<b>'.$var.'</b>)</span></td><td><img class="tag_click_class" border="0" src="icons/pointer.gif" alt="->"></td></tr>';
+        $global_vars_array[] = '<tr class="pointer tag_click_class" title="'.sprintf($FD->text('admin', 'format_insert'), $the_var).'" onClick="insert_editor_tag('.$EDITOR_NAME.',\''.$the_var.'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><span class="tag_click_class">$VAR(<b>'.$var.'</b>)</span></td><td><img class="tag_click_class" border="0" src="?icons=pointer.gif" alt="->"></td></tr>';
     }
     $dropdowns['global_vars'] = create_dropdown ( $FD->text('admin', 'global_vars'), implode ( '', $global_vars_array ) );
 
@@ -529,7 +529,7 @@ function get_dropdowns ( $EDITOR_NAME )
     while ( $app_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
         $app = $app_arr['applet_file'];
         $the_app = '$APP('.$app.'.php)';
-        $applets_array[] = '<tr class="pointer tag_click_class" title="'.sprintf($FD->text('admin', 'format_insert'), $the_app).'" onClick="insert_editor_tag('.$EDITOR_NAME.',\''.$the_app.'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><span class="tag_click_class">$APP(<b>'.$app.'.php</b>)</span></td><td><img class="tag_click_class" border="0" src="icons/pointer.gif" alt="->"></td></tr>';
+        $applets_array[] = '<tr class="pointer tag_click_class" title="'.sprintf($FD->text('admin', 'format_insert'), $the_app).'" onClick="insert_editor_tag('.$EDITOR_NAME.',\''.$the_app.'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><span class="tag_click_class">$APP(<b>'.$app.'.php</b>)</span></td><td><img class="tag_click_class" border="0" src="?icons=pointer.gif" alt="->"></td></tr>';
     }
     $dropdowns['applets'] = create_dropdown ( $FD->text('admin', 'applets'), implode ( '', $applets_array ) );
 
@@ -538,7 +538,7 @@ function get_dropdowns ( $EDITOR_NAME )
                     SELECT `snippet_tag` FROM `'.$FD->env('DB_PREFIX').'snippets` WHERE `snippet_active` = 1' );
     while ( $snippets_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
         $the_snippet = $snippets_arr['snippet_tag'];
-        $snippets_array[] = '<tr class="pointer tag_click_class" title="'.sprintf($FD->text('admin', 'format_insert'), $the_snippet).'" onClick="insert_editor_tag('.$EDITOR_NAME.',\''.$the_snippet.'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><b class="tag_click_class">'.$the_snippet.'</b></td><td><img class="tag_click_class" border="0" src="icons/pointer.gif" alt="->"></td></tr>';
+        $snippets_array[] = '<tr class="pointer tag_click_class" title="'.sprintf($FD->text('admin', 'format_insert'), $the_snippet).'" onClick="insert_editor_tag('.$EDITOR_NAME.',\''.$the_snippet.'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><b class="tag_click_class">'.$the_snippet.'</b></td><td><img class="tag_click_class" border="0" src="?icons=pointer.gif" alt="->"></td></tr>';
     }
     $dropdowns['snippets'] = create_dropdown ( $FD->text('admin', 'snippets'), implode ( '', $snippets_array ) );
 
@@ -546,7 +546,7 @@ function get_dropdowns ( $EDITOR_NAME )
     $navs_arr = scandir_ext ( FS2STYLES . '/' . $_POST['style'], 'nav' );
     foreach ( $navs_arr as $nav ) {
         $the_nav = '$NAV('.$nav.')';
-        $navs_array[] = '<tr class="pointer tag_click_class" title="'.sprintf($FD->text('admin', 'format_insert'), $the_nav).'" onClick="insert_editor_tag('.$EDITOR_NAME.',\''.$the_nav.'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><span class="tag_click_class">$NAV(<b>'.$nav.'</b>)</span></td><td><img class="tag_click_class" border="0" src="icons/pointer.gif" alt="->"></td></tr>';
+        $navs_array[] = '<tr class="pointer tag_click_class" title="'.sprintf($FD->text('admin', 'format_insert'), $the_nav).'" onClick="insert_editor_tag('.$EDITOR_NAME.',\''.$the_nav.'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><span class="tag_click_class">$NAV(<b>'.$nav.'</b>)</span></td><td><img class="tag_click_class" border="0" src="?icons=pointer.gif" alt="->"></td></tr>';
     }
     $dropdowns['navigations'] = create_dropdown ( $FD->text('admin', 'navigations'), implode ( '', $navs_array ) );
 
@@ -568,7 +568,7 @@ function get_taglist ( $TAG_ARR, $EDITOR_NAME )
     if ( count ( $TAG_ARR ) >= 1 ) {
         foreach ( $TAG_ARR as $help ) {
             $the_tag = $OC->getOpener().$help['tag'].$OC->getCloser();
-            $tag_array[] = '<tr class="pointer tag_click_class" title="'.sprintf($FD->text('admin', 'format_insert'), $the_tag).'" onClick="insert_editor_tag(editor_'.$EDITOR_NAME.',\''.$the_tag.'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><b class="tag_click_class">'.$the_tag.'</b><br>'.$help['text'].'</td><td><img class="tag_click_class" border="0" src="icons/pointer.gif" alt="->"></td></tr>';
+            $tag_array[] = '<tr class="pointer tag_click_class" title="'.sprintf($FD->text('admin', 'format_insert'), $the_tag).'" onClick="insert_editor_tag(editor_'.$EDITOR_NAME.',\''.$the_tag.'\'); $(this).parents(\'.html-editor-list-popup\').hide();"><td class="tag_click_class"><b class="tag_click_class">'.$the_tag.'</b><br>'.$help['text'].'</td><td><img class="tag_click_class" border="0" src="?icons=pointer.gif" alt="->"></td></tr>';
         }
         $help_template = create_dropdown ( $FD->text('admin', 'valid_tags'), implode ( '', $tag_array ) );
     } else {

@@ -166,26 +166,26 @@ no_user_found_for_name:                  Es konnte kein Benutzer mit diesem Name
 
 
 # Message-Images
-icon_small_help:                         <img src="icons/help.gif" alt="Hilfe" align="absmiddle">
-icon_info:                               <img src="icons/info.jpg" alt="Information" align="absmiddle">
-icon_error:                              <img src="icons/error.jpg" alt="Fehler" align="absmiddle">
-icon_save_ok:                            <img src="icons/save_ok.jpg" alt="Ok" align="absmiddle">
-icon_save_add:                           <img src="icons/save_add.jpg" alt="Hinzufügen erfolgreich" align="absmiddle">
-icon_save_error:                         <img src="icons/save_error.jpg" alt="Fehler beim Speichern" align="absmiddle">
-icon_trash_ok:                           <img src="icons/trash_ok.jpg" alt="Löschen erfolgreich" align="absmiddle">
-icon_trash_error:                        <img src="icons/trash_error.jpg" alt="Fehler beim Löschen" align="absmiddle">
-icon_trash_caution:                      <img src="icons/trash_caution.jpg" alt="Löschen erfolgreich, aber beachten Sie die Hinweise" align="absmiddle">
-icon_login:                              <img src="icons/login.jpg" alt="Login" align="absmiddle">
-icon_logout:                             <img src="icons/logout.jpg" alt="Logout" align="absmiddle">
-icon_install_ok:                         <img src="icons/install_ok.jpg" alt="Installation erfolgreich" align="absmiddle">
-icon_uninstall_ok:                       <img src="icons/uninstall_ok.jpg" alt="Deinstallation erfolgreich" align="absmiddle">
-icon_no_install_action:                  <img src="icons/no_install_action.jpg" alt="Keine Installations-Aktion" align="absmiddle">
-icon_lock_ok:                            <img src="icons/lock_ok.jpg" alt="Zugriff gewährt" align="absmiddle">
-icon_lock_forbidden:                     <img src="icons/lock_forbidden.jpg" alt="Zugriff verweigert">
-icon_up:                                 <img src="icons/up.jpg" alt="Nach oben verschieben" align="absmiddle">
-icon_down:                               <img src="icons/down.jpg" alt="Nach unten verschieben" align="absmiddle">
-icon_link_error:                         <img src="icons/link_error.jpg" alt="Link Fehler" align="absmiddle">
-icon_user_question:                      <img src="icons/user_question.jpg" alt="Unbekannter Benutzer" align="absmiddle">
+icon_small_help:                         <img src="?=icons=help.gif" alt="Hilfe" align="absmiddle">
+icon_info:                               <img src="?=icons=info.jpg" alt="Information" align="absmiddle">
+icon_error:                              <img src="?=icons=error.jpg" alt="Fehler" align="absmiddle">
+icon_save_ok:                            <img src="?=icons=save_ok.jpg" alt="Ok" align="absmiddle">
+icon_save_add:                           <img src="?=icons=save_add.jpg" alt="Hinzufügen erfolgreich" align="absmiddle">
+icon_save_error:                         <img src="?=icons=save_error.jpg" alt="Fehler beim Speichern" align="absmiddle">
+icon_trash_ok:                           <img src="?=icons=trash_ok.jpg" alt="Löschen erfolgreich" align="absmiddle">
+icon_trash_error:                        <img src="?=icons=trash_error.jpg" alt="Fehler beim Löschen" align="absmiddle">
+icon_trash_caution:                      <img src="?=icons=trash_caution.jpg" alt="Löschen erfolgreich, aber beachten Sie die Hinweise" align="absmiddle">
+icon_login:                              <img src="?=icons=login.jpg" alt="Login" align="absmiddle">
+icon_logout:                             <img src="?=icons=logout.jpg" alt="Logout" align="absmiddle">
+icon_install_ok:                         <img src="?=icons=install_ok.jpg" alt="Installation erfolgreich" align="absmiddle">
+icon_uninstall_ok:                       <img src="?=icons=uninstall_ok.jpg" alt="Deinstallation erfolgreich" align="absmiddle">
+icon_no_install_action:                  <img src="?=icons=no_install_action.jpg" alt="Keine Installations-Aktion" align="absmiddle">
+icon_lock_ok:                            <img src="?=icons=lock_ok.jpg" alt="Zugriff gewährt" align="absmiddle">
+icon_lock_forbidden:                     <img src="?=icons=lock_forbidden.jpg" alt="Zugriff verweigert">
+icon_up:                                 <img src="?=icons=up.jpg" alt="Nach oben verschieben" align="absmiddle">
+icon_down:                               <img src="?=icons=down.jpg" alt="Nach unten verschieben" align="absmiddle">
+icon_link_error:                         <img src="?=icons=link_error.jpg" alt="Link Fehler" align="absmiddle">
+icon_user_question:                      <img src="?=icons=user_question.jpg" alt="Unbekannter Benutzer" align="absmiddle">
 
 
 # Image-Upload-Messages
@@ -354,3 +354,4 @@ template_file_not_found:                 Template-Datei konnte nicht gefunden we
 template_file_created:                   Template-Datei wurde neu erstellt
 template_no_editable_template:           Kein Template zum Bearbeiten gefunden
 template_select_template:                Template zum Bearbeiten auswählen
+template_file_not_writable:              Keine Schreibrechte für die Template-Datei: Bitte überprüfe die Dateiberechtigungen
