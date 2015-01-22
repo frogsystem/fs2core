@@ -196,8 +196,9 @@ function create_templatepage ( $TEMPLATE_ARR, $GO, $TEMPLATE_FILE, $MANYFILES, $
         $file_arr = array();
         $files = scandir_filter ( $style_path );
         foreach ( $files as $file ) {
-            if ( pathinfo ( $file, PATHINFO_EXTENSION ) == $TEMPLATE_FILE ) {
-                $file_arr[] = pathinfo ( $file, PATHINFO_BASENAME );
+            $name = pathinfo ( $file, PATHINFO_BASENAME );
+            if ( 0 !== strpos($name, '_') && pathinfo ( $file, PATHINFO_EXTENSION ) == $TEMPLATE_FILE ) {
+                $file_arr[] = $name;
             }
         }
 
@@ -449,7 +450,9 @@ function get_templatepage_select ( $TYPE, $STYLE_PATH = '', $FILE_EXT = '', $SHO
 
             $files = scandir_ext ( $STYLE_PATH, $FILE_EXT );
             foreach ( $files as $file ) {
-                $select_template .= '<option value="'.$file.'" '.getselected ($file, $_POST['file']).'>'.$file.'</option>';
+                if (0 !== strpos($file, '_')) {
+                    $select_template .= '<option value="'.$file.'" '.getselected ($file, $_POST['file']).'>'.$file.'</option>';
+                }
             }
 
             $select_template .= '
@@ -755,17 +758,6 @@ function create_templateeditor ( $editor_arr, $HIGHLIGHTER, $FILE, $MANYFILES )
     ';
 
     return $editor_template;
-}
-
-
-
-/////////////////////////////////
-//// Ensure Use of Copyright ////
-/////////////////////////////////
-
-function ensure_copyright ( $TEMPLATE_NAME )
-{
-    return TRUE;
 }
 
 ?>
