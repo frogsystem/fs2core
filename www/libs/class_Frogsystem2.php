@@ -14,8 +14,11 @@ class Frogsystem2 {
     
     private $root;
     
-    public function __construct($root = '.') {
+    public function __construct($root = null) {
         // Set internal root and FS2SOURCE fallback
+        if (!$root) {
+             $root = realpath(__DIR__.'/../');
+        }
         $this->root = $root;
         @define('FS2SOURCE', realpath(__DIR__.'/../'));
 
@@ -30,14 +33,12 @@ class Frogsystem2 {
     public function init() {
         // Set constants
         define('FS2ADMIN', FS2SOURCE.'/admin');
-        define('FS2ROOT', $this->root);
-        define('FS2_ROOT_PATH', FS2ROOT.'/', true); // DEPRECATED
         
         // Content Constants
-        @define('FS2CONTENT', FS2ROOT);
+        @define('FS2CONFIG', $this->root.'/config');
+        @define('FS2LANG', FS2SOURCE.'/lang');
+        @define('FS2CONTENT', $this->root);
         @define('FS2APPLETS', FS2CONTENT.'/applets');
-        @define('FS2CONFIG', FS2ROOT.'/config');
-        @define('FS2LANG', FS2CONTENT.'/lang');
         @define('FS2MEDIA', FS2CONTENT.'/media');
         @define('FS2STYLES', FS2CONTENT.'/styles');
         @define('FS2UPLOAD', FS2CONTENT.'/upload');
@@ -62,7 +63,7 @@ class Frogsystem2 {
         spl_autoload_register(array($this, 'libloader'));
 
         // Set default include path
-        set_include_path(FS2ROOT);
+        set_include_path(FS2SOURCE);
         
         // init global data object
         global $FD;
@@ -187,7 +188,7 @@ class Frogsystem2 {
     
     private function libloader($classname) {
         $class = explode("\\", $classname);
-        $filepath = FS2ROOT.'/libs/class_'.end($class).'.php';
+        $filepath = FS2SOURCE.'/libs/class_'.end($class).'.php';
         if (file_exists($filepath)) {
             include_once($filepath);
         } else {

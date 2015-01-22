@@ -1,6 +1,6 @@
 <?php
 // Getting config
-@include_once($_ENV['FS2CONFIG'] ?: realpath(__DIR__.'/../config/main.cfg.php'));
+@include_once(getenv('FS2CONFIG') ?: realpath(__DIR__.'/../config/main.cfg.php'));
 @define('FS2SOURCE', realpath(__DIR__.'/../'));
 
 // Init system

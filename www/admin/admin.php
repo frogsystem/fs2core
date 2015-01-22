@@ -276,7 +276,7 @@ echo '
     <div id="content_container">';
 
 ob_start();
-require(FS2_ROOT_PATH . 'admin/'.$PAGE_DATA_ARR['file']);
+require(FS2SOURCE . '/admin/'.$PAGE_DATA_ARR['file']);
 $content = ob_get_clean();
 
 $top = '<h2 class="cb-text">('.$PAGE_DATA_ARR['title'].')</h2>';
@@ -304,7 +304,7 @@ echo '
 $JUST_CONTENT = false;
 
 ob_start();
-require(FS2_ROOT_PATH . 'admin/'.$PAGE_DATA_ARR['file']);
+require(FS2SOURCE . '/admin/'.$PAGE_DATA_ARR['file']);
 $popup = ob_get_clean();
 
 if ($JUST_CONTENT !== true) {
