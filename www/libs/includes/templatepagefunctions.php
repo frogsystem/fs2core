@@ -715,8 +715,8 @@ function create_templateeditor ( $editor_arr, $HIGHLIGHTER, $FILE, $MANYFILES )
                                                 <img src="?images=null.gif" alt="Vollbild" border="0">
                                             </div>
                                             <div class="html-editor-line"></div>
-                                            <div class="html-editor-button html-editor-button-undo" onClick="editorUndo(this,editor_'.$editor_arr['name'].')" title="RÃ¼ckgÃ¤ngig">
-                                                <img src="?images=null.gif" alt="RÃ¼ckgÃ¤ngig" border="0">
+                                            <div class="html-editor-button html-editor-button-undo" onClick="editorUndo(this,editor_'.$editor_arr['name'].')" title="Rückgängig">
+                                                <img src="?images=null.gif" alt="Rückgängig" border="0">
                                             </div>
                                             <div class="html-editor-button html-editor-button-redo" onClick="editorRedo(this,editor_'.$editor_arr['name'].')" title="Wiederholen">
                                                 <img src="?images=null.gif" alt="Wiederholen" border="0">
