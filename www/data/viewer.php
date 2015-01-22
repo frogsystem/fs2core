@@ -137,6 +137,6 @@
 
 
     // Display Page
-    echo get_maintemplate($template_popupviewer);
+    echo tpl_functions(get_maintemplate($template_popupviewer), 0, array(), false);
     exit;
 ?>
