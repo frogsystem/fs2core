@@ -149,6 +149,7 @@ echo'<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.
     <link rel="shortcut icon" href="?icons=favicon.ico">
 
     <link rel="stylesheet" type="text/css" href="?css=admin.css">
+    <link rel="stylesheet" type="text/css" href="?css=codemirror.css">
     <link rel="stylesheet" type="text/css" href="?css=noscript.css" id="noscriptcss">
 
     <script src="?js=admin.js" type="text/javascript"></script>

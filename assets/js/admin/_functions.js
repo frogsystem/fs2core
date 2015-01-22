@@ -265,127 +265,106 @@ function resetOld (resetColor, last, lastBox, object) {
 //// Editor Functions ////
 //////////////////////////
 
+// undo
+function editorUndo ( theButton, cm ) {
+  cm.getDoc().undo();
+  //~ $(theButton).toggleClass('html-editor-button-active');
+}
+
+// undo
+function editorRedo ( theButton, cm ) {
+  cm.getDoc().redo();
+  //~ $(theButton).toggleClass('html-editor-button-active');
+}
+
 // Toggle textWrapping
-function toggelTextWrapping ( theButton, editorId ) {
-    if ($(theButton).hasClass("html-editor-button-active")) {
-        $(theButton).removeClass("html-editor-button-active");
-        var newBool = false;
-    } else {
-        $(theButton).addClass("html-editor-button-active");
-        var newBool = true;
-    }
-    eval ( ""+editorId+".setTextWrapping(newBool);" );
+function toggleTextWrapping ( theButton, cm ) {
+  cm.setOption("lineWrapping", !cm.getOption("lineWrapping"));
+  $(theButton).toggleClass('html-editor-button-active');
 }
 
 // Toggle lineNumbers
-function toggelLineNumbers ( theButton, editorId ) {
-    if ($(theButton).hasClass("html-editor-button-active")) {
-        $(theButton).removeClass("html-editor-button-active");
-        var newBool = false;
-    } else {
-        $(theButton).addClass("html-editor-button-active");
-        var newBool = true;
-    }
-    eval ( ""+editorId+".setLineNumbers(newBool);" );
+function toggleLineNumbers ( theButton, cm ) {
+  cm.setOption("lineNumbers", !cm.getOption("lineNumbers"));
+  $(theButton).toggleClass('html-editor-button-active');
 }
+
+// Toggle fullscreen
+function toggleFullscreen ( theButton, cm ) {
+  cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+  cm.focus();
+  //~ $(theButton).toggleClass('html-editor-button-active');
+}
+
+//Insert Tag into Editor
+function insert_editor_tag( cm, insertText ) {
+    cm.replaceSelection(insertText);
+}
+
 
 // Toggle Original
-function toggelOriginal ( editorId ) {
-    eval ( "var theCheck = $(\"#"+editorId+"_original\").is(\":visible\");" );
-
-    if (theCheck == true) {
-        eval ( "$(\"#"+editorId+"_original\").hide()" );
-        eval ( "$(\"#"+editorId+"_editor-bar .html-editor-row\").show()" );
-        eval ( "$(\"#"+editorId+"_content\").show()" );
-        eval ( "$(\"#"+editorId+"_original-row\").hide()" );
-    } else {
-        eval ( "$(\"#"+editorId+"_content\").hide()" );
-        eval ( "$(\"#"+editorId+"_editor-bar .html-editor-row\").hide()" );
-        eval ( "$(\"#"+editorId+"_original-row .html-editor-button\").addClass(\"html-editor-button-active\")" );
-        eval ( "$(\"#"+editorId+"_original-row\").show()" );
-        eval ( "$(\"#"+editorId+"_original\").show()" );
+function toggelOriginal (theButton, cm, source) {
+    if (cm.state.showOriginal) {
+        cm.state.showOriginal = false;
+        cm.swapDoc(cm.state.realDoc);
+        cm.setOption("readOnly", false);
+        $(theButton).removeClass('html-editor-button-active');
+        $(cm.getWrapperElement()).removeClass('html-editor-original');
+    
+    } else  {
+        cm.state.showOriginal = true;
+        var newDoc = CodeMirror.Doc($('#'+source+'_original textarea').first().val(), cm.getDoc().getMode());
+        cm.state.realDoc = cm.swapDoc(newDoc);
+        cm.setOption("readOnly", true);
+        $(theButton).addClass('html-editor-button-active');
+        $(cm.getWrapperElement()).addClass('html-editor-original');
     }
-}
-
-
-//Open Editor-PopUp
-var EditorWindow;
-function open_editor(what) {
-    $("#section_select").val(what);
-
-    if (screen.availWidth >= 1000) {
-        var editorWidth = 1000;
-    } else {
-        var editorWidth = screen.availWidth;
-    }
-
-    if (screen.availHeight >= 800) {
-        var editorHeight = 800;
-    } else {
-        var editorHeight = screen.availHeight;
-    }
-
-    x = screen.width/2 - editorWidth/2;
-    y = screen.height/2 - editorHeight/2;
-
-    EditorWindow = window.open("admin_frogpad.php?height="+editorHeight,"editor","width="+editorWidth+",height="+editorHeight+",left="+x+",top="+y+",screenX="+x+",screenY="+y+"");
-}
-//Close Editor-PopUp
-function close_editor() {
-    EditorWindow.close();
 }
 
 //Get Editor Object
 function new_editor ( textareaId, editorHeight, readOnlyState, syntaxHighlight )
 {
+  var textarea = document.getElementById(textareaId);
+  
   switch (syntaxHighlight) {
     case 3:
-        var parser = ["tokenizejavascript.js", "parsejavascript.js"];
-        var css = "../resources/codemirror/css/jscolors.css";
+        var mode = "text/javascript";
         break;
     case 2:
-        var parser = "parsecss.js";
-        var css = "../resources/codemirror/css/csscolors.css";
+        var mode = "text/css";
         break;
     default:
-        var parser = ["parsexml.js", "parsecss.js", "tokenizejavascript.js", "parsejavascript.js", "parsehtmlmixed.js"];
-        var css = ["../resources/codemirror/css/xmlcolors.css", "../resources/codemirror/css/jscolors.css", "../resources/codemirror/css/csscolors.css"];
+        var mode = "text/html";
         break;
   }
-
-  var textarea = document.getElementById(textareaId);
-  var editor = CodeMirror.fromTextArea(textareaId, {
-    parserfile: parser,
-    stylesheet: css,
-    path: "../resources/codemirror/js/",
-    content: textarea.value,
+  
+  
+  var editor = CodeMirror.fromTextArea(textarea, {
+    mode:  mode,
     lineNumbers: true,
-    //textWrapping: false,
-    continuousScanning: 500,
-    tabMode: "shift",
-    height: editorHeight+"px",
-    iframeClass:"CodeMirror-iframe",
-    readOnly: readOnlyState
+    readOnly: readOnlyState,
+    extraKeys: {
+      "F11": function(cm) {
+        cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+      },
+      "Esc": function(cm) {
+        if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+      }
+    }
   });
-  //editor.setLineNumbers(true);
+  
+  editor.setSize(null, editorHeight);
+  if (editor.getTextArea() && editor.getTextArea().form) {
+    CodeMirror.on(editor.getTextArea().form, "submit", function() {
+      if (editor.state.showOriginal && editor.state.realDoc) {
+        editor.swapDoc(editor.state.realDoc);
+        editor.getTextArea().value = editor.getValue();
+      }
+    });
+  }
+  
   return editor;
 }
-//Switch to Inline-Editor
-function switch2inline_editor( editorId ) {
-    close_editor();
-    eval ( "$(\"#"+editorId+"_content\").css(\"visibility\", \"visible\")" );
-    eval ( "$(\"#"+editorId+"_editor-bar\").css(\"visibility\", \"visible\")" );
-    eval ( "$(\"#"+editorId+"_inedit\").hide()" );
-}
-
-//Insert Tag into Editor
-function insert_editor_tag( editorObject, insertText ) {
-    editorObject.replaceSelection(insertText);
-}
-
-
-
-
 
 /////////////////////////
 //// Date Operations ////

@@ -17,25 +17,26 @@ module.exports = function(grunt) {
         copy: false
       },
       install: {
-				options: {
-					copy: false,
+        options: {
+          copy: false,
           verbose: true
-				}
+        }
       }
     },
     
     copy: {
-			admin: {
+      admin: {
         files: [
           {
-            'www/admin/js/admin.js' : 'dist/js/admin.js'
+            'www/admin/js/admin.js' : 'dist/js/admin.js',
+            'www/admin/js/codemirror.js' : 'dist/js/codemirror.js'
           },
-					{
-						expand: true,
-						flatten: true,
-						src: ['dist/css/admin/*.css'],
-						dest: 'www/admin/css/'
-					}
+          {
+            expand: true,
+            flatten: true,
+            src: ['dist/css/admin/*.css'],
+            dest: 'www/admin/css/'
+          }
         ]
       }
     },
@@ -78,7 +79,8 @@ module.exports = function(grunt) {
       },
       admin: {
         files: {
-          'dist/css/admin/admin.css': ['dist/css/admin/admin.css']
+          'dist/css/admin/admin.css': ['dist/css/admin/admin.css'],
+          'dist/css/admin/codemirror.css': ['dist/css/admin/codemirror.css']
         }
       }
     },
@@ -96,6 +98,16 @@ module.exports = function(grunt) {
               'vendor/colpick-jQuery-Color-Picker/js/colpick.js',
               'assets/js/_frontend.js',
               'assets/js/admin/**/_*.js'
+            ],
+            'dist/js/codemirror.js' : [
+              'vendor/codemirror/lib/codemirror.js',
+              
+              'vendor/codemirror/mode/css/css.js',
+              'vendor/codemirror/mode/javascript/javascript.js',
+              'vendor/codemirror/mode/xml/xml.js',
+              'vendor/codemirror/mode/htmlmixed/htmlmixed.js',
+              
+              'vendor/codemirror/addon/display/fullscreen.js'
             ]
           }
         ]
