@@ -181,7 +181,7 @@ function get_seo () {
         $redirect = true;
     }
     // Bei Bedarf Weiterleitung auf die neue URL im richtigen Format
-    if ($redirect) {
+    if ($redirect && isset($_GET['go'])) {
         header('Location: ' . $FD->cfg('virtualhost') . url_seo($_GET['go'], $_GET, true), true, 301);
         die();
     }

@@ -6,5 +6,5 @@
 // Init system
 require_once(FS2SOURCE . '/libs/class_Frogsystem2.php');
 $FS2 = new Frogsystem2(realpath(__DIR__.'/../'));
-require_once(FS2SOURCE . '/admin/admin.php'); // Include the main content file
+$FS2->deploy(true);
 ?>

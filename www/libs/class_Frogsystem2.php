@@ -92,16 +92,21 @@ class Frogsystem2 {
         return $this;
     }
     
-    public function deploy() {
+    public function deploy($admin = false) {
         if (@constant('INDEX_NO_DEPLOYMENT')) {
             return;
         }
         
+        // Deploy AdminCP
+        if ($admin || isset($_GET['admin'])) {
+            include(FS2ADMIN.'/admin.php');
+            $this->__destruct();
+            return;
+        }
+        
+        // Depoly Mainpage
         global $FD, $APP;
         $this->initSession();
-
-        //Anti-Spam Encryption-Code
-        $spam = 'wKAztWWB2Z'; 
 
 
         // Constructor Calls
