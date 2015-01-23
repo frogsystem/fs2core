@@ -683,7 +683,7 @@ function create_editor_button_new($img_url, $alt, $title, $insert)
             <img border="0" src="?images=null.gif" alt="{alt}">
         </a>
     </td>';
-    $button = str_replace('{img_url}', $FD->config('virtualhost').$img_url, $button);
+    $button = str_replace('{img_url}', $img_url, $button);
     $button = str_replace('{alt}', $alt, $button);
     $button = str_replace('{title}', $title, $button);
     $button = str_replace('{javascript}', $javascript, $button);
