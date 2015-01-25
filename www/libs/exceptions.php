@@ -1,7 +1,7 @@
 <?php
 /**
  * @file     exceptions.php
- * @folder   /classes
+ * @folder   /libs
  * @version  0.1
  * @author   Sweil
  *

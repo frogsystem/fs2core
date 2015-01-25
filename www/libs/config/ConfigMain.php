@@ -1,7 +1,7 @@
 <?php
 /**
  * @file     ConfigMain.php
- * @folder   /classes/config/
+ * @folder   /libs/config/
  * @version  0.2
  * @author   Sweil
  *

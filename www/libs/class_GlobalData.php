@@ -20,7 +20,7 @@ class GlobalData {
     //
     public function __construct() {
         // get env cfg
-        require_once(FS2SOURCE.'/classes/config/ConfigEnv.php');
+        require_once(FS2SOURCE.'/libs/config/ConfigEnv.php');
         $this->config['env'] = new ConfigEnv();
     }
 
@@ -119,7 +119,7 @@ class GlobalData {
         // Load corresponding class and get config array
         $class_name = "Config".ucfirst(strtolower($name));
         require_once(FS2SOURCE.'/libs/class_ConfigData.php');
-        @include_once(FS2SOURCE.'/classes/config/'.$class_name.'.php');
+        @include_once(FS2SOURCE.'/libs/config/'.$class_name.'.php');
         if (!class_exists($class_name, false))
             $class_name = 'ConfigData';
         return new $class_name($data, $json);

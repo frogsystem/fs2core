@@ -23,7 +23,6 @@ class Frogsystem2 {
         @define('FS2SOURCE', $this->root);
 
         // include functions and Exceptions
-        require_once(FS2SOURCE . '/classes/exceptions.php');
         require_once(FS2SOURCE . '/libs/functions.php');
         
         // Init the class
@@ -194,8 +193,11 @@ class Frogsystem2 {
     private function libloader($classname) {
         $class = explode("\\", $classname);
         $filepath = FS2SOURCE.'/libs/class_'.end($class).'.php';
+        
         if (file_exists($filepath)) {
             include_once($filepath);
+        } else if (strtolower(substr($class, -9)) === 'exception') {
+            include_once(FS2SOURCE.'/libs/exceptions.php');
         } else {
             return false;
         }
