@@ -141,6 +141,7 @@ $FD->setConfig('social_meta_tags', 'site_name', $FD->config('social_meta_tags', 
             $content->url = get_canonical_url();
             $content->date = date('c', $downloads['dl_date']?:$downloads['dl_search_update']);
             $content->last_update = date('c', $downloads['dl_date']?:$downloads['dl_search_update']);
+            $content->image = false;
             if (image_exists('/downloads', $downloads['dl_id'])) {
                 $content->image = image_url('/downloads', $downloads['dl_id']);
             }
