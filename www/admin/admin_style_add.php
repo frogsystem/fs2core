@@ -6,7 +6,7 @@
 
 if (
         isset($_POST['style_tag']) && preg_match ( '/^[0-9a-z_\-]+$/', $_POST['style_tag'] ) === 1
-        && $_POST['style_tag'] != '' && strlen ( $_POST['style_tag'] ) >= 1
+        && $_POST['style_tag'] != '' && $_POST['style_tag'] != 'default' && strlen ( $_POST['style_tag'] ) >= 1
         && isset($_POST['style_name']) && $_POST['style_name'] != ''
         && ( $_POST['style_create_as'] == 'new' || ( $_POST['style_create_as'] == 'copy' && $_POST['copy_style_id'] ) )
     )
@@ -16,7 +16,7 @@ if (
     $_POST['style_create_as'] = ( $_POST['style_create_as'] == 'copy' ) ? 'copy' : 'new';
     settype ( $_POST['style_allow_use'], 'integer' );
     settype ( $_POST['style_allow_edit'], 'integer' );
-    settype ( $_POST['copy_style_id'], 'integer' );
+    //~ settype ( $_POST['copy_style_id'], 'integer' );
 
     // Folder Operations
     $new_ini_data = $_POST['style_name']."
@@ -43,13 +43,20 @@ if (
 
         // Copy Style recursive
         if ( $_POST['style_create_as'] == 'copy' && $_POST['copy_style_id'] ) {
-            // SQL-Queries
-            $index = $FD->db()->conn()->query ( '
-                            SELECT `style_tag`
-                            FROM `'.$FD->env('DB_PREFIX').'styles`
-                            WHERE `style_id` = '.$_POST['copy_style_id'].'
-                            LIMIT 0,1' );
-            $copy_style_path = FS2STYLES . '/' . $index->fetchColumn();
+            
+            if ('default' === $_POST['copy_style_id']) {
+                $copy_style_path = FS2SOURCE . '/styles/default'; //TODO
+                
+            } else {
+                settype($_POST['copy_style_id'], 'integer');
+                // SQL-Queries
+                $index = $FD->db()->conn()->query ( '
+                                SELECT `style_tag`
+                                FROM `'.$FD->env('DB_PREFIX').'styles`
+                                WHERE `style_id` = '.$_POST['copy_style_id'].'
+                                LIMIT 0,1' );
+                $copy_style_path = FS2STYLES . '/' . $index->fetchColumn();
+            }
             if (
                     $ACCESS->copyAny( $copy_style_path, $new_style_path, 0777, 0644 )
                     && $ACCESS->putFileData( $new_style_path . '/style.ini', $new_ini_data )
@@ -145,11 +152,13 @@ if ( !is_writable ( FS2STYLES ) ) {
                                     <label class="pointer middle" for="style_create_as_copy">'.$FD->text("admin", "style_create_as_copy").':</label>
                                     <br><br>
                                     <div align="right">
-                                        <select class="input_width pointer middle" name="copy_style_id" size="1">';
+                                        <select class="input_width pointer middle" name="copy_style_id" size="1">
+                                            <option value="default" '.getselected( 'default', $_POST['copy_style_id'] ).'>default</option>';
 
     $index = $FD->db()->conn()->query ( '
                     SELECT `style_id`, `style_tag`
                     FROM `'.$FD->env('DB_PREFIX').'styles`
+                    WHERE `style_tag` != \'default\'
                     ORDER BY `style_id`' );
     while ( $style_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
         settype ( $style_arr['style_id'], 'integer' );

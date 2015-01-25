@@ -9,7 +9,7 @@ function get_style_ini_data ( $STYLE_INI_FILE ) {
     $ini_lines = $ACCESS->getFileArray( $STYLE_INI_FILE );
     $ini_lines = array_map ( 'trim', $ini_lines );
     $ini_lines = array_map ( 'killhtml', $ini_lines );
-    $ini_lines[1] = ( $ini_lines[1] != '' ) ? $ini_lines[1] : '';
+    $ini_lines += array('','',''); //add at least 3 empty lines
     return $ini_lines;
 }
 
@@ -213,7 +213,7 @@ if ( isset ( $_POST['style_id'] ) && $_POST['style_action'] )
             $data_arr = $index->fetch(PDO::FETCH_ASSOC);
             $style_ini = FS2STYLES . '/' . $data_arr['style_tag'] . '/style.ini';
             $ACCESS = new fileaccess();
-            $ini_lines = $ACCESS->getFileArray( $style_ini );
+            $ini_lines = get_style_ini_data( $style_ini );
             $data_arr['style_name'] = $ini_lines[0];
             $data_arr['style_version'] = $ini_lines[1];
             $data_arr['style_copyright'] = $ini_lines[2];
@@ -439,8 +439,7 @@ if ( !isset ( $_POST['style_id'] ) )
     $index = $FD->db()->conn()->query ( '
                     SELECT COUNT(*)
                     FROM `'.$FD->env('DB_PREFIX')."styles`
-                    WHERE `style_id` != 0
-                    AND `style_tag` != 'default'
+                    WHERE `style_tag` != 'default'
                     ORDER BY `style_tag`" );
 
     $num_of_styles = $index->fetchColumn();
@@ -448,8 +447,7 @@ if ( !isset ( $_POST['style_id'] ) )
     $index = $FD->db()->conn()->query ( '
                     SELECT *
                     FROM `'.$FD->env('DB_PREFIX')."styles`
-                    WHERE `style_id` != 0
-                    AND `style_tag` != 'default'
+                    WHERE `style_tag` != 'default'
                     ORDER BY `style_tag`" );
 
     $style_arr = array();

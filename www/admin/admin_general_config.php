@@ -120,7 +120,7 @@ if ( TRUE )
     // styles
     $styles = $FD->db()->conn()->query(
                   'SELECT style_id, style_tag FROM '.$FD->env('DB_PREFIX').'styles
-                  WHERE `style_id` != 0 AND `style_allow_use` = 1
+                  WHERE `style_tag` != \'default\' AND `style_allow_use` = 1
                   ORDER BY `style_tag`');
     $styles = $styles->fetchAll(PDO::FETCH_ASSOC);
 

@@ -1,25 +1,6 @@
 <?php
 
 
-//////////////////////
-//// Get Template ////
-//////////////////////
-
-/// TODO: get_template() does not seem to be used anywhere anymore, so it
-///       should be removed.
-
-function get_template ( $TEMPLATE_NAME )
-{
-    global $FD;
-
-    $index = $FD->db()->conn()->query ( '
-                    SELECT `'.$TEMPLATE_NAME.'`
-                    FROM '.$FD->env('DB_PREFIX')."template
-                    WHERE `id` = '".$FD->config('design')."'" );
-    $result = $index->fetch(PDO::FETCH_ASSOC);
-    return $result[$TEMPLATE_NAME];
-}
-
 ////////////////////////////
 //// get email template ////
 ////////////////////////////
