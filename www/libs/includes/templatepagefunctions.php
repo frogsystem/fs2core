@@ -607,19 +607,16 @@ function get_footer_line ( $EDITOR_NAME, $STYLE, $HIGHLIGHTER, $FILE, $MANYFILES
 /////////////////////////////
 function get_original_array ( $EDITOR_NAME, $FILE, $ROWS, $COLS )
 {
-    if ( file_exists ( FS2SOURCE . '/styles/default/' . $FILE ) ) {//TODO
+    $file_path = FS2SOURCE . '/styles/default/' . $FILE;
+    if (file_exists($file_path)) {//TODO
         $original['button'] = '
                                             <div class="html-editor-button html-editor-button-original atright" onClick="toggelOriginal(this, editor_'.$EDITOR_NAME.', \''.$EDITOR_NAME.'\')" title="Original anzeigen">
                                                 <img src="?images=null.gif" alt="Original anzeigen" border="0">
                                             </div>
         ';
-
-        $original['template'] = new template(); //TODO
-        $original['template']->setStyle('default');
-        $original['template']->setFile($FILE);
-        $original['template']->load($EDITOR_NAME);
-        $original['template'] = killhtml ( $original['template']->display() );
-
+        
+        $original['template'] = killhtml(template::getSection($file_path, $EDITOR_NAME));
+        
         $original['template'] = '
                                     <div id="'.$EDITOR_NAME.'_original" style="background-color:#ffffff; border: 1px solid #999999; width:100%; display:none;">
                                         <textarea class="no-js-html-editor" wrap="off"  rows="'.$ROWS.'" cols="'.$COLS.'" name="'.$EDITOR_NAME.'_org" readonly>'.$original['template'].'</textarea>
