@@ -124,8 +124,9 @@ function tab2space($TEXT, $tabsize = 4, $space = '&nbsp;')
 }
 
 /////////////////////////////////////////
-// String kürzen ohne Wort zuzerstören //  <= BAD FUNCTION HAS TO BE IMPROVED TODO
+// String kürzen ohne Wort zuzerstören // 
 /////////////////////////////////////////
+// DEPRECATED use StringCutter instead
 function truncate_string ($string, $maxlength, $extension)
 {
 

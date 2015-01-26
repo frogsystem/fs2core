@@ -171,7 +171,7 @@ echo'
 
 <!-- Page Head -->
 <div id="head">
-     <h1>'.$FD->config('title').'</h1>
+     <h1>'.StringCutter::cut($FD->config('title'), 50, '...').'</h1>
      <div id="head_version">
          version '.$FD->config('version').'
      </div>
