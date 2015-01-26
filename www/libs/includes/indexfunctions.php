@@ -39,7 +39,7 @@ function get_maintemplate ($BODY, $PATH_PREFIX = '', $BASE = FALSE)
 
     // Create Link-Lines
     $template_favicon = ($FD->config('show_favicon') == 1) ? '<link rel="shortcut icon" href="'.$PATH_PREFIX .'styles/'.$FD->config('style').'/icons/favicon.ico">' : '';
-	$template_feed = '<link rel="alternate" type="application/rss+xml" href="'.$PATH_PREFIX .'feeds/'.$FD->config('feed').'.php" title="'.$FD->config('title').' '.$FD->text('frontend', 'news_feed').'">';
+	$template_feed = '<link rel="alternate" type="application/rss+xml" href="'.url('feed', array('xml' => $FD->config('feed')), true).'" title="'.$FD->config('title').' '.$FD->text('frontend', 'news_feed').'">';
 
     // Create Script-Lines
     $template_javascript = get_js($PATH_PREFIX).'
