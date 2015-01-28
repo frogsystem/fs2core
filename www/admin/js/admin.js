@@ -1,4 +1,4 @@
-/*! Frogsystem2 - v2.0.0-alix7 - 2015-01-22
+/*! Frogsystem2 - v2.0.0-alix7 - 2015-01-28
 * https://github.com/mrgrain/Frogsystem-2
 * Copyright (c) 2015 ; Licensed CC BY-SA 3.0 DE */
 /*!
@@ -11331,9 +11331,7 @@ $(document).ready(function(){
             $(ele).next('.colorpicker-preview').css('background-color', '#' + hex);
         }
     })
-    .bind('keyup', function(){
-        $(this).colpickSetColor(getCorrectHex(this.value));
-    })
+    .off('click')
     .after(function() {
         var colorPreview = $('<span class="colorpicker-preview"></span>');
         colorPreview.css('background-color', '#' + $(this).val());
@@ -11343,8 +11341,13 @@ $(document).ready(function(){
         return colorPreview;
     })
     .change(function() {
-        var newhex = getCorrectHex($(this).val());
-        $(this).next('.colorpicker-preview').css('background-color', '#' + newhex);
+        var val = $(this).val();
+        if (val == '') {
+            val = 'transparent';
+        } else {
+            val = '#' + val;
+        }
+        $(this).next('.colorpicker-preview').css('background-color', val);
     })
     .keydown(function() {
         $(this).change();
@@ -11353,7 +11356,7 @@ $(document).ready(function(){
         $(this).change();
     })
     .focusout(function() {
-        $(this).val(getCorrectHex($(this).val()));
+        $(this).change();
     });
 });
 

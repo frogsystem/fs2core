@@ -19,9 +19,7 @@ $(document).ready(function(){
             $(ele).next('.colorpicker-preview').css('background-color', '#' + hex);
         }
     })
-    .bind('keyup', function(){
-        $(this).colpickSetColor(getCorrectHex(this.value));
-    })
+    .off('click')
     .after(function() {
         var colorPreview = $('<span class="colorpicker-preview"></span>');
         colorPreview.css('background-color', '#' + $(this).val());
@@ -31,8 +29,13 @@ $(document).ready(function(){
         return colorPreview;
     })
     .change(function() {
-        var newhex = getCorrectHex($(this).val());
-        $(this).next('.colorpicker-preview').css('background-color', '#' + newhex);
+        var val = $(this).val();
+        if (val == '') {
+            val = 'transparent';
+        } else {
+            val = '#' + val;
+        }
+        $(this).next('.colorpicker-preview').css('background-color', val);
     })
     .keydown(function() {
         $(this).change();
@@ -41,7 +44,7 @@ $(document).ready(function(){
         $(this).change();
     })
     .focusout(function() {
-        $(this).val(getCorrectHex($(this).val()));
+        $(this).change();
     });
 });
 

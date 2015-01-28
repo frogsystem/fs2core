@@ -311,7 +311,7 @@ if ( isset ( $_POST['user_group_id'] ) && isset($_POST['group_action']) )
                                        <span class="small">'."Farbliche Hervorhebung des Gruppentitels.".'</span>
                                    </td>
                                    <td class="configbig">
-                                     <b>#</b> <input class="text" name="user_group_color" size="7" maxlength="6" value="'.$group_arr['user_group_color'].'">
+                                     <b>#</b> <input class="text colorpicker" name="user_group_color" size="7" maxlength="6" value="'.$group_arr['user_group_color'].'">
                                      <span class="small">'."freilassen um Titel nicht einzuf&auml;rben".'</span><br>
                                      <span class="small">'."[Hexadezimal-Farbcode]".'</span>
                                    </td>
