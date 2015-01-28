@@ -45,7 +45,7 @@ if (
         if ( $_POST['style_create_as'] == 'copy' && $_POST['copy_style_id'] ) {
             
             if ('default' === $_POST['copy_style_id']) {
-                $copy_style_path = FS2SOURCE . '/styles/default'; //TODO
+                $copy_style_path = FS2ADMIN . '/assets/styles/default';
                 
             } else {
                 settype($_POST['copy_style_id'], 'integer');

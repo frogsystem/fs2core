@@ -7,7 +7,27 @@
 
     <div id="menu_left">
     $APP(mini-search.php)<br>
-    $NAV(left.nav)
+    
+    <b>Allgemein</b><br>
+    <a class="small" href="?go=news">- News</a><br>
+    <a class="small" href="?go=news_search">- News-Suche</a><br>
+    <a class="small" href="?go=user_list">- Mitgliederliste</a><br>
+    <a class="small" href="?go=polls">- Umfragen</a><br>
+    <a class="small" href="?go=search">- Suche</a><br>
+    <a class="small" href="?go=style_selection">- Stylewahl</a><br>
+    <br>
+
+    <b>Inhalt &amp; Media</b><br>
+    <a class="small" href="?go=fscode">- FSCode</a><br>
+    <a class="small" href="?go=gallery">- Galerie</a><br>
+    <a class="small" href="?go=download&amp;cat_id=all">- Downloads</a><br>
+    <a class="small" href="?go=press">- Presseberichte</a><br>
+    <br>
+
+    <b>Promotion</b><br>
+    <a class="small" href="?go=shop">- Shop</a><br>
+    <a class="small" href="?go=affiliates">- Partnerseiten</a><br>
+
     [%feeds%]
     </div>
 
@@ -48,4 +68,3 @@
 </html><!--section-end::MATRIX-->
 
 <!--section-start::DOCTYPE--><!DOCTYPE html><!--section-end::DOCTYPE-->
-

@@ -607,8 +607,8 @@ function get_footer_line ( $EDITOR_NAME, $STYLE, $HIGHLIGHTER, $FILE, $MANYFILES
 /////////////////////////////
 function get_original_array ( $EDITOR_NAME, $FILE, $ROWS, $COLS )
 {
-    $file_path = FS2SOURCE . '/styles/default/' . $FILE;
-    if (file_exists($file_path)) {//TODO
+    $file_path = FS2ADMIN . '/assets/styles/default/' . $FILE;
+    if (file_exists($file_path)) {
         $original['button'] = '
                                             <div class="html-editor-button html-editor-button-original atright" onClick="toggelOriginal(this, editor_'.$EDITOR_NAME.', \''.$EDITOR_NAME.'\')" title="Original anzeigen">
                                                 <img src="?images=null.gif" alt="Original anzeigen" border="0">
