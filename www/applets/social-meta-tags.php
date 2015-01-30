@@ -44,27 +44,33 @@ $FD->setConfig('social_meta_tags', 'site_name', $FD->config('social_meta_tags', 
             
             // content image => all goof
             if ($image[1] == 'cimg') {
-                $url = FS2MEDIA.'/content/'.$image[2];
+                $path = FS2MEDIA.'/content/'.$image[2];
+                $url = $FD->config('virtualhost').'media/content/'.$image[2];
             
             // analyze image url
             } else {
 
                 // internal image, but external include
                 if (0 === strpos($image[2], $FD->config('virtualhost'))) {
-                    $url = FS2CONTENT.'/'.str_replace($FD->config('virtualhost'), '', $image[2]);
+                    $path = FS2CONTENT.'/'.str_replace($FD->config('virtualhost'), '', $image[2]);
+                    $url  = $image[2];
                 
                 // externes Bild
                 } else if (0 === substr_compare($image[2], 'http', 0, 4, true) || 0 === substr_compare($image[2], '//', 0, 2, true)) {
                     if (!$FD->config('social_meta_tags', 'use_external_images')) {
                         continue; 
                     }
+                    $path = $image[2];
                     $url = $image[2];
+                    
+                // relative url of internal image
                 } else {
-                    $url = FS2CONTENT.'/'.$image[2];
+                    $path = FS2CONTENT.'/'.$image[2];
+                    $url  = $FD->config('virtualhost').$image[2];
                 }
             }
             
-            $size = @getimagesize($url);
+            $size = @getimagesize($path);
             if ($size && $size[0] >= 200 && $size[1] >= 200) {
                 return $url;
             }
