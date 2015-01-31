@@ -197,7 +197,7 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
     if ($flags['fscode'] && !$flags['nofscodeatall']) {
         // linebreaks
         if (in_array('newline', $to_html)) {
-            $fscode->addParser (array ('block', 'inline', 'link', 'listitem'), 'html_nl2br');
+            $fscode->addParser (array ('block', 'code', 'inline', 'link', 'listitem'), 'html_nl2br');
         }
 
         // smilies
@@ -424,17 +424,17 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
 
         // code
         if (in_array('code', $to_html)) {
-            $fscode->addCode ('code', 'usecontent', 'do_fscode_code', array (),
+            $fscode->addCode ('code', 'callback_replace', 'do_fscode_code', array (),
                     'code', array ('listitem', 'block', 'inline', 'htmlblock'), array ('link'));
         } elseif (in_array('code', $to_text)) {
-            $fscode->addCode ('code', 'usecontent', 'do_fscode_code', array ('text' => true),
+            $fscode->addCode ('code', 'callback_replace', 'do_fscode_code', array ('text' => true),
                     'code', array ('listitem', 'block', 'inline', 'htmlblock'), array ('link'));
         }
 
         if (in_array('code', $to_html) || in_array('code', $to_text)) {
+            $fscode->setCodeFlag ('code', 'opentag.before.newline', BBCODE_NEWLINE_DROP);
+            $fscode->setCodeFlag ('code', 'closetag.after.newline', BBCODE_NEWLINE_DROP);
             $fscode->setCodeFlag ('code', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
-            $fscode->setCodeFlag ('code', 'paragraph_type', BBCODE_PARAGRAPH_ALLOW_INSIDE);
-            $fscode->setCodeFlag ('code', 'paragraphs', false);
         }
 
 
@@ -447,7 +447,12 @@ function parse_fscode($TEXT, $flags = array(), $to_html = array(), $to_text = ar
                     'block', array ('listitem', 'block', 'inline', 'htmlblock'), array ('link'));
         }
         if (in_array('quote', $to_html) || in_array('quote', $to_text)) {
-            $fscode->setCodeFlag ('quote', 'paragraphs', false);
+            $fscode->setCodeFlag ('quote', 'opentag.before.newline', BBCODE_NEWLINE_DROP);
+            $fscode->setCodeFlag ('quote', 'opentag.after.newline', BBCODE_NEWLINE_DROP);
+            $fscode->setCodeFlag ('quote', 'closetag.before.newline', BBCODE_NEWLINE_DROP);
+            $fscode->setCodeFlag ('quote', 'closetag.after.newline', BBCODE_NEWLINE_DROP);
+            $fscode->setCodeFlag ('quote', 'paragraph_type', BBCODE_PARAGRAPH_BLOCK_ELEMENT);
+            $fscode->setCodeFlag ('quote', 'paragraphs', true);
         }
 
 
