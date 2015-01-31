@@ -78,7 +78,7 @@ function default_get_pagenav_data ()
     global $FD, $config_arr;
 
 
-    $limit = $config_arr['acp_per_page'];
+    $limit = $FD->config('articles', 'acp_per_page');
 
     // Create Where Clause for Category Filter
     unset ( $where_clause );
@@ -232,7 +232,7 @@ function default_display_all_entries ( $pagenav_arr )
         $where_clause = ''; //to avoid notice about undefined var.
     }
 
-    // Load News From DB
+    // Load Articles From DB
     $index = $FD->db()->conn()->query ( '
                                                         SELECT `article_id`
                                                         FROM '.$FD->env('DB_PREFIX').'articles
@@ -276,7 +276,7 @@ function default_display_page ( $entries, $pagenav_arr, $FORM )
 
     // Create Pagination
     $urlFormat = '?go=articles_edit&page=%d&order='.$_REQUEST['order'].'&sort='.$_REQUEST['sort'].'&cat_id='.$_REQUEST['cat_id'];
-    $settings = array('perPage' => $config_arr['acp_per_page'], 'urlFormat' => $urlFormat);
+    $settings = array('perPage' => $FD->config('articles', 'acp_per_page'), 'urlFormat' => $urlFormat);
     $pagination = new Pagination($pagenav_arr['total_entries'], $_REQUEST['page'], $settings);
 
 
@@ -316,7 +316,7 @@ function default_display_page ( $entries, $pagenav_arr, $FORM )
 
 function action_edit_get_data ( $ARTICLE_ID )
 {
-    global $FD;
+    global $FD, $config_arr;
 
     //Load Article
     $index = $FD->db()->conn()->query ( 'SELECT * FROM '.$FD->env('DB_PREFIX')."articles WHERE article_id = '".$ARTICLE_ID."' LIMIT 0, 1" );
@@ -351,7 +351,6 @@ function action_edit_get_data ( $ARTICLE_ID )
     $articles_arr['article_old_url'] = $old_url;
 
     // Load Article Config
-    $FD->loadConfig('articles');
     $config_arr = $FD->configObject('articles')->getConfigArray();
 
     // Create HTML, FSCode & Para-Handling Vars
