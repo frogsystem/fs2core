@@ -193,10 +193,13 @@
         $theTemplate->tag('copyright', get_copyright());
 
         $template_general = (string) $theTemplate;
-        $template_general = tpl_functions_init($template_general);
+        $template_general = $template_general;
 
         // Get Main Template
-        echo get_maintemplate ($template_general, '../');
+        global $APP;
+        $APP = load_applets();
+        
+        echo tpl_functions_init( get_maintemplate ($template_general, '../') );
         $JUST_CONTENT = true; //preview has own HTML head
     }
 
