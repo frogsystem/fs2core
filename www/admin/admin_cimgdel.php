@@ -1,7 +1,7 @@
 <?php if (!defined('ACP_GO')) die('Unauthorized access!');
 
 define('CIMG_PATH', FS2MEDIA.'/content/', true);
-$cimg_path = $FD->config('virtualhost').'content/';
+$cimg_path = $FD->config('virtualhost').'media/content/';
 
 if(isset($_GET['file'])){
     $file = intval($_GET['file']);
