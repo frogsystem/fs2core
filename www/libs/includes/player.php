@@ -16,8 +16,6 @@ function get_player ( $MULTI, $WIDTH = true, $HEIGHT = true, $MODIFIER = false )
 
     </object>
     ';
-    //~ <param name="FlashVars" value="config='.$FD->config('virtualhost').'resources/player/player_flv_config.php&amp;flv={..url..}&amp;title={..title..}&amp;width={..width..}&amp;height={..height..}"></param>
-
 
     $template_youtube = '
     <iframe width="{..width..}" height="{..height..}" src="//www.youtube.com/embed/{..url..}" frameborder="0" allowfullscreen></iframe>
