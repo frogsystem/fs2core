@@ -236,10 +236,10 @@ abstract class NewsFeed extends Feed {
         $FD->loadConfig('news');
 
         // Get News from DB
-        $news_arr = $FD->sql()->conn()->query(
+        $news_arr = $FD->db()->conn()->query(
                         'SELECT N.news_id, N.news_text, N.news_title, N.news_date, N.user_id, C.cat_name
-                         FROM '.$FD->config('pref').'news N
-                         LEFT JOIN '.$FD->config('pref').'news_cat C
+                         FROM '.$FD->env('DB_PREFIX').'news N
+                         LEFT JOIN '.$FD->env('DB_PREFIX').'news_cat C
                          ON N.cat_id = C.cat_id
                          WHERE N.`news_date` <= '.$FD->env('time').' AND N.`news_active` = 1
                          '.(!empty($this->settings['cat_filter']) ? 'AND N.`cat_id` NOT IN ('.implode(',', $this->settings['cat_filter']).')' : '').'
@@ -256,16 +256,13 @@ abstract class NewsFeed extends Feed {
     protected function parseNews ($news) {
         global $FD;
 
-        // Include functions & libs
-        require_once(FS2_ROOT_PATH . 'includes/fscode.php');
-
         // check for latest news_date
         if ($news['news_date'] > $this->lastUpdate)
             $this->lastUpdate = $news['news_date'];
 
         // get user name
-        $news['user_name'] = $FD->sql()->conn()->query(
-                                 'SELECT user_name FROM '.$FD->config('pref').'user
+        $news['user_name'] = $FD->db()->conn()->query(
+                                 'SELECT user_name FROM '.$FD->env('DB_PREFIX').'user
                                   WHERE user_id = '.intval($news['user_id']).' LIMIT 1');
         $news['user_name'] = $news['user_name']->fetchColumn();
 
@@ -328,9 +325,9 @@ class RSS20 extends NewsFeed {
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <language>'.$this->getLanguage().'</language>
-        <description>'.utf8_encode(htmlspecialchars($this->getDescription())).'</description>
+        <description>'.utf8_encode(killhtml($this->getDescription())).'</description>
         <link>'.utf8_encode($this->getFsUrl()).'</link>
-        <title>'.utf8_encode(htmlspecialchars($this->getTitle())).'</title>
+        <title>'.utf8_encode(killhtml($this->getTitle())).'</title>
         <atom:link href="'.utf8_encode($this->getFeedUrl()).'" rel="self" type="application/rss+xml" />';
 
     }
@@ -339,7 +336,7 @@ class RSS20 extends NewsFeed {
     protected function getItemXml($item) {
         return '
         <item>
-            <title>'.utf8_encode(htmlspecialchars($item['news_title'])).'</title>
+            <title>'.utf8_encode(killhtml($item['news_title'])).'</title>
             <link>'.utf8_encode(url('comments', array('id' => $item['news_id']), true)).'</link>
             <pubDate>'.utf8_encode(date('r', $item['news_date'])).'</pubDate>
             <description><![CDATA['.utf8_encode($item['parsed_text']).']]></description>
@@ -368,9 +365,9 @@ class RSS10 extends NewsFeed {
     xmlns="http://purl.org/rss/1.0/"
 >
     <channel rdf:about="'.utf8_encode($this->getFeedUrl()).'">
-        <title>'.utf8_encode(htmlspecialchars($this->getTitle())).'</title>
+        <title>'.utf8_encode(killhtml($this->getTitle())).'</title>
         <link>'.utf8_encode($this->getFsUrl()).'</link>
-        <description>'.utf8_encode(htmlspecialchars($this->getDescription())).'</description>
+        <description>'.utf8_encode(killhtml($this->getDescription())).'</description>
         <items>
             <rdf:Seq>';
 
@@ -393,7 +390,7 @@ class RSS10 extends NewsFeed {
     protected function getItemXml($item) {
         return '
     <item rdf:about="'.utf8_encode(url('comments', array('id' => $item['news_id']), true)).'">
-        <title>'.utf8_encode(htmlspecialchars($item['news_title'])).'</title>
+        <title>'.utf8_encode(killhtml($item['news_title'])).'</title>
         <link>'.utf8_encode(url('comments', array('id' => $item['news_id']), true)).'</link>
         <description><![CDATA['.utf8_encode($item['parsed_text']).']]></description>
     </item>';
@@ -417,16 +414,16 @@ class RSS091 extends NewsFeed {
 <rss version="0.91">
     <channel>
         <language>'.$this->getLanguage().'</language>
-        <description>'.utf8_encode(htmlspecialchars($this->getDescription())).'</description>
+        <description>'.utf8_encode(killhtml($this->getDescription())).'</description>
         <link>'.utf8_encode($this->getFsUrl()).'</link>
-        <title>'.utf8_encode(htmlspecialchars($this->getTitle())).'</title>';
+        <title>'.utf8_encode(killhtml($this->getTitle())).'</title>';
     }
 
     // Return XML Representation of an item
     protected function getItemXml($item) {
         return '
         <item>
-            <title>'.utf8_encode(htmlspecialchars($item['news_title'])).'</title>
+            <title>'.utf8_encode(killhtml($item['news_title'])).'</title>
             <link>'.utf8_encode(url('comments', array('id' => $item['news_id']), true)).'</link>
             <pubDate>'.utf8_encode(date('r', $item['news_date'])).'</pubDate>
             <description><![CDATA['.utf8_encode($item['parsed_text']).']]></description>
@@ -453,7 +450,7 @@ class Atom10 extends NewsFeed {
         return '<?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>'.utf8_encode($this->getFsUrl()).'</id>
-    <title>'.utf8_encode(htmlspecialchars($this->getTitle())).'</title>
+    <title>'.utf8_encode(killhtml($this->getTitle())).'</title>
     <updated>'.utf8_encode($last_updated).'</updated>
     <link rel="self" href="'.utf8_encode($this->getFeedUrl()).'" />';
     }
@@ -471,10 +468,10 @@ class Atom10 extends NewsFeed {
         return '
     <entry>
         <id>'.utf8_encode(url('comments', array('id' => $item['news_id']), true)).'</id>
-        <title>'.utf8_encode(htmlspecialchars($item['news_title'])).'</title>
+        <title>'.utf8_encode(killhtml($item['news_title'])).'</title>
         <updated>'.utf8_encode($news_updated).'</updated>
         <author>
-            <name>'.utf8_encode(htmlspecialchars($item['user_name'])).'</name>
+            <name>'.utf8_encode(killhtml($item['user_name'])).'</name>
         </author>
         <content'.$html_content.'><![CDATA['.utf8_encode($item['parsed_text']).']]></content>
         <link rel="alternate" href="'.utf8_encode(url('comments', array('id' => $item['news_id']), true)).'" />

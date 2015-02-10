@@ -16,7 +16,7 @@ define('INCLUDE_ONDEMAND', 2);
 if (
     isset ( $_POST['applet_file'] )
     && $_POST['applet_file'] != ''
-    && file_exists ( FS2_ROOT_PATH . 'applets/' . $_POST['applet_file'] . '.php' )
+    && file_exists ( FS2SOURCE . '/applets/' . $_POST['applet_file'] . '.php' )
     )
 {
 
@@ -25,14 +25,14 @@ if (
     settype ( $_POST['applet_include'], 'integer' );
 
     // Check if Applet exists
-    $index = $sql->conn()->prepare ( 'SELECT `applet_id` FROM `'.$FD->config('pref').'applets` WHERE `applet_file` = ?' );
+    $index = $FD->db()->conn()->prepare ( 'SELECT `applet_id` FROM `'.$FD->env('DB_PREFIX').'applets` WHERE `applet_file` = ?' );
     $index->execute(array($_POST['applet_file']));
     $row = $index->fetch(PDO::FETCH_ASSOC);
 
     // New Applet
     if ( $row === false ) {
         // SQL-Queries
-        $stmt = $sql->conn()->prepare ( 'INSERT INTO `'.$FD->config('pref')."applets` (
+        $stmt = $FD->db()->conn()->prepare ( 'INSERT INTO `'.$FD->env('DB_PREFIX')."applets` (
                                   `applet_file`,
                                   `applet_active`,
                                   `applet_include`,
@@ -71,7 +71,7 @@ settype ( $_POST['applet_output'], 'integer' );
 
 // Check for Errors
 if ( isset ( $_POST['sended'] ) ) {
-    if ( isset ( $_POST['applet_file'] ) && $_POST['applet_file'] !=  '' && !file_exists ( FS2_ROOT_PATH . 'applets/' . $_POST['applet_file'] . '.php' ) ) {
+    if ( isset ( $_POST['applet_file'] ) && $_POST['applet_file'] !=  '' && !file_exists ( FS2SOURCE . '/applets/' . $_POST['applet_file'] . '.php' ) ) {
         $error_message = $FD->text("admin", "applet_file_not_exists");
     } else {
         $error_message = $FD->text("admin", "form_not_filled");

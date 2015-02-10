@@ -1,0 +1,207 @@
+/**************************************************/
+/* non-js html-editor styles */
+/**************************************************/
+textarea.no-js-html-editor {
+    width:100%;
+    color:#000000;
+    background-color:#FFFFFF;
+    border:none;
+    text-align:left;
+    font-size:10pt;
+    font-family:monospace;
+    padding:0px;
+    margin:0px;
+}
+
+
+/**************************************************/
+/* Button styles */
+/**************************************************/
+.html-editor-button-big {
+    background-image:url(?html-editor=note-edit.gif);
+}
+.html-editor-button-textwrap {
+    background-image:url(?html-editor=text-wrapping.gif);
+}
+.html-editor-button-line-numbers {
+    background-image:url(?html-editor=line-numbers.gif);
+}
+.html-editor-button-original {
+    background-image:url(?html-editor=doc-search.gif);
+}
+.html-editor-button-undo {
+    background-image:url(?html-editor=action-undo.gif);
+}
+.html-editor-button-redo {
+    background-image:url(?html-editor=action-redo.gif);
+}
+
+
+/**************************************************/
+/* special codemirror styles */
+/**************************************************/
+
+.CodeMirror.html-editor-original {
+    .CodeMirror-gutters {
+    }
+    &::after {
+        content: "Original Template";
+        position: absolute;
+        bottom: 20px;
+        right: 30px;
+        color: rgba(255, 170, 170, .5);
+        font-family: Arial,Helvetica,sans-serif;
+        font-size: 30pt;
+        font-weight: bold;
+    }
+}
+
+
+/**************************************************/
+/* html-editor styles */
+/**************************************************/
+.html-editor-bar {
+    background-color:#EEEEEE;
+    border: 1px solid #999999;
+    border-bottom:none;
+    width:100%;
+    padding:0px;
+    margin:0px;
+    font-weight:normal;
+}
+.html-editor-row {
+    height:24px;
+    padding:1px;
+    font-family:Verdana, Arial, Helvetica, sans-serif;
+}
+.html-editor-path {
+    background-color:#EEEEEE;
+    border: 1px solid #999999;
+    border-top:none;
+    width:100%;
+    padding:0px;
+    margin:0px;
+    font-family:Verdana, Arial, Helvetica, sans-serif;
+    line-height:110%;
+}
+
+.html-editor-highlighter {
+    float:right;
+}
+.html-editor-row-header {
+    height:19px;
+    border-bottom:1px solid #999999;
+    padding:6px 5px 1px;
+    vertical-align:top;
+    font-weight:normal;
+}
+.html-editor-row-header span[id$=title] {
+    font-size:11pt;
+    font-family:"Century Gothic", "Futura", Arial, Helvetica, sans-serif;
+    font-weight:bold;
+    vertical-align:top;
+}
+.html-editor-row-header .small {
+    vertical-align:top;
+}
+
+.html-editor-button, .html-editor-button-active, .html-editor-button-hover  {
+    height:20px;
+    width:20px;
+    cursor:pointer;
+    background-color:transparent;
+    background-repeat:no-repeat;
+    background-position:center;
+    border:1px solid #EEEEEE;
+    padding:0px;
+    margin:1px;
+    display:block;
+    float:left;
+}
+.html-editor-button-active {
+    border:1px solid #777777;
+    background-color:#DDDDDD;
+}
+.html-editor-button-hover {
+    border:1px solid #555555;
+    background-color:#CCCCCC;
+}
+
+
+.html-editor-line {
+    height:20px;
+    width:5px;
+    background-image:url("?html-editor=line.gif");
+    background-repeat:no-repeat;
+    background-position:center;
+    border:1px solid #EEEEEE;
+    padding:0px;
+    margin:1px;
+    display:block;
+    float:left;
+}
+.html-editor-container-list {
+    float:left;
+    position:relative;
+}
+.html-editor-list {
+    height:14px;
+    cursor:pointer;
+    background-color:#FFFFFF;
+    background-repeat:no-repeat;
+    border:1px solid #BBBBBB;
+    padding:2px 4px;
+    margin:2px 0px 1px 1px;
+    display:block;
+    float:left;
+    vertical-align:middle;
+    font-size:11px;
+
+    font-weight:normal;
+    text-decoration:none;
+    line-height:120%;
+}
+.html-editor-list-arrow {
+    height:14px;
+    width:3px;
+    cursor:pointer;
+    padding:2px 4px;
+    margin:2px 1px 1px 0px;
+    background-color:#EEEEEE;
+    background-image:url("?html-editor=arrow.gif");
+    background-repeat:no-repeat;
+    background-position:center;
+    border:1px solid #BBBBBB;
+    border-left:none;
+    display:block;
+    float:left;
+}
+
+.html-editor-list-popup {
+    display:none;
+    cursor:default;
+    position:absolute;
+    top:0px;
+    left:0px;
+    margin-top:21px;
+    margin-left:1px;
+    padding:0px;
+    width:250px;
+    border:none;
+    z-index:100;
+}
+
+.html-editor-list-table {
+    padding:0px;
+    margin:0px;
+    border:1px solid #555555;
+    background-color:#EEEEEE;
+    font-family:Verdana, Arial, Helvetica, sans-serif;
+}
+
+
+.html-editor-list-table td {
+    padding:4px;
+    border-top:1px solid #BBBBBB;
+    line-height:130%;
+}

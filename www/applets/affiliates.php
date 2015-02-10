@@ -4,9 +4,9 @@ $FD->loadConfig('affiliates');
 $config_arr = $FD->configObject('affiliates')->getConfigArray();
 
 // Get Affiliates
-$index = $FD->sql()->conn()->query ( '
+$index = $FD->db()->conn()->query ( '
                 SELECT *
-                FROM `'.$FD->config('pref').'partner`
+                FROM `'.$FD->env('DB_PREFIX').'partner`
                 ORDER BY `partner_id`' );
 
 $all_arr = array();
@@ -24,8 +24,8 @@ while ( $affiliates_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
     $template->load('APPLET_ENTRY');
 
     $template->tag('url', $affiliates_arr['partner_link'] );
-    $template->tag('img_url', image_url ( 'images/partner/', $affiliates_arr['partner_id'].'_big' ) );
-    $template->tag('button_url', image_url ( 'images/partner/', $affiliates_arr['partner_id'].'_small' ) );
+    $template->tag('img_url', image_url ( '/partner', $affiliates_arr['partner_id'].'_big' ) );
+    $template->tag('button_url', image_url ( '/partner', $affiliates_arr['partner_id'].'_small' ) );
     $template->tag('name', $affiliates_arr['partner_name'] );
     $template->tag('text', $affiliates_arr['partner_beschreibung'] );
 

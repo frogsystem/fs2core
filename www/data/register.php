@@ -32,15 +32,15 @@ elseif ( isset($_POST['user_name']) && isset($_POST['user_mail']) && isset($_POS
     $userpass_mail = $_POST['new_pwd'];
 
     // user exists or existing email negative anti spam
-    $stmt = $FD->sql()->conn()->prepare ( "
+    $stmt = $FD->db()->conn()->prepare ( "
                 SELECT COUNT(`user_id`) AS 'number'
-                FROM ".$FD->config('pref').'user
+                FROM ".$FD->env('DB_PREFIX').'user
                 WHERE user_name = ?' );
     $stmt->execute( array( $_POST['user_name'] ) );
     $existing_users = $stmt->fetchColumn();
-    $stmt = $FD->sql()->conn()->prepare ( "
+    $stmt = $FD->db()->conn()->prepare ( "
                 SELECT COUNT(`user_id`) AS 'number'
-                FROM ".$FD->config('pref').'user
+                FROM ".$FD->env('DB_PREFIX').'user
                 WHERE user_mail = ?' );
     $stmt->execute( array( $_POST['user_mail'] ) );
     $existing_mails = $stmt->fetchColumn();
@@ -81,18 +81,18 @@ elseif ( isset($_POST['user_name']) && isset($_POST['user_mail']) && isset($_POS
             $email_message = '<br>'.$FD->text("frontend", "mail_registerd_not_sended");
         }
 
-        $stmt = $FD->sql()->conn()->prepare ( '
+        $stmt = $FD->db()->conn()->prepare ( '
                         INSERT INTO
-                            `'.$FD->config('pref')."user`
+                            `'.$FD->env('DB_PREFIX')."user`
                             (`user_name`, `user_password`, `user_salt`, `user_mail`, `user_reg_date`)
                         VALUES (
                             ?, '".$userpass."', '".$user_salt."', ?, '".$regdate."'
                         )" );
         $stmt->execute(array($_POST['user_name'], $_POST['user_mail']));
 
-        $index = $FD->sql()->conn()->query ( 'SELECT COUNT(`user_id`) AS `user_number` FROM '.$FD->config('pref').'user' );
+        $index = $FD->db()->conn()->query ( 'SELECT COUNT(`user_id`) AS `user_number` FROM '.$FD->env('DB_PREFIX').'user' );
         $new_user_num = $index->fetchColumn();
-        $FD->sql()->conn()->exec ( 'UPDATE `'.$FD->config('pref')."counter` SET `user` = '".$new_user_num."'" );
+        $FD->db()->conn()->exec ( 'UPDATE `'.$FD->env('DB_PREFIX')."counter` SET `user` = '".$new_user_num."'" );
 
         $messages = forward_message($FD->text("frontend", "systemmessage"), $FD->text("frontend", "user_registered").$email_message, url($FD->cfg('home_real')));
 
@@ -118,7 +118,7 @@ elseif ( isset( $_POST['register'] ) ) {
 
 if ( $show_form == TRUE ) {
     // Get some Data
-    $captcha_url = FS2_ROOT_PATH . 'resources/captcha/captcha.php?i='.generate_pwd(8);
+    $captcha_url = url('captcha', array('i' => generate_pwd(8)), true);
 
     // Check Cpatcha Use
     if ( $config_arr['registration_antispam'] == 0 ) {

@@ -37,7 +37,7 @@ if ( isset ( $_GET['info'] ) ) {
     if (function_exists('posix_getuid') && function_exists('posix_getpwuid'))
     {
       $user_info = posix_getpwuid(posix_getuid());
-      echo htmlspecialchars($user_info['name']);
+      echo killhtml($user_info['name']);
     }
     else
     {
@@ -45,7 +45,7 @@ if ( isset ( $_GET['info'] ) ) {
          although that can (and often will) give incorrect result, but that's
          the best guess so far. If that bugs you, run your server on a POSIX-
          compatible system or enable PHP's POSIX extension. */
-      echo htmlspecialchars(get_current_user());
+      echo killhtml(get_current_user());
     }
     echo '
                                 </td>

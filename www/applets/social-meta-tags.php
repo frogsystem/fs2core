@@ -1,57 +1,9 @@
 <?php
-###############################
-## Social Meta Tags Settings ##
-###############################
-$settings = array (
-    // meta tag types
-    'use_google_plus' => true,
-    'use_schema_org' => true,
-    'use_twitter_card' => true,
-    'use_open_graph' => true,
 
-    // use for content types
-    'for_news' => true,
-    'for_articles' => true,
-    'for_downloads' => true,
-
-    // minimal info, this is a MUST
-    'site_name' => '',
-    'default_image' => '', // min. 200x200px, better 280x200px, no https!
-
-    // extended settings, strongly RECOMMENDED
-    // set to false if you don't want use them
-    'news_cat_prepend' => ': ', // false or delimiter string
-    'google_plus_page' => '', // with +
-    'twitter_site' => '', // with @
-    'fb_admins' => '', // CSV => http://findmyfacebookid.com/
-    'og_section' => '', // A high-level section name. E.g. Technology
-);
-
-/**
- * IMPORTANT!
- *
- * Update your html tag to include the itemscope and itemtype attributes:
- * <html itemscope itemtype="http://schema.org/Article">
- */
-
-/**
- * Debuggers:
- *
- * Twitter: https://dev.twitter.com/docs/cards/validation/validator
- * Facebook: https://developers.facebook.com/tools/debug
- * Google: http://www.google.com/webmasters/tools/richsnippets
- */
-
-######################
-## SMT Settings End ##
-######################
-
-
-/**
- * DO NOT EDIT BELOW HERE
- */
-$settings = (object) $settings;
-
+// load config
+$FD->loadConfig('social_meta_tags');
+$FD->setConfig('social_meta_tags', 'default_image', $FD->config('social_meta_tags', 'default_image') ?: false);
+$FD->setConfig('social_meta_tags', 'site_name', $FD->config('social_meta_tags', 'site_name') ?: $FD->config('title'));
 
 // Detect page type
 {
@@ -77,7 +29,7 @@ $settings = (object) $settings;
 
         $text = preg_replace("/[\n\r]/", '', $text);
 
-        $text = StringCutter::truncate(htmlspecialchars($text), $length, $extension, array('word'=>true));  //less than 200 characters
+        $text = StringCutter::truncate(killhtml($text), $length, $extension, array('word'=>true));  //less than 200 characters
         return $text;
     }
 
@@ -86,17 +38,40 @@ $settings = (object) $settings;
 
         preg_match_all('#\[(c?img).*\]([^\s]+)\[\/\1\]#', $text, $images, PREG_SET_ORDER);
         foreach ($images as $image) {
-            if ($image[1] == 'cimg') {
-                $url = $FD->cfg('virtualhost').'media/content/'.$image[2];
-            } else {
-                $url = $image[2];
-            }
 
             // resolve tpl_functions
-            $url = tpl_functions($url, 1, array('VAR', 'URL'));
+            $image[2] = trim(tpl_functions($image[2], 1, array('VAR', 'URL')));            
+            
+            // content image => all goof
+            if ($image[1] == 'cimg') {
+                $path = FS2MEDIA.'/content/'.$image[2];
+                $url = $FD->config('virtualhost').'media/content/'.$image[2];
+            
+            // analyze image url
+            } else {
 
-            $size = getimagesize($url);
-            if ($size[0] >= 200 && $size[1] >= 200) {
+                // internal image, but external include
+                if (0 === strpos($image[2], $FD->config('virtualhost'))) {
+                    $path = FS2CONTENT.'/'.str_replace($FD->config('virtualhost'), '', $image[2]);
+                    $url  = $image[2];
+                
+                // externes Bild
+                } else if (0 === substr_compare($image[2], 'http', 0, 4, true) || 0 === substr_compare($image[2], '//', 0, 2, true)) {
+                    if (!$FD->config('social_meta_tags', 'use_external_images')) {
+                        continue; 
+                    }
+                    $path = $image[2];
+                    $url = $image[2];
+                    
+                // relative url of internal image
+                } else {
+                    $path = FS2CONTENT.'/'.$image[2];
+                    $url  = $FD->config('virtualhost').$image[2];
+                }
+            }
+            
+            $size = @getimagesize($path);
+            if ($size && $size[0] >= 200 && $size[1] >= 200) {
                 return $url;
             }
         }
@@ -104,12 +79,12 @@ $settings = (object) $settings;
     }
 
     // news
-    if ($settings->for_news && 'comments' == $FD->env('goto')) {
+    if ($FD->config('social_meta_tags', 'enable_news') && 'comments' == $FD->env('goto')) {
         // load data
-        $news_arr = $FD->sql()->conn()->query(
+        $news_arr = $FD->db()->conn()->query(
                         'SELECT N.*, C.cat_name
-                         FROM '.$FD->config('pref').'news N
-                         LEFT JOIN '.$FD->config('pref').'news_cat C
+                         FROM '.$FD->env('DB_PREFIX').'news N
+                         LEFT JOIN '.$FD->env('DB_PREFIX').'news_cat C
                          ON N.cat_id = C.cat_id
                          WHERE N.`news_id` = '.intval($_GET['id']).'
                          AND N.`news_date` <= '.$FD->env('time').' AND N.`news_active` = 1
@@ -118,9 +93,10 @@ $settings = (object) $settings;
 
         // set data
         if (!empty($news_arr)) {
-            $content->title = htmlspecialchars($news_arr['news_title']);
-            if (false !== $settings->news_cat_prepend) {
-                $content->title = htmlspecialchars($news_arr['cat_name']).$settings->news_cat_prepend.$content->title;
+            $content = new stdClass();
+            $content->title = killhtml($news_arr['news_title']);
+            if ($FD->config('social_meta_tags', 'use_news_cat_prepend')) {
+                $content->title = killhtml($news_arr['cat_name']).$FD->config('social_meta_tags', 'news_cat_prepend').$content->title;
             }
             $content->summery = summeryFromContent($news_arr['news_text'], 207, '');
             $content->url = get_canonical_url();
@@ -131,18 +107,19 @@ $settings = (object) $settings;
 
 
     // article
-    } else if ($settings->for_articles && 'articles' == $FD->env('goto')) {
+    } else if ($FD->config('social_meta_tags', 'enable_articles') && 'articles' == $FD->env('goto')) {
         //load data
         if ($FD->cfg('goto') == 'articles') {
-            $article_arr = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'articles WHERE article_id = '.intval($_GET['id']));
+            $article_arr = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX').'articles WHERE article_id = '.intval($_GET['id']));
         } else {
-            $article_arr = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."articles WHERE `article_url` = '".$FD->cfg('goto')."' ORDER BY `article_id` LIMIT 1");
+            $article_arr = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX')."articles WHERE `article_url` = '".$FD->cfg('goto')."' ORDER BY `article_id` LIMIT 1");
         }
         $article_arr = $article_arr->fetch(PDO::FETCH_ASSOC);
 
         // set data
         if (!empty($article_arr)) {
-            $content->title = htmlspecialchars($article_arr['article_title']);
+            $content = new stdClass();
+            $content->title = killhtml($article_arr['article_title']);
             $content->summery = summeryFromContent($article_arr['article_text'], 207, '');
             $content->url = get_canonical_url();
             $content->date = date('c', $article_arr['article_date']?:$article_arr['article_search_update']);
@@ -152,11 +129,11 @@ $settings = (object) $settings;
 
 
     // download
-    } else if ($settings->for_downloads && 'dlfile' == $FD->env('goto')) {
+    } else if ($FD->config('social_meta_tags', 'enable_downloads') && 'dlfile' == $FD->env('goto')) {
         // load data
-        $downloads = $FD->sql()->conn()->query(
+        $downloads = $FD->db()->conn()->query(
                         'SELECT `dl_id`, `dl_name`, `dl_text`, `dl_date`, `dl_search_update`
-                         FROM '.$FD->config('pref').'dl
+                         FROM '.$FD->env('DB_PREFIX').'dl
                          WHERE `dl_id` = '.intval($_GET['id']).'
                          AND `dl_open` = 1 AND `dl_date` <= '.$FD->env('time').'
                          ORDER BY `dl_search_update` DESC');
@@ -164,16 +141,23 @@ $settings = (object) $settings;
 
         // set data
         if (!empty($downloads)) {
-            $content->title = htmlspecialchars($downloads['dl_name']);
+            $content = new stdClass();
+            $content->title = killhtml($downloads['dl_name']);
             $content->summery = summeryFromContent($downloads['dl_text'], 207, '');
             $content->url = get_canonical_url();
             $content->date = date('c', $downloads['dl_date']?:$downloads['dl_search_update']);
             $content->last_update = date('c', $downloads['dl_date']?:$downloads['dl_search_update']);
-            if (image_exists('images/downloads/', $downloads['dl_id'])) {
-                $content->image = image_url('images/downloads/', $downloads['dl_id']);
+            $content->image = false;
+            if (image_exists('/downloads', $downloads['dl_id'])) {
+                $content->image = image_url('/downloads', $downloads['dl_id']);
             }
         }
     }
+}
+
+// quit if no content found
+if (!isset($content) || empty($content)) {
+    return;
 }
 
 //todo
@@ -181,25 +165,24 @@ $settings = (object) $settings;
 //~ $content->tags;
 //~ $content->user->twitter;
 //~ $content->user->google_plus;
+$content->user = (object) array('google_plus' => false, 'twitter' => false);
+$content->tag = false;
 
-// quit if no content found
-if (!isset($content) || empty($content)) {
-    return;
-}
 
 // image stuff
 {
     //Twitter Summary card images must be at least 200x200px
     //Twitter summary card with large image must be at least 280x150px
     $content->image_is_large = false;
-    if (!$content->image) {
-        $content->image = $settings->default_image;
-    }
-    $size = getimagesize($content->image);
-    if ($size[0] >= 280 && $size[1] >= 200) {
-        $content->image_is_large = true;
-    } else if ($size[0] < 200 || $size[1] < 200) {
-        $content->image = $settings->default_image;
+    $content->image = $content->image ?: $FD->config('social_meta_tags', 'default_image');
+
+    if (!empty($content->image)) {
+        $size = getimagesize($content->image);
+        if ($size[0] >= 280 && $size[1] >= 200) {
+            $content->image_is_large = true;
+        } else if ($size[0] < 200 || $size[1] < 200) {
+            $content->image = $FD->config('social_meta_tags', 'default_image');
+        }
     }
 }
 
@@ -207,22 +190,22 @@ if (!isset($content) || empty($content)) {
 // Display everything
 {
     // Google Authorship and Publisher Markup
-    if ($settings->use_google_plus) {
+    if ($FD->config('social_meta_tags', 'use_google_plus')) {
         print $content->user->google_plus ? '<link rel="author" href="https://plus.google.com/'.$content->user->google_plus.'/posts">'.PHP_EOL : '';
-        print $settings->google_plus_page ? '<link rel="publisher" href="https://plus.google.com/'.$settings->google_plus_page.'/">'.PHP_EOL : '';
+        print $FD->config('social_meta_tags', 'google_plus_page') ? '<link rel="publisher" href="https://plus.google.com/'.$FD->config('social_meta_tags', 'google_plus_page').'/">'.PHP_EOL : '';
     }
 
     // Schema.org markup for Google+
-    if ($settings->use_schema_org) {
+    if ($FD->config('social_meta_tags', 'use_schema_org')) {
         print '<meta itemprop="name" content="'.$content->title.'">'.PHP_EOL;
         print '<meta itemprop="description" content="'.$content->summery.'">'.PHP_EOL;
         print $content->image ? '<meta itemprop="image" content="'.$content->image.'">'.PHP_EOL : '';
     }
 
     // Twitter Card data
-    if ($settings->use_twitter_card) {
+    if ($FD->config('social_meta_tags', 'use_twitter_card')) {
         print '<meta name="twitter:card" content="'.(($content->image && $content->image_is_large) ? 'summary_large_image' : 'summary').'">'.PHP_EOL;
-        print $settings->twitter_site ? '<meta name="twitter:site" content="'.$settings->twitter_site.'">'.PHP_EOL : '';
+        print $FD->config('social_meta_tags', 'twitter_site') ? '<meta name="twitter:site" content="'.$FD->config('social_meta_tags', 'twitter_site').'">'.PHP_EOL : '';
         print '<meta name="twitter:title" content="'.$content->title.'">'.PHP_EOL;
         print '<meta name="twitter:description" content="'.$content->summery.'">'.PHP_EOL;
         print $content->user->twitter ? '<meta name="twitter:creator" content="'.$content->user->twitter.'">'.PHP_EOL : '';
@@ -230,18 +213,18 @@ if (!isset($content) || empty($content)) {
     }
 
     // Open Graph data
-    if ($settings->use_open_graph) {
+    if ($FD->config('social_meta_tags', 'use_open_graph')) {
         print '<meta property="og:title" content="'.$content->title.'">'.PHP_EOL;
         print '<meta property="og:type" content="article">'.PHP_EOL;
         print '<meta property="og:url" content="'.$content->url.'">'.PHP_EOL;
         print $content->image ? '<meta property="og:image" content="'.$content->image.'">'.PHP_EOL : '';
         print '<meta property="og:description" content="'.$content->summery.'">'.PHP_EOL;
-        print $settings->site_name ? '<meta property="og:site_name" content="'.$settings->site_name.'">'.PHP_EOL : '';
+        print $FD->config('social_meta_tags', 'site_name') ? '<meta property="og:site_name" content="'.$FD->config('social_meta_tags', 'site_name').'">'.PHP_EOL : '';
         print '<meta property="article:published_time" content="'.$content->date.'">'.PHP_EOL;
         print $content->last_update ? '<meta property="article:modified_time" content="'.$content->last_update.'">'.PHP_EOL : '';
-        print $settings->og_section ? '<meta property="article:section" content="'.$settings->og_section.'">'.PHP_EOL : '';
+        print $FD->config('social_meta_tags', 'og_section') ? '<meta property="article:section" content="'.$FD->config('social_meta_tags', 'og_section').'">'.PHP_EOL : '';
         print $content->tag ? '<meta property="article:tag" content="'.$content->tag.'">'.PHP_EOL : '';
-        foreach (explode(',', $settings->fb_admins) as $admin) {
+        foreach (explode(',', $FD->config('social_meta_tags', 'fb_admins')) as $admin) {
             print $admin ? '<meta property="fb:admins" content="'.$admin.'">'.PHP_EOL : '';
         }
     }

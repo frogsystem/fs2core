@@ -18,7 +18,7 @@ $defaults = array(
 //////////////////////////
 
 
-$catsqry = $FD->sql()->conn()->query('SELECT * FROM `'.$FD->config('pref').'cimg_cats`');
+$catsqry = $FD->db()->conn()->query('SELECT * FROM `'.$FD->env('DB_PREFIX').'cimg_cats`');
 $cats = array();
 while(($cat = $catsqry->fetch(PDO::FETCH_ASSOC)) !== false){
     $cats[] = $cat;
@@ -46,16 +46,16 @@ if (isset($_FILES['cimg']) AND (isset($_POST['newname']) OR $_POST['oldname'] ==
   settype ($_POST['width'], 'integer');
   settype ($_POST['height'], 'integer');
 
-  if (!image_exists('media/content/',$_POST['newname'])  AND !image_exists('media/content/',$_POST['newname'].'_s'))
+  if (!image_exists('/content',$_POST['newname'])  AND !image_exists('/content',$_POST['newname'].'_s'))
   {
-    $upload = upload_img($_FILES['cimg'], 'media/content/', $_POST['newname'], 1024*1024*5, 9999, 9999);
+    $upload = upload_img($_FILES['cimg'], '/content', $_POST['newname'], 1024*1024*5, 9999, 9999);
     $message = upload_img_notice ( $upload );
     if ($make_thumb) {
-      $thumb = create_thumb_from ( image_url ( 'media/content/', $_POST['newname'], FALSE, TRUE ) , $_POST['width'], $_POST['height'] );
+      $thumb = create_thumb_from ( image_url ( '/content', $_POST['newname'], FALSE, TRUE ) , $_POST['width'], $_POST['height'] );
       $message .= '<br>' . create_thumb_notice ( $thumb );
     }
-    $stmt = $FD->sql()->conn()->prepare('
-                  INSERT INTO `'.$FD->config('pref')."cimg` (`name`, `type`, `hasthumb`, `cat`)
+    $stmt = $FD->db()->conn()->prepare('
+                  INSERT INTO `'.$FD->env('DB_PREFIX')."cimg` (`name`, `type`, `hasthumb`, `cat`)
                   VALUES (?, ?, ".intval($_POST['thumb']).', '.intval($_POST['cat']).')');
     $stmt->execute(array($_POST['newname'], $oldname_data));
     unset($_POST['width']);

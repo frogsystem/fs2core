@@ -42,8 +42,8 @@ if (isset($_POST['title']) && isset($_POST['text']))
     {
         settype($_POST['commentposterid'], 'integer');
 
-        $stmt = $FD->sql()->conn()->prepare(
-                  'UPDATE `'.$FD->config('pref')."comments`
+        $stmt = $FD->db()->conn()->prepare(
+                  'UPDATE `'.$FD->env('DB_PREFIX')."comments`
                    SET comment_title     = ?,
                        comment_text      = ?
                    WHERE comment_id = '".$_POST['ecommentid']."' AND content_type='dl'");
@@ -52,10 +52,10 @@ if (isset($_POST['title']) && isset($_POST['text']))
     }
     else
     {
-        $affected = $FD->sql()->conn()->exec('DELETE FROM `'.$FD->config('pref').'comments` WHERE comment_id = '.$_POST['ecommentid']." AND content_type='dl' LIMIT 1");
+        $affected = $FD->db()->conn()->exec('DELETE FROM `'.$FD->env('DB_PREFIX').'comments` WHERE comment_id = '.$_POST['ecommentid']." AND content_type='dl' LIMIT 1");
         if ($affected>0)
         {
-          $FD->sql()->conn()->exec('UPDATE `'.$FD->config('pref').'counter` SET comments = comments - 1');
+          $FD->db()->conn()->exec('UPDATE `'.$FD->env('DB_PREFIX').'counter` SET comments = comments - 1');
           systext('Der Kommentar wurde gel&ouml;scht.');
         }
         else
@@ -72,12 +72,12 @@ if (isset($_POST['title']) && isset($_POST['text']))
 else if (isset($_POST['commentid']))
 {
     settype($_POST['commentid'], 'integer');
-    $index = $FD->sql()->conn()->query('SELECT * FROM `'.$FD->config('pref').'comments` WHERE comment_id = '.$_POST['commentid']." AND content_type='dl'");
+    $index = $FD->db()->conn()->query('SELECT * FROM `'.$FD->env('DB_PREFIX').'comments` WHERE comment_id = '.$_POST['commentid']." AND content_type='dl'");
     $comment_arr = $index->fetch(PDO::FETCH_ASSOC);
     // If it's a registered user, get the name.
     if ($comment_arr['comment_poster_id'] != 0)
     {
-        $index = $FD->sql()->conn()->query('SELECT user_name FROM `'.$FD->config('pref').'user` WHERE user_id = '.$comment_arr['comment_poster_id']);
+        $index = $FD->db()->conn()->query('SELECT user_name FROM `'.$FD->env('DB_PREFIX').'user` WHERE user_id = '.$comment_arr['comment_poster_id']);
         $comment_arr['comment_poster'] = $index->fetchColumn();
     }
 
@@ -110,7 +110,7 @@ else if (isset($_POST['commentid']))
                                     <font class="small">Diese Person hat den Kommentar geschrieben</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    '.htmlspecialchars($comment_arr['comment_poster']).'
+                                    '.killhtml($comment_arr['comment_poster']).'
                                 </td>
                             </tr>
                             <tr>
@@ -119,7 +119,7 @@ else if (isset($_POST['commentid']))
                                     <font class="small">Titel des Kommentars</font>
                                 </td>
                                 <td class="config" valign="top">
-                                    <input class="text" size="33" name="title" value="'.htmlspecialchars($comment_arr['comment_title']).'" maxlength="100">
+                                    <input class="text" size="33" name="title" value="'.killhtml($comment_arr['comment_title']).'" maxlength="100">
                                 </td>
                             </tr>
                             <tr>
@@ -128,7 +128,7 @@ else if (isset($_POST['commentid']))
                                     <font class="small">HTML ist '.$config_arr['html_code'].'. FS-Code ist '.$config_arr['fs_code'].'.</font>
                                 </td>
                                 <td valign="top">
-                                    <textarea rows="8" cols="60" name="text">'.htmlspecialchars($comment_arr['comment_text']).'</textarea>
+                                    <textarea rows="8" cols="60" name="text">'.killhtml($comment_arr['comment_text']).'</textarea>
                                 </td>
                             </tr>
                             <tr>

@@ -27,17 +27,16 @@ if ( $config_arr['active'] == 1 ) {
     }
 
     if ( $data != FALSE ) {
-
+        $link_args = array('id' => $data['id']);
         if ( $data['type'] == 1 ) {
-            $link = 'imageviewer.php?id='.$data['id'].'&single';
-        } else {
-            $link = 'imageviewer.php?id='.$data['id'];
+            $link_args['single'] = 1;
         }
+        $link = url('viewer', $link_args);
 
         if ( $config_arr['show_type'] == 1 ) {
             $half_x = floor ( $config_arr['show_size_x'] / 2 );
             $half_y = floor ( $config_arr['show_size_y'] / 2 );
-            $link = "javascript:popUp('".$link."','popupviewer','".$config_arr['show_size_x']."','".$config_arr['show_size_y']."');";
+            $link = "javascript:popUp('".urlencode($link)."','popupviewer','".$config_arr['show_size_x']."','".$config_arr['show_size_y']."');";
         }
 
         // Get Template
@@ -45,9 +44,9 @@ if ( $config_arr['active'] == 1 ) {
         $template->setFile('0_previewimg.tpl');
         $template->load('BODY');
 
-        $template->tag('previewimg', get_image_output ( 'images/screenshots/', $data['id'] . '_s', $data['caption'] ) );
-        $template->tag('previewimg_url', image_url ( 'images/screenshots/', $data['id'] . '_s' ) );
-        $template->tag('image_url', image_url ( 'images/screenshots/', $data['id'] ) );
+        $template->tag('previewimg', get_image_output ( '/gallery', $data['id'] . '_s', $data['caption'] ) );
+        $template->tag('previewimg_url', image_url ( '/gallery', $data['id'] . '_s' ) );
+        $template->tag('image_url', image_url ( '/gallery', $data['id'] ) );
         $template->tag('viewer_url', $link);
         $template->tag('caption', $data['caption']);
         $template->tag('cat_title', $data['cat_title']);

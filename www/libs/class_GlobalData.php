@@ -2,7 +2,7 @@
 /**
  * @file     class_global_data.php
  * @folder   /libs/
- * @version  0.3
+ * @version  0.4
  * @author   Sweil
  *
  * this class provides access to the frogsystem 2 global data
@@ -12,17 +12,53 @@
 class GlobalData {
 
     // Properties
-    private $sql;                   // sql connection
+    private $db = null;             // Database connection
     private $text = array();        // Text objects
     private $config = array();      // config data
 
     // Constructor
     //
-    public function __construct(&$sql) {
+    public function __construct() {
+        // get env cfg
+        require_once(FS2SOURCE.'/libs/config/ConfigEnv.php');
+        $this->config['env'] = new ConfigEnv();
+    }
 
-        // Set sql connection
-        $this->sql = $sql;
+    // Destructor closes DB-Connection
+    public function __destruct (){
+        $this->closeConnection();
+    }
+    
 
+    // connect to Database
+    public function connect() {
+        $this->db = new sql($this->env('DB_HOST'), $this->env('DB_NAME'), $this->env('DB_USER'), $this->env('DB_PASSWORD'), $this->env('DB_PREFIX'));
+        return $this->db;
+    }
+    // get db Database connection
+    public function db() {
+        return $this->db;
+    }
+    public function sql() {
+        trigger_error('Use of $FD->sql is deprecated. Please use $FD->db.', E_USER_DEPRECATED);
+        return $this->db();
+    }
+    // Destruct Database Connection => Close Connection
+    private function closeConnection() {
+        $this->db->__destruct();
+        return $this;
+    }
+    
+    
+    // startup the system
+    public function startup() {
+        // connect to db
+        try {
+            $this->connect();
+        } catch (Excpetion $e) {
+            throw $e;
+        }
+        
         // set config data
         $this->loadConfigsByHook('startup');
 
@@ -34,11 +70,8 @@ class GlobalData {
             'menu'      => new lang ($this->config('language_text'), 'menu'),
             'fscode'    => new lang ($this->config('language_text'), 'fscode'),
         );
-    }
-
-    // Destructor closes SQL-Connection
-    public function __destruct (){
-        $this->closeSql();
+        
+        return $this;
     }
 
 
@@ -66,11 +99,11 @@ class GlobalData {
     public function loadConfigsByHook($hook, $reload = false) {
 
         // include ConfigData
-        require_once(FS2_ROOT_PATH . 'libs/class_ConfigData.php');
+        require_once(FS2SOURCE . '/libs/class_ConfigData.php');
 
         // Load configs from DB
-        $data = $this->sql->conn()->prepare(
-                        'SELECT * FROM '.$this->sql->getPrefix().'config
+        $data = $this->db->conn()->prepare(
+                        'SELECT * FROM '.$this->db->getPrefix().'config
                          WHERE `config_loadhook` = ?');
         $data->execute(array($hook));
         $data = $data->fetchAll(PDO::FETCH_ASSOC);
@@ -85,8 +118,8 @@ class GlobalData {
     private function createConfigObject($name, $data, $json) {
         // Load corresponding class and get config array
         $class_name = "Config".ucfirst(strtolower($name));
-        require_once(FS2_ROOT_PATH.'libs/class_ConfigData.php');
-        @include_once(FS2_ROOT_PATH.'classes/config/'.$class_name.'.php');
+        require_once(FS2SOURCE.'/libs/class_ConfigData.php');
+        @include_once(FS2SOURCE.'/libs/config/'.$class_name.'.php');
         if (!class_exists($class_name, false))
             $class_name = 'ConfigData';
         return new $class_name($data, $json);
@@ -95,8 +128,8 @@ class GlobalData {
     // create config object from db
     private function getConfigObjectFromDatabase($name) {
         // Load config from DB
-        $config = $this->sql->conn()->prepare(
-                         'SELECT * FROM '.$this->sql->getPrefix().'config
+        $config = $this->db->conn()->prepare(
+                         'SELECT * FROM '.$this->db->getPrefix().'config
                           WHERE `config_name` = ? LIMIT 1');
         $config->execute(array($name));
         $config = $config->fetch(PDO::FETCH_ASSOC);
@@ -132,7 +165,7 @@ class GlobalData {
     public function saveConfig($name, $newdata) {
         try {
             //get original data from db
-            $original_data = $this->sql->getField('config', 'config_data', array('W' => "`config_name` = '".$name."'"));
+            $original_data = $this->db->getField('config', 'config_data', array('W' => "`config_name` = '".$name."'"));
             if (!empty($original_data))
                 $original_data = json_array_decode($original_data);
             else {
@@ -152,7 +185,7 @@ class GlobalData {
             );
 
             // save to db
-            $this->sql->save('config', $newdata, 'config_name', false);
+            $this->db->save('config', $newdata, 'config_name', false);
 
             // Reload Data
             $this->reloadConfig($name, $newdata['config_data'], true);
@@ -206,15 +239,6 @@ class GlobalData {
         }
     }
 
-
-    // get sql
-    public function sql() {
-        return $this->sql;
-    }
-    // Destruct SQL => Close Connection
-    private function closeSql() {
-        $this->sql->__destruct();
-    }
 
 
     // get lang phrase object

@@ -45,8 +45,8 @@
     {..css_links..}
     {..favicon_link..}
     {..feed_link..}
-    {..jquery..}
     {..javascript..}
+    $APP(social-meta-tags.php)
   </head>
   {..body..}
 </html><!--section-end::MATRIX-->

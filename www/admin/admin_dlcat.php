@@ -9,15 +9,15 @@ if (isset($_POST['catname']))
     settype($_POST['catid'], 'integer');
     if (isset($_POST['delcat']))
     {
-        $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref').'dl_cat WHERE cat_id = '.$_POST['catid']);
+        $FD->db()->conn()->exec('DELETE FROM '.$FD->env('DB_PREFIX').'dl_cat WHERE cat_id = '.$_POST['catid']);
         systext('Die Kategorie wurde gel&ouml;scht');
     }
     else
     {
         settype($_POST['subcatof'], 'integer');
 
-        $stmt = $FD->sql()->conn()->prepare(
-                  'UPDATE '.$FD->config('pref')."dl_cat
+        $stmt = $FD->db()->conn()->prepare(
+                  'UPDATE '.$FD->env('DB_PREFIX')."dl_cat
                    SET subcat_id = '$_POST[subcatof]',
                        cat_name = ?
                    WHERE cat_id = $_POST[catid]");
@@ -45,7 +45,7 @@ if (isset($_POST['editcatid']))
     $valid_ids = array();
     get_dl_categories ($valid_ids, $_POST['editcatid']);
 
-    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."dl_cat WHERE cat_id = '$_POST[editcatid]'");
+    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX')."dl_cat WHERE cat_id = '$_POST[editcatid]'");
     $cat_arr = $index->fetch(PDO::FETCH_ASSOC);
     echo'
                     <form action="" method="post">
@@ -127,7 +127,7 @@ else
                                 </td>
                             </tr>
     ';
-    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'dl_cat ORDER BY cat_name');
+    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX').'dl_cat ORDER BY cat_name');
     while ($cat_arr = $index->fetch(PDO::FETCH_ASSOC))
     {
         $sub = ($cat_arr['subcat_id'] == 0) ? 'Nein' : 'Ja';

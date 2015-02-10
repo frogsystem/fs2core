@@ -14,15 +14,15 @@ if (isset($_POST['title']) AND $_POST['do'] == 'edit')
     settype($_POST['editscreenid'], 'integer');
     if ($_POST['delscreen'])   // Delete Screenshot
     {
-        $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref')."screen WHERE screen_id = $_POST[editscreenid]");
-        image_delete('images/screenshots/', $_POST['editscreenid']);
-        image_delete('images/screenshots/', "$_POST[editscreenid]_s");
+        $FD->db()->conn()->exec('DELETE FROM '.$FD->env('DB_PREFIX')."screen WHERE screen_id = $_POST[editscreenid]");
+        image_delete('/gallery', $_POST['editscreenid']);
+        image_delete('/gallery', "$_POST[editscreenid]_s");
         systext('Screenshot wurde gel&ouml;scht');
     }
     else   // Edit Screenshot
     {
-        $stmt = $FD->sql()->conn()->prepare(
-                  'UPDATE '.$FD->config('pref')."screen
+        $stmt = $FD->db()->conn()->prepare(
+                  'UPDATE '.$FD->env('DB_PREFIX')."screen
                    SET cat_id = $_POST[catid],
                    screen_name = ?
                    WHERE screen_id = $_POST[editscreenid]");
@@ -49,13 +49,13 @@ elseif (isset($_POST['screenid']))
 
     if (isset($_POST['do']) && $_POST['do'] == 'newthumb')
     {
-        image_delete('images/screenshots/',$_POST['screenid'].'_s');
+        image_delete('/gallery',$_POST['screenid'].'_s');
 
-        $newthumb = @create_thumb_from(image_url('images/screenshots/',$_POST['screenid'],FALSE, TRUE),$config_arr['screen_thumb_x'],$config_arr['screen_thumb_y']);
+        $newthumb = @create_thumb_from(image_url('/gallery',$_POST['screenid'],FALSE, TRUE),$config_arr['screen_thumb_x'],$config_arr['screen_thumb_y']);
         systext(create_thumb_notice($newthumb));
     }
 
-    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."screen WHERE screen_id = $_POST[screenid]");
+    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX')."screen WHERE screen_id = $_POST[screenid]");
     $screen_arr = $index->fetch(PDO::FETCH_ASSOC);
 
     echo'
@@ -71,7 +71,7 @@ elseif (isset($_POST['screenid']))
                                     <font class="small">Thumbnail des Screenshots</font>
                                 </td>
                                 <td class="config" valign="top">
-                                   <img src="'.image_url('images/screenshots/',$screen_arr['screen_id'].'_s').'?cachebreaker='.time().'" />
+                                   <img src="'.image_url('/gallery',$screen_arr['screen_id'].'_s').'?cachebreaker='.time().'" />
                                 </td>
                             </tr>
                             <tr>
@@ -105,7 +105,7 @@ elseif (isset($_POST['screenid']))
                                 <td class="config" valign="top">
                                     <select name="catid">
     ';
-    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'screen_cat WHERE cat_type = 1');
+    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX').'screen_cat WHERE cat_type = 1');
     while ($cat_arr = $index->fetch(PDO::FETCH_ASSOC))
     {
         $sele = ($screen_arr['cat_id'] == $cat_arr['cat_id']) ? 'selected' : '';
@@ -161,7 +161,7 @@ else
                                     Dateien der Kategorie
                                     <select name="screencatid">
     ';
-    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'screen_cat WHERE cat_type = 1');
+    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX').'screen_cat WHERE cat_type = 1');
     while ($cat_arr = $index->fetch(PDO::FETCH_ASSOC))
     {
         $sele = ($_POST['screencatid'] == $cat_arr['cat_id']) ? 'selected' : '';
@@ -206,10 +206,10 @@ else
                                 </td>
                             </tr>
         ';
-        $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."screen $wherecat ORDER BY screen_id DESC");
+        $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX')."screen $wherecat ORDER BY screen_id DESC");
         while ($screen_arr = $index->fetch(PDO::FETCH_ASSOC))
         {
-            $index2 = $FD->sql()->conn()->query('SELECT cat_name FROM '.$FD->config('pref')."screen_cat WHERE cat_id = $screen_arr[cat_id]");
+            $index2 = $FD->db()->conn()->query('SELECT cat_name FROM '.$FD->env('DB_PREFIX')."screen_cat WHERE cat_id = $screen_arr[cat_id]");
             $db_cat_name = $index2->fetchColumn();
 
             echo'
@@ -218,7 +218,7 @@ else
                                 onmouseout="javascript:this.style.backgroundColor=\'transparent\'"
                                 onClick=\'document.getElementById("'.$screen_arr['screen_id'].'").checked="true";\'>
                                 <td class="configthin">
-                                    <img src="'.image_url('images/screenshots/',killhtml($screen_arr['screen_id']).'_s').'"  style="max-width:200px; max-height:100px;">
+                                    <img src="'.image_url('/gallery',killhtml($screen_arr['screen_id']).'_s').'"  style="max-width:200px; max-height:100px;">
                                 </td>
                                 <td class="thin">
                                     '.killhtml($screen_arr['screen_name']).'

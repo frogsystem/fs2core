@@ -166,11 +166,11 @@
             <input class="pointer" type="radio" name="link" value="<!--TEXT::id-->">
         </div>
         <div class="nshide right">
-            <img class="pointer" src="icons/up.gif" onClick="up($(this).parents(\'tr:first\'));" alt="<!--COMMON::up-->" title="<!--COMMON::up-->">&nbsp;
-            <img class="pointer" src="icons/down.gif" onClick="down($(this).parents(\'tr:first\'));" alt="<!--COMMON::down-->" title="<!--COMMON::down-->">
+            <img class="pointer" src="?icons=up.gif" onClick="up($(this).parents(\'tr:first\'));" alt="<!--COMMON::up-->" title="<!--COMMON::up-->">&nbsp;
+            <img class="pointer" src="?icons=down.gif" onClick="down($(this).parents(\'tr:first\'));" alt="<!--COMMON::down-->" title="<!--COMMON::down-->">
             &nbsp;&nbsp;&nbsp;
-            <img class="pointer" src="icons/edit.gif" onClick="edit($(this).parents(\'tr:first\'));" alt="<!--COMMON::edit-->" title="<!--COMMON::edit-->">&nbsp;
-            <img class="pointer" src="icons/delete.gif" onClick="removeLink($(this).parents(\'tr:first\'));" alt="<!--COMMON::delete-->" title="<!--COMMON::delete-->">
+            <img class="pointer" src="?icons=edit.gif" onClick="edit($(this).parents(\'tr:first\'));" alt="<!--COMMON::edit-->" title="<!--COMMON::edit-->">&nbsp;
+            <img class="pointer" src="?icons=delete.gif" onClick="removeLink($(this).parents(\'tr:first\'));" alt="<!--COMMON::delete-->" title="<!--COMMON::delete-->">
         </div>
     </td>
 </tr>

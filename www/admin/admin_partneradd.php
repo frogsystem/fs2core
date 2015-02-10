@@ -33,8 +33,8 @@ if (isset($_FILES['bild_small']['name']) && $_FILES['bild_small']['name'] != ''
 {
     $_POST['permanent'] = isset($_POST['permanent']) ? 1 : 0;
 
-    $stmt = $FD->sql()->conn()->prepare(
-                'INSERT INTO '.$FD->config('pref')."partner
+    $stmt = $FD->db()->conn()->prepare(
+                'INSERT INTO '.$FD->env('DB_PREFIX')."partner
                         (partner_name,
                          partner_link,
                          partner_beschreibung,
@@ -44,14 +44,14 @@ if (isset($_FILES['bild_small']['name']) && $_FILES['bild_small']['name'] != ''
                          ?,
                          '".$_POST['permanent']."')");
     $stmt->execute(array($_POST['name'], $_POST['link'], $_POST['description']));
-    $id = $FD->sql()->conn()->lastInsertId();
+    $id = $FD->db()->conn()->lastInsertId();
 
-    $upload1 = upload_img($_FILES['bild_small'], 'images/partner/', $id.'_small', $config_arr['file_size']*1024, $config_arr['small_x'], $config_arr['small_y'], 100, $config_arr['small_allow_bool']);
+    $upload1 = upload_img($_FILES['bild_small'], '/partner', $id.'_small', $config_arr['file_size']*1024, $config_arr['small_x'], $config_arr['small_y'], 100, $config_arr['small_allow_bool']);
 
     switch ($upload1)
     {
       case 0:
-        $upload2 = upload_img($_FILES['bild_big'], 'images/partner/', $id.'_big', $config_arr['file_size']*1024, $config_arr['big_x'], $config_arr['big_y'], 100, $config_arr['big_allow_bool']);
+        $upload2 = upload_img($_FILES['bild_big'], '/partner', $id.'_big', $config_arr['file_size']*1024, $config_arr['big_x'], $config_arr['big_y'], 100, $config_arr['big_allow_bool']);
 
         switch ($upload2)
         {
@@ -71,18 +71,18 @@ if (isset($_FILES['bild_small']['name']) && $_FILES['bild_small']['name'] != ''
         default:
           systext ($FD->text('page', 'big_pic'). ': ' . upload_img_notice($upload2));
           systext ($FD->text('page', 'note_notadded'));
-          $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref')."partner WHERE partner_id = '$id'");
-          image_delete('images/partner/', $id.'_small');
-          image_delete('images/partner/', $id.'_big');
+          $FD->db()->conn()->exec('DELETE FROM '.$FD->env('DB_PREFIX')."partner WHERE partner_id = '$id'");
+          image_delete('/partner', $id.'_small');
+          image_delete('/partner', $id.'_big');
         }
 
         break;
       default:
         systext ($FD->text('page', 'small_pic') . ': ' . upload_img_notice($upload1));
         systext ($FD->text('page', 'note_notadded'));
-        $FD->sql()->conn()->exec('DELETE FROM '.$FD->config(pref)."partner WHERE partner_id = '$id'");
-        image_delete('images/partner/', $id.'_small');
-        image_delete('images/partner/', $id.'_big');
+        $FD->db()->conn()->exec('DELETE FROM '.$FD->config(pref)."partner WHERE partner_id = '$id'");
+        image_delete('/partner', $id.'_small');
+        image_delete('/partner', $id.'_big');
     }
 
 }

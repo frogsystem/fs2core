@@ -38,7 +38,7 @@ $FD->loadConfig('users');
 $config_arr = $FD->configObject('users')->getConfigArray();
 
 // Get Number of Users
-$index = $FD->sql()->conn()->query ( 'SELECT COUNT(`user_id`) AS num_users FROM `'.$FD->config('pref').'user`' );
+$index = $FD->db()->conn()->query ( 'SELECT COUNT(`user_id`) AS num_users FROM `'.$FD->env('DB_PREFIX').'user`' );
 $row = $index->fetch(PDO::FETCH_ASSOC);
 $config_arr['number_of_users'] = $row['num_users'];
 if ( $config_arr['user_per_page'] == -1 ) {
@@ -63,7 +63,7 @@ $template_page_nav = get_page_nav ( $_GET['page'], $config_arr['number_of_pages'
 ////////////////////////
 //// Load User Data ////
 ////////////////////////
-$pref = $FD->config('pref');
+$pref = $FD->env('DB_PREFIX');
 $query = 'SELECT `user_id`, `user_name`, `user_is_staff`, `user_is_admin`, `user_group`, `user_mail`, `user_show_mail`, `user_reg_date`,
 
   (SELECT COUNT(`news_id`) FROM `'.$pref.'news`
@@ -123,7 +123,7 @@ $limit = ' LIMIT '.intval($config_arr['prev_page']*$config_arr['user_per_page'])
 /*finally get the data... still may take several seconds for large user base
   and unfavourable sort criterion, but it should take less memory and execute
   faster than the previous code*/
-$index = $FD->sql()->conn()->query ( $query.$limit );
+$index = $FD->db()->conn()->query ( $query.$limit );
 
 ///////////////////////////
 //// Display User List ////
@@ -161,8 +161,8 @@ while ( $row = $index->fetch(PDO::FETCH_ASSOC) )
     $line_template->tag ( 'user_id', $row['user_id'] );
     $line_template->tag ( 'user_name', kill_replacements ( $row['user_name'], TRUE ) );
     $line_template->tag ( 'user_url', url('user', array('id' => $row['user_id'])));
-    $line_template->tag ( 'user_image', ( image_exists ( 'media/user-images/', $row['user_id'] ) ) ? '<img src="'.image_url ( 'media/user-images/', $row['user_id'] ).'" alt="'.$FD->text("frontend", "user_image_of").' '.kill_replacements ( $row['user_name'], TRUE ).'">' : $FD->text("frontend", "user_image_not_found") );
-    $line_template->tag ( 'user_image_url', image_url ( 'media/user-images/', $row['user_id'] ) );
+    $line_template->tag ( 'user_image', ( image_exists ( '/user-images', $row['user_id'] ) ) ? '<img src="'.image_url ( '/user-images', $row['user_id'] ).'" alt="'.$FD->text("frontend", "user_image_of").' '.kill_replacements ( $row['user_name'], TRUE ).'">' : $FD->text("frontend", "user_image_not_found") );
+    $line_template->tag ( 'user_image_url', image_url ( '/user-images', $row['user_id'] ) );
     $line_template->tag ( 'user_mail', ( $row['user_show_mail'] == 1 ) ? kill_replacements ( $row['user_mail'], TRUE ) : '-' );
     $line_template->tag ( 'user_rank', $temp_rank_data );
     $line_template->tag ( 'user_reg_date', date_loc ( $config_arr['user_list_reg_date_format'], $row['user_reg_date'] ) );

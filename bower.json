@@ -1,0 +1,24 @@
+{
+  "name": "mrgrain/frogsystem2",
+  "version": "2.0.0-alix7",
+  "homepage": "https://github.com/mrgrain/Frogsystem-2",
+  "authors": [
+    "Moritz Kornher <mail@moritzkornher.de>"
+  ],
+  "main": "www/index.php",
+  "license": "CC BY-SA 3.0 DE",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~1.11.2",
+    "jquery-ui": "~1.11.2",
+    "colpick-jQuery-Color-Picker": "mrgrain/colpick-jQuery-Color-Picker#master",
+    "codemirror": "~4.11.0"
+  }
+}

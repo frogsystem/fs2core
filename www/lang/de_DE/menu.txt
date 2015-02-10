@@ -45,6 +45,7 @@ group_aliases:                  Aliasse
 group_search:                   Suche
 group_fscodes:                  FS Codes
 group_db:                       Datenbank
+group_socialmedia:              Social Media
 
 # Startseiten
 page_title_start_general:       Allgemein
@@ -312,6 +313,8 @@ page_title_tpl_player:          „Flash-Player“ bearbeiten
 page_link_tpl_player:           Flash-Player
 page_title_tpl_topdownloads:    „Top Downloads“ bearbeiten
 page_link_tpl_topdownloads:     Top Downloads
+page_title_tpl_styleselect:     „Styleauswahl“ bearbeiten
+page_link_tpl_styleselect:      Styleauswahl
 
 # Applets
 page_title_applets_add:         hinzufügen
@@ -367,3 +370,7 @@ page_title_article_preview:     Artikel-Vorschau
 # Datenbank
 page_title_table_admin:         Tabellen
 page_link_table_admin:          Tabellen
+
+# Social Media
+page_title_social_meta_tags:    Social Meta Tags
+page_link_social_meta_tags:     Meta Tags

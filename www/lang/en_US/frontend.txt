@@ -134,3 +134,12 @@ video:                          Video
 # poll
 multiple_choice:                Multiple choice
 single_choice:                  Single choice
+
+# style selection
+style_not_exist:                The requested style does not exist.
+new_style_selected:             New style selected
+style_select_reload:            The style selection will take effect after the site has been reloaded.
+style_select_cookie_hint:       <b>Hint:</b> Your browser must configured to accept cookies from this site. Otherwise the style selection will not work properly.
+style_select_clear:             Style selection cleared
+style_selection_not_allowed:    You are not allowed to select a style.
+none:                           none

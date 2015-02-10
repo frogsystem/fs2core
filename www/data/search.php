@@ -51,7 +51,7 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
     // try to compute the search
     try {
 
-        require_once(FS2_ROOT_PATH . 'libs/class_Search.php');
+        require_once(FS2SOURCE . '/libs/class_Search.php');
 
         // Create News Search
         initstr($news_entries); $news_num_results = 0;
@@ -64,8 +64,8 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
             while($FD->cfg('search', 'search_num_previews') > $news_num_results && ($found = $search->next())) {
 
                 // get data for entry
-                $news = $FD->sql()->conn()->query(
-                            'SELECT news_id, news_title, news_date FROM '.$FD->config('pref').'news
+                $news = $FD->db()->conn()->query(
+                            'SELECT news_id, news_title, news_date FROM '.$FD->env('DB_PREFIX').'news
                              WHERE `news_id` = '.intval($found['id']).' AND `news_date` <= '.time().' AND `news_active` = 1');
                 $news = $news->fetch(PDO::FETCH_ASSOC);
 
@@ -127,9 +127,9 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
             while($FD->cfg('search', 'search_num_previews') > $articles_num_results && ($found = $search->next())) {
 
                 // get data for entry
-                $article = $FD->sql()->conn()->query(
+                $article = $FD->db()->conn()->query(
                                 'SELECT article_id, article_url, article_title, article_date
-                                 FROM '.$FD->config('pref').'articles
+                                 FROM '.$FD->env('DB_PREFIX').'articles
                                  WHERE `article_id` = '.intval($found['id']));
                 $article = $article->fetch(PDO::FETCH_ASSOC);
 
@@ -198,8 +198,8 @@ if (empty($_REQUEST['keyword'])) { // keyword empty => no search
             while($FD->cfg('search', 'search_num_previews') > $downloads_num_results && ($found = $search->next())) {
 
                 // get data for entry
-                $dl = $FD->sql()->conn()->query(
-                          'SELECT dl_id, dl_date, dl_name FROM '.$FD->config('pref').'dl
+                $dl = $FD->db()->conn()->query(
+                          'SELECT dl_id, dl_date, dl_name FROM '.$FD->env('DB_PREFIX').'dl
                            WHERE `dl_id` = '.intval($found['id']).' AND `dl_open` = 1');
                 $dl = $dl->fetch(PDO::FETCH_ASSOC);
 
@@ -308,8 +308,6 @@ $_REQUEST['phonetic_search'] = $_REQUEST['phonetic_search'] ? 'checked' : '';
 $_REQUEST['keyword'] = usersave($_REQUEST['keyword']);
 
 // Get Default-Operators
-// get searchfunctions if not loaded
-require_once(FS2_ROOT_PATH . 'includes/searchfunctions.php');
 $ops = get_default_operators();
 
 

@@ -8,22 +8,22 @@ if (isset($_FILES['artikelimg']) && isset($_POST['title']) && isset($_POST['url'
     && !empty($_POST['title']) && !empty($_POST['url']) && !empty($_POST['preis']))
 {
     settype($_POST['hot'], 'integer');
-    $stmt = $FD->sql()->conn()->prepare(
-                'INSERT INTO '.$FD->config('pref')."shop (artikel_name, artikel_url, artikel_text, artikel_preis, artikel_hot)
+    $stmt = $FD->db()->conn()->prepare(
+                'INSERT INTO '.$FD->env('DB_PREFIX')."shop (artikel_name, artikel_url, artikel_text, artikel_preis, artikel_hot)
                  VALUES (?,
                          ?,
                          ?,
                          ?,
                          '".$_POST['hot']."');");
     $stmt->execute(array($_POST['title'], $_POST['url'], $_POST['text'], $_POST['preis']));
-    $id = $FD->sql()->conn()->lastInsertId();
+    $id = $FD->db()->conn()->lastInsertId();
 
     $messages = array();
     if (!empty($_FILES['artikelimg']['name']))
     {
-        $upload = upload_img($_FILES['artikelimg'], 'images/shop/', $id, 2*1024*1024, 400, 600);
+        $upload = upload_img($_FILES['artikelimg'], '/shop', $id, 2*1024*1024, 400, 600);
         $messages[] = upload_img_notice($upload);
-        $thumb = create_thumb_from(image_url('images/shop/',$id,FALSE, TRUE), 100, 100);
+        $thumb = create_thumb_from(image_url('/shop',$id,FALSE, TRUE), 100, 100);
         $messages[] = create_thumb_notice($thumb);
     }
 

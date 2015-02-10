@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.0.4
+-- version 4.2.0
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Erstellungszeit: 24. Mai 2014 um 11:41
--- Server Version: 5.6.12-log
--- PHP-Version: 5.4.12
+-- Host: 127.0.0.1
+-- Generation Time: Jan 20, 2015 at 03:22 AM
+-- Server version: 5.6.15-log
+-- PHP Version: 5.4.36
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,15 +17,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Datenbank: `fs2`
+-- Database: `fs2`
 --
-CREATE DATABASE IF NOT EXISTS `fs2` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `fs2`;
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_admin_cp`
+-- Table structure for table `fs2_admin_cp`
 --
 
 DROP TABLE IF EXISTS `fs2_admin_cp`;
@@ -34,12 +32,11 @@ CREATE TABLE IF NOT EXISTS `fs2_admin_cp` (
   `group_id` varchar(20) NOT NULL,
   `page_file` varchar(255) NOT NULL,
   `page_pos` tinyint(3) NOT NULL DEFAULT '0',
-  `page_int_sub_perm` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`page_id`)
+  `page_int_sub_perm` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Daten für Tabelle `fs2_admin_cp`
+-- Dumping data for table `fs2_admin_cp`
 --
 
 INSERT INTO `fs2_admin_cp` (`page_id`, `group_id`, `page_file`, `page_pos`, `page_int_sub_perm`) VALUES
@@ -150,6 +147,7 @@ INSERT INTO `fs2_admin_cp` (`page_id`, `group_id`, `page_file`, `page_pos`, `pag
 ('tpl_fscodes', 'templates', 'admin_editor_fscode.php', 14, 0),
 ('tpl_player', 'templates', 'admin_template_player.php', 20, 0),
 ('tpl_topdownloads', 'templates', 'admin_template_topdownloads.php', 25, 0),
+('tpl_styleselect', 'templates', 'admin_template_styleselect.php', 26, 0),
 ('user_config', 'users', 'admin_user_config.php', 1, 0),
 ('user_add', 'users', 'admin_user_add.php', 2, 0),
 ('user_edit', 'users', 'admin_user_edit.php', 3, 0),
@@ -162,12 +160,13 @@ INSERT INTO `fs2_admin_cp` (`page_id`, `group_id`, `page_file`, `page_pos`, `pag
 ('timedpic_add', 'gallery_preview', 'admin_randompic_time_add.php', 3, 0),
 ('timedpic_edit', 'gallery_preview', 'admin_randompic_time.php', 4, 0),
 ('statgfx', 'popup', 'admin_statgfx.php', 0, 0),
-('table_admin', 'db', 'admin_table_admin.php', 1, 0);
+('table_admin', 'db', 'admin_table_admin.php', 1, 0),
+('social_meta_tags', 'socialmedia', 'admin_social_meta_tags.php', 1, 0);
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_admin_groups`
+-- Table structure for table `fs2_admin_groups`
 --
 
 DROP TABLE IF EXISTS `fs2_admin_groups`;
@@ -178,7 +177,7 @@ CREATE TABLE IF NOT EXISTS `fs2_admin_groups` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 --
--- Daten für Tabelle `fs2_admin_groups`
+-- Dumping data for table `fs2_admin_groups`
 --
 
 INSERT INTO `fs2_admin_groups` (`group_id`, `menu_id`, `group_pos`) VALUES
@@ -209,12 +208,13 @@ INSERT INTO `fs2_admin_groups` (`group_id`, `menu_id`, `group_pos`) VALUES
 ('aliases', 'system', 3),
 ('db', 'system', 4),
 ('search', 'general', 4),
-('popup', 'none', 0);
+('popup', 'none', 0),
+('socialmedia', 'promo', 3);
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_admin_inherited`
+-- Table structure for table `fs2_admin_inherited`
 --
 
 DROP TABLE IF EXISTS `fs2_admin_inherited`;
@@ -224,7 +224,7 @@ CREATE TABLE IF NOT EXISTS `fs2_admin_inherited` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Daten für Tabelle `fs2_admin_inherited`
+-- Dumping data for table `fs2_admin_inherited`
 --
 
 INSERT INTO `fs2_admin_inherited` (`group_id`, `pass_to`) VALUES
@@ -238,21 +238,19 @@ INSERT INTO `fs2_admin_inherited` (`group_id`, `pass_to`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_aliases`
+-- Table structure for table `fs2_aliases`
 --
 
 DROP TABLE IF EXISTS `fs2_aliases`;
 CREATE TABLE IF NOT EXISTS `fs2_aliases` (
-  `alias_id` mediumint(8) NOT NULL AUTO_INCREMENT,
+`alias_id` mediumint(8) NOT NULL,
   `alias_go` varchar(100) NOT NULL,
   `alias_forward_to` varchar(100) NOT NULL,
-  `alias_active` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`alias_id`),
-  KEY `alias_go` (`alias_go`)
+  `alias_active` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
--- Daten für Tabelle `fs2_aliases`
+-- Dumping data for table `fs2_aliases`
 --
 
 INSERT INTO `fs2_aliases` (`alias_id`, `alias_go`, `alias_forward_to`, `alias_active`) VALUES
@@ -261,7 +259,7 @@ INSERT INTO `fs2_aliases` (`alias_id`, `alias_go`, `alias_forward_to`, `alias_ac
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_announcement`
+-- Table structure for table `fs2_announcement`
 --
 
 DROP TABLE IF EXISTS `fs2_announcement`;
@@ -272,12 +270,11 @@ CREATE TABLE IF NOT EXISTS `fs2_announcement` (
   `activate_announcement` tinyint(1) NOT NULL DEFAULT '0',
   `ann_html` tinyint(1) NOT NULL DEFAULT '1',
   `ann_fscode` tinyint(1) NOT NULL DEFAULT '1',
-  `ann_para` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`)
+  `ann_para` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Daten für Tabelle `fs2_announcement`
+-- Dumping data for table `fs2_announcement`
 --
 
 INSERT INTO `fs2_announcement` (`id`, `announcement_text`, `show_announcement`, `activate_announcement`, `ann_html`, `ann_fscode`, `ann_para`) VALUES
@@ -286,22 +283,20 @@ INSERT INTO `fs2_announcement` (`id`, `announcement_text`, `show_announcement`, 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_applets`
+-- Table structure for table `fs2_applets`
 --
 
 DROP TABLE IF EXISTS `fs2_applets`;
 CREATE TABLE IF NOT EXISTS `fs2_applets` (
-  `applet_id` mediumint(8) NOT NULL AUTO_INCREMENT,
+`applet_id` mediumint(8) NOT NULL,
   `applet_file` varchar(100) NOT NULL,
   `applet_active` tinyint(1) NOT NULL DEFAULT '1',
   `applet_include` tinyint(1) NOT NULL DEFAULT '1',
-  `applet_output` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`applet_id`),
-  UNIQUE KEY `applet_file` (`applet_file`)
+  `applet_output` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
 
 --
--- Daten für Tabelle `fs2_applets`
+-- Dumping data for table `fs2_applets`
 --
 
 INSERT INTO `fs2_applets` (`applet_id`, `applet_file`, `applet_active`, `applet_include`, `applet_output`) VALUES
@@ -315,17 +310,17 @@ INSERT INTO `fs2_applets` (`applet_id`, `applet_file`, `applet_active`, `applet_
 (11, 'dl-forwarding', 1, 1, 0),
 (9, 'mini-search', 1, 1, 1),
 (10, 'affiliates', 1, 2, 1),
-(12, 'test', 1, 2, 1);
+(12, 'social-meta-tags', 1, 2, 1);
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_articles`
+-- Table structure for table `fs2_articles`
 --
 
 DROP TABLE IF EXISTS `fs2_articles`;
 CREATE TABLE IF NOT EXISTS `fs2_articles` (
-  `article_id` mediumint(8) NOT NULL AUTO_INCREMENT,
+  `article_id` mediumint(8) NOT NULL,
   `article_url` varchar(100) DEFAULT NULL,
   `article_title` varchar(255) NOT NULL,
   `article_date` int(11) DEFAULT NULL,
@@ -335,43 +330,38 @@ CREATE TABLE IF NOT EXISTS `fs2_articles` (
   `article_fscode` tinyint(1) NOT NULL DEFAULT '1',
   `article_para` tinyint(1) NOT NULL DEFAULT '1',
   `article_cat_id` mediumint(8) NOT NULL,
-  `article_search_update` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`article_id`),
-  KEY `article_url` (`article_url`),
-  FULLTEXT KEY `article_text` (`article_title`,`article_text`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
+  `article_search_update` int(11) NOT NULL DEFAULT '0'
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 --
--- Daten für Tabelle `fs2_articles`
+-- Dumping data for table `fs2_articles`
 --
 
 INSERT INTO `fs2_articles` (`article_id`, `article_url`, `article_title`, `article_date`, `article_user`, `article_text`, `article_html`, `article_fscode`, `article_para`, `article_cat_id`, `article_search_update`) VALUES
-(1, 'fscode', 'FSCode Liste', 1302472800, 1, 'Das System dieser Webseite bietet dir die Möglichkeit einfache Codes zur besseren Darstellung deiner Beiträge zu verwenden. Diese sogenannten [b]FSCodes[/b] erlauben dir daher HTML-Formatierungen zu verwenden, ohne dass du dich mit HTML auskennen musst. Mit ihnen hast du die Möglichkeit verschiedene Elemente in deine Beiträge einzubauen bzw. ihren Text zu formatieren.\r\n\r\nHier findest du eine [b]Übersicht über alle verfügbaren FSCodes[/b] und ihre Verwendung. Allerdings ist es möglich, dass nicht alle Codes zur Verwendung freigeschaltet sind.\r\n\r\n[html fscode]\r\n<table width="100%" cellpadding="0" cellspacing="10" border="0"><tr><td width="50%">\r\n[b][u][size=3]FS-Code:[/size][/u][/b]\r\n</td><td width="50%">\r\n[b][u][size=3]Beispiel:[/size][/u][/b]\r\n</td></tr><tr><td>\r\n[nofscode][b]fetter Text[/b][/nofscode]\r\n</td><td>\r\n[b]fetter Text[/b]\r\n</td></tr><tr><td>\r\n[nofscode][i]kursiver Text[/i][/nofscode]\r\n</td><td>\r\n[i]kursiver Text[/i]\r\n</td></tr><tr><td>\r\n[nofscode][u]unterstrichener Text[u][/nofscode]\r\n</td><td>\r\n[u]unterstrichener Text[/u]\r\n</td></tr><tr><td>\r\n[nofscode][s]durchgestrichener Text[/s][/nofscode]\r\n</td><td>\r\n[s]durchgestrichener Text[/s]\r\n</td></tr><tr><td>\r\n[nofscode][center]zentrierter Text[/center][/nofscode]\r\n</td><td>\r\n[center]zentrierter Text[/center]\r\n</td></tr><tr><td>\r\n[nofscode][font=Schriftart]Text in Schriftart[/font][/nofscode]\r\n</td><td>\r\n[font=Arial]Text in Arial[/font]</td></tr><tr><td>\r\n[nofscode][color=Farbcode]Text in Farbe[/color][/nofscode]\r\n</td><td>\r\n[color=#FF0000]Text in Rot (Farbcode: #FF0000)[/color]\r\n</td></tr><tr><td>\r\n[nofscode][size=Größe]Text in Größe 0[/size][/nofscode]\r\n</td><td>\r\n[size=0]Text in Größe 0[/size]\r\n</td></tr><tr><td>\r\n[nofscode][size=Größe]Text in Größe 1[/size][/nofscode]\r\n</td><td>\r\n[size=1]Text in Größe 1[/size]\r\n</td></tr><tr><td>\r\n[nofscode][size=Größe]Text in Größe 2[/size][/nofscode]\r\n</td><td>\r\n[size=2]Text in Größe 2[/size]\r\n</td></tr><tr><td>\r\n[nofscode][size=Größe]Text in Größe 3[/size][/nofscode]\r\n</td><td>\r\n[size=3]Text in Größe 3[/size]\r\n</td></tr><tr><td>\r\n[nofscode][size=Größe]Text in Größe 4[/size][/nofscode]\r\n</td><td>\r\n[size=4]Text in Größe 4[/size]\r\n</td></tr><tr><td>\r\n[nofscode][size=Größe]Text in Größe 5[/size][/nofscode]\r\n</td><td>\r\n[size=5]Text in Größe 5[/size]\r\n</td></tr><tr><td>\r\n[nofscode][size=Größe]Text in Größe 6[/size][/nofscode]\r\n</td><td>\r\n[size=6]Text in Größe 6[/size]\r\n</td></tr><tr><td>\r\n[nofscode][size=Größe]Text in Größe 7[/size][/nofscode]\r\n</td><td>\r\n[size=7]Text in Größe 7[/size]\r\n</td></tr><tr><td>\r\n[nofscode][nofscode]Text mit [b]FS[/b]Code[/nofscode][/nofscode]\r\n</td><td>\r\n[nofscode]kein [b]fetter[/b] Text[/nofscode]\r\n</td></tr><tr><td colspan="2"><hr></td></tr><tr><td>\r\n[nofscode][url]Linkadresse[/url][/nofscode]\r\n</td><td>\r\n[url]http://www.example.com[/url]\r\n</td></tr><tr><td>\r\n[nofscode][url=Linkadresse]Linktext[/url][/nofscode]\r\n</td><td>\r\n[url=http://www.example.com]Linktext[/url]\r\n</td></tr><tr><td>\r\n[nofscode][home]Seitenlink[/home][/nofscode]\r\n</td><td>\r\n[home]news[/home]\r\n</td></tr> <tr><td>\r\n[nofscode][home=Seitenlink]Linktext[/home][/nofscode]\r\n</td><td>\r\n[home=news]Linktext[/home]\r\n</td></tr><tr><td>\r\n[nofscode][email]Email-Adresse[/email][/nofscode]</td><td>\r\n[email]max.mustermann@example.com[/email]\r\n</td></tr> <tr><td>\r\n[nofscode][email=Email-Adresse]Beispieltext[/email][/nofscode]\r\n</td><td>\r\n[email=max.mustermann@example.com]Beispieltext[/email]\r\n</td></tr> <tr><td colspan="2"><hr></td></tr><tr><td>\r\n[nofscode][list]\r\n[*]Listenelement\r\n[*]Listenelement\r\n[/list][/nofscode]</td><td>[list]\r\n[*]Listenelement\r\n[*]Listenelement\r\n[/list]\r\n</td></tr> <tr><td>\r\n[nofscode][numlist]\r\n[*]Listenelement\r\n[*]Listenelement\r\n[/numlist][/nofscode]\r\n</td><td>\r\n[numlist]\r\n[*]Listenelement\r\n[*]Listenelement\r\n[/numlist]\r\n</td></tr> <tr><td>\r\n[nofscode][quote]Ein Zitat[/quote][/nofscode]\r\n</td><td>\r\n[quote]Ein Zitat[/quote]\r\n</td></tr><tr><td>\r\n[nofscode][quote=Quelle]Ein Zitat[/quote][/nofscode]\r\n</td><td>\r\n[quote=Quelle]Ein Zitat[/quote]\r\n</td></tr><tr><td>\r\n[nofscode][code]Schrift mit fester Breite[/code][/nofscode]\r\n</td><td>\r\n[code]Schrift mit fester Breite[/code]\r\n</td></tr><tr><td colspan="2"><hr></td></tr><tr><td>\r\n[nofscode][img]Bildadresse[/img][/nofscode]\r\n</td><td>\r\n[img]$VAR(url)images/icons/logo.gif[/img]\r\n</td></tr><tr><td>\r\n[nofscode][img=right]Bildadresse[/img][/nofscode]\r\n</td><td>\r\n[img=right]$VAR(url)images/icons/logo.gif[/img] Das hier ist ein Beispieltext. Die Grafik ist rechts platziert und der Text fließt links um sie herum.\r\n</td></tr><tr><td>\r\n[nofscode][img=left]Bildadresse[/img][/nofscode]\r\n</td><td>\r\n[img=left]$VAR(url)images/icons/logo.gif[/img] Das hier ist ein Beispieltext. Die Grafik ist links platziert und der Text fließt rechts um sie herum.\r\n</td></tr></table>\r\n[/html]', 0, 1, 1, 1, 1373302511),
+(1, 'fscode', 'FSCode Liste', 1302472800, 1, 'Das System dieser Webseite bietet dir die Möglichkeit einfache Codes zur besseren Darstellung deiner Beiträge zu verwenden. Diese sogenannten [b]FSCodes[/b] erlauben dir daher HTML-Formatierungen zu verwenden, ohne dass du dich mit HTML auskennen musst. Mit ihnen hast du die Möglichkeit verschiedene Elemente in deine Beiträge einzubauen bzw. ihren Text zu formatieren.\r\n\r\nHier findest du eine [b]Übersicht über alle verfügbaren FSCodes[/b] und ihre Verwendung. Allerdings ist es möglich, dass nicht alle Codes zur Verwendung freigeschaltet sind.\r\n\r\n[html fscode]\r\n<table width="100%" cellpadding="0" cellspacing="10" border="0"><tr><td width="50%">\r\n[b][u][size=3]FS-Code:[/size][/u][/b]\r\n</td><td width="50%">\r\n[b][u][size=3]Beispiel:[/size][/u][/b]\r\n</td></tr><tr><td>\r\n[nofscode][b]fetter Text[/b][/nofscode]\r\n</td><td>\r\n[b]fetter Text[/b]\r\n</td></tr><tr><td>\r\n[nofscode][i]kursiver Text[/i][/nofscode]\r\n</td><td>\r\n[i]kursiver Text[/i]\r\n</td></tr><tr><td>\r\n[nofscode][u]unterstrichener Text[u][/nofscode]\r\n</td><td>\r\n[u]unterstrichener Text[/u]\r\n</td></tr><tr><td>\r\n[nofscode][s]durchgestrichener Text[/s][/nofscode]\r\n</td><td>\r\n[s]durchgestrichener Text[/s]\r\n</td></tr><tr><td>\r\n[nofscode][center]zentrierter Text[/center][/nofscode]\r\n</td><td>\r\n[center]zentrierter Text[/center]\r\n</td></tr><tr><td>\r\n[nofscode][font=Schriftart]Text in Schriftart[/font][/nofscode]\r\n</td><td>\r\n[font=Arial]Text in Arial[/font]</td></tr><tr><td>\r\n[nofscode][color=Farbcode]Text in Farbe[/color][/nofscode]\r\n</td><td>\r\n[color=#FF0000]Text in Rot (Farbcode: #FF0000)[/color]\r\n</td></tr><tr><td>\r\n[nofscode][size=Größe]Text in Größe 0[/size][/nofscode]\r\n</td><td>\r\n[size=0]Text in Größe 0[/size]\r\n</td></tr><tr><td>\r\n[nofscode][size=Größe]Text in Größe 1[/size][/nofscode]\r\n</td><td>\r\n[size=1]Text in Größe 1[/size]\r\n</td></tr><tr><td>\r\n[nofscode][size=Größe]Text in Größe 2[/size][/nofscode]\r\n</td><td>\r\n[size=2]Text in Größe 2[/size]\r\n</td></tr><tr><td>\r\n[nofscode][size=Größe]Text in Größe 3[/size][/nofscode]\r\n</td><td>\r\n[size=3]Text in Größe 3[/size]\r\n</td></tr><tr><td>\r\n[nofscode][size=Größe]Text in Größe 4[/size][/nofscode]\r\n</td><td>\r\n[size=4]Text in Größe 4[/size]\r\n</td></tr><tr><td>\r\n[nofscode][size=Größe]Text in Größe 5[/size][/nofscode]\r\n</td><td>\r\n[size=5]Text in Größe 5[/size]\r\n</td></tr><tr><td>\r\n[nofscode][size=Größe]Text in Größe 6[/size][/nofscode]\r\n</td><td>\r\n[size=6]Text in Größe 6[/size]\r\n</td></tr><tr><td>\r\n[nofscode][size=Größe]Text in Größe 7[/size][/nofscode]\r\n</td><td>\r\n[size=7]Text in Größe 7[/size]\r\n</td></tr><tr><td>\r\n[nofscode][nofscode]Text mit [b]FS[/b]Code[/nofscode][/nofscode]\r\n</td><td>\r\n[nofscode]kein [b]fetter[/b] Text[/nofscode]\r\n</td></tr><tr><td colspan="2"><hr></td></tr><tr><td>\r\n[nofscode][url]Linkadresse[/url][/nofscode]\r\n</td><td>\r\n[url]http://www.example.com[/url]\r\n</td></tr><tr><td>\r\n[nofscode][url=Linkadresse]Linktext[/url][/nofscode]\r\n</td><td>\r\n[url=http://www.example.com]Linktext[/url]\r\n</td></tr><tr><td>\r\n[nofscode][home]Seitenlink[/home][/nofscode]\r\n</td><td>\r\n[home]news[/home]\r\n</td></tr> <tr><td>\r\n[nofscode][home=Seitenlink]Linktext[/home][/nofscode]\r\n</td><td>\r\n[home=news]Linktext[/home]\r\n</td></tr><tr><td>\r\n[nofscode][email]Email-Adresse[/email][/nofscode]</td><td>\r\n[email]max.mustermann@example.com[/email]\r\n</td></tr> <tr><td>\r\n[nofscode][email=Email-Adresse]Beispieltext[/email][/nofscode]\r\n</td><td>\r\n[email=max.mustermann@example.com]Beispieltext[/email]\r\n</td></tr> <tr><td colspan="2"><hr></td></tr><tr><td>\r\n[nofscode][list]\r\n[*]Listenelement\r\n[*]Listenelement\r\n[/list][/nofscode]</td><td>[list]\r\n[*]Listenelement\r\n[*]Listenelement\r\n[/list]\r\n</td></tr> <tr><td>\r\n[nofscode][numlist]\r\n[*]Listenelement\r\n[*]Listenelement\r\n[/numlist][/nofscode]\r\n</td><td>\r\n[numlist]\r\n[*]Listenelement\r\n[*]Listenelement\r\n[/numlist]\r\n</td></tr> <tr><td>\r\n[nofscode][quote]Ein Zitat[/quote][/nofscode]\r\n</td><td>\r\n[quote]Ein Zitat[/quote]\r\n</td></tr><tr><td>\r\n[nofscode][quote=Quelle]Ein Zitat[/quote][/nofscode]\r\n</td><td>\r\n[quote=Quelle]Ein Zitat[/quote]\r\n</td></tr><tr><td>\r\n[nofscode][code]Schrift mit fester Breite[/code][/nofscode]\r\n</td><td>\r\n[code]Schrift mit fester Breite[/code]\r\n</td></tr><tr><td colspan="2"><hr></td></tr><tr><td>\r\n[nofscode][img]Bildadresse[/img][/nofscode]\r\n</td><td>\r\n[img]http://placehold.it/150x100[/img]\r\n</td></tr><tr><td>\r\n[nofscode][img=right]Bildadresse[/img][/nofscode]\r\n</td><td>\r\n[img=right]http://placehold.it/150x100[/img] Das hier ist ein Beispieltext. Die Grafik ist rechts platziert und der Text fließt links um sie herum.\r\n</td></tr><tr><td>\r\n[nofscode][img=left]Bildadresse[/img][/nofscode]\r\n</td><td>\r\n[img=left]http://placehold.it/150x100[/img] Das hier ist ein Beispieltext. Die Grafik ist links platziert und der Text fließt rechts um sie herum.\r\n</td></tr></table>\r\n[/html]', 0, 1, 1, 1, 1421719445),
 (2, '', 'ie 8 test', 1302480000, 1, 'ie 8 test', 1, 1, 1, 1, 1302560322),
 (3, 'sds', 'fsdfsdf', 1302739200, 1, 'sdf', 1, 1, 1, 1, 1302797133),
 (4, 'sd', 'hallo', 1302739200, 1, 'sdfsdf', 1, 1, 1, 1, 1302797137),
 (5, 'sss', 'sdfdfdf', 1372888800, 1, 'sdfsdfdf', 1, 1, 1, 1, 1372971785),
-(6, 'test', 'Test', 1394319600, 1, '<div align="center"><img src="images/content/Planeten/Header.png"></div><br>\r\nInnerhalb des Koprulu-Sektors gibt es viele Planeten und planetenähnliche Objekte, auf denen sich die Weltraumreisenden niedergelassen haben. Eine kurze Übersicht über die wichtigsten Planeten und deren Geschichte soll hier gegeben werden.\r\n\r\n<table width="600px" align="center">\r\n<tr valign="top" align="left">\r\n<td><img src="images/content/Planeten/Aiur.png" align="left"><img src="images/content/Planeten/SPACE.png" align="left"><b>Aiur</b><br>\r\n<font size="1">Dieser Planet war die Geburtstätte der Protoss und ihr größter Stolz, bis der Overmind mit dem Schwarm dort einfiel und die Protoss nach Shakuras fliehen mussten. Mittlerweile ist Aiur eine riesige Brutstätte der Zerg.</font></td>\r\n</tr>\r\n<tr valign="top" align="left">\r\n<td><img src="images/content/Planeten/Braxis.png" align="left"><img src="images/content/Planeten/SPACE.png" align="left"><b>Braxis</b><br>\r\n<font size="1">Zwar soll Braxis aufgrund seiner eisigen Temperaturen einer der lebensfeindlichsten Planeten des gesamten Sektors sein, doch lange Zeit schon wird der Planet sowohl von Terranern als auch von den Protoss besiedelt.</font></td>\r\n</tr>\r\n<tr valign="top" align="left">\r\n<td><img src="images/content/Planeten/Char.png" align="left"><img src="images/content/Planeten/SPACE.png" align="left"><b>Char</b><br>\r\n<font size="1">Diese vulkanische Welt ist der Hauptschwarmcluster des Schwarms im Sektor. Milliarden von Zerg warten hier darauf, gegen die Welten der Protoss und der Terraner entsandt zu werden, um Tod und Zerstörung zu bringen.</font></td>\r\n</tr>\r\n<tr valign="top" align="left">\r\n<td><img src="images/content/Planeten/Kaldir.png" align="left"><img src="images/content/Planeten/SPACE.png" align="left"><b>Kaldir</b><br>\r\n<font size="1">Durch seine isolierte Position innerhalb des Sektors und die lebensfeindlichen Temperaturen haben sich hier enorm widerstandsfähige Organismen entwickelt. Es wird gemunkelt, dass die Protoss sich hier niedergelassen haben, um Forschungen an besagten Wesen durchzuführen.</font></td>\r\n</tr>\r\n<tr valign="top" align="left">\r\n<td><img src="images/content/Planeten/Korhal.png" align="left"><img src="images/content/Planeten/SPACE.png" align="left"><b>Korhal</b><br>\r\n<font size="1">Die terranische Liga hat ihren Hauptsitz auf Korhal und regiert von dort aus alle Vasallenplaneten innerhalb des Sektors. Der ganze Planet ist überzogen mit Siedlungen und gilt als Wiege der terranischen Zivilisation des Koprulu-Sektors.</font></td>\r\n</tr>\r\n<tr valign="top" align="left">\r\n<td><img src="images/content/Planeten/MarSara.png" align="left"><img src="images/content/Planeten/SPACE.png" align="left"><b>Mar Sara</b><br>\r\n<font size="1">Mar Saras Geschichte ist blutig, denn nach der Zerginvasion, welche Millionen das Leben kosteten, verwüsteten die Protoss im Sinne der ihrer Eindämmung der Zergbedrohung die Oberfläche erneut. Durch ein Terraformingprojekt der Liga wurde der Planet mittlerweile wieder bewohnbar und ist nun wieder schwach besiedelt.</font></td>\r\n</tr>\r\n<tr valign="top" align="left">\r\n<td><img src="images/content/Planeten/Moria.png" align="left"><img src="images/content/Planeten/SPACE.png" align="left"><b>Moria</b><br>\r\n<font size="1">Auf diesem Planeten wird ein Großteil der für den Bau der terranischen Kriegsmaschinerie benötigten Erze und Mineralien abgebaut. Durch den hohen Umsatz an weltvollen Stoffen gilt diese Welt als ein Krisenherd, der durch den Konflikt zwischen der Liga und dem Kel-Morianischen Kartell genährt wird.</font></td>\r\n</tr>\r\n<tr valign="top" align="left">\r\n<td><img src="images/content/Planeten/NeuFolsom.png" align="left"><img src="images/content/Planeten/SPACE.png" align="left"><b>Neu-Folsom</b><br>\r\n<font size="1">Dieser instabile Planet wurde von der Liga als ein tödliches Gefängnis für all Jene konzipiert, die den ideologischen Grundsätzen der Liga wiedersprechen. Auch politische Feinde des Imperators sind hier eingesperrt. Es heißt, niemand könne diesem Ort entkommen, wenn er erst einmal eingesperrt sei.</font></td>\r\n</tr>\r\n<tr valign="top" align="left">\r\n<td><img src="images/content/Planeten/Phaeton.png" align="left"><img src="images/content/Planeten/SPACE.png" align="left"><b>Phaeton</b><br>\r\n<font size="1">Die Wüstenweld Phaetons bietet weitläufige Sanddünen und Geröllansammlungen. Durch die hohen Klippen und tiefen Tunneln gilt diese Welt oft auch als Versteck für Exilanten. Doch auch die Zerg haben die Abgelegenheit des Planeten für sich entdeckt.</font></td>\r\n</tr>\r\n<tr valign="top" align="left">\r\n<td><img src="images/content/Planeten/Shiloh.png" align="left"><img src="images/content/Planeten/SPACE.png" align="left"><b>Shiloh</b><br>\r\n<font size="1">Dieser florierende Planet bietet gemäßigtes Klima und liefert vielen Planeten der Terraner Nahrungsmittel in riesigen Mengen. Davon abgesehen gilt dieser Planet außerdem als Geburtsort der Rebellion, ist er doch die Heimatwelt des Rebellen Jim Raynor.</font></td>\r\n</tr>\r\n<tr valign="top" align="left">\r\n<td><img src="images/content/Planeten/Tarsonis.png" align="left"><img src="images/content/Planeten/SPACE.png" align="left"><b>Tarsonis</b><br>\r\n<font size="1">Zur Zeit der Konföderation galt dieser Planet als Wiege der Menschheit des gesamten Sektors. Durch den von Arcturus Mengsk eingeleiteten Einfall der Zerg wurde der Planet und damit auch die Konföderation selbst vernichtet und musste der neu gegründeten Liga der Menschen weichen.</font></td>\r\n</tr>\r\n<tr valign="top" align="left">\r\n<td><img src="images/content/Planeten/Umoja.png" align="left"><img src="images/content/Planeten/SPACE.png" align="left"><b>Umoja</b><br>\r\n<font size="1">Jener Planet bietet Mengsks Imperium bereits seit dessen Gründung Widerstand und ist Sitz des umojanischen Protektorats. Diese Organisation ist ideologisch den Grundsätzen der Liga entgegengerichtet und arbeitet daran, die Liga zu stürzen.</font></td>\r\n</tr>\r\n</table>', 1, 0, 1, 1, 1394403463),
-(7, 'search_help', 'Suchregeln', 1400536800, 1, 'Mit der Suchfunktion können die verschiedenen Inhalte dieser Webseite schnell und einfach gefunden werden. Suchbegriffe können beliebig angeben werden, es sollten aber die folgenden Regeln bedacht werden:\r\n[list]\r\n[*][b]Ein Suchbegriff muss aus mindestens 3 Zeichen bestehen[/b]\r\n[*][b]Nach bestimmten, häufig vorkommenden Füllwörtern kann nicht gesucht werden:[/b] \r\nz.B. "und", "oder", "hallo", etc.\r\n[*][b]Zahlen & Sonderzeichen werden durch Leerzeichen ersetzt[/b]\r\n[*][b]Umlaute werden umgewandelt:[/b] ä => ae, ö=>oe, ü => ue\r\n[/list]\r\n\r\n[i]Beispiele:[/i]\r\n[font=monospace]Ei[/font] => Findet nichts, da der Suchbegriff zu kurz ist\r\n[font=monospace]und oder oder[/font] => Findet nichts, da nur nach Füllwörtern gesucht wurde\r\n[font=monospace]Guten8geschichte[/font] => Sucht nach "guten" und "geschichte"\r\n[font=monospace]mäuse[/font] => Findet Inhalte mit "Mäuse", "mäuse" oder "Maeuse"\r\n\r\nDamit die Suchergebnisse immer nachvollziehbar bleiben, wird bei jeder Suche auch die berechnete Suchanfrage mit ausgegeben. So kann die eigene Anfrage leicht überprüft und evtl. korrigiert werden.\r\n\r\n\r\n[b][size=3]Suchfunktionen[/size][/b]\r\n\r\nLiefert die Suche nach einfachen Stichwörtern nicht das gewünschte Ergebnis, kann die Suchanfrage verfeinert werden. Dazu stehen einige Operatoren und Funktionen zur Verfügung.\r\n\r\n\r\n[b]Alle Suchbegriffe müssen enthalten sein: AND[/b]\r\nDie Verknüpfung mit AND ist der Standardoperator. Sie wird auch immer dann angewandt, wenn keine andere Verknüpfung angegeben wurde. Mit der AND-Verknüpfung werden nur Inhalte gefunden, die alle Suchbegriffe enthalten.\r\n\r\n[i]Beispiele:[/i]\r\n[font=monospace]frosch internet[/font] => Findet nur Inhalte mit "frosch" UND "internet"\r\n[font=monospace]hund AND katze[/font] => Findet nur Inhalte mit "hund" UND "katze"\r\n\r\n\r\n[b]Nur ein Suchbegriffe muss enthalten sein: OR[/b]\r\nEs kann aber auch nach Inhalten gesucht werden, die möglicherweise nur einen der Suchbegriffe enthalten. Hierzu wird der OR-Operator verwendet.\r\n\r\n[i]Beispiele:[/i]\r\n[font=monospace]papagei OR rabe[/font] => Findet Inhalte mit "papagei" ODER "rabe"\r\n\r\n\r\n[b]Entweder-oder-Suche: XOR[/b]\r\nEine Verknüpfung mit dem XOR-Operator entspricht im Grundsatz der Suche mir OR. Der Unterschied besteht darin, dass aber nur solche Inhalte gefunden werden die nur einen der beiden Suchbegriffe enthalten, nicht aber beide zusammen.\r\n\r\n[i]Beispiele:[/i]\r\n[font=monospace]frau XOR mann[/font] => Findet Inhalte mit "frau" aber NICHT "mann" und umgekehrt\r\n\r\n\r\n[b]Suche nach Teilwörtern: *[/b]\r\nWenn nach bestimmten Teilwörtern gesucht wird, kann das Sternchen als Platzhalter verwendet werden. Vorangestellt werden Wörter gefunden, die auf den Suchbegriff enden; an letzter Stelle stehend findet die Suche nur Wörter die damit beginnen. Das Sternchen kann aber auch gleichzeitig vorne und hinten verwendet werden.\r\n\r\n[i]Beispiele:[/i]\r\n[font=monospace]*haus[/font] => Findet "Haus", "Wohnhaus", "Waisenhaus", aber NICHT "Hausboot"\r\n[font=monospace]tür*[/font] => Findet "Türschloss", "türmen", aber NICHT "Hintertür"\r\n[font=monospace]*wunder*[/font] => Findet "Wunderheiler", "Wirtschaftswunder" und "Verwunderung"\r\n\r\n\r\n[b]Suchbegriffe ausschließen: ![/b]\r\nUm bestimmte Begriffe aus den Suchergebnissen auszuschließen, kann ihnen ein Ausrufezeichen vorangestellt werden. So können Inhalte gefunden werden, die bestimmte Begriff nicht enthalten. Die anderen Suchregeln gelten weiterhin, insbesondere können Verknüpfungen verwendet werden.\r\n\r\n[i]Beispiele:[/i]\r\n[font=monospace]kind !junge[/font] => Findet Inhalte mit "kind" aber OHNE "junge"\r\n[font=monospace]maus katze !hund[/font] => Findet Inhalte mit "maus" UND "katze", aber OHNE "hund"\r\n[font=monospace]frosch OR !storch[/font] => Findet Inhalte die "frosch" ODER NICHT "Storch" enthalten\r\n\r\n\r\n[b]Phonetische Suche[/b]\r\nOft ist die genaue Schreibweise eines Wortes nicht bekannt. Dann kann die Phonetische Suche weiterhelfen. Mit dieser Option werden auch ähnlich klingende Begriffe zu einem Suchwort gefunden.\r\n\r\n[i]Beispiele:[/i]\r\n[font=monospace]team[/font] => Findet Inhalte mit "Team", "Tim", "Teen", etc.', 1, 1, 1, 1, 1400931683);
+(6, 'search_help', 'Suchregeln', 0, 0, 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores.\r\n\r\n[i]Beispiele:[/i]\r\n[font=monospace]mäuse[/font] => Findet Inhalte mit "Mäuse", "mäuse" oder "Maeuse"\r\n\r\n\r\n[b]Phonetische Suche[/b]\r\nLorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores.\r\n\r\n[i]Beispiele:[/i]\r\n[font=monospace]team[/font] => Findet Inhalte mit "Team", "Tim", "Teen", etc,\r\n\r\n\r\n[b]Suche nach Teilwörtern: *[/b]\r\nLorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores.\r\n\r\n\r\n[b]Mehrere Suchbegriffe: AND [/b]\r\nLorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo\r\n[i]Beispiele:[/i]\r\n[font=monospace]frosch internet[/font] => Findet Inhalte mit "frosch" UND "internet"\r\n[font=monospace]hund AND katze[/font] => Findet Inhalte mit "hund" UND "katze"\r\n\r\n\r\n[b]Suchbegriffe auschließen: ![/b]\r\nLorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores.\r\n\r\n[i]Beispiele:[/i]\r\n[font=monospace]maus katze !hund[/font] => Findet Inhalte mit "maus" UND "katze", aber OHNE "hund"\r\n\r\n\r\n[b]ODER-Vereinigung: OR[/b]\r\nLorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores.\r\n\r\n[i]Beispiele:[/i]\r\n[font=monospace]papagei OR rabe[/font] => Findet Inhalte mit "papagei" ODER "rabe"\r\n\r\n\r\n[b]Entweder-oder-Suche: XOR[/b]\r\nLorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores.\r\n\r\n[i]Beispiele:[/i]\r\n[font=monospace]frau XOR mann[/font] => Findet Inhalte mit "frau" aber NICHT "mann" und umgekehrt\r\n\r\n\r\n[b]Mehrere Operatoren mit Klammern[/b]\r\nLorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores.\r\n\r\n[i]Beispiele:[/i]\r\n[font=monospace]kind AND (hund XOR katze)[/font] => Findet Inhalte mit "kind" die entweder "hund" oder "katze" enthalten', 1, 1, 1, 1, 1397751822);
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_articles_cat`
+-- Table structure for table `fs2_articles_cat`
 --
 
 DROP TABLE IF EXISTS `fs2_articles_cat`;
 CREATE TABLE IF NOT EXISTS `fs2_articles_cat` (
-  `cat_id` smallint(6) NOT NULL AUTO_INCREMENT,
+`cat_id` smallint(6) NOT NULL,
   `cat_name` varchar(100) DEFAULT NULL,
   `cat_description` text NOT NULL,
   `cat_date` int(11) NOT NULL,
-  `cat_user` mediumint(8) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`cat_id`)
+  `cat_user` mediumint(8) NOT NULL DEFAULT '1'
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
--- Daten für Tabelle `fs2_articles_cat`
+-- Dumping data for table `fs2_articles_cat`
 --
 
 INSERT INTO `fs2_articles_cat` (`cat_id`, `cat_name`, `cat_description`, `cat_date`, `cat_user`) VALUES
@@ -380,19 +370,18 @@ INSERT INTO `fs2_articles_cat` (`cat_id`, `cat_name`, `cat_description`, `cat_da
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_b8_wordlist`
+-- Table structure for table `fs2_b8_wordlist`
 --
 
 DROP TABLE IF EXISTS `fs2_b8_wordlist`;
 CREATE TABLE IF NOT EXISTS `fs2_b8_wordlist` (
   `token` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `count_ham` int(10) unsigned DEFAULT NULL,
-  `count_spam` int(10) unsigned DEFAULT NULL,
-  PRIMARY KEY (`token`)
+  `count_spam` int(10) unsigned DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Daten für Tabelle `fs2_b8_wordlist`
+-- Dumping data for table `fs2_b8_wordlist`
 --
 
 INSERT INTO `fs2_b8_wordlist` (`token`, `count_ham`, `count_spam`) VALUES
@@ -402,35 +391,33 @@ INSERT INTO `fs2_b8_wordlist` (`token`, `count_ham`, `count_spam`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_cimg`
+-- Table structure for table `fs2_cimg`
 --
 
 DROP TABLE IF EXISTS `fs2_cimg`;
 CREATE TABLE IF NOT EXISTS `fs2_cimg` (
-  `id` mediumint(8) NOT NULL AUTO_INCREMENT,
+`id` mediumint(8) NOT NULL,
   `name` varchar(255) NOT NULL,
   `type` varchar(4) NOT NULL,
   `hasthumb` tinyint(1) NOT NULL,
-  `cat` mediumint(8) NOT NULL,
-  PRIMARY KEY (`id`)
+  `cat` mediumint(8) NOT NULL
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_cimg_cats`
+-- Table structure for table `fs2_cimg_cats`
 --
 
 DROP TABLE IF EXISTS `fs2_cimg_cats`;
 CREATE TABLE IF NOT EXISTS `fs2_cimg_cats` (
-  `id` mediumint(8) NOT NULL AUTO_INCREMENT,
+`id` mediumint(8) NOT NULL,
   `name` varchar(25) NOT NULL,
-  `description` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`)
+  `description` varchar(100) NOT NULL
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
--- Daten für Tabelle `fs2_cimg_cats`
+-- Dumping data for table `fs2_cimg_cats`
 --
 
 INSERT INTO `fs2_cimg_cats` (`id`, `name`, `description`) VALUES
@@ -440,12 +427,12 @@ INSERT INTO `fs2_cimg_cats` (`id`, `name`, `description`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_comments`
+-- Table structure for table `fs2_comments`
 --
 
 DROP TABLE IF EXISTS `fs2_comments`;
 CREATE TABLE IF NOT EXISTS `fs2_comments` (
-  `comment_id` mediumint(8) NOT NULL AUTO_INCREMENT,
+`comment_id` mediumint(8) NOT NULL,
   `content_id` mediumint(8) NOT NULL,
   `content_type` varchar(32) NOT NULL,
   `comment_poster` varchar(32) DEFAULT NULL,
@@ -456,46 +443,43 @@ CREATE TABLE IF NOT EXISTS `fs2_comments` (
   `comment_text` text,
   `comment_classification` tinyint(4) NOT NULL DEFAULT '0',
   `spam_probability` float NOT NULL DEFAULT '0.5',
-  `needs_update` tinyint(4) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`comment_id`),
-  FULLTEXT KEY `comment_title_text` (`comment_text`,`comment_title`)
+  `needs_update` tinyint(4) NOT NULL DEFAULT '1'
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
--- Daten für Tabelle `fs2_comments`
+-- Dumping data for table `fs2_comments`
 --
 
 INSERT INTO `fs2_comments` (`comment_id`, `content_id`, `content_type`, `comment_poster`, `comment_poster_id`, `comment_poster_ip`, `comment_date`, `comment_title`, `comment_text`, `comment_classification`, `spam_probability`, `needs_update`) VALUES
-(3, 5, 'news', '1', 1, '127.0.0.1', 1306441173, 'hans', 'hans', 0, 0.5, 0),
+(3, 5, 'news', '1', 1, '127.0.0.1', 1306441173, 'hans', 'hans', 1, 0.5, 0),
 (6, 11, 'dl', '1', 1, '::1', 1373196687, 'test', 'test', 0, 0.5, 0),
-(7, 45, 'news', 'spam', 0, '::1', 1394920254, 'spam', 'ssdsd', 0, 0.5, 1);
+(7, 45, 'news', '1', 1, '127.0.0.1', 1421365902, 'test', 'test', 1, 0.5, 0);
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_config`
+-- Table structure for table `fs2_config`
 --
 
 DROP TABLE IF EXISTS `fs2_config`;
 CREATE TABLE IF NOT EXISTS `fs2_config` (
   `config_name` varchar(30) NOT NULL,
   `config_data` text NOT NULL,
-  `config_loadhook` varchar(255) NOT NULL DEFAULT 'none',
-  UNIQUE KEY `config_name` (`config_name`)
+  `config_loadhook` varchar(255) NOT NULL DEFAULT 'none'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Daten für Tabelle `fs2_config`
+-- Dumping data for table `fs2_config`
 --
 
 INSERT INTO `fs2_config` (`config_name`, `config_data`, `config_loadhook`) VALUES
 ('main', '{"title":"Hansen''s wunderbare Welt","dyn_title":"1","dyn_title_ext":"{..title..} \\u00bb {..ext..}","admin_mail":"mail@sweil.de","description":"","keywords":"","publisher":"","copyright":"","style_id":"2","allow_other_designs":"1","show_favicon":"1","home":"0","home_text":"","language_text":"de_DE","feed":"rss20","date":"d.m.Y","time":"H:i \\\\U\\\\h\\\\r","datetime":"d.m.Y, H:i \\\\U\\\\h\\\\r","timezone":"Europe\\/Berlin","auto_forward":"4","page":"<div align=\\"center\\" style=\\"width:270px;\\"><div style=\\"width:70px; float:left;\\">{..prev..}&nbsp;<\\/div>Seite <b>{..page_number..}<\\/b> von <b>{..total_pages..}<\\/b><div style=\\"width:70px; float:right;\\">&nbsp;{..next..}<\\/div><\\/div>","page_prev":"<a href=\\"{..url..}\\">\\u00ab&nbsp;zur\\u00fcck<\\/a>&nbsp|","page_next":"|&nbsp<a href=\\"{..url..}\\">weiter&nbsp\\u00bb<\\/a>","style_tag":"lightfrog","version":"2.alix6","url_style":"seo","protocol":"http:\\/\\/","url":"localhost\\/fs2\\/www\\/","other_protocol":"1","count_referers":"1"}', 'startup'),
 ('system', '{"var_loop":20}', 'startup'),
-('env', '{}', 'startup'),
+('env', '{}', ''),
 ('info', '{}', 'startup'),
-('articles', '{"acp_per_page":"20","html_code":"2","fs_code":"4","para_handling":"4","cat_pic_x":"150","cat_pic_y":"150","cat_pic_size":"1024","com_rights":"0","com_antispam":"0","com_sort":"0","acp_view":"2"}', 'none'),
+('articles', '{"acp_per_page":"50","html_code":"2","fs_code":"4","para_handling":"4","cat_pic_x":"150","cat_pic_y":"150","cat_pic_size":"1024","com_rights":"0","com_antispam":"0","com_sort":"0","acp_view":"2"}', 'none'),
 ('search', '{"id":"0","search_num_previews":"10","search_and":"AND, and, &&","search_or":"OR, or, ||","search_xor":"XOR, xor","search_not":"!, -","search_wildcard":"*, %","search_min_word_length":"3","search_allow_phonetic":"1","search_use_stopwords":"1"}', 'none'),
-('cronjobs', '{"last_cronjob_time":"1400931658","last_cronjob_time_daily":"1400931658","last_cronjob_time_hourly":"1400931658","search_index_update":"1","ref_cron":"1","ref_days":"5","ref_hits":"5","ref_contact":"first","ref_age":"older","ref_amount":"less"}', 'startup'),
+('cronjobs', '{"last_cronjob_time":"1421719443","last_cronjob_time_daily":"1421638281","last_cronjob_time_hourly":"1421719201","search_index_update":"1","ref_cron":"1","ref_days":"5","ref_hits":"5","ref_contact":"first","ref_age":"older","ref_amount":"less"}', 'startup'),
 ('captcha', '{"captcha_bg_color":"FAFCF1","captcha_bg_transparent":"0","captcha_text_color":"AB30AB","captcha_first_lower":"1","captcha_first_upper":"5","captcha_second_lower":"1","captcha_second_upper":"5","captcha_use_addition":"1","captcha_use_subtraction":"1","captcha_use_multiplication":"0","captcha_create_easy_arithmetics":"1","captcha_x":"58","captcha_y":"18","captcha_show_questionmark":"0","captcha_use_spaces":"1","captcha_show_multiplication_as_x":"1","captcha_start_text_x":"0","captcha_start_text_y":"0","captcha_font_size":"5","captcha_font_file":""}', 'none'),
 ('downloads', '{"screen_x":"1024","screen_y":"768","thumb_x":"120","thumb_y":"90","quickinsert":"test''","dl_rights":"2","dl_show_sub_cats":"0","dl_comments":"1"}', 'none'),
 ('affiliates', '{"partner_anzahl":"5","small_x":"88","small_y":"31","big_x":"468","big_y":"60","big_allow":"1","file_size":"1024","small_allow":"0"}', 'none'),
@@ -506,12 +490,13 @@ INSERT INTO `fs2_config` (`config_name`, `config_data`, `config_loadhook`) VALUE
 ('preview_images', '{"active":"1","type_priority":"1","use_priority_only":"0","timed_deltime":"604800"}', 'none'),
 ('groups', '{"group_pic_x":"250","group_pic_y":"25","group_pic_size":"100"}', 'none'),
 ('screens', '{"screen_x":"3500","screen_y":"3500","screen_thumb_x":"120","screen_thumb_y":"90","screen_size":"2048","screen_rows":"5","screen_cols":"3","screen_order":"id","screen_sort":"desc","show_type":"1","show_size_x":"950","show_size_y":"700","show_img_x":"800","show_img_y":"600","wp_x":"2000","wp_y":"2000","wp_thumb_x":"200","wp_thumb_y":"150","wp_size":"2048","wp_rows":"6","wp_cols":"2","wp_order":"id","wp_sort":"desc"}', 'none'),
-('users', '{"user_per_page":"30","registration_antispam":"1","avatar_x":"110","avatar_y":"110","avatar_size":"20","reg_date_format":"l, j. F Y","user_list_reg_date_format":"j. F Y"}', 'none');
+('users', '{"user_per_page":"30","registration_antispam":"1","avatar_x":"110","avatar_y":"110","avatar_size":"20","reg_date_format":"l, j. F Y","user_list_reg_date_format":"j. F Y"}', 'none'),
+('social_meta_tags', '{"use_google_plus":"1","google_plus_page":"+TheWitcherDE","use_schema_org":"1","use_twitter_card":"1","twitter_site":"@TheWitcherDE","use_open_graph":"1","fb_admins":"1234,5678","og_section":"Technology","site_name":"","default_image":"","news_cat_prepend":": ","enable_news":"1","enable_articles":"1","enable_downloads":"1","use_news_cat_prepend":"1","use_external_images":""}', 'none');
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_counter`
+-- Table structure for table `fs2_counter`
 --
 
 DROP TABLE IF EXISTS `fs2_counter`;
@@ -522,21 +507,20 @@ CREATE TABLE IF NOT EXISTS `fs2_counter` (
   `user` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `artikel` smallint(6) unsigned NOT NULL DEFAULT '0',
   `news` smallint(6) unsigned NOT NULL DEFAULT '0',
-  `comments` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+  `comments` mediumint(8) unsigned NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Daten für Tabelle `fs2_counter`
+-- Dumping data for table `fs2_counter`
 --
 
 INSERT INTO `fs2_counter` (`id`, `visits`, `hits`, `user`, `artikel`, `news`, `comments`) VALUES
-(1, 109, 3338, 5, 7, 18, 3);
+(1, 114, 3742, 5, 6, 18, 3);
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_counter_ref`
+-- Table structure for table `fs2_counter_ref`
 --
 
 DROP TABLE IF EXISTS `fs2_counter_ref`;
@@ -544,22 +528,21 @@ CREATE TABLE IF NOT EXISTS `fs2_counter_ref` (
   `ref_url` varchar(255) DEFAULT NULL,
   `ref_count` int(11) DEFAULT NULL,
   `ref_first` int(11) DEFAULT NULL,
-  `ref_last` int(11) DEFAULT NULL,
-  KEY `ref_url` (`ref_url`)
+  `ref_last` int(11) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Daten für Tabelle `fs2_counter_ref`
+-- Dumping data for table `fs2_counter_ref`
 --
 
 INSERT INTO `fs2_counter_ref` (`ref_url`, `ref_count`, `ref_first`, `ref_last`) VALUES
 ('http://localhost/', 55, 1302557491, 1307980522),
-('http://localhost/fs2/', 27, 1316955935, 1400614351);
+('http://localhost/fs2/', 46, 1316955935, 1421714721);
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_counter_stat`
+-- Table structure for table `fs2_counter_stat`
 --
 
 DROP TABLE IF EXISTS `fs2_counter_stat`;
@@ -568,12 +551,11 @@ CREATE TABLE IF NOT EXISTS `fs2_counter_stat` (
   `s_month` int(2) NOT NULL DEFAULT '0',
   `s_day` int(2) NOT NULL DEFAULT '0',
   `s_visits` int(11) DEFAULT NULL,
-  `s_hits` int(11) DEFAULT NULL,
-  PRIMARY KEY (`s_year`,`s_month`,`s_day`)
+  `s_hits` int(11) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Daten für Tabelle `fs2_counter_stat`
+-- Dumping data for table `fs2_counter_stat`
 --
 
 INSERT INTO `fs2_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hits`) VALUES
@@ -659,25 +641,29 @@ INSERT INTO `fs2_counter_stat` (`s_year`, `s_month`, `s_day`, `s_visits`, `s_hit
 (2013, 7, 8, 1, 39),
 (2013, 7, 9, 1, 1),
 (2013, 7, 14, 1, 31),
-(2014, 1, 12, 1, 3),
-(2014, 3, 9, 1, 6),
-(2014, 3, 15, 1, 14),
-(2014, 3, 16, 1, 26),
-(2014, 4, 6, 1, 5),
-(2014, 4, 12, 1, 12),
-(2014, 4, 13, 1, 3),
-(2014, 5, 20, 1, 8),
-(2014, 5, 24, 1, 5);
+(2014, 4, 17, 1, 35),
+(2014, 5, 20, 1, 2),
+(2015, 1, 2, 1, 14),
+(2015, 1, 3, 1, 1),
+(2015, 1, 4, 2, 125),
+(2015, 1, 5, 1, 42),
+(2015, 1, 14, 1, 25),
+(2015, 1, 15, 1, 1),
+(2015, 1, 16, 1, 36),
+(2015, 1, 17, 1, 101),
+(2015, 1, 18, 1, 47),
+(2015, 1, 19, 1, 1),
+(2015, 1, 20, 1, 56);
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_dl`
+-- Table structure for table `fs2_dl`
 --
 
 DROP TABLE IF EXISTS `fs2_dl`;
 CREATE TABLE IF NOT EXISTS `fs2_dl` (
-  `dl_id` mediumint(8) NOT NULL AUTO_INCREMENT,
+`dl_id` mediumint(8) NOT NULL,
   `cat_id` mediumint(8) DEFAULT NULL,
   `user_id` mediumint(8) DEFAULT NULL,
   `dl_date` int(11) DEFAULT NULL,
@@ -686,13 +672,11 @@ CREATE TABLE IF NOT EXISTS `fs2_dl` (
   `dl_autor` varchar(100) DEFAULT NULL,
   `dl_autor_url` varchar(255) DEFAULT NULL,
   `dl_open` tinyint(4) DEFAULT NULL,
-  `dl_search_update` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`dl_id`),
-  FULLTEXT KEY `dl_name_text` (`dl_name`,`dl_text`)
+  `dl_search_update` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
 
 --
--- Daten für Tabelle `fs2_dl`
+-- Dumping data for table `fs2_dl`
 --
 
 INSERT INTO `fs2_dl` (`dl_id`, `cat_id`, `user_id`, `dl_date`, `dl_name`, `dl_text`, `dl_autor`, `dl_autor_url`, `dl_open`, `dl_search_update`) VALUES
@@ -710,19 +694,18 @@ INSERT INTO `fs2_dl` (`dl_id`, `cat_id`, `user_id`, `dl_date`, `dl_name`, `dl_te
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_dl_cat`
+-- Table structure for table `fs2_dl_cat`
 --
 
 DROP TABLE IF EXISTS `fs2_dl_cat`;
 CREATE TABLE IF NOT EXISTS `fs2_dl_cat` (
-  `cat_id` mediumint(8) NOT NULL AUTO_INCREMENT,
+`cat_id` mediumint(8) NOT NULL,
   `subcat_id` mediumint(8) NOT NULL DEFAULT '0',
-  `cat_name` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`cat_id`)
+  `cat_name` varchar(100) DEFAULT NULL
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 --
--- Daten für Tabelle `fs2_dl_cat`
+-- Dumping data for table `fs2_dl_cat`
 --
 
 INSERT INTO `fs2_dl_cat` (`cat_id`, `subcat_id`, `cat_name`) VALUES
@@ -735,24 +718,22 @@ INSERT INTO `fs2_dl_cat` (`cat_id`, `subcat_id`, `cat_name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_dl_files`
+-- Table structure for table `fs2_dl_files`
 --
 
 DROP TABLE IF EXISTS `fs2_dl_files`;
 CREATE TABLE IF NOT EXISTS `fs2_dl_files` (
   `dl_id` mediumint(8) DEFAULT NULL,
-  `file_id` mediumint(8) NOT NULL AUTO_INCREMENT,
+`file_id` mediumint(8) NOT NULL,
   `file_count` mediumint(8) NOT NULL DEFAULT '0',
   `file_name` varchar(100) DEFAULT NULL,
   `file_url` varchar(255) DEFAULT NULL,
   `file_size` mediumint(8) NOT NULL DEFAULT '0',
-  `file_is_mirror` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`file_id`),
-  KEY `dl_id` (`dl_id`)
+  `file_is_mirror` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
 
 --
--- Daten für Tabelle `fs2_dl_files`
+-- Dumping data for table `fs2_dl_files`
 --
 
 INSERT INTO `fs2_dl_files` (`dl_id`, `file_id`, `file_count`, `file_name`, `file_url`, `file_size`, `file_is_mirror`) VALUES
@@ -768,7 +749,7 @@ INSERT INTO `fs2_dl_files` (`dl_id`, `file_id`, `file_count`, `file_name`, `file
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_editor_config`
+-- Table structure for table `fs2_editor_config`
 --
 
 DROP TABLE IF EXISTS `fs2_editor_config`;
@@ -815,21 +796,20 @@ CREATE TABLE IF NOT EXISTS `fs2_editor_config` (
   `do_code` tinyint(1) NOT NULL,
   `do_quote` tinyint(1) NOT NULL,
   `do_noparse` tinyint(1) NOT NULL,
-  `do_smilies` tinyint(1) NOT NULL,
-  PRIMARY KEY (`id`)
+  `do_smilies` tinyint(1) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Daten für Tabelle `fs2_editor_config`
+-- Dumping data for table `fs2_editor_config`
 --
 
 INSERT INTO `fs2_editor_config` (`id`, `smilies_rows`, `smilies_cols`, `textarea_width`, `textarea_height`, `bold`, `italic`, `underline`, `strike`, `center`, `font`, `color`, `size`, `list`, `numlist`, `img`, `cimg`, `url`, `home`, `email`, `code`, `quote`, `noparse`, `smilies`, `do_bold`, `do_italic`, `do_underline`, `do_strike`, `do_center`, `do_font`, `do_color`, `do_size`, `do_list`, `do_numlist`, `do_img`, `do_cimg`, `do_url`, `do_home`, `do_email`, `do_code`, `do_quote`, `do_noparse`, `do_smilies`) VALUES
-(1, 5, 2, 355, 120, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1);
+(1, 5, 2, 355, 120, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_email`
+-- Table structure for table `fs2_email`
 --
 
 DROP TABLE IF EXISTS `fs2_email`;
@@ -841,12 +821,11 @@ CREATE TABLE IF NOT EXISTS `fs2_email` (
   `change_password_ack` text NOT NULL,
   `use_admin_mail` tinyint(1) NOT NULL DEFAULT '1',
   `email` varchar(100) NOT NULL,
-  `html` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`)
+  `html` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Daten für Tabelle `fs2_email`
+-- Dumping data for table `fs2_email`
 --
 
 INSERT INTO `fs2_email` (`id`, `signup`, `change_password`, `delete_account`, `change_password_ack`, `use_admin_mail`, `email`, `html`) VALUES
@@ -855,24 +834,23 @@ INSERT INTO `fs2_email` (`id`, `signup`, `change_password`, `delete_account`, `c
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_ftp`
+-- Table structure for table `fs2_ftp`
 --
 
 DROP TABLE IF EXISTS `fs2_ftp`;
 CREATE TABLE IF NOT EXISTS `fs2_ftp` (
-  `ftp_id` mediumint(9) NOT NULL AUTO_INCREMENT,
+`ftp_id` mediumint(9) NOT NULL,
   `ftp_title` varchar(100) NOT NULL,
   `ftp_type` varchar(10) NOT NULL,
   `ftp_url` varchar(255) NOT NULL,
   `ftp_user` varchar(255) NOT NULL,
   `ftp_pw` varchar(255) NOT NULL,
   `ftp_ssl` tinyint(1) NOT NULL,
-  `ftp_http_url` varchar(255) NOT NULL,
-  PRIMARY KEY (`ftp_id`)
+  `ftp_http_url` varchar(255) NOT NULL
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
--- Daten für Tabelle `fs2_ftp`
+-- Dumping data for table `fs2_ftp`
 --
 
 INSERT INTO `fs2_ftp` (`ftp_id`, `ftp_title`, `ftp_type`, `ftp_url`, `ftp_user`, `ftp_pw`, `ftp_ssl`, `ftp_http_url`) VALUES
@@ -881,29 +859,27 @@ INSERT INTO `fs2_ftp` (`ftp_id`, `ftp_title`, `ftp_type`, `ftp_url`, `ftp_user`,
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_hashes`
+-- Table structure for table `fs2_hashes`
 --
 
 DROP TABLE IF EXISTS `fs2_hashes`;
 CREATE TABLE IF NOT EXISTS `fs2_hashes` (
-  `id` mediumint(8) NOT NULL AUTO_INCREMENT,
+`id` mediumint(8) NOT NULL,
   `hash` varchar(40) CHARACTER SET utf8 NOT NULL,
   `type` varchar(20) CHARACTER SET utf8 NOT NULL,
   `typeId` mediumint(8) NOT NULL,
-  `deleteTime` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `hash` (`hash`)
+  `deleteTime` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_news`
+-- Table structure for table `fs2_news`
 --
 
 DROP TABLE IF EXISTS `fs2_news`;
 CREATE TABLE IF NOT EXISTS `fs2_news` (
-  `news_id` mediumint(8) NOT NULL AUTO_INCREMENT,
+`news_id` mediumint(8) NOT NULL,
   `cat_id` smallint(6) DEFAULT NULL,
   `user_id` mediumint(8) DEFAULT NULL,
   `news_date` int(11) DEFAULT NULL,
@@ -911,13 +887,11 @@ CREATE TABLE IF NOT EXISTS `fs2_news` (
   `news_text` text,
   `news_active` tinyint(1) NOT NULL DEFAULT '1',
   `news_comments_allowed` tinyint(1) NOT NULL DEFAULT '1',
-  `news_search_update` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`news_id`),
-  FULLTEXT KEY `news_title_text` (`news_title`,`news_text`)
+  `news_search_update` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=47 ;
 
 --
--- Daten für Tabelle `fs2_news`
+-- Dumping data for table `fs2_news`
 --
 
 INSERT INTO `fs2_news` (`news_id`, `cat_id`, `user_id`, `news_date`, `news_title`, `news_text`, `news_active`, `news_comments_allowed`, `news_search_update`) VALUES
@@ -938,26 +912,25 @@ INSERT INTO `fs2_news` (`news_id`, `cat_id`, `user_id`, `news_date`, `news_title
 (43, 1, 1, 1325104440, 'Tsdsdfsd', 'fsdfsdfsdfsdfsdf', 1, 1, 0),
 (44, 2, 1, 1340724960, 'test', 'test', 1, 1, 0),
 (45, 1, 1, 1373021880, 'test', 'test', 1, 1, 0),
-(46, 2, 1, 1373021880, 'test', 'test', 1, 1, 0);
+(46, 2, 1, 1373021880, 'test', '[player]2[/player]', 1, 1, 1421565505);
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_news_cat`
+-- Table structure for table `fs2_news_cat`
 --
 
 DROP TABLE IF EXISTS `fs2_news_cat`;
 CREATE TABLE IF NOT EXISTS `fs2_news_cat` (
-  `cat_id` smallint(6) NOT NULL AUTO_INCREMENT,
+`cat_id` smallint(6) NOT NULL,
   `cat_name` varchar(100) DEFAULT NULL,
   `cat_description` text NOT NULL,
   `cat_date` int(11) NOT NULL,
-  `cat_user` mediumint(8) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`cat_id`)
+  `cat_user` mediumint(8) NOT NULL DEFAULT '1'
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
--- Daten für Tabelle `fs2_news_cat`
+-- Dumping data for table `fs2_news_cat`
 --
 
 INSERT INTO `fs2_news_cat` (`cat_id`, `cat_name`, `cat_description`, `cat_date`, `cat_user`) VALUES
@@ -967,21 +940,20 @@ INSERT INTO `fs2_news_cat` (`cat_id`, `cat_name`, `cat_description`, `cat_date`,
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_news_links`
+-- Table structure for table `fs2_news_links`
 --
 
 DROP TABLE IF EXISTS `fs2_news_links`;
 CREATE TABLE IF NOT EXISTS `fs2_news_links` (
   `news_id` mediumint(8) DEFAULT NULL,
-  `link_id` mediumint(8) NOT NULL AUTO_INCREMENT,
+`link_id` mediumint(8) NOT NULL,
   `link_name` varchar(100) DEFAULT NULL,
   `link_url` varchar(255) DEFAULT NULL,
-  `link_target` tinyint(4) DEFAULT NULL,
-  PRIMARY KEY (`link_id`)
+  `link_target` tinyint(4) DEFAULT NULL
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=105 ;
 
 --
--- Daten für Tabelle `fs2_news_links`
+-- Dumping data for table `fs2_news_links`
 --
 
 INSERT INTO `fs2_news_links` (`news_id`, `link_id`, `link_name`, `link_url`, `link_target`) VALUES
@@ -1019,21 +991,20 @@ INSERT INTO `fs2_news_links` (`news_id`, `link_id`, `link_name`, `link_url`, `li
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_partner`
+-- Table structure for table `fs2_partner`
 --
 
 DROP TABLE IF EXISTS `fs2_partner`;
 CREATE TABLE IF NOT EXISTS `fs2_partner` (
-  `partner_id` smallint(3) unsigned NOT NULL AUTO_INCREMENT,
+`partner_id` smallint(3) unsigned NOT NULL,
   `partner_name` varchar(150) NOT NULL,
   `partner_link` varchar(250) NOT NULL,
   `partner_beschreibung` text NOT NULL,
-  `partner_permanent` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`partner_id`)
+  `partner_permanent` tinyint(1) unsigned NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
--- Daten für Tabelle `fs2_partner`
+-- Dumping data for table `fs2_partner`
 --
 
 INSERT INTO `fs2_partner` (`partner_id`, `partner_name`, `partner_link`, `partner_beschreibung`, `partner_permanent`) VALUES
@@ -1042,47 +1013,46 @@ INSERT INTO `fs2_partner` (`partner_id`, `partner_name`, `partner_link`, `partne
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_player`
+-- Table structure for table `fs2_player`
 --
 
 DROP TABLE IF EXISTS `fs2_player`;
 CREATE TABLE IF NOT EXISTS `fs2_player` (
-  `video_id` mediumint(8) NOT NULL AUTO_INCREMENT,
+`video_id` mediumint(8) NOT NULL,
   `video_type` tinyint(1) NOT NULL DEFAULT '1',
   `video_x` text NOT NULL,
   `video_title` varchar(100) NOT NULL,
   `video_lenght` smallint(6) NOT NULL DEFAULT '0',
   `video_desc` text NOT NULL,
-  `dl_id` mediumint(8) NOT NULL,
-  PRIMARY KEY (`video_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+  `dl_id` mediumint(8) NOT NULL
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
--- Daten für Tabelle `fs2_player`
+-- Dumping data for table `fs2_player`
 --
 
 INSERT INTO `fs2_player` (`video_id`, `video_type`, `video_x`, `video_title`, `video_lenght`, `video_desc`, `dl_id`) VALUES
-(1, 1, 'http://dl.worldofplayers.de/wop/witcher/witcher2/sonstiges/ausgepackt.flv', 'Test', 80, 'Test', 0);
+(1, 1, 'http://dl.worldofplayers.de/wop/witcher/witcher2/sonstiges/ausgepackt.flv', 'Test', 80, 'Test', 0),
+(2, 1, 'http://localhost/cdpr-gc-video.flv', 'test', 0, 'test', 0);
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_poll`
+-- Table structure for table `fs2_poll`
 --
 
 DROP TABLE IF EXISTS `fs2_poll`;
 CREATE TABLE IF NOT EXISTS `fs2_poll` (
-  `poll_id` mediumint(8) NOT NULL AUTO_INCREMENT,
+`poll_id` mediumint(8) NOT NULL,
   `poll_quest` varchar(255) DEFAULT NULL,
   `poll_start` int(11) DEFAULT NULL,
   `poll_end` int(11) DEFAULT NULL,
   `poll_type` tinyint(4) DEFAULT NULL,
-  `poll_participants` mediumint(8) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`poll_id`)
+  `poll_participants` mediumint(8) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 
 --
--- Daten für Tabelle `fs2_poll`
+-- Dumping data for table `fs2_poll`
 --
 
 INSERT INTO `fs2_poll` (`poll_id`, `poll_quest`, `poll_start`, `poll_end`, `poll_type`, `poll_participants`) VALUES
@@ -1098,20 +1068,19 @@ INSERT INTO `fs2_poll` (`poll_id`, `poll_quest`, `poll_start`, `poll_end`, `poll
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_poll_answers`
+-- Table structure for table `fs2_poll_answers`
 --
 
 DROP TABLE IF EXISTS `fs2_poll_answers`;
 CREATE TABLE IF NOT EXISTS `fs2_poll_answers` (
   `poll_id` mediumint(8) DEFAULT NULL,
-  `answer_id` mediumint(8) NOT NULL AUTO_INCREMENT,
+`answer_id` mediumint(8) NOT NULL,
   `answer` varchar(255) DEFAULT NULL,
-  `answer_count` mediumint(8) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`answer_id`)
+  `answer_count` mediumint(8) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=25 ;
 
 --
--- Daten für Tabelle `fs2_poll_answers`
+-- Dumping data for table `fs2_poll_answers`
 --
 
 INSERT INTO `fs2_poll_answers` (`poll_id`, `answer_id`, `answer`, `answer_count`) VALUES
@@ -1143,27 +1112,26 @@ INSERT INTO `fs2_poll_answers` (`poll_id`, `answer_id`, `answer`, `answer_count`
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_poll_voters`
+-- Table structure for table `fs2_poll_voters`
 --
 
 DROP TABLE IF EXISTS `fs2_poll_voters`;
 CREATE TABLE IF NOT EXISTS `fs2_poll_voters` (
-  `voter_id` mediumint(8) NOT NULL AUTO_INCREMENT,
+`voter_id` mediumint(8) NOT NULL,
   `poll_id` mediumint(8) NOT NULL DEFAULT '0',
   `ip_address` varchar(15) NOT NULL DEFAULT '0.0.0.0',
-  `time` int(32) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`voter_id`)
+  `time` int(32) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_press`
+-- Table structure for table `fs2_press`
 --
 
 DROP TABLE IF EXISTS `fs2_press`;
 CREATE TABLE IF NOT EXISTS `fs2_press` (
-  `press_id` smallint(6) NOT NULL AUTO_INCREMENT,
+`press_id` smallint(6) NOT NULL,
   `press_title` varchar(255) NOT NULL,
   `press_url` varchar(255) NOT NULL,
   `press_date` int(12) NOT NULL,
@@ -1172,12 +1140,11 @@ CREATE TABLE IF NOT EXISTS `fs2_press` (
   `press_note` text NOT NULL,
   `press_lang` int(11) NOT NULL,
   `press_game` tinyint(2) NOT NULL,
-  `press_cat` tinyint(2) NOT NULL,
-  PRIMARY KEY (`press_id`)
+  `press_cat` tinyint(2) NOT NULL
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
--- Daten für Tabelle `fs2_press`
+-- Dumping data for table `fs2_press`
 --
 
 INSERT INTO `fs2_press` (`press_id`, `press_title`, `press_url`, `press_date`, `press_intro`, `press_text`, `press_note`, `press_lang`, `press_game`, `press_cat`) VALUES
@@ -1187,19 +1154,18 @@ INSERT INTO `fs2_press` (`press_id`, `press_title`, `press_url`, `press_date`, `
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_press_admin`
+-- Table structure for table `fs2_press_admin`
 --
 
 DROP TABLE IF EXISTS `fs2_press_admin`;
 CREATE TABLE IF NOT EXISTS `fs2_press_admin` (
-  `id` mediumint(8) NOT NULL AUTO_INCREMENT,
+`id` mediumint(8) NOT NULL,
   `type` tinyint(1) NOT NULL DEFAULT '0',
-  `title` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`,`type`)
+  `title` varchar(255) NOT NULL
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 --
--- Daten für Tabelle `fs2_press_admin`
+-- Dumping data for table `fs2_press_admin`
 --
 
 INSERT INTO `fs2_press_admin` (`id`, `type`, `title`) VALUES
@@ -1213,20 +1179,18 @@ INSERT INTO `fs2_press_admin` (`id`, `type`, `title`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_screen`
+-- Table structure for table `fs2_screen`
 --
 
 DROP TABLE IF EXISTS `fs2_screen`;
 CREATE TABLE IF NOT EXISTS `fs2_screen` (
-  `screen_id` mediumint(8) NOT NULL AUTO_INCREMENT,
+`screen_id` mediumint(8) NOT NULL,
   `cat_id` smallint(6) unsigned DEFAULT NULL,
-  `screen_name` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`screen_id`),
-  KEY `cat_id` (`cat_id`)
+  `screen_name` varchar(255) DEFAULT NULL
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=30 ;
 
 --
--- Daten für Tabelle `fs2_screen`
+-- Dumping data for table `fs2_screen`
 --
 
 INSERT INTO `fs2_screen` (`screen_id`, `cat_id`, `screen_name`) VALUES
@@ -1248,22 +1212,21 @@ INSERT INTO `fs2_screen` (`screen_id`, `cat_id`, `screen_name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_screen_cat`
+-- Table structure for table `fs2_screen_cat`
 --
 
 DROP TABLE IF EXISTS `fs2_screen_cat`;
 CREATE TABLE IF NOT EXISTS `fs2_screen_cat` (
-  `cat_id` smallint(6) NOT NULL AUTO_INCREMENT,
+`cat_id` smallint(6) NOT NULL,
   `cat_name` varchar(255) DEFAULT NULL,
   `cat_type` tinyint(1) NOT NULL DEFAULT '0',
   `cat_visibility` tinyint(1) NOT NULL DEFAULT '1',
   `cat_date` int(11) NOT NULL DEFAULT '0',
-  `randompic` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`cat_id`)
+  `randompic` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
--- Daten für Tabelle `fs2_screen_cat`
+-- Dumping data for table `fs2_screen_cat`
 --
 
 INSERT INTO `fs2_screen_cat` (`cat_id`, `cat_name`, `cat_type`, `cat_visibility`, `cat_date`, `randompic`) VALUES
@@ -1274,37 +1237,34 @@ INSERT INTO `fs2_screen_cat` (`cat_id`, `cat_name`, `cat_type`, `cat_visibility`
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_screen_random`
+-- Table structure for table `fs2_screen_random`
 --
 
 DROP TABLE IF EXISTS `fs2_screen_random`;
 CREATE TABLE IF NOT EXISTS `fs2_screen_random` (
-  `random_id` mediumint(8) NOT NULL AUTO_INCREMENT,
+`random_id` mediumint(8) NOT NULL,
   `screen_id` mediumint(8) NOT NULL,
   `start` int(11) NOT NULL,
-  `end` int(11) NOT NULL,
-  PRIMARY KEY (`random_id`)
+  `end` int(11) NOT NULL
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_search_index`
+-- Table structure for table `fs2_search_index`
 --
 
 DROP TABLE IF EXISTS `fs2_search_index`;
 CREATE TABLE IF NOT EXISTS `fs2_search_index` (
-  `search_index_id` mediumint(8) NOT NULL AUTO_INCREMENT,
+`search_index_id` mediumint(8) NOT NULL,
   `search_index_word_id` mediumint(8) NOT NULL DEFAULT '0',
   `search_index_type` enum('news','articles','dl') NOT NULL DEFAULT 'news',
   `search_index_document_id` mediumint(8) NOT NULL DEFAULT '0',
-  `search_index_count` smallint(5) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`search_index_id`),
-  UNIQUE KEY `un_search_index_word_id` (`search_index_word_id`,`search_index_type`,`search_index_document_id`)
+  `search_index_count` smallint(5) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2857 ;
 
 --
--- Daten für Tabelle `fs2_search_index`
+-- Dumping data for table `fs2_search_index`
 --
 
 INSERT INTO `fs2_search_index` (`search_index_id`, `search_index_word_id`, `search_index_type`, `search_index_document_id`, `search_index_count`) VALUES
@@ -1543,21 +1503,19 @@ INSERT INTO `fs2_search_index` (`search_index_id`, `search_index_word_id`, `sear
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_search_time`
+-- Table structure for table `fs2_search_time`
 --
 
 DROP TABLE IF EXISTS `fs2_search_time`;
 CREATE TABLE IF NOT EXISTS `fs2_search_time` (
-  `search_time_id` mediumint(8) NOT NULL AUTO_INCREMENT,
+`search_time_id` mediumint(8) NOT NULL,
   `search_time_type` enum('news','articles','dl') NOT NULL DEFAULT 'news',
   `search_time_document_id` mediumint(8) NOT NULL,
-  `search_time_date` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`search_time_id`),
-  UNIQUE KEY `un_search_time_type` (`search_time_type`,`search_time_document_id`)
+  `search_time_date` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=319 ;
 
 --
--- Daten für Tabelle `fs2_search_time`
+-- Dumping data for table `fs2_search_time`
 --
 
 INSERT INTO `fs2_search_time` (`search_time_id`, `search_time_type`, `search_time_document_id`, `search_time_date`) VALUES
@@ -1598,19 +1556,17 @@ INSERT INTO `fs2_search_time` (`search_time_id`, `search_time_type`, `search_tim
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_search_words`
+-- Table structure for table `fs2_search_words`
 --
 
 DROP TABLE IF EXISTS `fs2_search_words`;
 CREATE TABLE IF NOT EXISTS `fs2_search_words` (
-  `search_word_id` mediumint(8) NOT NULL AUTO_INCREMENT,
-  `search_word` varchar(32) NOT NULL DEFAULT '',
-  PRIMARY KEY (`search_word_id`),
-  UNIQUE KEY `search_word` (`search_word`)
+`search_word_id` mediumint(8) NOT NULL,
+  `search_word` varchar(32) NOT NULL DEFAULT ''
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=166 ;
 
 --
--- Daten für Tabelle `fs2_search_words`
+-- Dumping data for table `fs2_search_words`
 --
 
 INSERT INTO `fs2_search_words` (`search_word_id`, `search_word`) VALUES
@@ -1783,22 +1739,21 @@ INSERT INTO `fs2_search_words` (`search_word_id`, `search_word`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_shop`
+-- Table structure for table `fs2_shop`
 --
 
 DROP TABLE IF EXISTS `fs2_shop`;
 CREATE TABLE IF NOT EXISTS `fs2_shop` (
-  `artikel_id` mediumint(8) NOT NULL AUTO_INCREMENT,
+`artikel_id` mediumint(8) NOT NULL,
   `artikel_name` varchar(100) DEFAULT NULL,
   `artikel_url` varchar(255) DEFAULT NULL,
   `artikel_text` text,
   `artikel_preis` varchar(10) DEFAULT NULL,
-  `artikel_hot` tinyint(4) DEFAULT NULL,
-  PRIMARY KEY (`artikel_id`)
+  `artikel_hot` tinyint(4) DEFAULT NULL
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
--- Daten für Tabelle `fs2_shop`
+-- Dumping data for table `fs2_shop`
 --
 
 INSERT INTO `fs2_shop` (`artikel_id`, `artikel_name`, `artikel_url`, `artikel_text`, `artikel_preis`, `artikel_hot`) VALUES
@@ -1808,19 +1763,18 @@ INSERT INTO `fs2_shop` (`artikel_id`, `artikel_name`, `artikel_url`, `artikel_te
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_smilies`
+-- Table structure for table `fs2_smilies`
 --
 
 DROP TABLE IF EXISTS `fs2_smilies`;
 CREATE TABLE IF NOT EXISTS `fs2_smilies` (
-  `id` mediumint(8) NOT NULL AUTO_INCREMENT,
+`id` mediumint(8) NOT NULL,
   `replace_string` varchar(15) NOT NULL,
-  `order` mediumint(8) NOT NULL,
-  PRIMARY KEY (`id`)
+  `order` mediumint(8) NOT NULL
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
 
 --
--- Daten für Tabelle `fs2_smilies`
+-- Dumping data for table `fs2_smilies`
 --
 
 INSERT INTO `fs2_smilies` (`id`, `replace_string`, `order`) VALUES
@@ -1838,44 +1792,40 @@ INSERT INTO `fs2_smilies` (`id`, `replace_string`, `order`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_snippets`
+-- Table structure for table `fs2_snippets`
 --
 
 DROP TABLE IF EXISTS `fs2_snippets`;
 CREATE TABLE IF NOT EXISTS `fs2_snippets` (
-  `snippet_id` mediumint(8) NOT NULL AUTO_INCREMENT,
+`snippet_id` mediumint(8) NOT NULL,
   `snippet_tag` varchar(100) NOT NULL,
   `snippet_text` text NOT NULL,
-  `snippet_active` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`snippet_id`),
-  UNIQUE KEY `snippet_tag` (`snippet_tag`)
+  `snippet_active` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
--- Daten für Tabelle `fs2_snippets`
+-- Dumping data for table `fs2_snippets`
 --
 
 INSERT INTO `fs2_snippets` (`snippet_id`, `snippet_tag`, `snippet_text`, `snippet_active`) VALUES
-(1, '[%feeds%]', '<p>\r\n  <b>News-Feeds:</b>\r\n</p>\r\n<p align="center">\r\n  <a href="$VAR(url)feeds/rss091.php" target="_self"><img src="$VAR(style_icons)feeds/rss091.gif" alt="RSS 0.91" title="RSS 0.91" border="0"></a><br>\r\n  <a href="$VAR(url)feeds/rss10.php" target="_self"><img src="$VAR(style_icons)feeds/rss10.gif" alt="RSS 1.0" title="RSS 1.0" border="0"></a><br>\r\n  <a href="$VAR(url)feeds/rss20.php" target="_self"><img src="$VAR(style_icons)feeds/rss20.gif" alt="RSS 2.0" title="RSS 2.0" border="0"></a><br>\r\n  <a href="$VAR(url)feeds/atom10.php" target="_self"><img src="$VAR(style_icons)feeds/atom10.gif" alt="Atom 1.0" title="Atom 1.0" border="0"></a>\r\n</p>', 1);
+(1, '[%feeds%]', '<p>\r\n  <b>News-Feeds:</b>\r\n</p>\r\n<p align="center">\r\n  <a href="$URL(feed[xml=rss091])" target="_self"><img src="$VAR(style_icons)feeds/rss091.gif" alt="RSS 0.91" title="RSS 0.91" border="0"></a><br>\r\n  <a href="$URL(feed[xml=rss10])" target="_self"><img src="$VAR(style_icons)feeds/rss10.gif" alt="RSS 1.0" title="RSS 1.0" border="0"></a><br>\r\n  <a href="$URL(feed[xml=rss20])" target="_self"><img src="$VAR(style_icons)feeds/rss20.gif" alt="RSS 2.0" title="RSS 2.0" border="0"></a><br>\r\n  <a href="$URL(feed[xml=atom10])" target="_self"><img src="$VAR(style_icons)feeds/atom10.gif" alt="Atom 1.0" title="Atom 1.0" border="0"></a>\r\n</p>', 1);
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_styles`
+-- Table structure for table `fs2_styles`
 --
 
 DROP TABLE IF EXISTS `fs2_styles`;
 CREATE TABLE IF NOT EXISTS `fs2_styles` (
-  `style_id` mediumint(8) NOT NULL AUTO_INCREMENT,
+`style_id` mediumint(8) NOT NULL,
   `style_tag` varchar(30) NOT NULL,
   `style_allow_use` tinyint(1) NOT NULL DEFAULT '1',
-  `style_allow_edit` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`style_id`),
-  UNIQUE KEY `style_tag` (`style_tag`)
+  `style_allow_edit` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
--- Daten für Tabelle `fs2_styles`
+-- Dumping data for table `fs2_styles`
 --
 
 INSERT INTO `fs2_styles` (`style_id`, `style_tag`, `style_allow_use`, `style_allow_edit`) VALUES
@@ -1885,12 +1835,12 @@ INSERT INTO `fs2_styles` (`style_id`, `style_tag`, `style_allow_use`, `style_all
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_user`
+-- Table structure for table `fs2_user`
 --
 
 DROP TABLE IF EXISTS `fs2_user`;
 CREATE TABLE IF NOT EXISTS `fs2_user` (
-  `user_id` mediumint(8) NOT NULL AUTO_INCREMENT,
+`user_id` mediumint(8) NOT NULL,
   `user_name` char(100) DEFAULT NULL,
   `user_password` char(32) DEFAULT NULL,
   `user_salt` varchar(10) NOT NULL,
@@ -1905,12 +1855,11 @@ CREATE TABLE IF NOT EXISTS `fs2_user` (
   `user_aim` varchar(50) DEFAULT NULL,
   `user_wlm` varchar(50) DEFAULT NULL,
   `user_yim` varchar(50) DEFAULT NULL,
-  `user_skype` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`user_id`)
+  `user_skype` varchar(50) DEFAULT NULL
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
--- Daten für Tabelle `fs2_user`
+-- Dumping data for table `fs2_user`
 --
 
 INSERT INTO `fs2_user` (`user_id`, `user_name`, `user_password`, `user_salt`, `user_mail`, `user_is_staff`, `user_group`, `user_is_admin`, `user_reg_date`, `user_show_mail`, `user_homepage`, `user_icq`, `user_aim`, `user_wlm`, `user_yim`, `user_skype`) VALUES
@@ -1923,45 +1872,43 @@ INSERT INTO `fs2_user` (`user_id`, `user_name`, `user_password`, `user_salt`, `u
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_useronline`
+-- Table structure for table `fs2_useronline`
 --
 
 DROP TABLE IF EXISTS `fs2_useronline`;
 CREATE TABLE IF NOT EXISTS `fs2_useronline` (
   `ip` varchar(30) NOT NULL,
   `user_id` mediumint(8) NOT NULL DEFAULT '0',
-  `date` int(30) DEFAULT NULL,
-  PRIMARY KEY (`ip`)
+  `date` int(30) DEFAULT NULL
 ) ENGINE=MEMORY DEFAULT CHARSET=utf8;
 
 --
--- Daten für Tabelle `fs2_useronline`
+-- Dumping data for table `fs2_useronline`
 --
 
 INSERT INTO `fs2_useronline` (`ip`, `user_id`, `date`) VALUES
-('::1', 1, 1400931685);
+('127.0.0.1', 1, 1421719444);
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_user_groups`
+-- Table structure for table `fs2_user_groups`
 --
 
 DROP TABLE IF EXISTS `fs2_user_groups`;
 CREATE TABLE IF NOT EXISTS `fs2_user_groups` (
-  `user_group_id` mediumint(8) NOT NULL AUTO_INCREMENT,
+`user_group_id` mediumint(8) NOT NULL,
   `user_group_name` varchar(50) NOT NULL,
   `user_group_description` text,
   `user_group_title` varchar(50) DEFAULT NULL,
   `user_group_color` varchar(6) NOT NULL DEFAULT '-1',
   `user_group_highlight` tinyint(1) NOT NULL DEFAULT '0',
   `user_group_date` int(11) NOT NULL,
-  `user_group_user` mediumint(8) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`user_group_id`)
+  `user_group_user` mediumint(8) NOT NULL DEFAULT '1'
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
--- Daten für Tabelle `fs2_user_groups`
+-- Dumping data for table `fs2_user_groups`
 --
 
 INSERT INTO `fs2_user_groups` (`user_group_id`, `user_group_name`, `user_group_description`, `user_group_title`, `user_group_color`, `user_group_highlight`, `user_group_date`, `user_group_user`) VALUES
@@ -1971,19 +1918,18 @@ INSERT INTO `fs2_user_groups` (`user_group_id`, `user_group_name`, `user_group_d
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_user_permissions`
+-- Table structure for table `fs2_user_permissions`
 --
 
 DROP TABLE IF EXISTS `fs2_user_permissions`;
 CREATE TABLE IF NOT EXISTS `fs2_user_permissions` (
   `perm_id` varchar(255) NOT NULL,
   `x_id` mediumint(8) NOT NULL,
-  `perm_for_group` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`perm_id`,`x_id`,`perm_for_group`)
+  `perm_for_group` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Daten für Tabelle `fs2_user_permissions`
+-- Dumping data for table `fs2_user_permissions`
 --
 
 INSERT INTO `fs2_user_permissions` (`perm_id`, `x_id`, `perm_for_group`) VALUES
@@ -2004,32 +1950,500 @@ INSERT INTO `fs2_user_permissions` (`perm_id`, `x_id`, `perm_for_group`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_wallpaper`
+-- Table structure for table `fs2_wallpaper`
 --
 
 DROP TABLE IF EXISTS `fs2_wallpaper`;
 CREATE TABLE IF NOT EXISTS `fs2_wallpaper` (
-  `wallpaper_id` mediumint(8) NOT NULL AUTO_INCREMENT,
+`wallpaper_id` mediumint(8) NOT NULL,
   `wallpaper_name` varchar(255) NOT NULL,
   `wallpaper_title` varchar(255) NOT NULL,
-  `cat_id` mediumint(8) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`wallpaper_id`)
+  `cat_id` mediumint(8) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 PACK_KEYS=1 AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `fs2_wallpaper_sizes`
+-- Table structure for table `fs2_wallpaper_sizes`
 --
 
 DROP TABLE IF EXISTS `fs2_wallpaper_sizes`;
 CREATE TABLE IF NOT EXISTS `fs2_wallpaper_sizes` (
-  `size_id` mediumint(8) NOT NULL AUTO_INCREMENT,
+`size_id` mediumint(8) NOT NULL,
   `wallpaper_id` mediumint(8) NOT NULL DEFAULT '0',
-  `size` varchar(255) NOT NULL,
-  PRIMARY KEY (`size_id`)
+  `size` varchar(255) NOT NULL
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 PACK_KEYS=1 AUTO_INCREMENT=4 ;
 
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `fs2_admin_cp`
+--
+ALTER TABLE `fs2_admin_cp`
+ ADD PRIMARY KEY (`page_id`);
+
+--
+-- Indexes for table `fs2_aliases`
+--
+ALTER TABLE `fs2_aliases`
+ ADD PRIMARY KEY (`alias_id`), ADD KEY `alias_go` (`alias_go`);
+
+--
+-- Indexes for table `fs2_announcement`
+--
+ALTER TABLE `fs2_announcement`
+ ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `fs2_applets`
+--
+ALTER TABLE `fs2_applets`
+ ADD PRIMARY KEY (`applet_id`), ADD UNIQUE KEY `applet_file` (`applet_file`);
+
+--
+-- Indexes for table `fs2_articles`
+--
+ALTER TABLE `fs2_articles`
+ ADD PRIMARY KEY (`article_id`), ADD KEY `article_url` (`article_url`), ADD FULLTEXT KEY `article_text` (`article_title`,`article_text`);
+
+--
+-- Indexes for table `fs2_articles_cat`
+--
+ALTER TABLE `fs2_articles_cat`
+ ADD PRIMARY KEY (`cat_id`);
+
+--
+-- Indexes for table `fs2_b8_wordlist`
+--
+ALTER TABLE `fs2_b8_wordlist`
+ ADD PRIMARY KEY (`token`);
+
+--
+-- Indexes for table `fs2_cimg`
+--
+ALTER TABLE `fs2_cimg`
+ ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `fs2_cimg_cats`
+--
+ALTER TABLE `fs2_cimg_cats`
+ ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `fs2_comments`
+--
+ALTER TABLE `fs2_comments`
+ ADD PRIMARY KEY (`comment_id`), ADD FULLTEXT KEY `comment_title_text` (`comment_text`,`comment_title`);
+
+--
+-- Indexes for table `fs2_config`
+--
+ALTER TABLE `fs2_config`
+ ADD UNIQUE KEY `config_name` (`config_name`);
+
+--
+-- Indexes for table `fs2_counter`
+--
+ALTER TABLE `fs2_counter`
+ ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `fs2_counter_ref`
+--
+ALTER TABLE `fs2_counter_ref`
+ ADD KEY `ref_url` (`ref_url`);
+
+--
+-- Indexes for table `fs2_counter_stat`
+--
+ALTER TABLE `fs2_counter_stat`
+ ADD PRIMARY KEY (`s_year`,`s_month`,`s_day`);
+
+--
+-- Indexes for table `fs2_dl`
+--
+ALTER TABLE `fs2_dl`
+ ADD PRIMARY KEY (`dl_id`), ADD FULLTEXT KEY `dl_name_text` (`dl_name`,`dl_text`);
+
+--
+-- Indexes for table `fs2_dl_cat`
+--
+ALTER TABLE `fs2_dl_cat`
+ ADD PRIMARY KEY (`cat_id`);
+
+--
+-- Indexes for table `fs2_dl_files`
+--
+ALTER TABLE `fs2_dl_files`
+ ADD PRIMARY KEY (`file_id`), ADD KEY `dl_id` (`dl_id`);
+
+--
+-- Indexes for table `fs2_editor_config`
+--
+ALTER TABLE `fs2_editor_config`
+ ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `fs2_email`
+--
+ALTER TABLE `fs2_email`
+ ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `fs2_ftp`
+--
+ALTER TABLE `fs2_ftp`
+ ADD PRIMARY KEY (`ftp_id`);
+
+--
+-- Indexes for table `fs2_hashes`
+--
+ALTER TABLE `fs2_hashes`
+ ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `hash` (`hash`);
+
+--
+-- Indexes for table `fs2_news`
+--
+ALTER TABLE `fs2_news`
+ ADD PRIMARY KEY (`news_id`), ADD FULLTEXT KEY `news_title_text` (`news_title`,`news_text`);
+
+--
+-- Indexes for table `fs2_news_cat`
+--
+ALTER TABLE `fs2_news_cat`
+ ADD PRIMARY KEY (`cat_id`);
+
+--
+-- Indexes for table `fs2_news_links`
+--
+ALTER TABLE `fs2_news_links`
+ ADD PRIMARY KEY (`link_id`);
+
+--
+-- Indexes for table `fs2_partner`
+--
+ALTER TABLE `fs2_partner`
+ ADD PRIMARY KEY (`partner_id`);
+
+--
+-- Indexes for table `fs2_player`
+--
+ALTER TABLE `fs2_player`
+ ADD PRIMARY KEY (`video_id`);
+
+--
+-- Indexes for table `fs2_poll`
+--
+ALTER TABLE `fs2_poll`
+ ADD PRIMARY KEY (`poll_id`);
+
+--
+-- Indexes for table `fs2_poll_answers`
+--
+ALTER TABLE `fs2_poll_answers`
+ ADD PRIMARY KEY (`answer_id`);
+
+--
+-- Indexes for table `fs2_poll_voters`
+--
+ALTER TABLE `fs2_poll_voters`
+ ADD PRIMARY KEY (`voter_id`);
+
+--
+-- Indexes for table `fs2_press`
+--
+ALTER TABLE `fs2_press`
+ ADD PRIMARY KEY (`press_id`);
+
+--
+-- Indexes for table `fs2_press_admin`
+--
+ALTER TABLE `fs2_press_admin`
+ ADD PRIMARY KEY (`id`,`type`);
+
+--
+-- Indexes for table `fs2_screen`
+--
+ALTER TABLE `fs2_screen`
+ ADD PRIMARY KEY (`screen_id`), ADD KEY `cat_id` (`cat_id`);
+
+--
+-- Indexes for table `fs2_screen_cat`
+--
+ALTER TABLE `fs2_screen_cat`
+ ADD PRIMARY KEY (`cat_id`);
+
+--
+-- Indexes for table `fs2_screen_random`
+--
+ALTER TABLE `fs2_screen_random`
+ ADD PRIMARY KEY (`random_id`);
+
+--
+-- Indexes for table `fs2_search_index`
+--
+ALTER TABLE `fs2_search_index`
+ ADD PRIMARY KEY (`search_index_id`), ADD UNIQUE KEY `un_search_index_word_id` (`search_index_word_id`,`search_index_type`,`search_index_document_id`);
+
+--
+-- Indexes for table `fs2_search_time`
+--
+ALTER TABLE `fs2_search_time`
+ ADD PRIMARY KEY (`search_time_id`), ADD UNIQUE KEY `un_search_time_type` (`search_time_type`,`search_time_document_id`);
+
+--
+-- Indexes for table `fs2_search_words`
+--
+ALTER TABLE `fs2_search_words`
+ ADD PRIMARY KEY (`search_word_id`), ADD UNIQUE KEY `search_word` (`search_word`);
+
+--
+-- Indexes for table `fs2_shop`
+--
+ALTER TABLE `fs2_shop`
+ ADD PRIMARY KEY (`artikel_id`);
+
+--
+-- Indexes for table `fs2_smilies`
+--
+ALTER TABLE `fs2_smilies`
+ ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `fs2_snippets`
+--
+ALTER TABLE `fs2_snippets`
+ ADD PRIMARY KEY (`snippet_id`), ADD UNIQUE KEY `snippet_tag` (`snippet_tag`);
+
+--
+-- Indexes for table `fs2_styles`
+--
+ALTER TABLE `fs2_styles`
+ ADD PRIMARY KEY (`style_id`), ADD UNIQUE KEY `style_tag` (`style_tag`);
+
+--
+-- Indexes for table `fs2_user`
+--
+ALTER TABLE `fs2_user`
+ ADD PRIMARY KEY (`user_id`);
+
+--
+-- Indexes for table `fs2_useronline`
+--
+ALTER TABLE `fs2_useronline`
+ ADD PRIMARY KEY (`ip`);
+
+--
+-- Indexes for table `fs2_user_groups`
+--
+ALTER TABLE `fs2_user_groups`
+ ADD PRIMARY KEY (`user_group_id`);
+
+--
+-- Indexes for table `fs2_user_permissions`
+--
+ALTER TABLE `fs2_user_permissions`
+ ADD PRIMARY KEY (`perm_id`,`x_id`,`perm_for_group`);
+
+--
+-- Indexes for table `fs2_wallpaper`
+--
+ALTER TABLE `fs2_wallpaper`
+ ADD PRIMARY KEY (`wallpaper_id`);
+
+--
+-- Indexes for table `fs2_wallpaper_sizes`
+--
+ALTER TABLE `fs2_wallpaper_sizes`
+ ADD PRIMARY KEY (`size_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `fs2_aliases`
+--
+ALTER TABLE `fs2_aliases`
+MODIFY `alias_id` mediumint(8) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `fs2_applets`
+--
+ALTER TABLE `fs2_applets`
+MODIFY `applet_id` mediumint(8) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
+--
+-- AUTO_INCREMENT for table `fs2_articles`
+--
+ALTER TABLE `fs2_articles`
+AUTO_INCREMENT=7;
+--
+-- AUTO_INCREMENT for table `fs2_articles_cat`
+--
+ALTER TABLE `fs2_articles_cat`
+MODIFY `cat_id` smallint(6) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `fs2_cimg`
+--
+ALTER TABLE `fs2_cimg`
+MODIFY `id` mediumint(8) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `fs2_cimg_cats`
+--
+ALTER TABLE `fs2_cimg_cats`
+MODIFY `id` mediumint(8) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `fs2_comments`
+--
+ALTER TABLE `fs2_comments`
+MODIFY `comment_id` mediumint(8) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
+--
+-- AUTO_INCREMENT for table `fs2_dl`
+--
+ALTER TABLE `fs2_dl`
+MODIFY `dl_id` mediumint(8) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=12;
+--
+-- AUTO_INCREMENT for table `fs2_dl_cat`
+--
+ALTER TABLE `fs2_dl_cat`
+MODIFY `cat_id` mediumint(8) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+--
+-- AUTO_INCREMENT for table `fs2_dl_files`
+--
+ALTER TABLE `fs2_dl_files`
+MODIFY `file_id` mediumint(8) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
+--
+-- AUTO_INCREMENT for table `fs2_ftp`
+--
+ALTER TABLE `fs2_ftp`
+MODIFY `ftp_id` mediumint(9) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `fs2_hashes`
+--
+ALTER TABLE `fs2_hashes`
+MODIFY `id` mediumint(8) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `fs2_news`
+--
+ALTER TABLE `fs2_news`
+MODIFY `news_id` mediumint(8) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=47;
+--
+-- AUTO_INCREMENT for table `fs2_news_cat`
+--
+ALTER TABLE `fs2_news_cat`
+MODIFY `cat_id` smallint(6) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `fs2_news_links`
+--
+ALTER TABLE `fs2_news_links`
+MODIFY `link_id` mediumint(8) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=105;
+--
+-- AUTO_INCREMENT for table `fs2_partner`
+--
+ALTER TABLE `fs2_partner`
+MODIFY `partner_id` smallint(3) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `fs2_player`
+--
+ALTER TABLE `fs2_player`
+MODIFY `video_id` mediumint(8) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `fs2_poll`
+--
+ALTER TABLE `fs2_poll`
+MODIFY `poll_id` mediumint(8) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
+--
+-- AUTO_INCREMENT for table `fs2_poll_answers`
+--
+ALTER TABLE `fs2_poll_answers`
+MODIFY `answer_id` mediumint(8) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=25;
+--
+-- AUTO_INCREMENT for table `fs2_poll_voters`
+--
+ALTER TABLE `fs2_poll_voters`
+MODIFY `voter_id` mediumint(8) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+--
+-- AUTO_INCREMENT for table `fs2_press`
+--
+ALTER TABLE `fs2_press`
+MODIFY `press_id` smallint(6) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT for table `fs2_press_admin`
+--
+ALTER TABLE `fs2_press_admin`
+MODIFY `id` mediumint(8) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+--
+-- AUTO_INCREMENT for table `fs2_screen`
+--
+ALTER TABLE `fs2_screen`
+MODIFY `screen_id` mediumint(8) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=30;
+--
+-- AUTO_INCREMENT for table `fs2_screen_cat`
+--
+ALTER TABLE `fs2_screen_cat`
+MODIFY `cat_id` smallint(6) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT for table `fs2_screen_random`
+--
+ALTER TABLE `fs2_screen_random`
+MODIFY `random_id` mediumint(8) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT for table `fs2_search_index`
+--
+ALTER TABLE `fs2_search_index`
+MODIFY `search_index_id` mediumint(8) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2857;
+--
+-- AUTO_INCREMENT for table `fs2_search_time`
+--
+ALTER TABLE `fs2_search_time`
+MODIFY `search_time_id` mediumint(8) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=319;
+--
+-- AUTO_INCREMENT for table `fs2_search_words`
+--
+ALTER TABLE `fs2_search_words`
+MODIFY `search_word_id` mediumint(8) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=166;
+--
+-- AUTO_INCREMENT for table `fs2_shop`
+--
+ALTER TABLE `fs2_shop`
+MODIFY `artikel_id` mediumint(8) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `fs2_smilies`
+--
+ALTER TABLE `fs2_smilies`
+MODIFY `id` mediumint(8) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
+--
+-- AUTO_INCREMENT for table `fs2_snippets`
+--
+ALTER TABLE `fs2_snippets`
+MODIFY `snippet_id` mediumint(8) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `fs2_styles`
+--
+ALTER TABLE `fs2_styles`
+MODIFY `style_id` mediumint(8) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `fs2_user`
+--
+ALTER TABLE `fs2_user`
+MODIFY `user_id` mediumint(8) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT for table `fs2_user_groups`
+--
+ALTER TABLE `fs2_user_groups`
+MODIFY `user_group_id` mediumint(8) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `fs2_wallpaper`
+--
+ALTER TABLE `fs2_wallpaper`
+MODIFY `wallpaper_id` mediumint(8) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `fs2_wallpaper_sizes`
+--
+ALTER TABLE `fs2_wallpaper_sizes`
+MODIFY `size_id` mediumint(8) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

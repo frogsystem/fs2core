@@ -13,7 +13,7 @@ $config_arr = $FD->configObject('screens')->getConfigArray();
 if (isset($_FILES['sizeimg_0']) AND isset($_POST['size']['0']) AND !emptystr($_POST['wallpaper_name']) AND isset($_POST['wpadd']) AND $_POST['wpadd'] == 1)
 {
 
-$index = $FD->sql()->conn()->prepare('SELECT COUNT(*) AS wp_count FROM '.$FD->config('pref').'wallpaper WHERE wallpaper_name = ?');
+$index = $FD->db()->conn()->prepare('SELECT COUNT(*) AS wp_count FROM '.$FD->env('DB_PREFIX').'wallpaper WHERE wallpaper_name = ?');
 $index->execute(array($_POST['wallpaper_name']));
 $row = $index->fetch(PDO::FETCH_ASSOC);
 if ($row['wp_count']==0) {
@@ -27,12 +27,12 @@ if ($row['wp_count']==0) {
     }
 
     $_POST['catid'] = intval($_POST['catid']);
-    $stmt = $FD->sql()->conn()->prepare('INSERT INTO '.$FD->config('pref')."wallpaper (wallpaper_name, wallpaper_title, cat_id)
+    $stmt = $FD->db()->conn()->prepare('INSERT INTO '.$FD->env('DB_PREFIX')."wallpaper (wallpaper_name, wallpaper_title, cat_id)
                  VALUES (?,
                          ?,
                          '".$_POST['catid']."')");
     $stmt->execute(array($_POST['wallpaper_name'], $_POST['wallpaper_title']));
-    $wp_id = $FD->sql()->conn()->lastInsertId();
+    $wp_id = $FD->db()->conn()->lastInsertId();
 
     $message = '';
 
@@ -43,12 +43,12 @@ if ($row['wp_count']==0) {
       if (isset($_FILES[$filesname]) AND $_POST['size'][$j] != '')
       {
         $j = $i - 1;
-        $upload = upload_img($_FILES[$filesname], 'images/wallpaper/', $_POST['wallpaper_name'].'_'.$_POST['size'][$j], $config_arr['wp_size']*1024, $config_arr['wp_x'], $config_arr['wp_y']);
+        $upload = upload_img($_FILES[$filesname], '/wallpaper', $_POST['wallpaper_name'].'_'.$_POST['size'][$j], $config_arr['wp_size']*1024, $config_arr['wp_x'], $config_arr['wp_y']);
         $message .= "WP Gr&ouml;&szlig;e $i: ".upload_img_notice($upload).'<br>';
         switch ($upload)
         {
         case 0:
-          $stmt = $FD->sql()->conn()->prepare('INSERT INTO '.$FD->config('pref')."wallpaper_sizes (wallpaper_id, size)
+          $stmt = $FD->db()->conn()->prepare('INSERT INTO '.$FD->env('DB_PREFIX')."wallpaper_sizes (wallpaper_id, size)
                        VALUES ('".$wp_id."', ?)");
           $stmt->execute(array($_POST['size'][$j]));
           break;
@@ -56,11 +56,11 @@ if ($row['wp_count']==0) {
 
       }
     }
-    if (image_exists('images/wallpaper/', $_POST['wallpaper_name'].'_'.$_POST['size'][0]))
+    if (image_exists('/wallpaper', $_POST['wallpaper_name'].'_'.$_POST['size'][0]))
     {
-      create_thumb_from(image_url('images/wallpaper/', $_POST['wallpaper_name'].'_'.$_POST['size'][0], FALSE, TRUE), $config_arr['wp_thumb_x'], $config_arr['wp_thumb_y']);
+      create_thumb_from(image_url('/wallpaper', $_POST['wallpaper_name'].'_'.$_POST['size'][0], FALSE, TRUE), $config_arr['wp_thumb_x'], $config_arr['wp_thumb_y']);
       $message .= create_thumb_notice($upload).'<br>';
-      image_rename('images/wallpaper/', $_POST['wallpaper_name'].'_'.$_POST['size'][0].'_s', $_POST['wallpaper_name'].'_s');
+      image_rename('/wallpaper', $_POST['wallpaper_name'].'_'.$_POST['size'][0].'_s', $_POST['wallpaper_name'].'_s');
     }
 
   $message .= '<br>Weiteres Wallpaper hinzuf&uuml;gen:';
@@ -130,7 +130,7 @@ echo'
                                 <td class="config" valign="top">
                                     <select name="catid">
 ';
-$index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'screen_cat WHERE cat_type = 2');
+$index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX').'screen_cat WHERE cat_type = 2');
 while ($cat_arr = $index->fetch(PDO::FETCH_ASSOC))
 {
     echo'

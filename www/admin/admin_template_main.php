@@ -35,7 +35,6 @@ $TEMPLATE_EDIT[] = array (
         array ( 'tag' => 'feed_link', 'text' => $FD->text("template", "matrix_help_feed_link") ),
 
         array ( 'tag' => 'javascript', 'text' => $FD->text("template", "matrix_help_javascript") ),
-        array ( 'tag' => 'jquery', 'text' => $FD->text("template", "matrix_help_jquery") ),
 
         array ( 'tag' => 'body', 'text' => $FD->text("template", "matrix_help_body") ),
     )
@@ -54,5 +53,5 @@ $TEMPLATE_EDIT[] = array (
 
 
 // Init Template-Page
-echo templatepage_init ( $TEMPLATE_EDIT, $TEMPLATE_GO, $TEMPLATE_FILE, ensure_copyright ( 'MAIN' ) );
+echo templatepage_init ( $TEMPLATE_EDIT, $TEMPLATE_GO, $TEMPLATE_FILE );
 ?>

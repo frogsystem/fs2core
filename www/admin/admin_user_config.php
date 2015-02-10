@@ -106,7 +106,7 @@ if ( TRUE )
                                 </td>
                                 <td class="config">
                                     <input class="text input_width" size="40" name="reg_date_format" maxlength="50" value="'.$_POST['reg_date_format'].'"><br>
-                                    <span class="small">'.$FD->text("page", "date_info").'</span>
+                                    <span class="small">'.$FD->text("admin", "date_info").'</span>
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>
@@ -129,7 +129,7 @@ if ( TRUE )
                                 </td>
                                 <td class="config">
                                     <input class="text input_width" size="40" name="user_list_reg_date_format" maxlength="50" value="'.$_POST['user_list_reg_date_format'].'"><br>
-                                    <span class="small">'.$FD->text("page", "date_info").'</span>
+                                    <span class="small">'.$FD->text("admin", "date_info").'</span>
                                 </td>
                             </tr>
                             <tr><td class="space"></td></tr>

@@ -1,8 +1,8 @@
 <?php
 // Get Data from DB
-$index = $FD->sql()->conn()->query ( '
+$index = $FD->db()->conn()->query ( '
             SELECT `artikel_id`, `artikel_name`, `artikel_url`, `artikel_preis`
-            FROM `'.$FD->config('pref').'shop`
+            FROM `'.$FD->env('DB_PREFIX').'shop`
             WHERE `artikel_hot` = 1' );
 
 // Security Functions
@@ -20,10 +20,10 @@ while ( $shop_arr = $index->fetch( PDO::FETCH_ASSOC ) ) {
     $template_item->tag('item_titel', $shop_arr['artikel_name'] );
     $template_item->tag('item_url', $shop_arr['artikel_url'] );
     $template_item->tag('item_price', $shop_arr['artikel_preis'] );
-    $template_item->tag('item_image', get_image_output ( 'images/shop/', $shop_arr['artikel_id'], $shop_arr['artikel_name'] ) );
-    $template_item->tag('item_image_url', image_url ( 'images/shop/', $shop_arr['artikel_id'] ) );
-    $template_item->tag('item_small_image', get_image_output ( 'images/shop/', $shop_arr['artikel_id'].'_s' , $shop_arr['artikel_name'] ) );
-    $template_item->tag('item_small_image_url', image_url ( 'images/shop/', $shop_arr['artikel_id'].'_s' ) );
+    $template_item->tag('item_image', get_image_output ( '/shop', $shop_arr['artikel_id'], $shop_arr['artikel_name'] ) );
+    $template_item->tag('item_image_url', image_url ( '/shop', $shop_arr['artikel_id'] ) );
+    $template_item->tag('item_small_image', get_image_output ( '/shop', $shop_arr['artikel_id'].'_s' , $shop_arr['artikel_name'] ) );
+    $template_item->tag('item_small_image_url', image_url ( '/shop', $shop_arr['artikel_id'].'_s' ) );
 
     $applet_items[] = $template_item->display();
 }

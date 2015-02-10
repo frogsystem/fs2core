@@ -19,8 +19,8 @@ if (isset($_POST['dladd']) && isset($_POST['title']) && isset($_POST['text']) &&
     $dldate = time();
 
     // Insert Download
-    $stmt = $FD->sql()->conn()->prepare(
-                'INSERT INTO '.$FD->config('pref')."dl (cat_id, user_id, dl_date, dl_name, dl_text, dl_autor,
+    $stmt = $FD->db()->conn()->prepare(
+                'INSERT INTO '.$FD->env('DB_PREFIX')."dl (cat_id, user_id, dl_date, dl_name, dl_text, dl_autor,
                     dl_autor_url, dl_open, dl_search_update)
                  VALUES ('".$_POST['catid']."',
                          '".$_POST['userid']."',
@@ -33,12 +33,10 @@ if (isset($_POST['dladd']) && isset($_POST['title']) && isset($_POST['text']) &&
                          '".time()."')");
     $stmt->execute(array($_POST['title'], $_POST['text'], $_POST['autor'], $_POST['autorurl']));
 
-    $id = $FD->sql()->conn()->lastInsertId();
+    $id = $FD->db()->conn()->lastInsertId();
 
     // Update Search Index (or not)
     if ( $FD->config('cronjobs', 'search_index_update') === 1 ) {
-        // Include searchfunctions.php
-        require ( FS2_ROOT_PATH . 'includes/searchfunctions.php' );
         update_search_index ( 'dl' );
     }
 
@@ -48,15 +46,15 @@ if (isset($_POST['dladd']) && isset($_POST['title']) && isset($_POST['text']) &&
 
     if ($_FILES['dlimg']['name'] != '')
     {
-        $upload = upload_img($_FILES['dlimg'], 'images/downloads/', $id, 2*1024*1024, $admin_dl_config_arr['screen_x'], $admin_dl_config_arr['screen_y']);
+        $upload = upload_img($_FILES['dlimg'], '/downloads', $id, 2*1024*1024, $admin_dl_config_arr['screen_x'], $admin_dl_config_arr['screen_y']);
         systext(upload_img_notice($upload));
-        $thumb = create_thumb_from(image_url('images/downloads/',$id,FALSE, TRUE), $admin_dl_config_arr['thumb_x'],  $admin_dl_config_arr['thumb_y']);
+        $thumb = create_thumb_from(image_url('/downloads',$id,FALSE, TRUE), $admin_dl_config_arr['thumb_x'],  $admin_dl_config_arr['thumb_y']);
         systext(create_thumb_notice($thumb));
     }
 
     // Insert Files
-    $stmt = $FD->sql()->conn()->prepare(
-                    'INSERT INTO '.$FD->config('pref')."dl_files (dl_id, file_name, file_url, file_size, file_is_mirror)
+    $stmt = $FD->db()->conn()->prepare(
+                    'INSERT INTO '.$FD->env('DB_PREFIX')."dl_files (dl_id, file_name, file_url, file_size, file_is_mirror)
                      VALUES ('$id',
                              ?,
                              ?,
@@ -171,7 +169,7 @@ if(true)
                                 </td>
                             </tr>
     ';
-    $index = $FD->sql()->conn()->query('SELECT `ftp_id` FROM '.$FD->config('pref')."ftp WHERE `ftp_type` = 'dl' LIMIT 0,1");
+    $index = $FD->db()->conn()->query('SELECT `ftp_id` FROM '.$FD->env('DB_PREFIX')."ftp WHERE `ftp_type` = 'dl' LIMIT 0,1");
     $ftp = ($index !== FALSE && $index->fetch(PDO::FETCH_ASSOC) !== FALSE);
 
     for ($i=1; $i<=$_POST['options']; $i++)

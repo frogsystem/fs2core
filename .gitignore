@@ -1,4 +1,11 @@
+# local config files
+/www/config/main.cfg.php
+/www/config/env.cfg.php
+
 # OS-related/generic files
 Thumbs.db
-/update-database.bat
-/dump-database.bat
+
+/vendor/
+/node_modules
+/.sass-cache
+/dist

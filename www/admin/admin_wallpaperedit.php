@@ -12,7 +12,7 @@ $config_arr = $FD->configObject('screens')->getConfigArray();
 ///////////////////////
 if (isset($_POST['wallpaper_id']) AND isset($_POST['sended']) AND $_POST['sended'] == 'edit' AND !emptystr($_POST['wallpaper_name']) AND isset($_POST['size'][0]) AND isset($_POST['wpedit'])  AND $_POST['wpedit'] == 1)
 {
-    $index = $FD->sql()->conn()->prepare('SELECT COUNT(*) FROM '.$FD->config('pref').'wallpaper WHERE wallpaper_name = ?');
+    $index = $FD->db()->conn()->prepare('SELECT COUNT(*) FROM '.$FD->env('DB_PREFIX').'wallpaper WHERE wallpaper_name = ?');
     $index->execute(array($_POST['wallpaper_name']));
 
     if (count($_POST['size']) == count(array_unique($_POST['size'])) AND ($index->fetchColumn()==0 OR $_POST['wallpaper_name'] == $_POST['oldname']))
@@ -23,7 +23,7 @@ if (isset($_POST['wallpaper_id']) AND isset($_POST['sended']) AND $_POST['sended
     $_POST['catid'] = intval($_POST['catid']);
     $_POST['wallpaper_id'] = intval($_POST['wallpaper_id']);
 
-    $update = $FD->sql()->conn()->prepare('UPDATE '.$FD->config('pref')."wallpaper
+    $update = $FD->db()->conn()->prepare('UPDATE '.$FD->env('DB_PREFIX')."wallpaper
                SET wallpaper_name = ?,
                    wallpaper_title  = ?,
                    cat_id      = '$_POST[catid]'
@@ -36,22 +36,22 @@ if (isset($_POST['wallpaper_id']) AND isset($_POST['sended']) AND $_POST['sended
             if (isset($_POST['delwp'][$i]) && $_POST['delwp'][$i])
             {
                 settype($_POST['delwp'][$i], 'integer');
-                $index = $FD->sql()->conn()->query('SELECT size FROM '.$FD->config('pref')."wallpaper_sizes WHERE size_id = '".$_POST['delwp'][$i]."'");
+                $index = $FD->db()->conn()->query('SELECT size FROM '.$FD->env('DB_PREFIX')."wallpaper_sizes WHERE size_id = '".$_POST['delwp'][$i]."'");
                 $size_name = $index->fetchColumn();
-                $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref')."wallpaper_sizes WHERE size_id = '".$_POST['delwp'][$i]."'");
-                image_delete('images/wallpaper/', "$_POST[oldname]_$size_name");
+                $FD->db()->conn()->exec('DELETE FROM '.$FD->env('DB_PREFIX')."wallpaper_sizes WHERE size_id = '".$_POST['delwp'][$i]."'");
+                image_delete('/wallpaper', "$_POST[oldname]_$size_name");
             }
             else
             {
                 $filesname = "sizeimg_$i";
                 if (isset($_FILES[$filesname]) && $_POST['wpnew'][$i]==1 && $_POST['size'][$i]!='' && !emptystr($_FILES["sizeimg_".$i]['tmp_name']))
                 {
-                    $upload = upload_img($_FILES[$filesname], 'images/wallpaper/', $_POST['oldname'].'_'.$_POST['size'][$i].'a', $config_arr['wp_size']*1024, $config_arr['wp_x'], $config_arr['wp_y']);
+                    $upload = upload_img($_FILES[$filesname], '/wallpaper', $_POST['oldname'].'_'.$_POST['size'][$i].'a', $config_arr['wp_size']*1024, $config_arr['wp_x'], $config_arr['wp_y']);
                     systext(upload_img_notice($upload));
                     switch ($upload)
                     {
                     case 0:
-                        $insert = $FD->sql()->conn()->prepare('INSERT INTO '.$FD->config('pref')."wallpaper_sizes (wallpaper_id, size)
+                        $insert = $FD->db()->conn()->prepare('INSERT INTO '.$FD->env('DB_PREFIX')."wallpaper_sizes (wallpaper_id, size)
                                    VALUES ('".$_POST['wallpaper_id']."', ?)");
                         $insert->execute(array($_POST['size'][$i]));
                     break;
@@ -60,19 +60,19 @@ if (isset($_POST['wallpaper_id']) AND isset($_POST['sended']) AND $_POST['sended
                 elseif ($_POST['wpnew'][$i]==0)
                 {
                     $_POST['size_id'][$i] = intval($_POST['size_id'][$i]);
-                    $index = $FD->sql()->conn()->query('SELECT size FROM '.$FD->config('pref')."wallpaper_sizes WHERE size_id = '".$_POST['size_id'][$i]."'" );
+                    $index = $FD->db()->conn()->query('SELECT size FROM '.$FD->env('DB_PREFIX')."wallpaper_sizes WHERE size_id = '".$_POST['size_id'][$i]."'" );
                     $size_name = $index->fetchColumn();
 
-                    image_rename('images/wallpaper/', $_POST['oldname'].'_'.$size_name, $_POST['oldname'].'_'.$_POST['size'][$i].'a');
+                    image_rename('/wallpaper', $_POST['oldname'].'_'.$size_name, $_POST['oldname'].'_'.$_POST['size'][$i].'a');
 
-                    $update = $FD->sql()->conn()->prepare('UPDATE '.$FD->config('pref')."wallpaper_sizes
+                    $update = $FD->db()->conn()->prepare('UPDATE '.$FD->env('DB_PREFIX')."wallpaper_sizes
                                SET size = ?
                                WHERE size_id = ".$_POST['size_id'][$i]);
                     $update->execute(array($_POST['size'][$i]));
 
                     if (isset($_FILES[$filesname]) && !emptystr($_FILES["sizeimg_".$i]['tmp_name']))
                     {
-                        $upload = upload_img($_FILES[$filesname], 'images/wallpaper/', $_POST['oldname'].'_'.$_POST['size'][$i].'a', $config_arr['wp_size']*1024, $config_arr['wp_x'], $config_arr['wp_y']);
+                        $upload = upload_img($_FILES[$filesname], '/wallpaper', $_POST['oldname'].'_'.$_POST['size'][$i].'a', $config_arr['wp_size']*1024, $config_arr['wp_x'], $config_arr['wp_y']);
                         systext(upload_img_notice($upload));
                     }
                 }
@@ -80,12 +80,12 @@ if (isset($_POST['wallpaper_id']) AND isset($_POST['sended']) AND $_POST['sended
         }
 
      //Rename
-     $index2 = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."wallpaper_sizes WHERE wallpaper_id = '$_POST[wallpaper_id]'");
+     $index2 = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX')."wallpaper_sizes WHERE wallpaper_id = '$_POST[wallpaper_id]'");
      while ($sizes_arr = $index2->fetch(PDO::FETCH_ASSOC))
      {
-          image_rename('images/wallpaper/', $_POST['oldname'].'_'.$sizes_arr['size'].'a', $_POST['wallpaper_name'].'_'.$sizes_arr['size']);
+          image_rename('/wallpaper', $_POST['oldname'].'_'.$sizes_arr['size'].'a', $_POST['wallpaper_name'].'_'.$sizes_arr['size']);
      }
-     image_rename('images/wallpaper/', $_POST['oldname'].'_s', $_POST['wallpaper_name'].'_s');
+     image_rename('/wallpaper', $_POST['oldname'].'_s', $_POST['wallpaper_name'].'_s');
 
      systext($FD->text('admin', 'changes_saved'), $FD->text('admin', 'info'), 'green', $FD->text('admin', 'icon_save_ok'));
 
@@ -107,17 +107,17 @@ elseif (isset($_POST['wallpaper_id']) AND isset($_POST['sended']) AND $_POST['se
     //security functions
     $_POST['wallpaper_id'] = intval($_POST['wallpaper_id']);
 
-    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."wallpaper WHERE wallpaper_id = '$_POST[wallpaper_id]'");
+    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX')."wallpaper WHERE wallpaper_id = '$_POST[wallpaper_id]'");
     $wp_del_array = $index->fetch(PDO::FETCH_ASSOC);
-    $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref')."wallpaper WHERE wallpaper_id = '$_POST[wallpaper_id]'");
-    image_delete('images/wallpaper/', $wp_del_array['wallpaper_name'].'_s');
+    $FD->db()->conn()->exec('DELETE FROM '.$FD->env('DB_PREFIX')."wallpaper WHERE wallpaper_id = '$_POST[wallpaper_id]'");
+    image_delete('/wallpaper', $wp_del_array['wallpaper_name'].'_s');
 
-    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."wallpaper_sizes WHERE wallpaper_id = '$_POST[wallpaper_id]'");
+    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX')."wallpaper_sizes WHERE wallpaper_id = '$_POST[wallpaper_id]'");
     while ($wp_sizes_del_array = $index->fetch(PDO::FETCH_ASSOC))
     {
-      image_delete('images/wallpaper/', $wp_del_array['wallpaper_name'].'_'.$wp_sizes_del_array['size']);
+      image_delete('/wallpaper', $wp_del_array['wallpaper_name'].'_'.$wp_sizes_del_array['size']);
     }
-    $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref')."wallpaper_sizes WHERE wallpaper_id = '$_POST[wallpaper_id]'");
+    $FD->db()->conn()->exec('DELETE FROM '.$FD->env('DB_PREFIX')."wallpaper_sizes WHERE wallpaper_id = '$_POST[wallpaper_id]'");
 
     systext('Wallpaper wurden gel&ouml;scht');
 }
@@ -142,22 +142,22 @@ elseif (isset($_POST['wallpaper_id']) AND isset($_POST['wp_action']))
     //Re-create Thumb
     if (isset($_POST['sended']) && $_POST['sended'] == 'newthumb')
     {
-        $index = $FD->sql()->conn()->query('SELECT wallpaper_name FROM '.$FD->config('pref')."wallpaper WHERE wallpaper_id = '$_POST[wallpaper_id]'");
+        $index = $FD->db()->conn()->query('SELECT wallpaper_name FROM '.$FD->env('DB_PREFIX')."wallpaper WHERE wallpaper_id = '$_POST[wallpaper_id]'");
         $wp_name = $index->fetchColumn();
 
-        $index = $FD->sql()->conn()->query('SELECT size FROM '.$FD->config('pref')."wallpaper_sizes WHERE wallpaper_id = '$_POST[wallpaper_id]' LIMIT 1");
+        $index = $FD->db()->conn()->query('SELECT size FROM '.$FD->env('DB_PREFIX')."wallpaper_sizes WHERE wallpaper_id = '$_POST[wallpaper_id]' LIMIT 1");
         $wp_size = $index->fetchColumn();
 
-        image_delete('images/wallpaper/', $wp_name.'_s');
+        image_delete('/wallpaper', $wp_name.'_s');
 
-        $newthumb = create_thumb_from(image_url('images/wallpaper/', $wp_name.'_'.$wp_size, FALSE, TRUE), $config_arr['wp_thumb_x'], $config_arr['wp_thumb_y']);
+        $newthumb = create_thumb_from(image_url('/wallpaper', $wp_name.'_'.$wp_size, FALSE, TRUE), $config_arr['wp_thumb_x'], $config_arr['wp_thumb_y']);
 
-        image_rename('images/wallpaper/', $wp_name.'_'.$wp_size.'_s', $wp_name.'_s');
+        image_rename('/wallpaper', $wp_name.'_'.$wp_size.'_s', $wp_name.'_s');
 
         systext(create_thumb_notice($newthumb).'<br />(Cache leeren nicht vergessen!)');
     }
 
-    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."wallpaper WHERE wallpaper_id = '$_POST[wallpaper_id]'");
+    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX')."wallpaper WHERE wallpaper_id = '$_POST[wallpaper_id]'");
     $admin_wp_arr = $index->fetch(PDO::FETCH_ASSOC);
 
     $admin_wp_arr['old_name'] = killhtml($admin_wp_arr['wallpaper_name']);
@@ -179,11 +179,11 @@ elseif (isset($_POST['wallpaper_id']) AND isset($_POST['wp_action']))
 
     //EDIT BEGIN
 
-    $index2 = $FD->sql()->conn()->query('SELECT COUNT(*) FROM '.$FD->config('pref')."wallpaper_sizes WHERE wallpaper_id = '$_POST[wallpaper_id]'");
+    $index2 = $FD->db()->conn()->query('SELECT COUNT(*) FROM '.$FD->env('DB_PREFIX')."wallpaper_sizes WHERE wallpaper_id = '$_POST[wallpaper_id]'");
     $index2_num_rows = (int) $index2->fetchColumn();
-    $index2 = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."wallpaper_sizes WHERE wallpaper_id = '$_POST[wallpaper_id]' ORDER BY size_id ASC LIMIT 1");
+    $index2 = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX')."wallpaper_sizes WHERE wallpaper_id = '$_POST[wallpaper_id]' ORDER BY size_id ASC LIMIT 1");
     $admin_sizes_arr = $index2->fetch(PDO::FETCH_ASSOC);
-    $index2 = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."wallpaper_sizes WHERE wallpaper_id = '$_POST[wallpaper_id]' ORDER BY size_id ASC");
+    $index2 = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX')."wallpaper_sizes WHERE wallpaper_id = '$_POST[wallpaper_id]' ORDER BY size_id ASC");
 
     for($i=0; $i<$index2_num_rows; $i++)
     {
@@ -221,7 +221,7 @@ elseif (isset($_POST['wallpaper_id']) AND isset($_POST['wp_action']))
                                     <font class="small">Thumbnail des Wallpapers.</font>
                                 </td>
                                 <td class="config" valign="top" width="550">
-                                   <img src="'.image_url('images/wallpaper/', $admin_wp_arr['wallpaper_name'].'_s').'" />
+                                   <img src="'.image_url('/wallpaper', $admin_wp_arr['wallpaper_name'].'_s').'" />
                                 </td>
                             </tr>
                             <tr>
@@ -268,7 +268,7 @@ elseif (isset($_POST['wallpaper_id']) AND isset($_POST['wp_action']))
                                 <td class="config" valign="top">
                                     <select name="catid">
 ';
-$index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'screen_cat WHERE cat_type = 2');
+$index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX').'screen_cat WHERE cat_type = 2');
 while ($cat_arr = $index->fetch(PDO::FETCH_ASSOC))
 {
     echo'
@@ -380,7 +380,7 @@ echo'
 
   elseif ($_POST['wp_action'] == 'delete')
   {
-    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."wallpaper WHERE wallpaper_id = '$_POST[wallpaper_id]'");
+    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX')."wallpaper WHERE wallpaper_id = '$_POST[wallpaper_id]'");
     $wallpaper_arr = $index->fetch(PDO::FETCH_ASSOC);
 
 echo '
@@ -405,18 +405,18 @@ echo '
        <tr>
        <tr>
            <td class="config">
-               <img src="'.image_url('images/wallpaper/', $wallpaper_arr['wallpaper_name'].'_s', false).'" style="max-width:200px; max-height:100px;"><br>
+               <img src="'.image_url('/wallpaper', $wallpaper_arr['wallpaper_name'].'_s', false).'" style="max-width:200px; max-height:100px;"><br>
            </td>
            <td class="thin"><b>'.$wallpaper_arr['wallpaper_name'].'</b>';
 
-           $index2 = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."wallpaper_sizes WHERE wallpaper_id = '$wallpaper_arr[wallpaper_id]' ORDER BY size_id ASC");
+           $index2 = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX')."wallpaper_sizes WHERE wallpaper_id = '$wallpaper_arr[wallpaper_id]' ORDER BY size_id ASC");
            while ($sizes_arr = $index2->fetch(PDO::FETCH_ASSOC))
            {
              echo '<br>'.$sizes_arr['size'];
            }
            echo'</td>';
-           $index2 = $FD->sql()->conn()->query('SELECT cat_name FROM '.$FD->config('pref')."screen_cat WHERE cat_id = $wallpaper_arr[cat_id]");
-           $db_cat_name = htmlspecialchars($index2->fetchColumn());
+           $index2 = $FD->db()->conn()->query('SELECT cat_name FROM '.$FD->env('DB_PREFIX')."screen_cat WHERE cat_id = $wallpaper_arr[cat_id]");
+           $db_cat_name = killhtml($index2->fetchColumn());
            echo'
            <td class="configthin">
                '.$db_cat_name.'
@@ -450,7 +450,7 @@ else
                                     Dateien der Kategorie
                                     <select name="wpcatid">
     ';
-    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'screen_cat WHERE cat_type = 2');
+    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX').'screen_cat WHERE cat_type = 2');
     while ($cat_arr = $index->fetch(PDO::FETCH_ASSOC))
     {
         $sele = ($_POST['wpcatid'] == $cat_arr['cat_id']) ? 'selected' : '';
@@ -495,7 +495,7 @@ else
                                 </td>
                             </tr>
         ';
-        $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."wallpaper $wherecat ORDER BY wallpaper_id DESC");
+        $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX')."wallpaper $wherecat ORDER BY wallpaper_id DESC");
         while ($wallpaper_arr = $index->fetch(PDO::FETCH_ASSOC))
         {
             echo'
@@ -504,12 +504,12 @@ else
                         <input type="hidden" value="wp_edit" name="go">
                             <tr>
                                 <td class="thin">
-                                    <img src="'.image_url('images/wallpaper/', killhtml($wallpaper_arr['wallpaper_name']).'_s').'" style="max-width:200px; max-height:100px;"><br>
+                                    <img src="'.image_url('/wallpaper', killhtml($wallpaper_arr['wallpaper_name']).'_s').'" style="max-width:200px; max-height:100px;"><br>
 
                                 </td>
                                 <td class="thin">'.killhtml($wallpaper_arr['wallpaper_name']);
 
-            $index2 = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."wallpaper_sizes WHERE wallpaper_id = '$wallpaper_arr[wallpaper_id]' ORDER BY size_id ASC");
+            $index2 = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX')."wallpaper_sizes WHERE wallpaper_id = '$wallpaper_arr[wallpaper_id]' ORDER BY size_id ASC");
             $sizes = array();
             while ($sizes_arr = $index2->fetch(PDO::FETCH_ASSOC))
             {
@@ -519,7 +519,7 @@ else
                 echo '<br><span class="small">'.implode(', ', $sizes).'</span>';
             }
             echo'</td>';
-            $index2 = $FD->sql()->conn()->query('SELECT cat_name FROM '.$FD->config('pref')."screen_cat WHERE cat_id = $wallpaper_arr[cat_id]");
+            $index2 = $FD->db()->conn()->query('SELECT cat_name FROM '.$FD->env('DB_PREFIX')."screen_cat WHERE cat_id = $wallpaper_arr[cat_id]");
             $db_cat_name = $index2->fetchColumn();
 
             echo'

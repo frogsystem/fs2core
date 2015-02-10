@@ -19,15 +19,15 @@ $config_arr = $FD->configObject('users')->getConfigArray();
 //////////////////////
 //// Show Profile ////
 //////////////////////
-$index = $FD->sql()->conn()->query ( '
+$index = $FD->db()->conn()->query ( '
     SELECT *
-    FROM `'.$FD->config('pref')."user`
+    FROM `'.$FD->env('DB_PREFIX')."user`
     WHERE `user_id` = '".$_GET['id']."'" );
 $user_arr = $index->fetch( PDO::FETCH_ASSOC );
 
 if ( $user_arr!==false ) {
     $user_arr['user_name'] = kill_replacements ( $user_arr['user_name'], TRUE );
-    $user_arr['user_image'] = ( image_exists ( 'media/user-images/', $user_arr['user_id'] ) ? '<img src="'.image_url ( 'media/user-images/', $user_arr['user_id'] ).'" alt="'.$FD->text('frontend', 'user_image_of').' '.$user_arr['user_name'].'">' : $FD->text('frontend', 'user_image_not_found') );
+    $user_arr['user_image'] = ( image_exists ( '/user-images', $user_arr['user_id'] ) ? '<img src="'.image_url ( '/user-images', $user_arr['user_id'] ).'" alt="'.$FD->text('frontend', 'user_image_of').' '.$user_arr['user_name'].'">' : $FD->text('frontend', 'user_image_not_found') );
     $user_arr['user_mail'] = ( $user_arr['user_show_mail'] == 1 ? kill_replacements ( $user_arr['user_mail'], TRUE ) : '-' );
     $user_arr['user_is_staff_text'] = ( $user_arr['user_is_staff'] == 1 || $user_arr['user_is_admin'] == 1 ? $FD->text('frontend', "'yes'") : $FD->text('frontend', "'no'") );
     $user_arr['user_is_admin_text'] = ( $user_arr['user_is_admin'] == 1 ? $FD->text('frontend', "'yes'") : $FD->text('frontend', "'no'") );
@@ -55,30 +55,30 @@ if ( $user_arr!==false ) {
     $user_arr['user_yim'] = ( $user_arr['user_yim'] != '' ? kill_replacements ( $user_arr['user_yim'], TRUE ) : '-' );
     $user_arr['user_skype'] = ( $user_arr['user_skype'] != '' ? kill_replacements ( $user_arr['user_skype'], TRUE ) : '-' );
 
-    $index = $FD->sql()->conn()->query ( '
+    $index = $FD->db()->conn()->query ( '
         SELECT COUNT(`news_id`) AS `number`
-        FROM `'.$FD->config('pref')."news`
+        FROM `'.$FD->env('DB_PREFIX')."news`
         WHERE `user_id` = '".$user_arr['user_id']."'" );
     $row = $index->fetch(PDO::FETCH_ASSOC);
     $user_arr['user_num_news'] = $row['number'];
 
-    $index = $FD->sql()->conn()->query ( '
+    $index = $FD->db()->conn()->query ( '
         SELECT COUNT(`comment_id`) AS `number`
-        FROM `'.$FD->config('pref')."comments`
+        FROM `'.$FD->env('DB_PREFIX')."comments`
         WHERE `comment_poster_id` = '".$user_arr['user_id']."'" );
     $row = $index->fetch(PDO::FETCH_ASSOC);
     $user_arr['user_num_comments'] = $row['number'];
 
-    $index = $FD->sql()->conn()->query ( '
+    $index = $FD->db()->conn()->query ( '
         SELECT COUNT(`article_id`) AS `number`
-        FROM `'.$FD->config('pref')."articles`
+        FROM `'.$FD->env('DB_PREFIX')."articles`
         WHERE `article_user` = '".$user_arr['user_id']."'" );
     $row = $index->fetch(PDO::FETCH_ASSOC);
     $user_arr['user_num_articles'] = $row['number'];
 
-    $index = $FD->sql()->conn()->query ( '
+    $index = $FD->db()->conn()->query ( '
         SELECT COUNT(`dl_id`) AS `number`
-        FROM `'.$FD->config('pref')."dl`
+        FROM `'.$FD->env('DB_PREFIX')."dl`
         WHERE `user_id` = '".$user_arr['user_id']."'" );
     $row = $index->fetch(PDO::FETCH_ASSOC);
     $user_arr['user_num_downloads'] = $row['number'];
@@ -93,7 +93,7 @@ if ( $user_arr!==false ) {
     $template->tag ( 'user_id', $user_arr['user_id'] );
     $template->tag ( 'user_name', $user_arr['user_name'] );
     $template->tag ( 'user_image', $user_arr['user_image'] );
-    $template->tag ( 'user_image_url', image_url ( 'media/user-images/', $user_arr['user_id'] ) );
+    $template->tag ( 'user_image_url', image_url ( '/user-images', $user_arr['user_id'] ) );
     $template->tag ( 'user_rank', $user_arr['user_rank'] );
     $template->tag ( 'user_mail', $user_arr['user_mail'] );
 

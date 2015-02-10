@@ -7,9 +7,9 @@
 function user_name_free_or_itself ( $USERNAME, $USER_ID ) {
     global $FD;
 
-    $index = $FD->sql()->conn()->prepare ( '
+    $index = $FD->db()->conn()->prepare ( '
                     SELECT `user_id`
-                    FROM `'.$FD->config('pref')."user`
+                    FROM `'.$FD->env('DB_PREFIX')."user`
                     WHERE `user_name` = ?
                     LIMIT 0,1" );
     $index->execute(array($USERNAME));
@@ -88,9 +88,9 @@ if (
         $pw_update = '';
     }
 
-    $index = $FD->sql()->conn()->query ( '
+    $index = $FD->db()->conn()->query ( '
                     SELECT `user_is_staff`, `user_is_admin`
-                    FROM '.$FD->config('pref')."user
+                    FROM '.$FD->env('DB_PREFIX')."user
                     WHERE `user_id` = '".$_POST['user_id']."'
                     LIMIT 0,1" );
     $row = $index->fetch(PDO::FETCH_ASSOC);
@@ -99,16 +99,16 @@ if (
 
     // user is not longer in staff
     if ( $was_staff == 1 && $_POST['user_is_staff'] == 0 ) {
-        $FD->sql()->conn()->exec ('
+        $FD->db()->conn()->exec ('
                 DELETE
-                FROM '.$FD->config('pref')."user_permissions
+                FROM '.$FD->env('DB_PREFIX')."user_permissions
                 WHERE `perm_for_group` = '0'
                 AND `x_id` = '".$_POST['user_id']."'" );
     }
 
     // SQL-Queries
-    $stmt = $FD->sql()->conn()->prepare ( '
-                UPDATE `'.$FD->config('pref')."user`
+    $stmt = $FD->db()->conn()->prepare ( '
+                UPDATE `'.$FD->env('DB_PREFIX')."user`
                 SET
                     `user_name` = ?,
                     ".$pw_update."
@@ -138,13 +138,13 @@ if (
 
     // image operations
     if ( $_POST['user_pic_delete'] == 1 ) {
-        if ( image_delete ( 'images/avatare/', $_POST['user_id'] ) ) {
+        if ( image_delete ( '/user-images', $_POST['user_id'] ) ) {
         $message .= '<br>' . $FD->text("admin", "image_deleted");
       } else {
         $message .= '<br>' . $FD->text("admin", "image_not_deleted");
       }
     } elseif ( $_FILES['user_pic']['name'] != '' ) {
-        $upload = upload_img ( $_FILES['user_pic'], 'images/avatare/', $_POST['user_id'], $config_arr['avatar_size']*1024, $config_arr['avatar_x'], $config_arr['avatar_y'] );
+        $upload = upload_img ( $_FILES['user_pic'], '/user-images', $_POST['user_id'], $config_arr['avatar_size']*1024, $config_arr['avatar_x'], $config_arr['avatar_y'] );
         $message .= '<br>' . upload_img_notice ( $upload );
     }
 
@@ -192,77 +192,77 @@ elseif (
         settype ( $_POST['user_id'], 'integer' );
 
         // get data from db
-        $index = $FD->sql()->conn()->query ( '
+        $index = $FD->db()->conn()->query ( '
                         SELECT `user_name`
-                        FROM '.$FD->config('pref')."user
+                        FROM '.$FD->env('DB_PREFIX')."user
                         WHERE `user_id` = '".$_POST['user_id']."'
                         LIMIT 0,1" );
         $user_arr = $index->fetch(PDO::FETCH_ASSOC);
 
         // Delete Permissions
-        $FD->sql()->conn()->exec ( '
+        $FD->db()->conn()->exec ( '
                 DELETE
-                FROM '.$FD->config('pref')."user_permissions
+                FROM '.$FD->env('DB_PREFIX')."user_permissions
                 WHERE `perm_for_group` = '0'
                 AND `x_id` = '".$_POST['user_id']."'" );
 
         // update stats
-        $FD->sql()->conn()->exec ( '
-                UPDATE '.$FD->config('pref').'counter
+        $FD->db()->conn()->exec ( '
+                UPDATE '.$FD->env('DB_PREFIX').'counter
                 SET `user` = `user`-1' );
 
         // update groups
-        $FD->sql()->conn()->exec ( '
-                UPDATE '.$FD->config('pref')."user_groups
+        $FD->db()->conn()->exec ( '
+                UPDATE '.$FD->env('DB_PREFIX')."user_groups
                 SET `user_group_user` = '1'
                 WHERE `user_group_user` = '".$_POST['user_id']."'" );
 
         // update articles
-        $FD->sql()->conn()->exec ( '
-                UPDATE '.$FD->config('pref')."articles
+        $FD->db()->conn()->exec ( '
+                UPDATE '.$FD->env('DB_PREFIX')."articles
                 SET `article_user` = '0'
                 WHERE `article_user` = '".$_POST['user_id']."'" );
 
         // update articles_cat
-        $FD->sql()->conn()->exec ( '
-                UPDATE '.$FD->config('pref')."articles_cat
+        $FD->db()->conn()->exec ( '
+                UPDATE '.$FD->env('DB_PREFIX')."articles_cat
                 SET `cat_user` = '1'
                 WHERE `cat_user` = '".$_POST['user_id']."'" );
 
         // update dl
-        $FD->sql()->conn()->exec ( '
-                UPDATE '.$FD->config('pref')."dl
+        $FD->db()->conn()->exec ( '
+                UPDATE '.$FD->env('DB_PREFIX')."dl
                 SET `user_id` = '1'
                 WHERE `user_id` = '".$_POST['user_id']."'" );
 
         // update news
-        $FD->sql()->conn()->exec ( '
-                UPDATE '.$FD->config('pref')."news
+        $FD->db()->conn()->exec ( '
+                UPDATE '.$FD->env('DB_PREFIX')."news
                 SET `user_id` = '1'
                 WHERE `user_id` = '".$_POST['user_id']."'" );
 
         // update news_cat
-        $FD->sql()->conn()->exec ( '
-                UPDATE '.$FD->config('pref')."news_cat
+        $FD->db()->conn()->exec ( '
+                UPDATE '.$FD->env('DB_PREFIX')."news_cat
                 SET `cat_user` = '1'
                 WHERE `cat_user` = '".$_POST['user_id']."'" );
 
         // update comments
-        $stmt = $FD->sql()->conn()->prepare ( '
-                    UPDATE '.$FD->config('pref')."comments
+        $stmt = $FD->db()->conn()->prepare ( '
+                    UPDATE '.$FD->env('DB_PREFIX')."comments
                     SET `comment_poster_id` = '0',
                         `comment_poster` = ?
                     WHERE `comment_poster_id` = '".$_POST['user_id']."'" );
         $stmt->execute(array($user_arr['user_name']));
 
         // SQL-Delete-Query
-        $FD->sql()->conn()->exec ('
-                DELETE FROM '.$FD->config('pref')."user
+        $FD->db()->conn()->exec ('
+                DELETE FROM '.$FD->env('DB_PREFIX')."user
                  WHERE user_id = '".$_POST['user_id']."'" );
         $message = 'Benutzer wurde erfolgreich gel&ouml;scht';
 
         // Delete Image
-        if ( image_delete ( 'images/avatare/', $_POST['user_id'] ) ) {
+        if ( image_delete ( '/user-images', $_POST['user_id'] ) ) {
             $message .= '<br>' . $FD->text("admin", "image_deleted");
         }
     } else {
@@ -320,9 +320,9 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
             }
             systext ( $message, $FD->text("admin", "error"), TRUE );
         } else {
-            $index = $FD->sql()->conn()->query ( '
+            $index = $FD->db()->conn()->query ( '
                             SELECT *
-                            FROM '.$FD->config('pref')."user
+                            FROM '.$FD->env('DB_PREFIX')."user
                             WHERE `user_id` = '".$_POST['user_id']."'
                             LIMIT 0,1" );
             $user_arr = $index->fetch(PDO::FETCH_ASSOC);
@@ -391,7 +391,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
                         <input type="hidden" name="user_action" value="edit">
                         <input type="hidden" name="sended" value="edit">
                         <input type="hidden" name="user_id" value="'.$_POST['user_id'].'">
-                        <input type="hidden" name="filter" value="'.htmlspecialchars($_POST['filter']).'">
+                        <input type="hidden" name="filter" value="'.killhtml($_POST['filter']).'">
                         <table class="configtable" cellpadding="4" cellspacing="0">
                             <tr><td class="line" colspan="2">Hauptinformationen</td></tr>
                             <tr>
@@ -475,8 +475,8 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
                                 <td class="config">
                                     Benutzer-Bild: <span class="small">(optional)</span>
         ';
-        if ( image_exists ( 'images/avatare/', $_POST['user_id'] ) ) {
-            echo '<br><br><img src="'.image_url( 'images/avatare/', $_POST['user_id'] ).'" alt="" border="0"><br><br>';
+        if ( image_exists ( '/user-images', $_POST['user_id'] ) ) {
+            echo '<br><br><img src="'.image_url( '/user-images', $_POST['user_id'] ).'" alt="" border="0"><br><br>';
         }
         echo '
                                 </td>
@@ -484,7 +484,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
                                     <input class="text" name="user_pic" type="file" size="35"><br>
                                     <span class="small">['.$FD->text("admin", "max").' '.$config_arr['avatar_x'].' '.$FD->text("admin", "resolution_x").' '.$config_arr['avatar_y'].' '.$FD->text("admin", "pixel").'] ['.$FD->text("admin", "max").' '.$config_arr['avatar_size'].' '.$FD->text("admin", "kib").']</span>
         ';
-        if ( image_exists ( 'images/avatare/', $_POST['user_id'] ) ) {
+        if ( image_exists ( '/user-images', $_POST['user_id'] ) ) {
             echo '
                                     <br>
                                     <span class="small"><b>Nur ausw&auml;hlen, wenn das bisherige Bild &uuml;berschrieben werden soll!</b></span><br><br>
@@ -518,9 +518,9 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
                                         <option value="0"'.getselected ( $_POST['user_group'], 0 ).'>keine Gruppe</option>
         ';
 
-        $index = $FD->sql()->conn()->query ('
+        $index = $FD->db()->conn()->query ('
                         SELECT `user_group_id`, `user_group_name`
-                        FROM '.$FD->config('pref')."user_groups
+                        FROM '.$FD->env('DB_PREFIX')."user_groups
                         WHERE `user_group_id` > 1
                         ORDER BY `user_group_name`" );
 
@@ -529,9 +529,9 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
                 '.$group_arr['user_group_name'].'</option>';
         }
 
-        $index = $FD->sql()->conn()->query ('
+        $index = $FD->db()->conn()->query ('
                         SELECT `user_group_id`, `user_group_name`
-                        FROM '.$FD->config('pref').'user_groups
+                        FROM '.$FD->env('DB_PREFIX').'user_groups
                         WHERE `user_group_id` = 1
                         ORDER BY `user_group_name`
                         LIMIT 0,1' );
@@ -622,9 +622,9 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
     // Delete User
     } elseif ( $_POST['user_action'] == 'delete' && $_POST['user_id'] != 1  && $_POST['user_id'] != $_SESSION['user_id'] ) {
         // get data from db
-        $index = $FD->sql()->conn()->query ( '
+        $index = $FD->db()->conn()->query ( '
                         SELECT `user_name`
-                        FROM '.$FD->config('pref')."user
+                        FROM '.$FD->env('DB_PREFIX')."user
                         WHERE `user_id` = '".$_POST['user_id']."'
                         LIMIT 0,1" );
         $user_arr = $index->fetch(PDO::FETCH_ASSOC);
@@ -638,7 +638,7 @@ if (  isset ( $_POST['user_id'] ) && $_POST['user_action'] )
                         <input type="hidden" name="user_action" value="delete">
                         <input type="hidden" name="sended" value="delete">
                         <input type="hidden" name="user_id" value="'.$_POST['user_id'].'">
-                        <input type="hidden" name="filter" value="'.htmlspecialchars($_POST['filter']).'">
+                        <input type="hidden" name="filter" value="'.killhtml($_POST['filter']).'">
                         <table class="configtable" cellpadding="4" cellspacing="0">
                             <tr><td class="line" colspan="2">Benutzer l&ouml;schen</td></tr>
                             <tr>
@@ -706,7 +706,7 @@ if ( !isset ( $_POST['user_id'] ) )
         echo '
                     <form action="" method="post">
                         <input type="hidden" name="go" value="user_edit">
-                        <input type="hidden" name="filter" value="'.htmlspecialchars($_POST['filter']).'">
+                        <input type="hidden" name="filter" value="'.killhtml($_POST['filter']).'">
                         <input type="hidden" name="search" value="1">
                         <table class="configtable" cellpadding="4" cellspacing="0">
                             <tr><td class="space"></td></tr>
@@ -716,9 +716,9 @@ if ( !isset ( $_POST['user_id'] ) )
 
         // get users from DB
         $sql_filter = '%'.$_POST['filter'].'%';
-        $stmt = $FD->sql()->conn()->prepare ( '
+        $stmt = $FD->db()->conn()->prepare ( '
                         SELECT COUNT(`user_id`)
-                        FROM '.$FD->config('pref')."user
+                        FROM '.$FD->env('DB_PREFIX')."user
                         WHERE ( `user_name` LIKE ? OR `user_mail` LIKE ? )
                         AND `user_id` != '".$_SESSION['user_id']."'
                         AND `user_id` != '1'" );
@@ -738,9 +738,9 @@ if ( !isset ( $_POST['user_id'] ) )
             ';
 
             // display users
-            $index = $FD->sql()->conn()->prepare ( '
+            $index = $FD->db()->conn()->prepare ( '
                             SELECT `user_id`, `user_name`, `user_mail`, `user_is_staff`, `user_is_admin`
-                            FROM '.$FD->config('pref')."user
+                            FROM '.$FD->env('DB_PREFIX')."user
                             WHERE ( `user_name` LIKE ? OR `user_mail` LIKE ? )
                             AND `user_id` != '".$_SESSION['user_id']."'
                             AND `user_id` != '1'

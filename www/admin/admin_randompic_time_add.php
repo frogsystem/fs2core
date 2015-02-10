@@ -10,7 +10,7 @@ if (!empty($_POST['screen_id'])) {
 }
 if ($startdate < $enddate) {
     settype($_POST['screen_id'], 'integer');
-    $FD->sql()->conn()->exec('INSERT INTO '.$FD->config('pref')."screen_random (screen_id, start, end)
+    $FD->db()->conn()->exec('INSERT INTO '.$FD->env('DB_PREFIX')."screen_random (screen_id, start, end)
                  VALUES ('". $_POST['screen_id'] ."',
                          '". $startdate ."',
                          '". $enddate ."'
@@ -66,7 +66,7 @@ else
                                     <input type="hidden" id="screen_id" name="screen_id" value="'. $_POST['screen_id'] .'">
                                 </td>
                                 <td class="config" valign="top" width="200">
-                                    <img id="selected_pic" src="icons/image_error.gif" alt="Kein Bild gefunden" />
+                                    <img id="selected_pic" src="?icons=image_error.gif" alt="Kein Bild gefunden" />
                                 </td>
                             </tr>
                             <tr>

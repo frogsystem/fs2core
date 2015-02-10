@@ -23,8 +23,8 @@ if (
     $group_date = time ();
 
     // SQL-Update-Query
-    $stmt = $FD->sql()->conn()->prepare('
-                    INSERT INTO '.$FD->config('pref')."user_groups (user_group_name, user_group_date, user_group_user)
+    $stmt = $FD->db()->conn()->prepare('
+                    INSERT INTO '.$FD->env('DB_PREFIX')."user_groups (user_group_name, user_group_date, user_group_user)
                     VALUES (
                         ?,
                         '".$group_date."',
@@ -33,11 +33,11 @@ if (
     $stmt->execute(array($_POST['user_group_name']));
 
     $message = 'Gruppe wurde erfolgreich hinzugef&uuml;gt';
-    $id = $FD->sql()->conn()->lastInsertId();
+    $id = $FD->db()->conn()->lastInsertId();
 
     // Image-Operations
     if ( $_FILES['user_group_pic']['name'] != '' ) {
-      $upload = upload_img ( $_FILES['user_group_pic'], 'media/group-images/', 'staff_'.$id, $config_arr['group_pic_size']*1024, $config_arr['group_pic_x'], $config_arr['group_pic_y'] );
+      $upload = upload_img ( $_FILES['user_group_pic'], '/group-images', 'staff_'.$id, $config_arr['group_pic_size']*1024, $config_arr['group_pic_x'], $config_arr['group_pic_y'] );
       $message .= '<br>' . upload_img_notice ( $upload );
     }
 
@@ -49,7 +49,7 @@ if (
 
     // Set Vars
     $_POST['group_action'] = 'edit';
-    $_POST['user_group_id'] = $FD->sql()->conn()->lastInsertId();
+    $_POST['user_group_id'] = $FD->db()->conn()->lastInsertId();
 }
 
 // Update group
@@ -77,8 +77,8 @@ elseif (
     $group_date = mktime ( 0, 0, 0, $date_arr['m'], $date_arr['d'], $date_arr['y'] );
 
     // SQL-Update-Query
-    $stmt = $FD->sql()->conn()->prepare('
-                UPDATE '.$FD->config('pref')."user_groups
+    $stmt = $FD->db()->conn()->prepare('
+                UPDATE '.$FD->env('DB_PREFIX')."user_groups
                  SET
                      user_group_name = ?,
                      user_group_description = ?,
@@ -97,14 +97,14 @@ elseif (
 
     // Image-Operations
     if ( isset($_POST['group_pic_delete']) && ($_POST['group_pic_delete'] == 1) ) {
-      if ( image_delete ( 'media/group-images/', 'staff_'.$_POST['user_group_id'] ) ) {
+      if ( image_delete ( '/group-images', 'staff_'.$_POST['user_group_id'] ) ) {
         $message .= '<br>' . $FD->text('admin', 'image_deleted');
       } else {
         $message .= '<br>' . $FD->text('admin', 'image_not_deleted');
       }
     } elseif ( $_FILES['user_group_pic']['name'] != '' ) {
-      image_delete ( 'media/group-images/', 'staff_'.$_POST['user_group_id'] );
-      $upload = upload_img ( $_FILES['user_group_pic'], 'media/group-images/', 'staff_'.$_POST['user_group_id'], $config_arr['group_pic_size']*1024, $config_arr['group_pic_x'], $config_arr['group_pic_y'] );
+      image_delete ( '/group-images', 'staff_'.$_POST['user_group_id'] );
+      $upload = upload_img ( $_FILES['user_group_pic'], '/group-images', 'staff_'.$_POST['user_group_id'], $config_arr['group_pic_size']*1024, $config_arr['group_pic_x'], $config_arr['group_pic_y'] );
       $message .= '<br>' . upload_img_notice ( $upload );
     }
 
@@ -129,26 +129,26 @@ elseif (
         settype ( $_POST['user_group_id'], 'integer' );
 
         // Udpate Users
-        $FD->sql()->conn()->exec ('
-                UPDATE '.$FD->config('pref')."user
+        $FD->db()->conn()->exec ('
+                UPDATE '.$FD->env('DB_PREFIX')."user
                 SET user_group = '0'
                 WHERE user_group = '".$_POST['user_group_id']."'");
 
         // Delete Permissions
-        $FD->sql()->conn()->exec ("
-                DELETE FROM ".$FD->config('pref')."user_permissions
+        $FD->db()->conn()->exec ("
+                DELETE FROM ".$FD->env('DB_PREFIX')."user_permissions
                 WHERE x_id = '".$_POST['user_group_id']."'
                     AND perm_for_group = '1'");
 
         // SQL-Delete-Query
-        $FD->sql()->conn()->exec ('
-                DELETE FROM '.$FD->config('pref')."user_groups
+        $FD->db()->conn()->exec ('
+                DELETE FROM '.$FD->env('DB_PREFIX')."user_groups
                 WHERE user_group_id = '".$_POST['user_group_id']."'
                 AND user_group_id > 1");
         $message = 'Gruppe wurde erfolgreich gel&ouml;scht';
 
         // Delete Category Image
-        if ( image_delete ( 'media/group-images/', 'staff_'.$_POST['user_group_id'] ) ) {
+        if ( image_delete ( '/group-images', 'staff_'.$_POST['user_group_id'] ) ) {
             $message .= '<br>' . $FD->text('admin', 'image_deleted');
         }
 
@@ -179,9 +179,9 @@ if ( isset ( $_POST['user_group_id'] ) && isset($_POST['group_action']) )
         settype ( $_POST['user_group_id'], 'integer' );
 
         // Load Data from DB
-        $index = $FD->sql()->conn()->query ( '
+        $index = $FD->db()->conn()->query ( '
                         SELECT *
-                        FROM '.$FD->config('pref')."user_groups
+                        FROM '.$FD->env('DB_PREFIX')."user_groups
                         WHERE user_group_id = '".$_POST['user_group_id']."'");
         $group_arr = $index->fetch(PDO::FETCH_ASSOC);
 
@@ -195,7 +195,7 @@ if ( isset ( $_POST['user_group_id'] ) && isset($_POST['group_action']) )
         $group_arr['user_group_name'] = killhtml ( $group_arr['user_group_name'] );
         $group_arr['user_group_description'] = killhtml ( $group_arr['user_group_description'] );
         $group_arr['user_group_title'] = killhtml ( $group_arr['user_group_title'] );
-        $group_arr['user_group_color'] = htmlspecialchars ( $group_arr['user_group_color'] );
+        $group_arr['user_group_color'] = killhtml ( $group_arr['user_group_color'] );
         settype ( $group_arr['user_group_highlight'], 'integer' );
 
         //Create Color-Code
@@ -204,7 +204,7 @@ if ( isset ( $_POST['user_group_id'] ) && isset($_POST['group_action']) )
         }
 
         // Get User
-        $index = $FD->sql()->conn()->query ( 'SELECT user_name FROM '.$FD->config('pref')."user WHERE user_id = '".$group_arr['user_group_user']."'" );
+        $index = $FD->db()->conn()->query ( 'SELECT user_name FROM '.$FD->env('DB_PREFIX')."user WHERE user_id = '".$group_arr['user_group_user']."'" );
         $group_arr['user_group_user_name'] = killhtml ( $index->fetchColumn() );
 
         // Create Date-Arrays
@@ -265,9 +265,9 @@ if ( isset ( $_POST['user_group_id'] ) && isset($_POST['group_action']) )
                                    <td class="config">
                                      '."Symbol".': <span class="small">'.$FD->text('admin', 'optional').'</span><br><br>
          ';
-        if ( image_exists ( 'media/group-images/', 'staff_'.$group_arr['user_group_id'] ) ) {
+        if ( image_exists ( '/group-images', 'staff_'.$group_arr['user_group_id'] ) ) {
             echo '
-                                    <img src="'.image_url ( 'media/group-images/', 'staff_'.$group_arr['user_group_id'] ).'" alt="'.$group_arr['user_group_name'].'" border="0">
+                                    <img src="'.image_url ( '/group-images', 'staff_'.$group_arr['user_group_id'] ).'" alt="'.$group_arr['user_group_name'].'" border="0">
                                     <table>
                                         <tr>
                                             <td>
@@ -287,7 +287,7 @@ if ( isset ( $_POST['user_group_id'] ) && isset($_POST['group_action']) )
                                 <td class="config">
                                     <input name="user_group_pic" type="file" size="40" class="text"><br>
         ';
-        if ( image_exists ( 'media/group-images/', 'staff_'.$group_arr['user_group_id'] ) ) {
+        if ( image_exists ( '/group-images', 'staff_'.$group_arr['user_group_id'] ) ) {
             echo '<span class="small"><b>'.$FD->text("admin", "replace_img").'</b></span><br>';
         }
         echo'
@@ -311,7 +311,7 @@ if ( isset ( $_POST['user_group_id'] ) && isset($_POST['group_action']) )
                                        <span class="small">'."Farbliche Hervorhebung des Gruppentitels.".'</span>
                                    </td>
                                    <td class="configbig">
-                                     <b>#</b> <input class="text" name="user_group_color" size="7" maxlength="6" value="'.$group_arr['user_group_color'].'">
+                                     <b>#</b> <input class="text colorpicker" name="user_group_color" size="7" maxlength="6" value="'.$group_arr['user_group_color'].'">
                                      <span class="small">'."freilassen um Titel nicht einzuf&auml;rben".'</span><br>
                                      <span class="small">'."[Hexadezimal-Farbcode]".'</span>
                                    </td>
@@ -357,17 +357,17 @@ if ( isset ( $_POST['user_group_id'] ) && isset($_POST['group_action']) )
         // security functions
         settype ( $_POST['user_group_id'], 'integer' );
 
-        $index = $FD->sql()->conn()->query ( '
+        $index = $FD->db()->conn()->query ( '
                         SELECT `user_group_id`, `user_group_name`
-                        FROM '.$FD->config('pref')."user_groups
+                        FROM '.$FD->env('DB_PREFIX')."user_groups
                         WHERE user_group_id = '".$_POST['user_group_id']."'" );
         $group_arr = $index->fetch(PDO::FETCH_ASSOC);
 
         $group_arr['user_group_name'] = killhtml ( $group_arr['user_group_name'] );
 
-        $index_numusers = $FD->sql()->conn()->query ( "
+        $index_numusers = $FD->db()->conn()->query ( "
                                 SELECT COUNT(`user_id`) AS 'num_users'
-                                FROM `".$FD->config('pref')."user`
+                                FROM `".$FD->env('DB_PREFIX')."user`
                                 WHERE `user_group` = '".$group_arr['user_group_id']."'" );
         $group_arr['user_group_num_users'] = $index_numusers->fetchColumn();
 
@@ -470,9 +470,9 @@ else
     ';
 
     // Get groups from DB
-    $index = $FD->sql()->conn()->query ( '
+    $index = $FD->db()->conn()->query ( '
                     SELECT COUNT(*)
-                    FROM `'.$FD->config('pref').'user_groups`
+                    FROM `'.$FD->env('DB_PREFIX').'user_groups`
                     WHERE `user_group_id` > 1');
 
     // groups found
@@ -487,22 +487,22 @@ else
                             </tr>
                             <tr><td class="space"></td></tr>
         ';
-        $index = $FD->sql()->conn()->query( '
+        $index = $FD->db()->conn()->query( '
                         SELECT `user_group_id`, `user_group_name`, `user_group_user`, `user_group_date`
-                        FROM `'.$FD->config('pref').'user_groups`
+                        FROM `'.$FD->env('DB_PREFIX').'user_groups`
                         WHERE `user_group_id` > 1
                         ORDER BY `user_group_name`' );
         while ( $group_arr = $index->fetch(PDO::FETCH_ASSOC) )
         {
-            $index_username = $FD->sql()->conn()->query ( '
+            $index_username = $FD->db()->conn()->query ( '
                                     SELECT `user_name`
-                                    FROM `'.$FD->config('pref')."user`
+                                    FROM `'.$FD->env('DB_PREFIX')."user`
                                     WHERE `user_id` = '".$group_arr['user_group_user']."'" );
             $group_arr['user_group_user_name'] = $index_username->fetchColumn();
 
-            $index_numusers = $FD->sql()->conn()->query ( "
+            $index_numusers = $FD->db()->conn()->query ( "
                                     SELECT COUNT(`user_id`) AS 'num_users'
-                                    FROM `".$FD->config('pref')."user`
+                                    FROM `".$FD->env('DB_PREFIX')."user`
                                     WHERE `user_group` = '".$group_arr['user_group_id']."'" );
             $group_arr['user_group_num_users'] = $index_numusers->fetchColumn();
 
@@ -518,8 +518,8 @@ else
                                 <td class="configthin middle">
                                     <b>'.$group_arr['user_group_name'].'</b>
             ';
-            if ( image_exists ( 'media/group-images/', 'staff_'.$group_arr['user_group_id'] ) ) {
-                echo '<br><img src="'.image_url ( 'media/group-images/', 'staff_'.$group_arr['user_group_id'] ).'" alt="'.$group_arr['user_group_name'].'" border="0">';
+            if ( image_exists ( '/group-images', 'staff_'.$group_arr['user_group_id'] ) ) {
+                echo '<br><img src="'.image_url ( '/group-images', 'staff_'.$group_arr['user_group_id'] ).'" alt="'.$group_arr['user_group_name'].'" border="0">';
             }
             echo '
                                 </td>
@@ -584,24 +584,24 @@ else
     ';
 
     // Get admin group from DB
-    $index = $FD->sql()->conn()->query ( '
+    $index = $FD->db()->conn()->query ( '
                     SELECT `user_group_id`, `user_group_name`, `user_group_user`, `user_group_date`
-                    FROM `'.$FD->config('pref').'user_groups`
+                    FROM `'.$FD->env('DB_PREFIX').'user_groups`
                     WHERE `user_group_id` = 1
                     LIMIT 0,1' );
 
     // get group data
     $group_arr = $index->fetch(PDO::FETCH_ASSOC);
 
-    $index_username = $FD->sql()->conn()->query ( '
+    $index_username = $FD->db()->conn()->query ( '
                             SELECT `user_name`
-                            FROM `'.$FD->config('pref')."user`
+                            FROM `'.$FD->env('DB_PREFIX')."user`
                             WHERE `user_id` = '".$group_arr['user_group_user']."'" );
     $group_arr['user_group_user_name'] = $index_username->fetchColumn();
 
-    $index_numusers = $FD->sql()->conn()->query ( "
+    $index_numusers = $FD->db()->conn()->query ( "
                             SELECT COUNT(`user_id`) AS 'num_users'
-                            FROM `".$FD->config('pref')."user`
+                            FROM `".$FD->env('DB_PREFIX')."user`
                             WHERE `user_is_admin` = '1'" );
     $group_arr['user_group_num_users'] = $index_numusers->fetchColumn();
 
@@ -611,8 +611,8 @@ else
                                 <td class="configthin middle">
                                     <b>'.$group_arr['user_group_name'].'</b>
     ';
-    if ( image_exists ( 'media/group-images/', 'staff_'.$group_arr['user_group_id'] ) ) {
-        echo '<br><img src="'.image_url ( 'media/group-images/', 'staff_'.$group_arr['user_group_id'] ).'" alt="'.$group_arr['user_group_name'].'" border="0">';
+    if ( image_exists ( '/group-images', 'staff_'.$group_arr['user_group_id'] ) ) {
+        echo '<br><img src="'.image_url ( '/group-images', 'staff_'.$group_arr['user_group_id'] ).'" alt="'.$group_arr['user_group_name'].'" border="0">';
     }
     echo '
                                 </td>

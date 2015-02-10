@@ -12,9 +12,9 @@ if (isset($_GET['h'])) {
         switch($hash->getType()) {
             case 'newpassword':
                 //load user data from db
-                $userdata = $FD->sql()->conn()->query(
+                $userdata = $FD->db()->conn()->query(
                                   'SELECT user_id, user_name, user_mail
-                                   FROM '.$FD->config('pref').'user
+                                   FROM '.$FD->env('DB_PREFIX').'user
                                    WHERE user_id = '.intval($hash->getTypeId()).' LIMIT 1');
                 $userdata = $userdata->fetch(PDO::FETCH_ASSOC);
 
@@ -25,8 +25,8 @@ if (isset($_GET['h'])) {
                 $userdata['user_salt'] = $salt;
 
                 // save password to db
-                $stmt = $FD->sql()->conn()->prepare(
-                              'UPDATE '.$FD->config('pref').'user
+                $stmt = $FD->db()->conn()->prepare(
+                              'UPDATE '.$FD->env('DB_PREFIX').'user
                                SET user_password = ?, user_salt = ?
                                WHERE user_id = '.intval($userdata['user_id']).'
                                LIMIT 1');

@@ -11,8 +11,8 @@ if (isset($_POST['entry_action'])
 {
     settype($_POST['entry_is'], 'integer');
 
-    $stmt = $FD->sql()->conn()->prepare(
-                'INSERT INTO '.$FD->config('pref').'press_admin
+    $stmt = $FD->db()->conn()->prepare(
+                'INSERT INTO '.$FD->env('DB_PREFIX').'press_admin
                    (type, title)
                  VALUES (?, ?)');
     $stmt->execute(array($_POST['entry_is'], $_POST['title']));
@@ -20,8 +20,8 @@ if (isset($_POST['entry_action'])
     $msg[] = 'Eintrag wurde hinzugef&uuml;gt!';
 
     if ($_FILES['entry_pic']['name'] != '') {
-        $id = $FD->sql()->conn()->lastInsertId();
-        $upload = upload_img($_FILES['entry_pic'], 'images/press/', $_POST['entry_is'].'_'.$id, 1024*1024, 999, 999);
+        $id = $FD->db()->conn()->lastInsertId();
+        $upload = upload_img($_FILES['entry_pic'], '/press', $_POST['entry_is'].'_'.$id, 1024*1024, 999, 999);
         $msg[] = upload_img_notice($upload);
     } else {
         $msg[] = 'Es wurde kein Bild zum Upload ausgew&auml;hlt.';
@@ -44,8 +44,8 @@ elseif ((isset($_POST['title']) AND $_POST['title'] != '')
     settype($_POST['entry_id'], 'integer');
     settype($_POST['entry_is'], 'integer');
 
-    $stmt = $FD->sql()->conn()->prepare(
-                'UPDATE '.$FD->config('pref').'press_admin
+    $stmt = $FD->db()->conn()->prepare(
+                'UPDATE '.$FD->env('DB_PREFIX').'press_admin
                  SET title = ?,
                      type = ?
                  WHERE id = ?');
@@ -54,14 +54,14 @@ elseif ((isset($_POST['title']) AND $_POST['title'] != '')
 
     if (isset($_POST['entry_pic_delete']) && $_POST['entry_pic_delete'] == 1)
     {
-      if (image_delete('images/press/', $_POST['entry_is'].'_'.$_POST['entry_id']))
+      if (image_delete('/press', $_POST['entry_is'].'_'.$_POST['entry_id']))
       {
         systext('Das Bild wurde erfolgreich gel&ouml;scht!');
       }
     }
     elseif ($_FILES['entry_pic']['name'] != '')
     {
-        $upload = upload_img($_FILES['entry_pic'], 'images/press/', $_POST['entry_is'].'_'.$_POST['entry_id'], 1024*1024, 999, 999);
+        $upload = upload_img($_FILES['entry_pic'], '/press', $_POST['entry_is'].'_'.$_POST['entry_id'], 1024*1024, 999, 999);
         systext(upload_img_notice($upload));
     }
 
@@ -87,7 +87,7 @@ elseif (isset($_POST['entry_action'])
 
     if ($_POST['delete_press_admin'])   // delete press report
     {
-        $index = $FD->sql()->conn()->query('SELECT type FROM '.$FD->config('pref')."press_admin WHERE id = '$_POST[entry_id]'");
+        $index = $FD->db()->conn()->query('SELECT type FROM '.$FD->env('DB_PREFIX')."press_admin WHERE id = '$_POST[entry_id]'");
         $entry_arr['type'] = $index->fetchColumn();
 
         switch ($entry_arr['type'])
@@ -106,14 +106,14 @@ elseif (isset($_POST['entry_action'])
                 break;
         }
 
-        $FD->sql()->conn()->exec('UPDATE '.$FD->config('pref').'press '.$entry_arr['type_set'].' '.$entry_arr['type_where']);
+        $FD->db()->conn()->exec('UPDATE '.$FD->env('DB_PREFIX').'press '.$entry_arr['type_set'].' '.$entry_arr['type_where']);
 
-        $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref')."press_admin
+        $FD->db()->conn()->exec('DELETE FROM '.$FD->env('DB_PREFIX')."press_admin
                                   WHERE id = '$_POST[entry_id]'");
 
         $msg[] = 'Der Eintrag wurde gel&ouml;scht!';
 
-        if (image_delete('images/press/', $entry_arr['type'].'_'.$_POST['entry_id']))
+        if (image_delete('/press', $entry_arr['type'].'_'.$_POST['entry_id']))
         {
             $msg[] = 'Das Bild wurde erfolgreich gel&ouml;scht!';
         }
@@ -144,7 +144,7 @@ elseif (isset($_POST['entry_action'])
 {
     $_POST['entry_id'] = $_POST['entry_id'][0];
     settype($_POST['entry_id'], 'integer');
-    $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."press_admin WHERE id = $_POST[entry_id]");
+    $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX')."press_admin WHERE id = $_POST[entry_id]");
     $entry_arr = $index->fetch(PDO::FETCH_ASSOC);
 
     $entry_arr['title'] = killhtml($entry_arr['title']);
@@ -202,14 +202,14 @@ elseif (isset($_POST['entry_action'])
                                 <td class="config">
     ';
 
-    if (image_exists('images/press/', $entry_arr['type'].'_'.$entry_arr['id']))
+    if (image_exists('/press', $entry_arr['type'].'_'.$entry_arr['id']))
     {
-        echo'<img src="'.image_url('images/press/', $entry_arr['type'].'_'.$entry_arr['id']).'" alt="" /><br /><br />';
+        echo'<img src="'.image_url('/press', $entry_arr['type'].'_'.$entry_arr['id']).'" alt="" /><br /><br />';
     }
 
     echo'<input name="entry_pic" type="file" size="40" class="text" /><br />';
 
-    if (image_exists('images/press/', $entry_arr['type'].'_'.$entry_arr['id']))
+    if (image_exists('/pres/', $entry_arr['type'].'_'.$entry_arr['id']))
     {
         echo'
                                     <font class="small">
@@ -245,12 +245,12 @@ elseif (isset($_POST['entry_action'])
 {
     $_POST['entry_id'] = $_POST['entry_id'][0];
     settype($_POST['entry_id'], 'integer');
-    $index = $FD->sql()->conn()->query('SELECT COUNT(id) AS number FROM '.$FD->config('pref').'press_admin
-                          WHERE type = (SELECT type FROM '.$FD->config('pref')."press_admin WHERE id = $_POST[entry_id])");
+    $index = $FD->db()->conn()->query('SELECT COUNT(id) AS number FROM '.$FD->env('DB_PREFIX').'press_admin
+                          WHERE type = (SELECT type FROM '.$FD->env('DB_PREFIX')."press_admin WHERE id = $_POST[entry_id])");
 
     if ($index->fetchColumn() > 1)
     {
-        $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."press_admin WHERE id = $_POST[entry_id]");
+        $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX')."press_admin WHERE id = $_POST[entry_id]");
         $entry_arr = $index->fetch(PDO::FETCH_ASSOC);
 
         $entry_arr['title'] = killhtml($entry_arr['title']);
@@ -290,8 +290,8 @@ elseif (isset($_POST['entry_action'])
                                              </td>
                                             <td class="configthin">
         ';
-        if (image_exists('images/press/', $entry_arr['type'].'_'.$entry_arr['id'])) {
-            echo'<img src="'.image_url('images/press/', $entry_arr['type'].'_'.$entry_arr['id']).'" alt="" />';
+        if (image_exists('/press', $entry_arr['type'].'_'.$entry_arr['id'])) {
+            echo'<img src="'.image_url('/press', $entry_arr['type'].'_'.$entry_arr['id']).'" alt="" />';
         }
         echo'
                                              </td>
@@ -320,7 +320,7 @@ elseif (isset($_POST['entry_action'])
                                 <td align="right">
                                     <select name="entry_move_to" size="1" class="text">';
 
-        $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."press_admin
+        $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX')."press_admin
                               WHERE type = '$entry_arr[type]' AND id != '$entry_arr[id]'
                               ORDER BY title");
         while ($entry_move_arr = $index->fetch(PDO::FETCH_ASSOC))
@@ -337,7 +337,7 @@ elseif (isset($_POST['entry_action'])
     }
     else
     {
-        $index = $FD->sql()->conn()->query('SELECT type FROM '.$FD->config('pref')."press_admin WHERE id = $_POST[entry_id]");
+        $index = $FD->db()->conn()->query('SELECT type FROM '.$FD->env('DB_PREFIX')."press_admin WHERE id = $_POST[entry_id]");
         $entry_arr['type'] = $index->fetchColumn();
 
         switch ($entry_arr['type'])
@@ -443,7 +443,7 @@ if (!isset($_POST['entry_id']))
 
     for ($i=1;$i<=3;$i++)
     {
-        $index = $FD->sql()->conn()->query('SELECT COUNT(*) FROM '.$FD->config('pref')."press_admin WHERE type='$i'");
+        $index = $FD->db()->conn()->query('SELECT COUNT(*) FROM '.$FD->env('DB_PREFIX')."press_admin WHERE type='$i'");
         $num_rows = $index->fetchColumn();
         if ($num_rows > 0)
         {
@@ -477,7 +477,7 @@ if (!isset($_POST['entry_id']))
             unset($head);
         }
 
-        $index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref')."press_admin WHERE type='$i' ORDER BY type, title");
+        $index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX')."press_admin WHERE type='$i' ORDER BY type, title");
         while ($entry_arr = $index->fetch(PDO::FETCH_ASSOC))
         {
             switch ($entry_arr['type'])
@@ -497,8 +497,8 @@ if (!isset($_POST['entry_id']))
                             <tr class="thin select_entry">
                                 <td>
             ';
-            if (image_exists('images/press/', $entry_arr['type'].'_'.$entry_arr['id'])) {
-                echo'<img src="'.image_url('images/press/', $entry_arr['type'].'_'.$entry_arr['id']).'" alt="">';
+            if (image_exists('/press', $entry_arr['type'].'_'.$entry_arr['id'])) {
+                echo'<img src="'.image_url('/press', $entry_arr['type'].'_'.$entry_arr['id']).'" alt="">';
             }
             echo'
                                 </td>

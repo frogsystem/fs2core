@@ -13,8 +13,8 @@ if (isset($_POST['polladd']) && !isset($_POST['add_answers']) && isset($_POST['f
     $_POST['type'] = ($_POST['type'] == 1) ? 1 : 0;
 
     // Insert poll into DB
-    $stmt = $FD->sql()->conn()->prepare(
-                'INSERT INTO '.$FD->config('pref')."poll (poll_quest, poll_start, poll_end, poll_type)
+    $stmt = $FD->db()->conn()->prepare(
+                'INSERT INTO '.$FD->env('DB_PREFIX')."poll (poll_quest, poll_start, poll_end, poll_type)
                  VALUES (?,
                          '$adate',
                          '$edate',
@@ -22,12 +22,12 @@ if (isset($_POST['polladd']) && !isset($_POST['add_answers']) && isset($_POST['f
     $stmt->execute(array($_POST['frage']));
 
     // Insert answers into DB
-    $stmt = $FD->sql()->conn()->prepare('SELECT poll_id FROM '.$FD->config('pref').'poll WHERE poll_quest = ?');
+    $stmt = $FD->db()->conn()->prepare('SELECT poll_id FROM '.$FD->env('DB_PREFIX').'poll WHERE poll_quest = ?');
     $stmt->execute(array($_POST['frage']));
     $id = $stmt->fetchColumn();
 
-    $stmt = $FD->sql()->conn()->prepare(
-                  'INSERT INTO '.$FD->config('pref')."poll_answers (poll_id, answer)
+    $stmt = $FD->db()->conn()->prepare(
+                  'INSERT INTO '.$FD->env('DB_PREFIX')."poll_answers (poll_id, answer)
                    VALUES ('$id', ?)");
     for ($i=0; $i<count($_POST['ant']); $i++)
     {

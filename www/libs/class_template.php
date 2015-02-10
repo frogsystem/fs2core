@@ -40,7 +40,7 @@ class template
 
     // functions to set & get default values
     public function setStyle($style) {
-        if (file_exists(FS2_ROOT_PATH.'styles/'.$style)) {
+        if (file_exists(FS2STYLES.'/'.$style)) {
             $this->style = $style;
         } else  {
             $this->style = 'default';
@@ -59,7 +59,7 @@ class template
     }
 
     public function setFile($file) {
-        if ( is_readable ( FS2_ROOT_PATH.'styles/'.$this->getStyle().'/'.$file ) ) {
+        if ( is_readable ( FS2STYLES.'/'.$this->getStyle().'/'.$file ) ) {
             $this->file = $file;
             $this->clearSectionCache ();
         } else {
@@ -117,21 +117,36 @@ class template
         return $this->template;
     }
 
+    // functions to access template files
+    private static function getSections($file_path) {
+        $ACCESS = new fileaccess (); // Create object for file access
+        $search_expression = '/<!--section-start::(.*)-->(.*)<!--section-end::(\1)-->/Uis'; // Regular expression to select Sections
+        $number_of_sections = preg_match_all ( $search_expression, $ACCESS->getFileData($file_path), $sections ); // apply regular expression, count into $number_of_sections, contents into $sections
+        $sections[1] = array_flip ( $sections[1] );
+       
+        return $sections;
+    }
+    public static function getSection($file_path, $section) {
+        $sections = self::getSections($file_path);
+        if (isset($sections[1][$section])) {
+            return $sections[2][$sections[1][$section]];
+        }
+        return false;
+    }
+    
     // functions to access templates
     public function load($section) {
         // If the section cache has not been filled yet => load all sections into cache
-        if ( count ( $this->sections ) <= 0 ) {
-            $file_path = FS2_ROOT_PATH . 'styles/' . $this->getStyle() . '/' . $this->getFile (); // Path of Template file
-            $ACCESS = new fileaccess (); // Create object for file access
-            $search_expression = '/<!--section-start::(.*)-->(.*)<!--section-end::(\1)-->/Uis'; // Regular expression to select Sections
-            $number_of_sections = preg_match_all ( $search_expression, $ACCESS->getFileData($file_path), $sections ); // apply regular expression, count into $number_of_sections, contents into $sections
-            $this->setSections ( array_flip ( $sections[1] ) ); // array_flip damit die Keys auch die Section-Namen sind
-            $this->setSectionsContent ( $sections[2] ); // save Section contents
+        if (empty($this->sections)) {
+            $file_path = FS2STYLES . '/' . $this->getStyle() . '/' . $this->getFile (); // Path of Template file
+            $sections = self::getSections($file_path);
+            $this->setSections($sections[1]);
+            $this->setSectionsContent($sections[2]);
         }
 
         // Section Cache already filled => just read it
-        if ( $this->sectionExists ( $section ) ) {
-            $this->setTemplate ( $this->getSectionContent ( $this->getSectionNumber ( $section ) ) );
+        if ($this->sectionExists ($section)) {
+            $this->setTemplate($this->getSectionContent($this->getSectionNumber($section)));
             return TRUE;
         } else { // If Section was not found
             return FALSE;
@@ -177,5 +192,8 @@ class template
         $this->clearSectionCache();
         $this->clearTags();
     }
+    
+    
+    
 }
 ?>

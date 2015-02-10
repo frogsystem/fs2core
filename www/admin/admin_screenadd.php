@@ -17,21 +17,21 @@ if (isset($_POST['sended']))
     for ($i=1; $i<=5; $i++) {
         if ($_FILES['img'.$i]['name'] != '') {
             // Insert into DB
-            $stmt = $FD->sql()->conn()->prepare('INSERT INTO '.$FD->config('pref')."screen (`cat_id`, `screen_name`) VALUES ('".$_POST['catid']."', ?)");
+            $stmt = $FD->db()->conn()->prepare('INSERT INTO '.$FD->env('DB_PREFIX')."screen (`cat_id`, `screen_name`) VALUES ('".$_POST['catid']."', ?)");
             $stmt->execute(array($_POST['title'.$i]));
-            $id = $FD->sql()->conn()->lastInsertId();
+            $id = $FD->db()->conn()->lastInsertId();
 
             // File Operations
-            $upload = upload_img($_FILES['img'.$i], 'images/screenshots/', $id, $config_arr['screen_size']*1024, $config_arr['screen_x'], $config_arr['screen_y']);
+            $upload = upload_img($_FILES['img'.$i], '/gallery', $id, $config_arr['screen_size']*1024, $config_arr['screen_x'], $config_arr['screen_y']);
             $log[$i][] = upload_img_notice($upload);
 
             // Upload Failed => Delete from DB
             if ($upload != 0) {
-                $FD->sql()->conn()->exec('DELETE FROM '.$FD->config('pref')."screen WHERE screen_id = '".$id."'");
+                $FD->db()->conn()->exec('DELETE FROM '.$FD->env('DB_PREFIX')."screen WHERE screen_id = '".$id."'");
 
             // Else create Thumb
             } else {
-                $thumb = create_thumb_from(image_url('images/screenshots/', $id, FALSE, TRUE), $config_arr['screen_thumb_x'], $config_arr['screen_thumb_y']);
+                $thumb = create_thumb_from(image_url('/gallery', $id, FALSE, TRUE), $config_arr['screen_thumb_x'], $config_arr['screen_thumb_y']);
                 $log[$i][] = create_thumb_notice($thumb);
             }
 
@@ -75,7 +75,7 @@ if (!isset($_POST['catid']))
 {
   $_POST['catid'] = -1;
 }
-$index = $FD->sql()->conn()->query('SELECT * FROM '.$FD->config('pref').'screen_cat WHERE cat_type = 1');
+$index = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX').'screen_cat WHERE cat_type = 1');
 while ($cat_arr = $index->fetch(PDO::FETCH_ASSOC))
 {
     echo'

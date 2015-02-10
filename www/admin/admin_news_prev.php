@@ -115,7 +115,7 @@
 
         // Read category from DB
         settype($_POST['news_cat_id'], 'integer');
-        $index = $FD->sql()->conn()->query('SELECT `cat_name`, `cat_id` FROM `'.$FD->config('pref')."news_cat` WHERE `cat_id` = '".$_POST['news_cat_id']."'");
+        $index = $FD->db()->conn()->query('SELECT `cat_name`, `cat_id` FROM `'.$FD->env('DB_PREFIX')."news_cat` WHERE `cat_id` = '".$_POST['news_cat_id']."'");
         $cat_arr = $index->fetch(PDO::FETCH_ASSOC);
         if (!empty($cat_arr)) {
 			$cat_arr['cat_name'] = killhtml($cat_arr['cat_name']);
@@ -123,7 +123,7 @@
 			$cat_arr['cat_name'] = '?';
 			$cat_arr['cat_id'] = -1;
 		}
-        $cat_arr['cat_pic'] = image_url('images/cat/', 'news_'.$cat_arr['cat_id']);
+        $cat_arr['cat_pic'] = image_url('/cat', 'news_'.$cat_arr['cat_id']);
 
 
         // Get Related Links
@@ -193,10 +193,13 @@
         $theTemplate->tag('copyright', get_copyright());
 
         $template_general = (string) $theTemplate;
-        $template_general = tpl_functions_init($template_general);
+        $template_general = $template_general;
 
         // Get Main Template
-        echo get_maintemplate ($template_general, '../');
+        global $APP;
+        $APP = load_applets();
+        
+        echo tpl_functions_init( get_maintemplate ($template_general, '../') );
         $JUST_CONTENT = true; //preview has own HTML head
     }
 

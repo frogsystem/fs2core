@@ -43,9 +43,9 @@ imagestring ($image,2,418,30,'Hits',$farbe_text);
 imagefilledrectangle($image,20,45,480,285,$farbe_rot);
 
 // Hits curve
-$index = $FD->sql()->conn()->query(
+$index = $FD->db()->conn()->query(
              'SELECT s_hits
-              FROM '.$FD->env('pref')."counter_stat
+              FROM '.$FD->env('DB_PREFIX')."counter_stat
               WHERE s_year  = $_GET[s_year] and
                     s_month = $_GET[s_month]
               ORDER BY s_hits DESC
@@ -58,13 +58,13 @@ $startwert = 21 + $feldbreite/2;
 $anz_tage = date('t',mktime(0, 0, 0, $_GET['s_month'], 1, $_GET['s_year']));
 for ($d=1; $d<$anz_tage+1; $d++)
 {
-    $index = $FD->sql()->conn()->query(
+    $index = $FD->db()->conn()->query(
                  'SELECT s_hits
-                  FROM '.$FD->config('pref')."counter_stat
+                  FROM '.$FD->env('DB_PREFIX')."counter_stat
                   WHERE s_year  = $_GET[s_year] and
                         s_month = $_GET[s_month] and
                         s_day   = $d" );
-    $row = $index->fetchColumn();
+    $row = $index->fetch(PDO::FETCH_ASSOC);
     if ($row !== false)
     {
         $dbhits = $row['s_hits'];
@@ -113,9 +113,9 @@ imagefilledpolygon($image, $hitsarray, round($arraycount/2) , $farbe_hits);
 
 
 // Visits curve
-$index = $FD->sql()->conn()->query(
+$index = $FD->db()->conn()->query(
              'SELECT s_visits
-              FROM '.$FD->config('pref')."counter_stat
+              FROM '.$FD->env('DB_PREFIX')."counter_stat
               WHERE s_year  = $_GET[s_year] and
                     s_month = $_GET[s_month]
               ORDER BY s_visits DESC
@@ -127,9 +127,9 @@ if ($dbmaxvisits > 0) {
   $startwert = 21 + $feldbreite/2;
   for ($d=1; $d<$anz_tage+1; $d++)
   {
-      $index = $FD->sql()->conn()->query(
+      $index = $FD->db()->conn()->query(
                    'SELECT s_visits
-                    FROM '.$FD->config('pref')."counter_stat
+                    FROM '.$FD->env('DB_PREFIX')."counter_stat
                     WHERE s_year  = $_GET[s_year] AND
                           s_month = $_GET[s_month] AND
                           s_day   = $d" );
@@ -189,7 +189,7 @@ for ($d=1; $d<$anz_tage+1; $d++)
 {
     $dayname = date('w', mktime(0, 0, 0, $_GET['s_month'], $d, $_GET['s_year']));
     $daynumber = date('d', mktime(0, 0, 0, $_GET['s_month'], $d, $_GET['s_year']));
-    imagestringup($image,1,$startwert,280,$daynumber.' '.$day_arr[$dayname],$farbe_text2);
+    imagestringup($image,1,$startwert,280,$daynumber.' '.$dayname,$farbe_text2);
     $startwert = $startwert + $feldbreite;
 }
 

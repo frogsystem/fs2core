@@ -26,8 +26,8 @@ if (
 	$cat_date = time ();
 
 	// SQL-Update-Query
-	$stmt = $FD->sql()->conn()->prepare('
-					INSERT INTO '.$FD->config('pref')."news_cat (cat_name, cat_date, cat_user)
+	$stmt = $FD->db()->conn()->prepare('
+					INSERT INTO '.$FD->env('DB_PREFIX')."news_cat (cat_name, cat_date, cat_user)
 					VALUES (
 						?,
 						'".$cat_date."',
@@ -35,11 +35,11 @@ if (
 					)");
 	$stmt->execute(array($_POST['cat_name']));
     $message = $FD->text('page', 'new_cat_added');
-	$id = $FD->sql()->conn()->lastInsertId();
+	$id = $FD->db()->conn()->lastInsertId();
 
 	// Image-Operations
     if ( $_FILES['cat_pic']['name'] != '' ) {
-      $upload = upload_img ( $_FILES['cat_pic'], 'images/cat/', 'news_'.$id, $FD->cfg('news', 'cat_pic_size')*1024, $FD->cfg('news', 'cat_pic_x'), $FD->cfg('news', 'cat_pic_y') );
+      $upload = upload_img ( $_FILES['cat_pic'], '/cat', 'news_'.$id, $FD->cfg('news', 'cat_pic_size')*1024, $FD->cfg('news', 'cat_pic_x'), $FD->cfg('news', 'cat_pic_y') );
       $message .= '<br>' . upload_img_notice ( $upload );
     }
 
@@ -51,7 +51,7 @@ if (
 
 	// Set Vars
 	$_POST['cat_action'] = 'edit';
-	$_POST['cat_id'] = $FD->sql()->conn()->lastInsertId();
+	$_POST['cat_id'] = $FD->db()->conn()->lastInsertId();
 }
 
 // Update Category
@@ -75,8 +75,8 @@ elseif (
 	$cat_date = mktime ( 0, 0, 0, $date_arr['m'], $date_arr['d'], $date_arr['y'] );
 
 	// SQL-Update-Query
-	$stmt = $FD->sql()->conn()->prepare('
-                    UPDATE '.$FD->config('pref')."news_cat
+	$stmt = $FD->db()->conn()->prepare('
+                    UPDATE '.$FD->env('DB_PREFIX')."news_cat
                     SET
                         cat_name 		= ?,
                         cat_description = ?,
@@ -89,14 +89,14 @@ elseif (
 
 	// Image-Operations
     if ( isset($_POST['cat_pic_delete']) && $_POST['cat_pic_delete'] == 1 ) {
-      if ( image_delete ( 'images/cat/', 'news_'.$_POST['cat_id'] ) ) {
+      if ( image_delete ( '/cat', 'news_'.$_POST['cat_id'] ) ) {
         $message .= '<br>' . $FD->text('admin', 'image_deleted');
       } else {
 		$message .= '<br>' . $FD->text('admin', 'image_not_deleted');
       }
     } elseif ( $_FILES['cat_pic']['name'] != '' ) {
-      image_delete ( 'images/cat/', 'news_'.$_POST['cat_id'] );
-      $upload = upload_img ( $_FILES['cat_pic'], 'images/cat/', 'news_'.$_POST['cat_id'], $FD->cfg('news', 'cat_pic_size')*1024, $FD->cfg('news', 'cat_pic_x'), $FD->cfg('news', 'cat_pic_y') );
+      image_delete ( '/cat', 'news_'.$_POST['cat_id'] );
+      $upload = upload_img ( $_FILES['cat_pic'], '/cat', 'news_'.$_POST['cat_id'], $FD->cfg('news', 'cat_pic_size')*1024, $FD->cfg('news', 'cat_pic_x'), $FD->cfg('news', 'cat_pic_y') );
       $message .= '<br>' . upload_img_notice ( $upload );
     }
 
@@ -124,22 +124,22 @@ elseif (
 	    settype ( $_POST['cat_move_to'], 'integer' );
 
 		// SQL-Query to move News to other Category
-		$FD->sql()->conn()->exec ('
-                UPDATE '.$FD->config('pref')."news
+		$FD->db()->conn()->exec ('
+                UPDATE '.$FD->env('DB_PREFIX')."news
                 SET
 				    cat_id = '".$_POST['cat_move_to']."'
                 WHERE
                     cat_id = '".$_POST['cat_id']."'" );
 
 		// SQL-Delete-Query
-    	$FD->sql()->conn()->exec ('
-                DELETE FROM '.$FD->config('pref')."news_cat
+    	$FD->db()->conn()->exec ('
+                DELETE FROM '.$FD->env('DB_PREFIX')."news_cat
                 WHERE
                     cat_id = '".$_POST['cat_id']."'" );
 		$message = $FD->text('page', 'cat_deleted');
 
 		// Delete Category Image
-		if ( image_delete ( 'images/cat/', 'news_'.$_POST['cat_id'] ) ) {
+		if ( image_delete ( '/cat', 'news_'.$_POST['cat_id'] ) ) {
 			$message .= '<br>' . $FD->text('admin', 'image_deleted');
 		}
 
@@ -172,7 +172,7 @@ if ( isset($_POST['cat_id']) && isset($_POST['cat_action']) )
 	{
 
 		// Load Data from DB
-		$index = $FD->sql()->conn()->query ( 'SELECT * FROM '.$FD->config('pref')."news_cat WHERE cat_id = '".$_POST['cat_id']."'" );
+		$index = $FD->db()->conn()->query ( 'SELECT * FROM '.$FD->env('DB_PREFIX')."news_cat WHERE cat_id = '".$_POST['cat_id']."'" );
 		$cat_arr = $index->fetch(PDO::FETCH_ASSOC);
 
 		// Display Error Messages
@@ -186,7 +186,7 @@ if ( isset($_POST['cat_id']) && isset($_POST['cat_action']) )
 		$cat_arr['cat_description'] = killhtml ( $cat_arr['cat_description'] );
 
     	// Get User
-    	$index = $FD->sql()->conn()->query ( 'SELECT user_name FROM '.$FD->config('pref')."user WHERE user_id = '".$cat_arr['cat_user']."'" );
+    	$index = $FD->db()->conn()->query ( 'SELECT user_name FROM '.$FD->env('DB_PREFIX')."user WHERE user_id = '".$cat_arr['cat_user']."'" );
     	$cat_arr['cat_username'] = killhtml ( $index->fetchColumn() );
 
 		// Create Date-Arrays
@@ -247,9 +247,9 @@ if ( isset($_POST['cat_id']) && isset($_POST['cat_action']) )
            						<td class="config">
              						'.$FD->text("page", "edit_cat_image").': <span class="small">('.$FD->text("admin", "optional").')</span><br><br>
 	 	';
-		if ( image_exists ( 'images/cat/', 'news_'.$cat_arr['cat_id'] ) ) {
+		if ( image_exists ( '/cat', 'news_'.$cat_arr['cat_id'] ) ) {
 		    echo '
-									<img src="'.image_url ( 'images/cat/', 'news_'.$cat_arr['cat_id'] ).'" alt="'.$cat_arr['cat_name'].'" border="0">
+									<img src="'.image_url ( '/cat', 'news_'.$cat_arr['cat_id'] ).'" alt="'.$cat_arr['cat_name'].'" border="0">
 		    						<table>
 										<tr>
 											<td>
@@ -269,7 +269,7 @@ if ( isset($_POST['cat_id']) && isset($_POST['cat_action']) )
 								<td class="config">
 									<input name="cat_pic" type="file" size="40" class="text"><br>
 		';
-		if ( image_exists ( "images/cat/", "news_".$cat_arr['cat_id'] ) ) {
+		if ( image_exists ( "/cat", "news_".$cat_arr['cat_id'] ) ) {
 			echo '<span class="small"><b>'.$FD->text("admin", "replace_img").'</b></span><br>';
 		}
 		echo'
@@ -302,12 +302,12 @@ if ( isset($_POST['cat_id']) && isset($_POST['cat_action']) )
 	// Delete Category
 	elseif ( $_POST['cat_action'] == 'delete' )
 	{
-		$index = $FD->sql()->conn()->query ( 'SELECT COUNT(*) FROM '.$FD->config('pref').'news_cat' );
+		$index = $FD->db()->conn()->query ( 'SELECT COUNT(*) FROM '.$FD->env('DB_PREFIX').'news_cat' );
 
 		// Not Last Category
 		if ( $index->fetchColumn() > 1 ) {
 
-			$index = $FD->sql()->conn()->query ( 'SELECT * FROM '.$FD->config('pref')."news_cat WHERE cat_id = '".$_POST['cat_id']."'" );
+			$index = $FD->db()->conn()->query ( 'SELECT * FROM '.$FD->env('DB_PREFIX')."news_cat WHERE cat_id = '".$_POST['cat_id']."'" );
 			$cat_arr = $index->fetch(PDO::FETCH_ASSOC);
 
 			$cat_arr['cat_name'] = killhtml ( $cat_arr['cat_name'] );
@@ -360,7 +360,7 @@ if ( isset($_POST['cat_id']) && isset($_POST['cat_action']) )
 									<select class="text" name="cat_move_to" size="1">
 			';
 
-			$index = $FD->sql()->conn()->query ( 'SELECT * FROM '.$FD->config('pref')."news_cat WHERE cat_id != '".$cat_arr['cat_id']."' ORDER BY cat_name" );
+			$index = $FD->db()->conn()->query ( 'SELECT * FROM '.$FD->env('DB_PREFIX')."news_cat WHERE cat_id != '".$cat_arr['cat_id']."' ORDER BY cat_name" );
 			while ( $move_arr = $index->fetch(PDO::FETCH_ASSOC) ) {
 				echo '<option value="'.$move_arr['cat_id'].'">'.killhtml ( $move_arr['cat_name'] ).'</option>';
 			}
@@ -464,10 +464,10 @@ elseif ( $showdefault == TRUE )
 	';
 
 	// Get Categories from DB
-	$index = $FD->sql()->conn()->query ( 'SELECT * FROM '.$FD->config('pref').'news_cat ORDER BY cat_name' );
+	$index = $FD->db()->conn()->query ( 'SELECT * FROM '.$FD->env('DB_PREFIX').'news_cat ORDER BY cat_name' );
 	while ( $cat_arr = $index->fetch(PDO::FETCH_ASSOC) )
 	{
-		$index_username = $FD->sql()->conn()->query ( 'SELECT user_name FROM '.$FD->config('pref')."user WHERE user_id = '".$cat_arr['cat_user']."'" );
+		$index_username = $FD->db()->conn()->query ( 'SELECT user_name FROM '.$FD->env('DB_PREFIX')."user WHERE user_id = '".$cat_arr['cat_user']."'" );
         $cat_arr['cat_user'] = $index_username->fetchColumn();
 
 		// Display each Category
@@ -479,8 +479,8 @@ elseif ( $showdefault == TRUE )
 							>
 								<td class="config">
 		';
-		if ( image_exists ( 'images/cat/', 'news_'.$cat_arr['cat_id'] ) ) {
-		    echo '<img src="'.image_url ( 'images/cat/', 'news_'.$cat_arr['cat_id'] ).'" alt="'.$cat_arr['cat_name'].'" border="0">';
+		if ( image_exists ( '/cat', 'news_'.$cat_arr['cat_id'] ) ) {
+		    echo '<img src="'.image_url ( '/cat', 'news_'.$cat_arr['cat_id'] ).'" alt="'.$cat_arr['cat_name'].'" border="0">';
 		}
 		echo '
 								</td>

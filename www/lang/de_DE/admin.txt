@@ -104,9 +104,9 @@ time_appendix:                           Uhr
 at_date:                                 am
 
 # Frequently used Images
-sub_arrow:                               <img class="middle" src="img/sub-arrow.gif" alt="'->">
-checkbox:                                <img class="checkbox" src="images/checkbox.png" alt="[_]">
-radio:                                   <img class="checkbox" src="images/radio.png" alt="(_)">
+sub_arrow:                               <img class="middle" src="?images=sub-arrow.gif" alt="'->">
+checkbox:                                <img class="checkbox" src="?images=checkbox.png" alt="[_]">
+radio:                                   <img class="checkbox" src="?images=radio.png" alt="(_)">
 
 
 # Action Selection
@@ -121,7 +121,7 @@ selection_import:                        Auswahl importieren
 
 
 # Button Captions
-button_arrow:                            <img class="middle" src="img/pointer.png" alt="->">
+button_arrow:                            <img class="middle" src="?images=pointer.png" alt="->">
 do_action_button:                        Ausführen
 do_action_button_long:                   Aktion ausführen
 save_changes_button:                     Änderungen speichern
@@ -166,26 +166,26 @@ no_user_found_for_name:                  Es konnte kein Benutzer mit diesem Name
 
 
 # Message-Images
-icon_small_help:                         <img src="icons/help.gif" alt="Hilfe" align="absmiddle">
-icon_info:                               <img src="icons/info.jpg" alt="Information" align="absmiddle">
-icon_error:                              <img src="icons/error.jpg" alt="Fehler" align="absmiddle">
-icon_save_ok:                            <img src="icons/save_ok.jpg" alt="Ok" align="absmiddle">
-icon_save_add:                           <img src="icons/save_add.jpg" alt="Hinzufügen erfolgreich" align="absmiddle">
-icon_save_error:                         <img src="icons/save_error.jpg" alt="Fehler beim Speichern" align="absmiddle">
-icon_trash_ok:                           <img src="icons/trash_ok.jpg" alt="Löschen erfolgreich" align="absmiddle">
-icon_trash_error:                        <img src="icons/trash_error.jpg" alt="Fehler beim Löschen" align="absmiddle">
-icon_trash_caution:                      <img src="icons/trash_caution.jpg" alt="Löschen erfolgreich, aber beachten Sie die Hinweise" align="absmiddle">
-icon_login:                              <img src="icons/login.jpg" alt="Login" align="absmiddle">
-icon_logout:                             <img src="icons/logout.jpg" alt="Logout" align="absmiddle">
-icon_install_ok:                         <img src="icons/install_ok.jpg" alt="Installation erfolgreich" align="absmiddle">
-icon_uninstall_ok:                       <img src="icons/uninstall_ok.jpg" alt="Deinstallation erfolgreich" align="absmiddle">
-icon_no_install_action:                  <img src="icons/no_install_action.jpg" alt="Keine Installations-Aktion" align="absmiddle">
-icon_lock_ok:                            <img src="icons/lock_ok.jpg" alt="Zugriff gewährt" align="absmiddle">
-icon_lock_forbidden:                     <img src="icons/lock_forbidden.jpg" alt="Zugriff verweigert">
-icon_up:                                 <img src="icons/up.jpg" alt="Nach oben verschieben" align="absmiddle">
-icon_down:                               <img src="icons/down.jpg" alt="Nach unten verschieben" align="absmiddle">
-icon_link_error:                         <img src="icons/link_error.jpg" alt="Link Fehler" align="absmiddle">
-icon_user_question:                      <img src="icons/user_question.jpg" alt="Unbekannter Benutzer" align="absmiddle">
+icon_small_help:                         <img src="?icons=help.gif" alt="Hilfe" align="absmiddle">
+icon_info:                               <img src="?icons=info.jpg" alt="Information" align="absmiddle">
+icon_error:                              <img src="?icons=error.jpg" alt="Fehler" align="absmiddle">
+icon_save_ok:                            <img src="?icons=save_ok.jpg" alt="Ok" align="absmiddle">
+icon_save_add:                           <img src="?icons=save_add.jpg" alt="Hinzufügen erfolgreich" align="absmiddle">
+icon_save_error:                         <img src="?icons=save_error.jpg" alt="Fehler beim Speichern" align="absmiddle">
+icon_trash_ok:                           <img src="?icons=trash_ok.jpg" alt="Löschen erfolgreich" align="absmiddle">
+icon_trash_error:                        <img src="?icons=trash_error.jpg" alt="Fehler beim Löschen" align="absmiddle">
+icon_trash_caution:                      <img src="?icons=trash_caution.jpg" alt="Löschen erfolgreich, aber beachten Sie die Hinweise" align="absmiddle">
+icon_login:                              <img src="?icons=login.jpg" alt="Login" align="absmiddle">
+icon_logout:                             <img src="?icons=logout.jpg" alt="Logout" align="absmiddle">
+icon_install_ok:                         <img src="?icons=install_ok.jpg" alt="Installation erfolgreich" align="absmiddle">
+icon_uninstall_ok:                       <img src="?icons=uninstall_ok.jpg" alt="Deinstallation erfolgreich" align="absmiddle">
+icon_no_install_action:                  <img src="?icons=no_install_action.jpg" alt="Keine Installations-Aktion" align="absmiddle">
+icon_lock_ok:                            <img src="?icons=lock_ok.jpg" alt="Zugriff gewährt" align="absmiddle">
+icon_lock_forbidden:                     <img src="?icons=lock_forbidden.jpg" alt="Zugriff verweigert">
+icon_up:                                 <img src="?icons=up.jpg" alt="Nach oben verschieben" align="absmiddle">
+icon_down:                               <img src="?icons=down.jpg" alt="Nach unten verschieben" align="absmiddle">
+icon_link_error:                         <img src="?icons=link_error.jpg" alt="Link Fehler" align="absmiddle">
+icon_user_question:                      <img src="?icons=user_question.jpg" alt="Unbekannter Benutzer" align="absmiddle">
 
 
 # Image-Upload-Messages
@@ -272,38 +272,7 @@ template_no_filename:                    Es wurde kein Dateiname eingegeben
 template_dont_remove_copyright:          Der Copyright-Hinweis darf nicht entfernt werden
 template_selection_title_template:       Style-Auswahl
 template_selection_title_template_file:  Style- & Datei-Auswahl
-captcha_config_title:                    Einstellungen
-captcha_config_first_title:              Zahlenbereich 1
-captcha_config_first_desc:               Bereich aus dem der erste Wert generiert wird.
-captcha_config_second_title:             Zahlenbereich 2
-captcha_config_second_desc:              Bereich aus dem der zweite Wert generiert wird.
-captcha_config_use_operations_title:     Erlaubte Rechenoperationen
-captcha_config_addition:                 Addition (+)
-captcha_config_subtraction:              Subtraktion (-)
-captcha_config_multiplication:           Multiplikation (*)
-captcha_config_use_operations_desc:      Legt fest, welche Rechenoperationen verwendet werden.
-captcha_config_easy_arithmetics_title:   Nur leichte Aufgaben
-captcha_config_easy_arithmetics_desc:    Aktiviert eine KI, um generierte Aufgaben zu vereinfachen.
-captcha_config_design_title:             Design
-captcha_config_bg_color_title:           Hintergrundfarbe
-captcha_config_bg_color_desc:            Die Hintergrundfarbe des Captcha-Bildes.
-captcha_config_bg_transparent:           Transparenter Hintergrund
-captcha_config_text_color_title:         Textfarbe
-captcha_config_text_color_desc:          Die Farbe in der die Aufgabe dargestellt wird.
-captcha_config_dimensions_title:         Abmessungen
-captcha_config_dimensions_desc:          Größe des Captcha-Bildes.
-captcha_config_text_position_title:      Text-Position
-captcha_config_text_position_desc:       Position des Textes relativ zur linken, oberen Ecke.
-captcha_config_text_position_help:       Abstand nach links und oben
-captcha_config_text_style_title:         Schriftart und -größe
-captcha_config_text_style_desc:          Standard-Schriftart in 5 Größen oder eingefügter PHP-Font.
-captcha_config_text_style_default:       Standard, Größe
-captcha_config_text_options_title:       Text-Optionen
-captcha_config_text_options_desc:        Optionen um das Captcha zu formatieren.
-captcha_config_questionmark:             zeige Fragezeichen [1+1=?]
-captcha_config_spaces:                   Leerzeichen einfügen [1 + 1 =]
-captcha_config_multiplication_as_x:      verwende x statt * [1x1=]
-captcha_config_one_operation:            Es muss mindestens eine Rechenoperation ausgewählt werden
+
 snippet_add_title:                       Schnipsel hinzufügen
 snippet_select_title:                    Schnipsel auswählen
 snippet_edit_title:                      Schnipsel bearbeiten
@@ -385,3 +354,4 @@ template_file_not_found:                 Template-Datei konnte nicht gefunden we
 template_file_created:                   Template-Datei wurde neu erstellt
 template_no_editable_template:           Kein Template zum Bearbeiten gefunden
 template_select_template:                Template zum Bearbeiten auswählen
+template_file_not_writable:              Keine Schreibrechte für die Template-Datei: Bitte überprüfe die Dateiberechtigungen

@@ -1,0 +1,45 @@
+settings_title:                 Settings
+site_name:                      Name of the site
+site_name_desc:                 Leave empty to use default page title.
+default_image:                  Default Image
+default_image_desc:             Image-URL used as fallback if no other image is present in the content
+default_image_info:             No https:// - min. 200x200 pixel (better 280x200 pixel)
+use_external_images:            Use external images
+use_external_images_desc:       Try to load and include external images einzubinden.<br>Attention: May slow down page loading heavily.
+use_news_cat_prepend:           Prepend category to news
+use_news_cat_prepend_desc:      Prepends the category name to the news title
+news_cat_prepend:               Extension
+news_cat_prepend_desc:          Category + Extension +  Newstitle
+
+googleplus_title:               Google+
+use_google_plus:                Use Google+
+use_google_plus_desc:           Include meta tags for Google+<br><a href="http://www.google.com/webmasters/tools/richsnippets" target="_blank">Debugger</a>
+google_plus_page:               Google+ Seite
+google_plus_page_desc:          Name of your Google+ page
+
+twitter_title:                  Twitter Card
+use_twitter_card:               Use Twitter Card
+use_twitter_card_desc:          Include meta tags for Twitter<br><a href="https://dev.twitter.com/docs/cards/validation/validator" target="_blank">Debugger</a>
+twitter_site:                   Twitter-Account
+twitter_site_desc:              Name of your Twitter-Account
+
+facebook_title:                 Facebook Open Graph
+use_open_graph:                 Use Open Graph
+use_open_graph_desc:            Include meta tags for Facebook<br><a href="https://developers.facebook.com/tools/debug" target="_blank">Debugger</a>
+fb_admins:                      Facebook Admins
+fb_admins_desc:                 List of IDs of all Facebook-Page administrators<br><a href="http://findmyfacebookid.com/" target="_blank">Find your Facebook ID</a>
+og_section:                     Open Graph Section
+og_section_desc:                A higher-level section, e.g. Technology
+
+schemaorg_title:                Schema.org Meta Tags
+use_schema_org:                 Use Schema.org
+use_schema_org_desc:            Include meta tags for Schema.org
+use_schema_org_info:            Update your html tag to include the itemscope and itemtype attributes: &lt;html itemscope itemtype="http://schema.org/Article"&gt;
+
+enable_for_title:               Usage
+enable_news:                    News 
+enable_news_desc:               Use Social Meta Tags for news
+enable_articles:                Articles
+enable_articles_desc:           Use Social Meta Tags for articles
+enable_downloads:               Downloads
+enable_downloads_desc:          Use Social Meta Tags for downloads

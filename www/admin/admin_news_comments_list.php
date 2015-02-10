@@ -48,7 +48,7 @@
         unset ($_POST);
 
         ob_start();
-        require_once(FS2_ROOT_PATH.'admin/admin_news_edit.php');
+        require_once(FS2SOURCE.'/admin/admin_news_edit.php');
         ob_end_clean();
 
         db_edit_comment ($POSTDATA);
@@ -72,7 +72,7 @@
         unset ($_POST);
 
         ob_start();
-        require_once(FS2_ROOT_PATH.'admin/admin_news_edit.php');
+        require_once(FS2SOURCE.'/admin/admin_news_edit.php');
         ob_end_clean();
 
         if ( $POSTDATA['comment_delete'] == 1 ) {
@@ -106,7 +106,7 @@
   }
 
   //include b8 stuff
-  require_once(FS2_ROOT_PATH . 'resources/spamdetector/b8/b8.php');
+  require_once(FS2SOURCE . '/libs/spamdetector/b8/b8.php');
 
   //Is there something to do for b8?
   if (isset($_POST['commentid']) && isset($_POST['b8_action']))
@@ -115,9 +115,9 @@
     settype($_POST['commentid'], 'integer');
     $_POST['commentid'] = (int) $_POST['commentid'];
     //check comment's current status
-    $query = $FD->sql()->conn()->query('SELECT comment_id, comment_title, comment_poster,
+    $query = $FD->db()->conn()->query('SELECT comment_id, comment_title, comment_poster,
                   comment_poster_id, comment_text, comment_classification
-                  FROM `'.$FD->config('pref').'comments` WHERE comment_id=\''.$_POST['commentid'].'\'');
+                  FROM `'.$FD->env('DB_PREFIX').'comments` WHERE comment_id=\''.$_POST['commentid'].'\'');
     if ($result = $query->fetch(PDO::FETCH_ASSOC))
     {
       //found it, go on
@@ -142,13 +142,13 @@
         // -- retrieve name, if applicable
         if ($result['comment_poster_id'] != 0)
         {
-          $userindex = $FD->sql()->conn()->query('SELECT user_name FROM `'.$FD->config('pref').'user` WHERE user_id = \''.$result['comment_poster_id'].'\'');
+          $userindex = $FD->db()->conn()->query('SELECT user_name FROM `'.$FD->env('DB_PREFIX').'user` WHERE user_id = \''.$result['comment_poster_id'].'\'');
           $comment_arr['comment_poster'] = $userindex->fetchColumn();
         }
         //create b8 object
         $success = true;
         try {
-          $b8 = new b8(array('storage' => 'mysql'), array('table_name' => $FD->config('pref').'b8_wordlist', 'connection' => $FD->sql()->conn()));
+          $b8 = new b8(array('storage' => 'mysql'), array('table_name' => $FD->env('DB_PREFIX').'b8_wordlist', 'connection' => $FD->db()->conn()));
         }
         catch (Exception $e)
         {
@@ -162,21 +162,21 @@
 	      switch ($_POST['b8_action'])
 	      {
 	        case 'mark_as_ham':
-                 $query = $FD->sql()->conn()->query('UPDATE `'.$FD->config('pref').'comments` SET comment_classification=\'1\' WHERE comment_id=\''.$_POST['commentid'].'\'');
+                 $query = $FD->db()->conn()->query('UPDATE `'.$FD->env('DB_PREFIX').'comments` SET comment_classification=\'1\' WHERE comment_id=\''.$_POST['commentid'].'\'');
                  if (!$query)
                  {
                    //SQL error?
-                   $info = $FD->sql()->conn()->errorInfo();
+                   $info = $FD->db()->conn()->errorInfo();
                    echo $info[2];
                  }
 	             $b8->learn(strtolower($result['comment_title'].' '.$result['comment_poster'].' '.$result['comment_text']), b8::HAM);
 	             break;
 	        case 'mark_as_spam':
-	             $query = $FD->sql()->conn()->query('UPDATE `'.$FD->config('pref').'comments` SET comment_classification=\'-1\' WHERE comment_id=\''.$_POST['commentid'].'\'');
+	             $query = $FD->db()->conn()->query('UPDATE `'.$FD->env('DB_PREFIX').'comments` SET comment_classification=\'-1\' WHERE comment_id=\''.$_POST['commentid'].'\'');
 	             if (!$query)
                  {
                    //SQL error?
-                   $info = $FD->sql()->conn()->errorInfo();
+                   $info = $FD->db()->conn()->errorInfo();
                    echo $info[2];
                  }
                  $b8->learn(strtolower($result['comment_title'].' '.$result['comment_poster'].' '.$result['comment_text']), b8::SPAM);
@@ -184,7 +184,7 @@
 	        case 'unclassify':
 	             if ($result['comment_classification']!=0)
 	             {
-	               $query = $FD->sql()->conn()->query('UPDATE `'.$FD->config('pref')."comments` SET comment_classification='0' WHERE comment_id='".$_POST['commentid']."'");
+	               $query = $FD->db()->conn()->query('UPDATE `'.$FD->env('DB_PREFIX')."comments` SET comment_classification='0' WHERE comment_id='".$_POST['commentid']."'");
 	               if ($result['comment_classification']>0)
 	               {
 	                 //it's marked as ham, revoke it
@@ -231,12 +231,12 @@
     $update_limit = 100;
   }
   //evaluation functions
-  require_once(FS2_ROOT_PATH . 'resources/spamdetector/eval_spam.inc.php');
+  require_once(FS2SOURCE . '/libs/spamdetector/eval_spam.inc.php');
   //create b8 object
   if ($b8==NULL)
   {
     try {
-      $b8 = new b8(array('storage' => 'mysql'), array('table_name' => $FD->config('pref').'b8_wordlist', 'connection' => $FD->sql()->conn()));
+      $b8 = new b8(array('storage' => 'mysql'), array('table_name' => $FD->env('DB_PREFIX').'b8_wordlist', 'connection' => $FD->db()->conn()));
     }
     catch (Exception $e)
     {
@@ -250,10 +250,10 @@
   else
   {
     //get comments that need an update
-    $update_query = $FD->sql()->conn()->query('SELECT comment_id, comment_title, comment_poster, comment_poster_id, comment_text,
-                        IF(comment_poster_id=0, comment_poster, `'.$FD->config('pref').'user`.user_name) AS real_name
-                        FROM `'.$FD->config('pref').'comments` LEFT JOIN `'.$FD->config('pref').'user`
-                        ON `'.$FD->config('pref').'comments`.comment_poster_id=`'.$FD->config('pref').'user`.user_id
+    $update_query = $FD->db()->conn()->query('SELECT comment_id, comment_title, comment_poster, comment_poster_id, comment_text,
+                        IF(comment_poster_id=0, comment_poster, `'.$FD->env('DB_PREFIX').'user`.user_name) AS real_name
+                        FROM `'.$FD->env('DB_PREFIX').'comments` LEFT JOIN `'.$FD->env('DB_PREFIX').'user`
+                        ON `'.$FD->env('DB_PREFIX').'comments`.comment_poster_id=`'.$FD->env('DB_PREFIX').'user`.user_id
                         WHERE needs_update=1 ORDER BY ABS(0.5-spam_probability) LIMIT '.$update_limit);
     while ($row=$update_query->fetch(PDO::FETCH_ASSOC))
     {
@@ -263,7 +263,7 @@
       //this check is needed to distinguish fallback values (integer) from b8 values (float)
       if (is_float($prob))
       {
-        $FD->sql()->conn()->exec('UPDATE `'.$FD->config('pref')."comments`
+        $FD->db()->conn()->exec('UPDATE `'.$FD->env('DB_PREFIX')."comments`
                    SET needs_update='0', spam_probability='".$prob."'
                    WHERE comment_id='".$row['comment_id']."' LIMIT 1");
       }
@@ -273,7 +273,7 @@
   //statistics requested?
   if (isset($_REQUEST['b8_stats']))
   {
-    $query = $FD->sql()->conn()->query('SELECT * FROM `'.$FD->config('pref').'b8_wordlist` WHERE token LIKE \'b8*%\' LIMIT 2');
+    $query = $FD->db()->conn()->query('SELECT * FROM `'.$FD->env('DB_PREFIX').'b8_wordlist` WHERE token LIKE \'b8*%\' LIMIT 2');
     $b8_info = array();
     while ($result = $query->fetch(PDO::FETCH_ASSOC))
     {
@@ -313,12 +313,12 @@
       </tr>
     </table>';
     //get number of comments that need a probability update
-    $query = $FD->sql()->conn()->query('SELECT COUNT(*) AS update_count
-                    FROM `'.$FD->config('pref').'comments` WHERE needs_update=1');
+    $query = $FD->db()->conn()->query('SELECT COUNT(*) AS update_count
+                    FROM `'.$FD->env('DB_PREFIX').'comments` WHERE needs_update=1');
     $update_count = $query->fetchColumn();
     //get total number of comments in DB
-    $query = $FD->sql()->doQuery('SELECT COUNT(*) AS total_count
-                    FROM `'.$FD->config('pref').'comments`');
+    $query = $FD->db()->doQuery('SELECT COUNT(*) AS total_count
+                    FROM `'.$FD->env('DB_PREFIX').'comments`');
     $total_count = $query->fetchColumn();
     if ($total_count>0)
     {
@@ -346,8 +346,8 @@
       </tr>
     </table>';
     //get most used ham words
-    $query = $FD->sql()->conn()->query('SELECT token, count_ham
-                    FROM `'.$FD->config('pref').'b8_wordlist` WHERE token NOT LIKE \'b8*%\'
+    $query = $FD->db()->conn()->query('SELECT token, count_ham
+                    FROM `'.$FD->env('DB_PREFIX').'b8_wordlist` WHERE token NOT LIKE \'b8*%\'
                     ORDER BY count_ham DESC LIMIT 30');
     $ham_words = array();
     while ($result = $query->fetch(PDO::FETCH_ASSOC))
@@ -355,8 +355,8 @@
       $ham_words[] = array('token' => $result['token'], 'ham' => (int) $result['count_ham']);
     }//while
     //get most used spam words
-    $query = $FD->sql()->conn()->query('SELECT token, count_spam
-                    FROM `'.$FD->config('pref').'b8_wordlist` WHERE token NOT LIKE \'b8*%\'
+    $query = $FD->db()->conn()->query('SELECT token, count_spam
+                    FROM `'.$FD->env('DB_PREFIX').'b8_wordlist` WHERE token NOT LIKE \'b8*%\'
                     ORDER BY count_spam DESC LIMIT 30');
     $spam_words = array();
     while ($result = $query->fetch(PDO::FETCH_ASSOC))
@@ -407,7 +407,7 @@
         if ($i<$spam_count)
         {
           echo '<tr>
-        <td class="configthin">'.htmlspecialchars($spam_words[$i]['token']).'</td>
+        <td class="configthin">'.killhtml($spam_words[$i]['token']).'</td>
         <td class="configthin" style="text-align:center;">'.$spam_words[$i]['spam'].'</td>';
         }
         else
@@ -418,7 +418,7 @@
         //Ham
         if ($i<$ham_count)
         {
-          echo '<td class="configthin">'.htmlspecialchars($ham_words[$i]['token']).'</td>
+          echo '<td class="configthin">'.killhtml($ham_words[$i]['token']).'</td>
         <td class="configthin" style="text-align:center;">'.$ham_words[$i]['ham'].'</td>
       </tr>';
         }
@@ -468,7 +468,7 @@
   settype($_GET['sort'], 'string');
 
   //get number of comments
-  $query = $FD->sql()->conn()->query('SELECT COUNT(comment_id) AS cc FROM `'.$FD->config('pref').'comments` WHERE content_type=\'news\'');
+  $query = $FD->db()->conn()->query('SELECT COUNT(comment_id) AS cc FROM `'.$FD->env('DB_PREFIX').'comments` WHERE content_type=\'news\'');
   $cc = (int) $query->fetchColumn();
   if ($_GET['start']>=$cc)
   {
@@ -504,19 +504,19 @@
   }
 
   //Read comments from DB
-  $query = $FD->sql()->conn()->query('SELECT COUNT(comment_id)
-                  FROM `'.$FD->config('pref').'comments`, `'.$FD->config('pref').'news`
-                  WHERE `'.$FD->config('pref').'comments`.content_id=`'.$FD->config('pref').'news`.news_id
+  $query = $FD->db()->conn()->query('SELECT COUNT(comment_id)
+                  FROM `'.$FD->env('DB_PREFIX').'comments`, `'.$FD->env('DB_PREFIX').'news`
+                  WHERE `'.$FD->env('DB_PREFIX').'comments`.content_id=`'.$FD->env('DB_PREFIX').'news`.news_id
                          AND content_type=\'news\'
                   ORDER BY comment_date DESC LIMIT '.$_GET['start'].', 30');
   $rows = $query->fetchColumn();
-  $query = $FD->sql()->conn()->query('SELECT comment_id, comment_title, comment_date, comment_poster, comment_poster_id, comment_text,
-                  `'.$FD->config('pref').'comments`.content_id AS news_id, `'.$FD->config('pref').'news`.news_id, news_title,
-                  IF(comment_poster_id=0, comment_poster, `'.$FD->config('pref').'user`.user_name) AS real_name,
+  $query = $FD->db()->conn()->query('SELECT comment_id, comment_title, comment_date, comment_poster, comment_poster_id, comment_text,
+                  `'.$FD->env('DB_PREFIX').'comments`.content_id AS news_id, `'.$FD->env('DB_PREFIX').'news`.news_id, news_title,
+                  IF(comment_poster_id=0, comment_poster, `'.$FD->env('DB_PREFIX').'user`.user_name) AS real_name,
                   comment_classification, needs_update
-                  FROM `'.$FD->config('pref').'comments` LEFT JOIN `'.$FD->config('pref').'user`
-                  ON `'.$FD->config('pref').'comments`.comment_poster_id=`'.$FD->config('pref').'user`.user_id, `'.$FD->config('pref').'news`
-                  WHERE `'.$FD->config('pref').'comments`.content_id=`'.$FD->config('pref').'news`.news_id
+                  FROM `'.$FD->env('DB_PREFIX').'comments` LEFT JOIN `'.$FD->env('DB_PREFIX').'user`
+                  ON `'.$FD->env('DB_PREFIX').'comments`.comment_poster_id=`'.$FD->env('DB_PREFIX').'user`.user_id, `'.$FD->env('DB_PREFIX').'news`
+                  WHERE `'.$FD->env('DB_PREFIX').'comments`.content_id=`'.$FD->env('DB_PREFIX').'news`.news_id
                          AND content_type=\'news\'
                   ORDER BY '.$order.' LIMIT '.$_GET['start'].', 30');
 
@@ -563,7 +563,7 @@ echo '
       </td>
     </tr>
   ';
-  require_once(FS2_ROOT_PATH . 'resources/spamdetector/eval_spam.inc.php');
+  require_once(FS2SOURCE . '/libs/spamdetector/eval_spam.inc.php');
 
   while ($comment_arr = $query->fetch(PDO::FETCH_ASSOC))
   {
@@ -593,7 +593,7 @@ echo '
             $comment_arr['comment_text'], ($b8!==NULL), $b8);
     if (($comment_arr['needs_update']==1) && is_float($prob))
     {
-      $FD->sql()->conn()->exec('UPDATE `'.$FD->config('pref')."comments`
+      $FD->db()->conn()->exec('UPDATE `'.$FD->env('DB_PREFIX')."comments`
                  SET needs_update='0', spam_probability='".$prob."'
                  WHERE comment_id='".$comment_arr['comment_id']."' LIMIT 1");
     }
@@ -607,7 +607,7 @@ echo '
                <input type="hidden" name="go" value="news_edit">
                <input type="hidden" name="comment_id[]" value="'.$comment_arr['comment_id'].'">
                <input type="hidden" name="comment_action" value="edit">
-               <input class="button" type="submit" value="'.htmlspecialchars($FD->text('admin', 'edit')).'">
+               <input class="button" type="submit" value="'.killhtml($FD->text('admin', 'edit')).'">
              </form>
 
              <form action="" method="post">
@@ -617,7 +617,7 @@ echo '
                <input type="hidden" name="go" value="news_edit">
                <input type="hidden" name="comment_id[]" value="'.$comment_arr['comment_id'].'">
                <input type="hidden" name="comment_action" value="delete">
-               <input class="button" type="submit" value="'.htmlspecialchars($FD->text('admin', 'delete')).'">
+               <input class="button" type="submit" value="'.killhtml($FD->text('admin', 'delete')).'">
              </form>
            </td>
          </tr>

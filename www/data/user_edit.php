@@ -18,15 +18,15 @@ if (
 
     // Upload & Delete User Image
     if ( isset ( $_POST['user_delete_image'] ) ) {
-        image_delete ( 'media/user-images/', $_SESSION['user_id'] );
+        image_delete ( '/user-images', $_SESSION['user_id'] );
     } elseif ( $_FILES['user_image']['tmp_name'] ) {
-        image_rename ( 'media/user-images/', $_SESSION['user_id'], $_SESSION['user_id'].'_old');
-        $upload = upload_img ( $_FILES['user_image'], 'media/user-images/', $_SESSION['user_id'], $config_arr['avatar_size']*1024, $config_arr['avatar_x'], $config_arr['avatar_y'] );
+        image_rename ( '/user-images', $_SESSION['user_id'], $_SESSION['user_id'].'_old');
+        $upload = upload_img ( $_FILES['user_image'], '/user-images', $_SESSION['user_id'], $config_arr['avatar_size']*1024, $config_arr['avatar_x'], $config_arr['avatar_y'] );
         $message = upload_img_notice ( $upload, FALSE ).'<br>';
         if ( $upload != 0 ) {
-          image_delete ( 'media/user-images/', $_SESSION['user_id'].'_old' );
+          image_delete ( '/user-images', $_SESSION['user_id'].'_old' );
         } else {
-          image_rename ( 'media/user-images/', $_SESSION['user_id'].'_old', $_SESSION['user_id'] );
+          image_rename ( '/user-images', $_SESSION['user_id'].'_old', $_SESSION['user_id'] );
         }
     }
     initstr($message);
@@ -40,8 +40,8 @@ if (
         $_POST['user_homepage'] = 'http://'.$_POST['user_homepage'];
     }
 
-    $stmt = $FD->sql()->conn()->prepare('
-        UPDATE '.$FD->config('pref').'user
+    $stmt = $FD->db()->conn()->prepare('
+        UPDATE '.$FD->env('DB_PREFIX').'user
         SET `user_mail` = ?,
             `user_show_mail` = ?,
             `user_homepage` = ?,
@@ -65,9 +65,9 @@ if (
 
     // Save New Password
     if ( $_POST['old_pwd'] && $_POST['new_pwd'] && $_POST['wdh_pwd'] ) {
-        $index = $FD->sql()->conn()->query ( '
+        $index = $FD->db()->conn()->query ( '
             SELECT `user_name`, `user_password`, `user_salt`
-            FROM `'.$FD->config('pref')."user`
+            FROM `'.$FD->env('DB_PREFIX')."user`
             WHERE `user_id` = '".intval($_SESSION['user_id'])."'" );
         $row = $index->fetch(PDO::FETCH_ASSOC);
         $old_password = $row['user_password'];
@@ -87,8 +87,8 @@ if (
                 unset ( $_POST['wdh_pwd'] );
 
                 // Update Password
-                $FD->sql()->conn()->exec ( '
-                    UPDATE '.$FD->config('pref')."user
+                $FD->db()->conn()->exec ( '
+                    UPDATE '.$FD->env('DB_PREFIX')."user
                     SET `user_password` = '".$md5_password."',
                         `user_salt` = '".$new_salt."'
                     WHERE `user_id` = '".$_SESSION['user_id']."'" );
@@ -139,20 +139,20 @@ else {
             $messages = '';
         }
 
-        $index = $FD->sql()->conn()->query ( '
+        $index = $FD->db()->conn()->query ( '
             SELECT COUNT(*)
-            FROM `'.$FD->config('pref')."user`
+            FROM `'.$FD->env('DB_PREFIX')."user`
             WHERE `user_id` = '".$_SESSION['user_id']."'" );
         $num_rows = $index->fetchColumn();
         if ( $num_rows > 0 ) {
-            $index = $FD->sql()->conn()->query ( '
-                SELECT * FROM `'.$FD->config('pref')."user`
+            $index = $FD->db()->conn()->query ( '
+                SELECT * FROM `'.$FD->env('DB_PREFIX')."user`
                 WHERE `user_id` = '".$_SESSION['user_id']."'" );
 
             $user_arr = $index->fetch(PDO::FETCH_ASSOC);
 
             $user_arr['user_name'] = kill_replacements ( $user_arr['user_name'], TRUE );
-            $user_arr['user_image'] = ( image_exists ( 'media/user-images/', $user_arr['user_id'] ) ? '<img src="'.image_url ( 'media/user-images/', $user_arr['user_id'] ).'" alt="'.$FD->text("frontend", "user_image_of").' '.$user_arr['user_name'].'">' : $FD->text("frontend", "user_image_not_found") );
+            $user_arr['user_image'] = ( image_exists ( '/user-images', $user_arr['user_id'] ) ? '<img src="'.image_url ( '/user-images', $user_arr['user_id'] ).'" alt="'.$FD->text("frontend", "user_image_of").' '.$user_arr['user_name'].'">' : $FD->text("frontend", "user_image_not_found") );
             $user_arr['user_homepage'] = ( $user_arr['user_homepage'] &&  trim ( $user_arr['user_homepage'] ) != 'http://' ? kill_replacements ( $user_arr['user_homepage'], TRUE ) : 'http://' );
 
             // Create Template
@@ -164,7 +164,7 @@ else {
             $template->tag ( 'user_id', $user_arr['user_id'] );
             $template->tag ( 'user_name', $user_arr['user_name'] );
             $template->tag ( 'user_image', $user_arr['user_image'] );
-            $template->tag ( 'user_image_url', image_url ( 'media/user-images/', $user_arr['user_id'] ) );
+            $template->tag ( 'user_image_url', image_url ( '/user-images', $user_arr['user_id'] ) );
             $template->tag ( 'image_max_width', $config_arr['avatar_x'] );
             $template->tag ( 'image_max_height', $config_arr['avatar_y'] );
             $template->tag ( 'image_max_size', $config_arr['avatar_size'] );
@@ -183,7 +183,7 @@ else {
         }
     } else { // Show Login-Page
         $_SESSION['last_url'] = 'user_edit';
-        include ( FS2_ROOT_PATH . 'data/login.php' );
+        include ( FS2SOURCE . '/data/login.php' );
     }
 }
 ?>

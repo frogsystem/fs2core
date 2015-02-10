@@ -37,7 +37,7 @@ fscode:                                            FSCode ist
 para:                                              Absatzbehandlung ist
 kib:                                               KiB
 mib:                                               MiB
-arrow:                                             <img class="middle" src="img/pointer.png" alt="->">
+arrow:                                             <img class="middle" src="?images=pointer.png" alt="->">
 save_long:                                         Änderungen speichern
 do_button:                                         Ausführen
 do_button_long:                                    Aktion ausführen
@@ -75,15 +75,15 @@ replace_img:                                       Nur auswählen, wenn das bishe
 
 
 #icons
-error:                                             <img src="icons/error.jpg" alt="" align="absmiddle">
-ok:                                                <img src="icons/ok.jpg" alt="" align="absmiddle">
-arrow:                                             <img src="icons/pointer.gif" alt="->" align="absmiddle">
-save_small:                                        <img src="icons/save_small.gif" alt="" align="top">
-save_ok:                                           <img src="icons/save_ok.jpg" alt="" align="absmiddle">
-save_add:                                          <img src="icons/save_add.jpg" alt="" align="absmiddle">
-save_error:                                        <img src="icons/save_error.jpg" alt="" align="absmiddle">
-trash_ok:                                          <img src="icons/trash_ok.jpg" alt="" align="absmiddle">
-trash_error:                                       <img src="icons/trash_error.jpg" alt="" align="absmiddle">
+error:                                             <img src="?icons=error.jpg" alt="" align="absmiddle">
+ok:                                                <img src="?icons=ok.jpg" alt="" align="absmiddle">
+arrow:                                             <img src="?icons=pointer.gif" alt="->" align="absmiddle">
+save_small:                                        <img src="?icons=save_small.gif" alt="" align="top">
+save_ok:                                           <img src="?icons=save_ok.jpg" alt="" align="absmiddle">
+save_add:                                          <img src="?icons=save_add.jpg" alt="" align="absmiddle">
+save_error:                                        <img src="?icons=save_error.jpg" alt="" align="absmiddle">
+trash_ok:                                          <img src="?icons=trash_ok.jpg" alt="" align="absmiddle">
+trash_error:                                       <img src="?icons=trash_error.jpg" alt="" align="absmiddle">
 
 
 #menu
@@ -145,8 +145,6 @@ feed_rss091:                                       RSS 0.91
 feed_rss10:                                        RSS 1.0
 feed_rss20:                                        RSS 2.0
 feed_atom10:                                       Atom 1.0
-reg_antispam:                                      Anti-Spam bei Registrierung
-reg_antispam_desc:                                 Aktiviert die Anti-Spam Abfrage bei der Registrierung.
 date:                                              Datum
 date_desc:                                         Datumsformat, das auf der Seite verwendet werden soll.
 date_info:                                         verwendet den Syntax der PHP-Funktion <a href="http://www.php.net/manual/de/function.date.php" target="_blank" class="small">date()</a>

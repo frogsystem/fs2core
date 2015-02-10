@@ -9,7 +9,7 @@ function get_style_ini_data ( $STYLE_INI_FILE ) {
     $ini_lines = $ACCESS->getFileArray( $STYLE_INI_FILE );
     $ini_lines = array_map ( 'trim', $ini_lines );
     $ini_lines = array_map ( 'killhtml', $ini_lines );
-    $ini_lines[1] = ( $ini_lines[1] != '' ) ? $ini_lines[1] : '';
+    $ini_lines += array('','',''); //add at least 3 empty lines
     return $ini_lines;
 }
 
@@ -31,23 +31,23 @@ if (
     settype ( $_POST['style_allow_edit'], 'integer' );
 
     // SQL-Queries
-    $FD->sql()->conn()->exec ( '
-            UPDATE `'.$FD->config('pref')."styles`
+    $FD->db()->conn()->exec ( '
+            UPDATE `'.$FD->env('DB_PREFIX')."styles`
             SET
                 `style_allow_use` = '".$_POST['style_allow_use']."',
                 `style_allow_edit` = '".$_POST['style_allow_edit']."'
             WHERE `style_id` = '".$_POST['style_id']."'" );
 
-    $index = $FD->sql()->conn()->query ( '
+    $index = $FD->db()->conn()->query ( '
                     SELECT `style_tag`
-                    FROM `'.$FD->config('pref')."styles`
+                    FROM `'.$FD->env('DB_PREFIX')."styles`
                     WHERE `style_id` = ".$_POST['style_id'] );
 
     $new_ini_data = $_POST['style_name']."
 ".$_POST['style_version']."
 ".$_POST['style_copyright'];
 
-    $style_ini = FS2_ROOT_PATH . 'styles/' . $index->fetchColumn() . '/style.ini';
+    $style_ini = FS2STYLES . '/' . $index->fetchColumn() . '/style.ini';
     $ACCESS = new fileaccess();
     if ( $ACCESS->putFileData( $style_ini, $new_ini_data ) === FALSE ) {
         $error_extension = '<br>'.$FD->text('admin', 'style_info_not_saved');
@@ -81,9 +81,9 @@ elseif (
         settype ( $_POST['style_id'], 'integer' );
 
         // Check if style is last
-        $index = $FD->sql()->conn()->query ( '
+        $index = $FD->db()->conn()->query ( '
                         SELECT COUNT(`style_id`)
-                        FROM `'.$FD->config('pref').'styles`
+                        FROM `'.$FD->env('DB_PREFIX').'styles`
                         WHERE `style_allow_use` = 1
                         AND `style_id` != '.$_POST['style_id'] );
 
@@ -91,9 +91,9 @@ elseif (
         if ( $index->fetchColumn() >= 1 ) {
 
             // SQL-Delete-Query
-            $FD->sql()->conn()->exec ('
+            $FD->db()->conn()->exec ('
                     DELETE
-                    FROM `'.$FD->config('pref').'styles`
+                    FROM `'.$FD->env('DB_PREFIX').'styles`
                     WHERE `style_id` = '.$_POST['style_id'] );
 
             if (
@@ -104,9 +104,9 @@ elseif (
                 // Security-Functions
                 settype ( $_POST['new_style_id'], 'integer' );
 
-                $index = $FD->sql()->conn()->query ( '
+                $index = $FD->db()->conn()->query ( '
                                 SELECT `style_tag`
-                                FROM `'.$FD->config('pref').'styles`
+                                FROM `'.$FD->env('DB_PREFIX').'styles`
                                 WHERE `style_id` = '.$_POST['new_style_id'].'
                                 AND `style_id` != 0
                                 AND `style_allow_use` = 1
@@ -114,9 +114,9 @@ elseif (
                 $tag = $index->fetchColumn();
                 if ( $tag !== false ) {
                     // SQL-Queries
-                    $stmt = $FD->sql()->conn()->prepare('
+                    $stmt = $FD->db()->conn()->prepare('
                                 UPDATE
-                                    `'.$FD->config('pref')."global_config`
+                                    `'.$FD->env('DB_PREFIX')."global_config`
                                 SET
                                     `style_id` = '".$_POST['new_style_id']."',
                                     `style_tag` = ?
@@ -152,12 +152,12 @@ elseif (
     )
 {
 
-    if ( file_exists ( FS2_ROOT_PATH . 'styles/' . $_POST['style_tag'] . '/style.ini' ) ) {
+    if ( file_exists ( FS2STYLES . '/' . $_POST['style_tag'] . '/style.ini' ) ) {
 
         // SQL-Queries
-        $stmt = $FD->sql()->conn()->prepare('
+        $stmt = $FD->db()->conn()->prepare('
                     INSERT INTO
-                        `'.$FD->config('pref')."styles`
+                        `'.$FD->env('DB_PREFIX')."styles`
                         (`style_tag`, `style_allow_use`, `style_allow_edit`)
                     VALUES
                         ( ?, 1, 1 )");
@@ -169,7 +169,7 @@ elseif (
 
         // Go to Edit-Page of the installed Style
         unset ( $_POST );
-        $_POST['style_id'] = $FD->sql()->conn()->lastInsertId();
+        $_POST['style_id'] = $FD->db()->conn()->lastInsertId();
         $_POST['style_action'] = 'edit';
 
     } else {
@@ -205,15 +205,15 @@ if ( isset ( $_POST['style_id'] ) && $_POST['style_action'] )
 
         // Get Data from DB
         } else {
-            $index = $FD->sql()->conn()->query ( '
+            $index = $FD->db()->conn()->query ( '
                             SELECT *
-                            FROM `'.$FD->config('pref')."styles`
+                            FROM `'.$FD->env('DB_PREFIX')."styles`
                             WHERE `style_id` = '".$_POST['style_id']."'
                             LIMIT 0,1" );
             $data_arr = $index->fetch(PDO::FETCH_ASSOC);
-            $style_ini = FS2_ROOT_PATH . 'styles/' . $data_arr['style_tag'] . '/style.ini';
+            $style_ini = FS2STYLES . '/' . $data_arr['style_tag'] . '/style.ini';
             $ACCESS = new fileaccess();
-            $ini_lines = $ACCESS->getFileArray( $style_ini );
+            $ini_lines = get_style_ini_data( $style_ini );
             $data_arr['style_name'] = $ini_lines[0];
             $data_arr['style_version'] = $ini_lines[1];
             $data_arr['style_copyright'] = $ini_lines[2];
@@ -317,9 +317,9 @@ if ( isset ( $_POST['style_id'] ) && $_POST['style_action'] )
         $_POST['style_id'] = $_POST['style_id'][0];
 
         // Check if style is last
-        $index = $FD->sql()->conn()->query ( '
+        $index = $FD->db()->conn()->query ( '
                         SELECT COUNT(`style_id`)
-                        FROM `'.$FD->config('pref').'styles`
+                        FROM `'.$FD->env('DB_PREFIX').'styles`
                         WHERE `style_id` != 0
                         AND `style_allow_use` = 1
                         AND `style_id` != '.$_POST['style_id'].'
@@ -344,13 +344,13 @@ if ( isset ( $_POST['style_id'] ) && $_POST['style_action'] )
             ';
 
             // get style from db
-            $data = $FD->sql()->conn()->query ( '
+            $data = $FD->db()->conn()->query ( '
                         SELECT *
-                        FROM `'.$FD->config('pref').'styles`
+                        FROM `'.$FD->env('DB_PREFIX').'styles`
                         WHERE `style_id` = '.$_POST['style_id'].'
                         LIMIT 0,1');
             $data_arr = $data->fetch(PDO::FETCH_ASSOC);
-            $data_arr['ini_lines'] = get_style_ini_data ( FS2_ROOT_PATH . 'styles/' . $data_arr['style_tag'] . '/style.ini' );
+            $data_arr['ini_lines'] = get_style_ini_data ( FS2STYLES . '/' . $data_arr['style_tag'] . '/style.ini' );
 
             // display style info
             echo '
@@ -372,9 +372,9 @@ if ( isset ( $_POST['style_id'] ) && $_POST['style_action'] )
                                             <td class="middle config">
                                                 <select class="input_width_mini" name="new_style_id" size="1">
                 ';
-                $index = $FD->sql()->conn()->query ( '
+                $index = $FD->db()->conn()->query ( '
                         SELECT `style_id`, `style_tag`
-                        FROM `'.$FD->config('pref').'styles`
+                        FROM `'.$FD->env('DB_PREFIX').'styles`
                         WHERE `style_id` != 0
                         AND `style_allow_use` = 1
                         AND `style_id` != '.$_POST['style_id'].'
@@ -436,20 +436,18 @@ if ( isset ( $_POST['style_id'] ) && $_POST['style_action'] )
 if ( !isset ( $_POST['style_id'] ) )
 {
     // get Styles from db
-    $index = $FD->sql()->conn()->query ( '
+    $index = $FD->db()->conn()->query ( '
                     SELECT COUNT(*)
-                    FROM `'.$FD->config('pref')."styles`
-                    WHERE `style_id` != 0
-                    AND `style_tag` != 'default'
+                    FROM `'.$FD->env('DB_PREFIX')."styles`
+                    WHERE `style_tag` != 'default'
                     ORDER BY `style_tag`" );
 
     $num_of_styles = $index->fetchColumn();
 
-    $index = $FD->sql()->conn()->query ( '
+    $index = $FD->db()->conn()->query ( '
                     SELECT *
-                    FROM `'.$FD->config('pref')."styles`
-                    WHERE `style_id` != 0
-                    AND `style_tag` != 'default'
+                    FROM `'.$FD->env('DB_PREFIX')."styles`
+                    WHERE `style_tag` != 'default'
                     ORDER BY `style_tag`" );
 
     $style_arr = array();
@@ -469,10 +467,10 @@ if ( !isset ( $_POST['style_id'] ) )
 
     // Search for not yet installed Styles
     $num_not_inc_styles = 0;
-    $styles = scandir_filter ( FS2_ROOT_PATH . 'styles', array ( 'default' ) );
+    $styles = scandir_filter ( FS2STYLES, array ( 'default' ) );
     foreach ( $styles as $style ) {
-        if ( !in_array ( $style, $style_tag_arr ) && is_dir ( FS2_ROOT_PATH . 'styles/' . $style ) == TRUE ) {
-            $style_ini = FS2_ROOT_PATH . 'styles/' . $style . '/style.ini';
+        if ( !in_array ( $style, $style_tag_arr ) && is_dir ( FS2STYLES . '/' . $style ) == TRUE ) {
+            $style_ini = FS2STYLES . '/' . $style . '/style.ini';
             if ( is_readable ( $style_ini ) ) {
                 if ( $num_not_inc_styles <= 0 ) {
                     echo '
@@ -584,7 +582,7 @@ if ( !isset ( $_POST['style_id'] ) )
             $data_arr['style_folder'] = $data_arr['style_tag'];
             $data_arr['style_tag'] = killhtml ( $data_arr['style_tag'] );
 
-            $style_ini = FS2_ROOT_PATH . 'styles/' . $data_arr['style_folder'] . '/style.ini';
+            $style_ini = FS2STYLES . '/' . $data_arr['style_folder'] . '/style.ini';
             $data_arr['ini_lines'] = get_style_ini_data ( $style_ini );
 
             echo '

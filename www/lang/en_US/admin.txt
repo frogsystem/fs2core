@@ -104,9 +104,9 @@ time_appendix:                           o'clock
 at_date:                                 on
 
 # Frequently used Images
-sub_arrow:                               <img class="middle" src="img/sub-arrow.gif" alt="'->">
-checkbox:                                <img class="checkbox" src="images/checkbox.png" alt="[_]">
-radio:                                   <img class="checkbox" src="images/radio.png" alt="(_)">
+sub_arrow:                               <img class="middle" src="?images=sub-arrow.gif" alt="'->">
+checkbox:                                <img class="checkbox" src="?images=checkbox.png" alt="[_]">
+radio:                                   <img class="checkbox" src="?images=radio.png" alt="(_)">
 
 
 # Action Selection
@@ -121,7 +121,7 @@ selection_import:                        import selection
 
 
 # Button Captions
-button_arrow:                            <img class="middle" src="img/pointer.png" alt="->">
+button_arrow:                            <img class="middle" src="?images=pointer.png" alt="->">
 do_action_button:                        Execute
 do_action_button_long:                   Execute action
 save_changes_button:                     Save changes
@@ -166,26 +166,26 @@ no_user_found_for_name:                  No user found with that name.
 
 
 # Message-Images
-icon_small_help:                         <img src="icons/help.gif" alt="Help" align="absmiddle">
-icon_info:                               <img src="icons/info.jpg" alt="Information" align="absmiddle">
-icon_error:                              <img src="icons/error.jpg" alt="Error" align="absmiddle">
-icon_save_ok:                            <img src="icons/save_ok.jpg" alt="OK" align="absmiddle">
-icon_save_add:                           <img src="icons/save_add.jpg" alt="Hinzufügen erfolgreich" align="absmiddle">
-icon_save_error:                         <img src="icons/save_error.jpg" alt="Error while saving" align="absmiddle">
-icon_trash_ok:                           <img src="icons/trash_ok.jpg" alt="Deletion successful" align="absmiddle">
-icon_trash_error:                        <img src="icons/trash_error.jpg" alt="Error while deleting" align="absmiddle">
-icon_trash_caution:                      <img src="icons/trash_caution.jpg" alt="Deletion successful, but read the notes" align="absmiddle">
-icon_login:                              <img src="icons/login.jpg" alt="Login" align="absmiddle">
-icon_logout:                             <img src="icons/logout.jpg" alt="Logout" align="absmiddle">
-icon_install_ok:                         <img src="icons/install_ok.jpg" alt="Installation successful" align="absmiddle">
-icon_uninstall_ok:                       <img src="icons/uninstall_ok.jpg" alt="Uninstalling successful" align="absmiddle">
-icon_no_install_action:                  <img src="icons/no_install_action.jpg" alt="No install action" align="absmiddle">
-icon_lock_ok:                            <img src="icons/lock_ok.jpg" alt="Access granted" align="absmiddle">
-icon_lock_forbidden:                     <img src="icons/lock_forbidden.jpg" alt="Access denied">
-icon_up:                                 <img src="icons/up.jpg" alt="Move upwards" align="absmiddle">
-icon_down:                               <img src="icons/down.jpg" alt="Move downwards" align="absmiddle">
-icon_link_error:                         <img src="icons/link_error.jpg" alt="Link error" align="absmiddle">
-icon_user_question:                      <img src="icons/user_question.jpg" alt="Unknown user" align="absmiddle">
+icon_small_help:                         <img src="?icons=help.gif" alt="Help" align="absmiddle">
+icon_info:                               <img src="?icons=info.jpg" alt="Information" align="absmiddle">
+icon_error:                              <img src="?icons=error.jpg" alt="Error" align="absmiddle">
+icon_save_ok:                            <img src="?icons=save_ok.jpg" alt="OK" align="absmiddle">
+icon_save_add:                           <img src="?icons=save_add.jpg" alt="Hinzufügen erfolgreich" align="absmiddle">
+icon_save_error:                         <img src="?icons=save_error.jpg" alt="Error while saving" align="absmiddle">
+icon_trash_ok:                           <img src="?icons=trash_ok.jpg" alt="Deletion successful" align="absmiddle">
+icon_trash_error:                        <img src="?icons=trash_error.jpg" alt="Error while deleting" align="absmiddle">
+icon_trash_caution:                      <img src="?icons=trash_caution.jpg" alt="Deletion successful, but read the notes" align="absmiddle">
+icon_login:                              <img src="?icons=login.jpg" alt="Login" align="absmiddle">
+icon_logout:                             <img src="?icons=logout.jpg" alt="Logout" align="absmiddle">
+icon_install_ok:                         <img src="?icons=install_ok.jpg" alt="Installation successful" align="absmiddle">
+icon_uninstall_ok:                       <img src="?icons=uninstall_ok.jpg" alt="Uninstalling successful" align="absmiddle">
+icon_no_install_action:                  <img src="?icons=no_install_action.jpg" alt="No install action" align="absmiddle">
+icon_lock_ok:                            <img src="?icons=lock_ok.jpg" alt="Access granted" align="absmiddle">
+icon_lock_forbidden:                     <img src="?icons=lock_forbidden.jpg" alt="Access denied">
+icon_up:                                 <img src="?icons=up.jpg" alt="Move upwards" align="absmiddle">
+icon_down:                               <img src="?icons=down.jpg" alt="Move downwards" align="absmiddle">
+icon_link_error:                         <img src="?icons=link_error.jpg" alt="Link error" align="absmiddle">
+icon_user_question:                      <img src="?icons=user_question.jpg" alt="Unknown user" align="absmiddle">
 
 
 # Image-Upload-Messages
@@ -272,38 +272,7 @@ template_no_filename:                    You have not entered a filename
 template_dont_remove_copyright:          The copyright not must not be removed
 template_selection_title_template:       Style selection
 template_selection_title_template_file:  Style & file selection
-captcha_config_title:                    Settings
-captcha_config_first_title:              Range 1
-captcha_config_first_desc:               Range of numbers that are used to generate the first value.
-captcha_config_second_title:             Range 2
-captcha_config_second_desc:              Range of numbers that are used to generate the second value.
-captcha_config_use_operations_title:     Allowed arithmetic operations
-captcha_config_addition:                 Addition (+)
-captcha_config_subtraction:              Subtraction (-)
-captcha_config_multiplication:           Multiplication (*)
-captcha_config_use_operations_desc:      Defines which arithmetic operations will be used.
-captcha_config_easy_arithmetics_title:   Easy arithmetics only
-captcha_config_easy_arithmetics_desc:    Activates an AI to generate easier arithmetics.
-captcha_config_design_title:             Design
-captcha_config_bg_color_title:           Background color
-captcha_config_bg_color_desc:            The background color of the captcha image.
-captcha_config_bg_transparent:           Transparent Background
-captcha_config_text_color_title:         Text color
-captcha_config_text_color_desc:          The color in which the arithmetic problem is shown.
-captcha_config_dimensions_title:         Dimensions
-captcha_config_dimensions_desc:          Size of the captcha image.
-captcha_config_text_position_title:      Text position
-captcha_config_text_position_desc:       Position of text relative to the left, upper corner.
-captcha_config_text_position_help:       Distance to left edge and top edge
-captcha_config_text_style_title:         Font face and size
-captcha_config_text_style_desc:          Default font face in 5 sizes or inserted PHP-Font.
-captcha_config_text_style_default:       Standard, size
-captcha_config_text_options_title:       Text Options
-captcha_config_text_options_desc:        Options to format the captcha.
-captcha_config_questionmark:             show question mark [1+1=?]
-captcha_config_spaces:                   insert spaces [1 + 1 =]
-captcha_config_multiplication_as_x:      use x instead of * [1x1=]
-captcha_config_one_operation:            You have to select at least one arithmetic operation.
+
 snippet_add_title:                       Add snippet
 snippet_select_title:                    Select snippet
 snippet_edit_title:                      Edit snippet
@@ -385,10 +354,4 @@ template_file_not_found:                 Template file was not found!
 template_file_created:                   Template file has been created anew
 template_no_editable_template:           No editable template found
 template_select_template:                Select template for editing
-
-
-# What are these lines doing here? They aren't present in the German admin.txt.
-search_config_title:                     Settings
-search_config_num_previews_title:        Number of results
-search_config_num_previews_desc:         The maximum number of results shown.
-search_config_num_previews_results:      Results
+template_file_not_writable:              Write permisson denied: Please check file permissions

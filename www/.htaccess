@@ -1,6 +1,6 @@
 # Eigene Fehlerseiten
-ErrorDocument 403 http://localhost/fs2/www/403.html
-ErrorDocument 404 http://localhost/fs2/www/404.html
+#ErrorDocument 403 http://localhost/fs2/www/403.html
+#ErrorDocument 404 http://localhost/fs2/www/404.html
 
 <IfModule mod_rewrite.c>
     # Aktiviere RewriteEngine
@@ -9,5 +9,6 @@ ErrorDocument 404 http://localhost/fs2/www/404.html
     # SEO-URLs
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^admin/(.*)$ index.php?admin=$1 [L,QSA]
     RewriteRule ^(.+)\.html$ index.php?seoq=$1 [L,QSA]
 </IfModule>

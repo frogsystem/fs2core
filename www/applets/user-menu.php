@@ -8,8 +8,8 @@ if ( is_loggedin() ) {
     // Get some data
     $user_id = $_SESSION['user_id'];
     settype ( $user_id, 'integer' );
-    $image_url = image_url ( 'media/user-images/', $user_id ) ;
-    if ( image_exists ( 'media/user-images/', $user_id ) ) {
+    $image_url = image_url ( '/user-images', $user_id ) ;
+    if ( image_exists ( '/user-images', $user_id ) ) {
         $image_link = '<img src="'.$image_url .'" alt="'.$FD->text('frontend', 'user_image_of').' '.kill_replacements ( $_SESSION['user_name'], TRUE ).'">';
     } else {
         $image_link = '';
@@ -28,9 +28,9 @@ if ( is_loggedin() ) {
     $template->tag('logout_url', url('logout'));
 
     // Admin-Link
-    $index = $FD->sql()->conn()->query ('
+    $index = $FD->db()->conn()->query ('
                             SELECT `user_id`, `user_is_staff`, `user_is_admin`
-                            FROM '.$FD->config('pref')."user
+                            FROM '.$FD->env('DB_PREFIX')."user
                             WHERE `user_id` = '".$user_id."'" );
     $data_arr = $index->fetch( PDO::FETCH_ASSOC );
     if ( $data_arr['user_is_staff'] == 1 || $data_arr['user_is_admin'] == 1 || $data_arr['user_id'] == 1 ) {
