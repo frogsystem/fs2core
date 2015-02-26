@@ -5,7 +5,7 @@
  * @file     class_adminpage.php
  * @folder   /libs
  * @version  0.6
- * @author   Satans Kr�melmonster, Sweil
+ * @author   Satans Krümelmonster, Sweil
  *
  * provides functions to manage admin-cp display-issues
  */
@@ -120,7 +120,9 @@ class adminpage {
                 }, $tmpval);
 
                 // replace common
-                $tmpval = preg_replace_callback("/<!--COMMON::(.*?)-->/", function($matches){ return $this->commonValue($matches[1]);}, $tmpval);
+                $tmpval = preg_replace_callback("/<!--COMMON::(.*?)-->/", function($matches){
+                    return $this->commonValue($matches[1]);
+                }, $tmpval);
             }
 
             // clear rest
