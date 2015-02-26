@@ -10,7 +10,13 @@
  * 
  */
 
+use Frogsystem2\Event\EventLoader;
+use Frogsystem2\Event\EventManager;
+use Frogsystem2\Event\EventManagerInterface;
+
 class Frogsystem2 {
+
+    const EVENT_STARTUP = 'eventStartUp';
     
     private $root;
     
@@ -41,7 +47,8 @@ class Frogsystem2 {
         @define('FS2MEDIA', FS2CONTENT.'/media');
         @define('FS2STYLES', FS2CONTENT.'/styles');
         @define('FS2UPLOAD', FS2CONTENT.'/upload');
-        
+        @define('FS2EVENTS', FS2CONTENT.'/event');
+
         // Defaults for other constants
         @define('IS_SATELLITE', false);
         @define('FS2_DEBUG', false);
@@ -60,22 +67,44 @@ class Frogsystem2 {
 
         // Register autoloader: libloader
         spl_autoload_register(array($this, 'libloader'));
+        spl_autoload_register(array($this, 'namespaceLibLoader'));
 
         // Set default include path
         set_include_path(FS2SOURCE);
+
+        // init event-manager
+        $globalEventManager = new EventManager();
+
+        $this->loadEvents($globalEventManager);
         
         // init global data object
         global $FD;
         $FD = new GlobalData();
-        try {
-            // TODO: Pre-Startup Hook
-            $FD->startup();
-        } catch (Exception $e) {
-            // DB Connection failed
-            $this->fail($e);
+        $FD->setSystemEventManager($globalEventManager);
+
+        $startupResult = $FD->getSystemEventManager()->trigger(self::EVENT_STARTUP, $FD);
+
+        if($startupResult->hasStopped())
+        {
+            $result = $startupResult->last();
+            if(!($result instanceof \Exception))
+            {
+                $result = new \Exception(sprintf('Undefined result of type %s', gettype($result)));
+            }
+
+            $this->fail($result);
         }
- 
+
         return $this;
+    }
+
+    public function loadEvents(EventManagerInterface $eventManager)
+    {
+        $eventLoader = new EventLoader($eventManager);
+
+        $eventList = $eventLoader->loadEvents(FS2EVENTS, 'Event');
+
+        $eventLoader->attachEvents($eventList);
     }
 
     
@@ -102,7 +131,7 @@ class Frogsystem2 {
             $this->__destruct();
             return;
         }
-        
+        /** @var GlobalData $FD */
         // Depoly Mainpage
         global $FD, $APP;
         $this->initSession();
@@ -146,7 +175,10 @@ class Frogsystem2 {
         global $FD;
         unset($FD);  
     }
-    
+
+    /**
+     * @param Exception $exception
+     */
     private function fail($exception) {
         // log connection error
         error_log($exception->getMessage(), 0);
@@ -192,7 +224,15 @@ class Frogsystem2 {
     
     private function libloader($classname) {
         $class = explode("\\", $classname);
-        $filepath = FS2SOURCE.'/libs/class_'.end($class).'.php';
+
+        if(count($class) > 1)
+        {
+            return false;
+        }
+
+        $class = array_pop($class);
+
+        $filepath = FS2SOURCE.'/libs/class_'.$class.'.php';
         
         if (file_exists($filepath)) {
             include_once($filepath);
@@ -201,6 +241,34 @@ class Frogsystem2 {
         } else {
             return false;
         }
+    }
+
+    protected function namespaceLibLoader($className)
+    {
+        $class = explode('\\', $className);
+
+        switch(array_shift($class))
+        {
+            case 'Frogsystem2':
+                $filePath = '/libs/' . implode('/', $class). '.php';
+                break;
+            case 'Event':
+                $filePath = '/event/' . implode('/', $class) . '.php';
+                break;
+            default:
+                return false;
+        }
+
+        $filePath = FS2SOURCE . $filePath;
+
+        if(file_exists($filePath))
+        {
+            include_once $filePath;
+
+            return true;
+        }
+
+        return false;
     }
     
     private function detectUserLanguage($default = 'de_DE') {
@@ -242,6 +310,7 @@ class Frogsystem2 {
     ///////////////////
     private function get_goto ()
     {
+        /** @var GlobalData $FD */
         global $FD;
 
         //check seo
@@ -268,6 +337,7 @@ class Frogsystem2 {
     /////////////////////////
     private function forward_aliases ( $GOTO )
     {
+        /** @var GlobalData $FD */
         global $FD;
 
         $aliases = $FD->db()->conn()->prepare(
@@ -287,4 +357,3 @@ class Frogsystem2 {
     
 }
 
-?>

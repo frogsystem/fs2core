@@ -3,7 +3,7 @@
  * @file     class_sql.php
  * @folder   /libs
  * @version  0.5
- * @author   Sweil, Satans Krümelmonster, Thoronador
+ * @author   Sweil, Satans Krï¿½melmonster, Thoronador
  *
  * this class provides several methodes for database-access
  */
@@ -12,12 +12,41 @@
 class sql {
 
     // Properties
-    private $sql;                   // the connection-resource
-    private $pref;                  // Table-Prefix (see inc_login.php)
-    private $db;                    // the selected Databse
-    private $error;                 // possible SQL errors
-    private $result = false;        // result-resource of a query
-    private $query;                 // the built query string
+    /**
+     * the connection-resource
+     * @var PDO
+     */
+    private $sql;
+
+    /**
+     * Table-Prefix (see inc_login.php)
+     * @var string
+     */
+    private $pref;
+
+    /**
+     * the selected database
+     * @var string
+     */
+    private $db;
+
+    /**
+     * possible SQL errors
+     * @var array
+     */
+    private $error;
+
+    /**
+     * result-resource of a query
+     * @var PDOStatement
+     */
+    private $result = false;
+
+    /**
+     * the built query string
+     * @var string
+     */
+    private $query;
 
 
     // Constructor
@@ -81,7 +110,6 @@ class sql {
             $this->error[1] = $this->sql->errorInfo(); // error text
             $this->error[2] = $this->query;            // query causing the error
             Throw new ErrorException('SQL Error: ['.$this->error[0].'] '.$this->error[1]."\n".$this->error[2]);
-            return false;
         }
     }
 
@@ -436,7 +464,11 @@ class sql {
         }
     }
 
-    // return sql-resource
+    /**
+     * return sql-resource
+     * @return PDO
+     * @throws ErrorException
+     */
     public function conn() {
         if ($this->sql !== false)
             return $this->sql;
@@ -454,4 +486,3 @@ class sql {
         return $this->db;
     }
 }
-?>
