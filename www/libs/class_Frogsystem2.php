@@ -17,6 +17,10 @@ use Frogsystem2\Event\EventManagerInterface;
 class Frogsystem2 {
 
     const EVENT_STARTUP = 'eventStartUp';
+    const EVENT_ADMIN = 'eventAdmin';
+    const EVENT_REGULAR_PAGE = 'eventRegularPage';
+    const EVENT_RENDER = 'eventRender';
+    const EVENT_SHUTDOWN = 'eventShutdown';
     
     private $root;
     
@@ -124,22 +128,29 @@ class Frogsystem2 {
         if (@constant('INDEX_NO_DEPLOYMENT')) {
             return;
         }
+
+        /** @var GlobalData $FD */
+        global $FD;
         
         // Deploy AdminCP
-        if ($admin || isset($_GET['admin'])) {
+        if ($admin || isset($_GET['admin']))
+        {
+            $FD->getSystemEventManager()->trigger(self::EVENT_ADMIN);
+
             include(FS2ADMIN.'/admin.php');
             $this->__destruct();
             return;
         }
         /** @var GlobalData $FD */
-        // Depoly Mainpage
-        global $FD, $APP;
+        // Deploy main page
+        global $APP;
+
         $this->initSession();
 
+        $FD->getSystemEventManager()->trigger(self::EVENT_REGULAR_PAGE, $this);
 
         // Constructor Calls
-        // TODO: "Constructor Hook"
-        
+
         $this->get_goto();
         userlogin();
         setTimezone($FD->cfg('timezone'));
@@ -159,15 +170,13 @@ class Frogsystem2 {
         $theTemplate->tag('content', get_content($FD->cfg('goto')));
         $theTemplate->tag('copyright', get_copyright());
 
-        $template_general = (string) $theTemplate;
-        // TODO: "Template Manipulation Hook"
+        $renderedTemplate = $FD->getSystemEventManager()->trigger(self::EVENT_RENDER, $theTemplate);
 
-        // Display Page
-        echo tpl_functions_init(get_maintemplate($template_general));
+        echo $renderedTemplate->last();
 
+        $FD->getSystemEventManager()->trigger(self::EVENT_SHUTDOWN, $this);
 
         // Shutdown System
-        // TODO: "Shutdown Hook"
         $this->__destruct();
     }
     
@@ -303,7 +312,7 @@ class Frogsystem2 {
         
         return $default;
     }
-    
+
 
     ///////////////////
     //// get $goto ////
@@ -353,7 +362,7 @@ class Frogsystem2 {
         }
 
         return $GOTO;
-    }    
-    
+    }
+
 }
 

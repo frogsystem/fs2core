@@ -8,9 +8,7 @@
  * startup core-events
  */
 
-
 namespace Event\Core;
-
 
 use Frogsystem2\Event\EventInterface;
 use Frogsystem2\Event\EventListenerInterface;
