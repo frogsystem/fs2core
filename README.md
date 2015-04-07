@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/frogsystem/fs2-core.svg)](https://travis-ci.org/frogsystem/fs2-core)
+[![Build Status](https://travis-ci.org/frogsystem/fs2core.svg)](https://travis-ci.org/frogsystem/fs2core)
 [![Code Climate](https://codeclimate.com/github/frogsystem/fs2-core/badges/gpa.svg)](https://codeclimate.com/github/frogsystem/fs2-core)
 [![Test Coverage](https://codeclimate.com/github/frogsystem/fs2-core/badges/coverage.svg)](https://codeclimate.com/github/frogsystem/fs2-core)
 [![Stories in Ready](https://badge.waffle.io/frogsystem/fs2-core.png?label=ready&title=Ready)](http://waffle.io/frogsystem/fs2-core)
