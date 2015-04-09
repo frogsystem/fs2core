@@ -206,5 +206,5 @@ module.exports = function(grunt) {
 
   // Default task.
   grunt.registerTask('default', ['sass:dev', 'cssjoin', 'jshint', 'concat', 'copy']);
-  grunt.registerTask('build', ['bower:install', 'sass:dist', 'jshint', 'concat', 'uglify:dist', 'copy']);
+  grunt.registerTask('build', ['bower:install', 'sass:dev', 'cssjoin', 'jshint', 'concat', 'uglify:dist', 'copy']);
 };
