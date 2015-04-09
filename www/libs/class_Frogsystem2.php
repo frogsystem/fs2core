@@ -10,7 +10,17 @@
  * 
  */
 
+use Frogsystem2\Event\EventLoader;
+use Frogsystem2\Event\EventManager;
+use Frogsystem2\Event\EventManagerInterface;
+
 class Frogsystem2 {
+
+    const EVENT_STARTUP = 'eventStartUp';
+    const EVENT_ADMIN = 'eventAdmin';
+    const EVENT_REGULAR_PAGE = 'eventRegularPage';
+    const EVENT_RENDER = 'eventRender';
+    const EVENT_SHUTDOWN = 'eventShutdown';
     
     private $root;
     
@@ -41,7 +51,8 @@ class Frogsystem2 {
         @define('FS2MEDIA', FS2CONTENT.'/media');
         @define('FS2STYLES', FS2CONTENT.'/styles');
         @define('FS2UPLOAD', FS2CONTENT.'/upload');
-        
+        @define('FS2EVENTS', FS2CONTENT.'/event');
+
         // Defaults for other constants
         @define('IS_SATELLITE', false);
         @define('FS2_DEBUG', false);
@@ -60,22 +71,44 @@ class Frogsystem2 {
 
         // Register autoloader: libloader
         spl_autoload_register(array($this, 'libloader'));
+        spl_autoload_register(array($this, 'namespaceLibLoader'));
 
         // Set default include path
         set_include_path(FS2SOURCE);
+
+        // init event-manager
+        $globalEventManager = new EventManager();
+
+        $this->loadEvents($globalEventManager);
         
         // init global data object
         global $FD;
         $FD = new GlobalData();
-        try {
-            // TODO: Pre-Startup Hook
-            $FD->startup();
-        } catch (Exception $e) {
-            // DB Connection failed
-            $this->fail($e);
+        $FD->setSystemEventManager($globalEventManager);
+
+        $startupResult = $FD->getSystemEventManager()->trigger(self::EVENT_STARTUP, $FD);
+
+        if($startupResult->hasStopped())
+        {
+            $result = $startupResult->last();
+            if(!($result instanceof \Exception))
+            {
+                $result = new \Exception(sprintf('Undefined result of type %s', gettype($result)));
+            }
+
+            $this->fail($result);
         }
- 
+
         return $this;
+    }
+
+    public function loadEvents(EventManagerInterface $eventManager)
+    {
+        $eventLoader = new EventLoader($eventManager);
+
+        $eventList = $eventLoader->loadEvents(FS2EVENTS, 'Event');
+
+        $eventLoader->attachEvents($eventList);
     }
 
     
@@ -95,22 +128,29 @@ class Frogsystem2 {
         if (@constant('INDEX_NO_DEPLOYMENT')) {
             return;
         }
+
+        /** @var GlobalData $FD */
+        global $FD;
         
         // Deploy AdminCP
-        if ($admin || isset($_GET['admin'])) {
+        if ($admin || isset($_GET['admin']))
+        {
+            $FD->getSystemEventManager()->trigger(self::EVENT_ADMIN);
+
             include(FS2ADMIN.'/admin.php');
             $this->__destruct();
             return;
         }
-        
-        // Depoly Mainpage
-        global $FD, $APP;
+        /** @var GlobalData $FD */
+        // Deploy main page
+        global $APP;
+
         $this->initSession();
 
+        $FD->getSystemEventManager()->trigger(self::EVENT_REGULAR_PAGE, $this);
 
         // Constructor Calls
-        // TODO: "Constructor Hook"
-        
+
         $this->get_goto();
         userlogin();
         setTimezone($FD->cfg('timezone'));
@@ -130,15 +170,13 @@ class Frogsystem2 {
         $theTemplate->tag('content', get_content($FD->cfg('goto')));
         $theTemplate->tag('copyright', get_copyright());
 
-        $template_general = (string) $theTemplate;
-        // TODO: "Template Manipulation Hook"
+        $renderedTemplate = $FD->getSystemEventManager()->trigger(self::EVENT_RENDER, $theTemplate);
 
-        // Display Page
-        echo tpl_functions_init(get_maintemplate($template_general));
+        echo $renderedTemplate->last();
 
+        $FD->getSystemEventManager()->trigger(self::EVENT_SHUTDOWN, $this);
 
         // Shutdown System
-        // TODO: "Shutdown Hook"
         $this->__destruct();
     }
     
@@ -146,7 +184,10 @@ class Frogsystem2 {
         global $FD;
         unset($FD);  
     }
-    
+
+    /**
+     * @param Exception $exception
+     */
     private function fail($exception) {
         // log connection error
         error_log($exception->getMessage(), 0);
@@ -192,7 +233,15 @@ class Frogsystem2 {
     
     private function libloader($classname) {
         $class = explode("\\", $classname);
-        $filepath = FS2SOURCE.'/libs/class_'.end($class).'.php';
+
+        if(count($class) > 1)
+        {
+            return false;
+        }
+
+        $class = array_pop($class);
+
+        $filepath = FS2SOURCE.'/libs/class_'.$class.'.php';
         
         if (file_exists($filepath)) {
             include_once($filepath);
@@ -201,6 +250,34 @@ class Frogsystem2 {
         } else {
             return false;
         }
+    }
+
+    protected function namespaceLibLoader($className)
+    {
+        $class = explode('\\', $className);
+
+        switch(array_shift($class))
+        {
+            case 'Frogsystem2':
+                $filePath = '/libs/' . implode('/', $class). '.php';
+                break;
+            case 'Event':
+                $filePath = '/event/' . implode('/', $class) . '.php';
+                break;
+            default:
+                return false;
+        }
+
+        $filePath = FS2SOURCE . $filePath;
+
+        if(file_exists($filePath))
+        {
+            include_once $filePath;
+
+            return true;
+        }
+
+        return false;
     }
     
     private function detectUserLanguage($default = 'de_DE') {
@@ -235,13 +312,14 @@ class Frogsystem2 {
         
         return $default;
     }
-    
+
 
     ///////////////////
     //// get $goto ////
     ///////////////////
     private function get_goto ()
     {
+        /** @var GlobalData $FD */
         global $FD;
 
         //check seo
@@ -268,6 +346,7 @@ class Frogsystem2 {
     /////////////////////////
     private function forward_aliases ( $GOTO )
     {
+        /** @var GlobalData $FD */
         global $FD;
 
         $aliases = $FD->db()->conn()->prepare(
@@ -283,8 +362,7 @@ class Frogsystem2 {
         }
 
         return $GOTO;
-    }    
-    
+    }
+
 }
 
-?>

@@ -9,12 +9,51 @@
  * including global config, page informations, applet data, etc..
  */
 
+use Frogsystem2\Event\EventManagerInterface;
+
 class GlobalData {
 
     // Properties
-    private $db = null;             // Database connection
-    private $text = array();        // Text objects
-    private $config = array();      // config data
+    /**
+     * Database connection
+     * @var sql
+     */
+    private $db = null;
+
+    /**
+     * Text objects
+     * @var lang[]
+     */
+    private $text = array();
+
+    /**
+     * config data
+     * @var ConfigData[]
+     */
+    private $config = array();
+
+    /**
+     * @var EventManagerInterface
+     */
+    private $systemEventManager;
+
+    /**
+     * @return EventManagerInterface
+     */
+    public function getSystemEventManager()
+    {
+        return $this->systemEventManager;
+    }
+
+    /**
+     * @param EventManagerInterface $systemEventManager
+     * @return $this
+     */
+    public function setSystemEventManager(EventManagerInterface $systemEventManager)
+    {
+        $this->systemEventManager = $systemEventManager;
+        return $this;
+    }
 
     // Constructor
     //
@@ -52,13 +91,6 @@ class GlobalData {
     
     // startup the system
     public function startup() {
-        // connect to db
-        try {
-            $this->connect();
-        } catch (Excpetion $e) {
-            throw $e;
-        }
-        
         // set config data
         $this->loadConfigsByHook('startup');
 
@@ -157,7 +189,7 @@ class GlobalData {
 
         // error
         } else {
-            Throw Exception('Invalid Call of method "setConfig"');
+            Throw new Exception('Invalid Call of method "setConfig"');
         }
     }
 
@@ -208,7 +240,7 @@ class GlobalData {
 
         // error
         } else {
-            Throw Exception('Invalid Call of method "config"');
+            Throw new Exception('Invalid Call of method "config"');
         }
     }
 
@@ -255,5 +287,3 @@ class GlobalData {
     }
 
 }
-
-?>

@@ -5,7 +5,7 @@
  * @file     class_adminpage.php
  * @folder   /libs
  * @version  0.6
- * @author   Satans Krümelmonster, Sweil
+ * @author   Satans KrÃ¼melmonster, Sweil
  *
  * provides functions to manage admin-cp display-issues
  */
@@ -16,12 +16,19 @@ class adminpage {
     private $tpl    = array();
     private $cond   = array();
     private $text   = array();
+
+    /**
+     * @var lang
+     */
     private $lang   = null;
+
+    /**
+     * @var lang
+     */
     private $common = null;
 
 
     function __construct ($pagefile) {
-        global $FD;
         $this->name = substr($pagefile, 0, -4);
 
         // load tpl file
@@ -108,10 +115,14 @@ class adminpage {
             // replace data from langfiles
             if ($lang) {
                 // replace language
-                $tmpval = preg_replace("/<!--LANG::(.*?)-->/e", '$this->langValue(\'$1\')', $tmpval);
+                $tmpval = preg_replace_callback("/<!--LANG::(.*?)-->/", function($matches){
+                    return $this->langValue($matches[1]);
+                }, $tmpval);
 
                 // replace common
-                $tmpval = preg_replace("/<!--COMMON::(.*?)-->/e", '$this->commonValue(\'$1\')', $tmpval);
+                $tmpval = preg_replace_callback("/<!--COMMON::(.*?)-->/", function($matches){
+                    return $this->commonValue($matches[1]);
+                }, $tmpval);
             }
 
             // clear rest
@@ -137,22 +148,23 @@ class adminpage {
         $num = 0;
         $push = array();
         
-        $tokenizer = create_function("\$match,&\$num,&\$name,&\$push", "
-            if (\$match[1] == \"IF\") {
-                \$name[\$num] = \$match[2];
-                array_push(\$push, \$num);
-                return \"<!--IF::\".\$num++.\"-->\";
+        $tokenizer = function($match) use (&$num, &$name, &$push)
+        {
+            if ($match[1] == "IF") {
+                $name[$num] = $match[2];
+                array_push($push, $num);
+                return "<!--IF::".$num++."-->";
 
-            } elseif (\$match[1] == \"ELSE\") {
-                return \"<!--ELSE::\".end(\$push).\"-->\";
+            } elseif ($match[1] == "ELSE") {
+                return "<!--ELSE::".end($push)."-->";
 
-            } elseif (\$match[1] == \"ENDIF\") {
-                return \"<!--ENDIF::\".array_pop(\$push).\"-->\";
+            } elseif ($match[1] == "ENDIF") {
+                return "<!--ENDIF::".array_pop($push)."-->";
             }
-            return \$match[0];       
-        ");
+            return $match[0];
+        };
 
-        $tpl = preg_replace('/(?|<!\-\-(IF)::(.+?)\-\->|<!\-\-(ELSE)\-\->|<!\-\-(ENDIF)\-\->)/e', '$tokenizer(array(\'$0\',\'$1\',\'$2\'),$num,$name,$push)', $tpl);
+        $tpl = preg_replace_callback('/(?|<!\-\-(IF)::(.+?)\-\->|<!\-\-(ELSE)\-\->|<!\-\-(ENDIF)\-\->)/', $tokenizer, $tpl);
 
         return $tpl;
     }
@@ -168,6 +180,7 @@ class adminpage {
 
         // get from default lang
         } else {
+            /** @var GlobalData $FD */
             global $FD;
             return $FD->text('page', $name);
         }
@@ -180,6 +193,7 @@ class adminpage {
 
         // get from default lang
         } else {
+            /** @var GlobalData $FD */
             global $FD;
             return $FD->text('admin', $name);
         }
@@ -204,4 +218,3 @@ class adminpage {
         return $this->lang;
     }
 }
-?>
