@@ -178,7 +178,7 @@ if (
 
 elseif (isset($poll_arr['poll_id']) && !checkVotedPoll($poll_arr['poll_id'])) {
 
-    $poll_arr['poll_type_text'] = ( $poll_arr['poll_type'] == 1 ) ? $FD->text("frontend", "multiple_choise") : $FD->text("frontend", "single_choice");
+    $poll_arr['poll_type_text'] = ( $poll_arr['poll_type'] == 1 ) ? $FD->text("frontend", "multiple_choice") : $FD->text("frontend", "single_choice");
 
     $index2 = $FD->db()->conn()->query('SELECT * FROM '.$FD->env('DB_PREFIX').'poll_answers WHERE poll_id = '.$poll_arr['poll_id'].' ORDER BY answer_id ASC');
     initstr($antworten);
