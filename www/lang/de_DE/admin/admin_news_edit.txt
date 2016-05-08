@@ -34,3 +34,6 @@ selection_comments:         Kommentare bearbeiten
 #Löschen
 news_deleted:               News wurden gelöscht
 news_not_deleted:           News wurden nicht gelöscht
+news_delete_title:          News löschen
+news_delete_question:       News wirklich löschen?
+news_delete_view_news:      News ansehen

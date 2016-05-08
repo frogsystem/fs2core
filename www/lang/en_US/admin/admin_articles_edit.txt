@@ -10,3 +10,7 @@ edit_filter_arttitle: Title
 edit_filter_url: URL
 edit_select_article: Select article
 edit_entries_found: records found
+
+delete_title:          Delete article
+delete_question:       Delete article?
+delete_view_article:   View article
