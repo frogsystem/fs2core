@@ -10,3 +10,7 @@ edit_filter_arttitle: Titel
 edit_filter_url: URL
 edit_select_article: Artikel auswählen
 edit_entries_found: Datensätze gefunden
+
+delete_title:          Artikel löschen
+delete_question:       Artikel wirklich löschen?
+delete_view_article:   Artikel ansehen

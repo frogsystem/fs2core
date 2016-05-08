@@ -59,7 +59,7 @@ function action_delete_get_data ( $IDS )
         $index = $FD->db()->conn()->query ( 'SELECT * FROM '.$FD->env('DB_PREFIX')."news WHERE news_id = '".$NEWS_ID."'" );
         $news_arr = $index->fetch(PDO::FETCH_ASSOC);
 
-        $news_arr['news_date_formated'] = ''.$FD->text('admin', 'on').' <b>' . date ( $FD->text('admin', 'date_format') , $news_arr['news_date'] ) . '</b> '.$FD->text('admin', 'at').' <b>' . date ( $FD->text('admin', 'time_format') , $news_arr['news_date'] ) . '</b>';
+        $news_arr['news_date_formated'] = ''.$FD->text('admin', 'at_date').' <b>' . date ( $FD->text('admin', 'date') , $news_arr['news_date'] ) . '</b> '.$FD->text('admin', 'at_time').' <b>' . date ( $FD->text('admin', 'time') , $news_arr['news_date'] ) . '</b>';
 
         $index2 = $FD->db()->conn()->query("SELECT COUNT(comment_id) AS 'number' FROM ".$FD->env('DB_PREFIX').'comments WHERE content_id = '.$news_arr['news_id'].' AND content_type=\'news\'' );
         $news_arr['num_comments'] = $index2->fetchColumn();
@@ -113,10 +113,10 @@ function action_delete_display_page ( $return_arr )
                             </span>
                             <br>
                             <span class="small">
-                                '.$FD->text('admin', 'by_posted').' <b>'.$news_arr['user_name'].'</b>
+                                '.$FD->text('admin', 'by').' <b>'.$news_arr['user_name'].'</b>
                                 '.$news_arr['news_date_formated'].'</b>
                                 '.$FD->text('admin', 'in').' <b>'.$news_arr['cat_name'].'</b>,
-                                <b>'.$news_arr['num_comments'].'</b> '.$FD->text('admin', 'comments').'
+                                <b>'.$news_arr['num_comments'].'</b> '.$FD->text('page', 'comments').'
                             </span>
                         </td>
                         <td style="width:15px;"></td>

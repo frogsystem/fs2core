@@ -1,7 +1,7 @@
 # Import default texts
 #@admin/admin_news
 
-# Kommentare
+# comments
 comments_select_title:              Edit comments
 comments_content:                   Content
 comments_info:                      Information
@@ -11,7 +11,7 @@ comment_deleted:                    Comment has been deleted successfully
 # News
 news_not_found:                     No News found!
 
-#filter
+# filter
 filter_title:               Filter & sort order
 cat_filter:                 Filter
 all_cats:                   All categories
@@ -20,17 +20,20 @@ filter_date:                Date
 filter_id:                  ID
 filter_newstitle:           Title
 
-#search
+# search
 search_fulltext: Full text
 search_id: IDs
 search_url: URLs
 
-# Auswahlliste
+# list
 select_news:                Select news
 comments:                   Comments
 links:                      Links
 selection_comments:         Edit comments
 
-#Löschen
+# delete
 news_deleted:               News has been deleted
 news_not_deleted:           News has not been deleted
+news_delete_title:          Delete news
+news_delete_question:       Delete news?
+news_delete_view_news:      View news
